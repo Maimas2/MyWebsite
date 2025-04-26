@@ -9,6 +9,7 @@ Try not to die of horror while looking at the code though. ;)
 ## Libraries used
 
  - ExpressJS (MIT License)
+ - vhost (MIT License)
  - jQuery (MIT License)
 
 ### Model UN
