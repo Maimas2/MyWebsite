@@ -1,12 +1,11 @@
 const express = require('express');
-var vhost = require('vhost');
 
 const app = express();
 const port = process.env.port || 3000;
 
 var munApp = require('./mun/index').app;
 
-app.use(vhost("mun.localhost", munApp));
+app.use("/mun", munApp);
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);

@@ -441,6 +441,7 @@ input[type="text"]:focus-visible {
     overflow: visible;
     text-align: center;
     padding-left: 10px;
+    transition: 0.3s ease-in-out all;
 }
 #nayRollCallSegment {
     position: absolute;
@@ -451,6 +452,7 @@ input[type="text"]:focus-visible {
     height: 100%;
     overflow: visible;
     text-align: center;
+    transition: 0.3s ease-in-out all;
 }
 #abstainRollCallSegment {
     position: absolute;
@@ -461,6 +463,7 @@ input[type="text"]:focus-visible {
     height: 100%;
     overflow: visible;
     text-align: center;
+    transition: 0.3s ease-in-out all;
 }
 #rollCallButtonContainer {
     display: flex;
