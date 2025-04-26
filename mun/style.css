@@ -1,0 +1,510 @@
+@font-face {
+    font-family: ComputerModern;
+    src: url(/ComputerModernSerif.ttf);
+}
+* {
+    font-family: ComputerModern;
+    box-sizing: border-box;
+    /*transition: all 500ms linear;**/
+}
+body {
+    overflow: hidden;
+    background-color: powderblue;
+}
+p, button {
+    font-size: 14pt;
+}
+.outlineddiv {
+    border-radius: 20px;
+    /*box-shadow: 2px 2px 7px #DDDDDD;**/
+    border: 1px #888888 solid;
+    background-color: white;
+    user-select: none;
+}
+button {
+    transition: all 200ms linear;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+button:not(.incrementButton) {
+    border-radius: 15px;
+    /*box-shadow: 2px 2px 7px #DDDDDD;**/
+    border: 1px #888888 solid;
+    background-color: white;
+}
+button:hover:not(:disabled) {
+    background-color: #dddddd;
+    border-radius: 5px;
+}
+button:disabled {
+    background-color: #bbb;
+    color: #666;
+}
+button:active {
+    background-color: #cccccc;
+}
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+#topbar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: max(20%, 150px);
+    border-radius: 0;
+    z-index: 10;
+}
+#topbar, #passedMotionDetails {
+    background-color: color-mix(in srgb, powderblue 20%, white 80%);
+}
+#numberinfocontainer {
+    position: absolute;
+    right: 0;
+    width: 15%;
+    height: 100%;
+}
+.bottomarea {
+    position: absolute;
+    top: max(20%, 150px);
+    height: calc(100% - max(20%, 100px));
+    border: 1px #c0c0c0 solid;
+    background-color: transparent;
+}
+#leftbottomarea, #rightbottomarea {
+    position: absolute;
+    left: 0;
+    top: max(20%, 150px);
+    width: 100%;
+    height: calc(100% - max(20%, 100px));
+    background-color: transparent;
+}
+#leftbottomarea {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    z-index: 0;
+}
+#rightbottomarea {
+    z-index: 5;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    transition: all 300ms linear;
+    opacity: 0;
+}
+#passedMotionCountryChooser, #passedMotionDetails {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+}
+#passedMotionCountryChooser {
+    width: 40%;
+    overflow-y: scroll;
+}
+#passedMotionDetails {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+#passedMotionDetails > * {
+    width: 100%;
+    text-align: center;
+}
+#peopleeditcontainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30%;
+    height: 100%;
+    padding: 10px;
+}
+#peopleedit {
+    padding: 15px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+#peopleedit > * {
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 50%;
+}
+#leftDelegateBox {
+    height: 100%;
+    text-align: center;
+    display: grid;
+    place-items: center;
+}
+.middleLine {
+    border: #555 solid 1px;
+    width: 0 !important;
+    height: 100%;
+    padding: 0 !important;
+}
+#rightDelegateBox {
+    height: 100%;
+    text-align: left;
+    vertical-align: middle;
+    align-items: center;
+    display: grid;
+    place-items: center;
+}
+#newmotioncontainer, #exitCurrentMotionContainer {
+    position: absolute;
+    left: 30%;
+    top: 0;
+    width: 30%;
+    height: 100%;
+    padding: 10px;
+}
+#newmotions, #exitCurrentMotion {
+    height: 100%;
+    padding: 15px;
+    text-align: center;
+}
+#newmotions > * {
+    display: inline;
+    justify-content: start;
+    margin-bottom: 5px;
+}
+#newmotions > div {
+    display: inline-block;
+    width: 45%;
+    transition: all 200ms linear;
+    font-size: 110%;
+}
+#newmotions > div:hover {
+    background-color: #ddd;
+    border-radius: 5px;
+}
+#motiondisplays {
+    width: 100%;
+    height: 170px;
+    padding: 15px;
+    transition: 300ms all linear;
+}
+.innermotiondisplay {
+    width: 100%;
+    height: 150px;
+    padding: 15px;
+    padding-left: 35px;
+    padding-right: 35px;
+    background-color: white;
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+}
+.innermotiondisplay > * {
+    width: 50%;
+    margin:auto;
+}
+#popupPage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0006;
+    z-index: 15;
+
+    display: none;
+}
+#popupPage > div.outlineddiv {
+    position: absolute;
+    width: 60%;
+    height: 40%;
+    left: 20%;
+    top: 30%;
+    box-shadow: 2px 2px 7px #777;
+    overflow: scroll;
+    display: flex;
+    font-size: 150%;
+}
+#popupPage > div.outlineddiv:not(#editDelegateList) {
+    text-align: center;
+    align-items: center;
+    display: grid;
+    place-items: center;
+}
+#exitButtons {
+    position: absolute;
+    width: 50%;
+    left: 25%;
+    bottom: 72%;
+    display: block !important;
+    text-align: center;
+}
+#exitButtons > * {
+    padding: 10px;
+    margin-left: 10px;
+    display: inline;
+}
+p {
+    margin: 0;
+}
+input {
+    border-radius: 0;
+    border: solid #888 1px;
+}
+.incrementButton {
+    line-height: inherit;
+    border-radius: 0;
+    width: 25px;
+    border: solid #888 1px;
+    background-color: white;
+    padding: 0;
+}
+.alignchildrenspan {
+    display: inline-grid;
+    grid-auto-flow: column;
+}
+#editDelegateList {
+    overflow: scroll;
+    text-align: left;
+    display: initial;
+    padding: 15px !important;
+}
+.countryListOne {
+    transition: all 200ms linear;
+    padding: 15px;
+    margin-bottom: 7px;
+    font-size: 14pt;
+    text-align: center;
+}
+.countryListOne:hover {
+    background-color: #ccc;
+}
+#innerDelegateList {
+    width: 100%;
+    height: 85%;
+}
+#delegateListSearch {
+    height: 10%;
+    width: 100%;
+    z-index: 5;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+input[type="text"] {
+    font-size: 100%;
+    border-radius: 15px;
+    text-align: center;
+    padding: 3px;
+    transition: all 200ms linear;
+}
+input[type="text"]:focus-visible {
+    border-radius: 5px;
+}
+#newModTopic {
+    text-align: left;
+}
+#attendanceListOfCountries > * {
+    margin: 20px;
+    display: none;
+}
+#attendanceAlert {
+    display: block;
+}
+.largeTextInput {
+    width: 100px;
+}
+.zoomInALittle {
+    font-size: 18pt;
+}
+#oneLargeTimer {
+    font-size: 132pt;
+}
+#chosenCountriesForTimer {
+    padding: 20px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+#chosenCountriesForTimer > * {
+    padding: 7px;
+}
+#chosenCountriesForTimer > *:not(:last-child) {
+    margin-bottom: 10px;
+}
+.marginizechildren {
+    display: flex;
+}
+.marginizechildren > * {
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.bottomMarginChildren > * {
+    margin-bottom: 5px;
+}
+#chosenCountriesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+#numberOfAddedCountriesLabel {
+    text-align: center;
+}
+#chosenCountriesForTimer {
+    height: 100%;
+}
+#alertContainer {
+    display: none;
+    flex-direction: row;
+    position: absolute;
+    left: 20%;
+    top: 5%;
+    width: 60%;
+    height: 10%;
+    z-index: 1000;
+    padding: 20px;
+    padding-right: 50px;
+    box-shadow: 2px 2px 20px #888;
+}
+#alertContainer > * {
+    margin: auto;
+}
+#logoContainer {
+    position: absolute;
+    margin: 10px;
+    right: 0;
+    top: 0;
+    width: 10%;
+    height: calc(100% - 20px);
+    padding: 20px;
+}
+#UNLogo {
+    width: 100%;
+    aspect-ratio: 1;
+    margin-top: auto;
+}
+#timerControlsContainer {
+    display: flex;
+    height: 150px;
+}
+#timerControlsContainer > * {
+    width: 100%;
+    height: 100%;
+    margin: 10px;
+    box-shadow: 0px 0px 5px powderblue;
+    border-radius: 30px;
+    font-size: 18pt;
+}
+#timerControlsContainer > *:hover {
+    border-radius: 5px;
+}
+.startClear {
+    transition: 200ms opacity linear;
+}
+#commenceRollCallContainer {
+    position: absolute;
+    left: 60%;
+    top: 0;
+    width: 15%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+#commenceRollCall {
+    height: 100%;
+    width: 100%;
+}
+#rollCallVotePopup {
+    height: 60% !important;
+    padding: 20px;
+    display: grid;
+}
+#rollCallVoteResults {
+    background-color: #ddd;
+    height: 30px;
+    border-radius: 20px;
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+#yeaRollCallSegment {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #0f0;
+    width: 0;
+    height: 100%;
+    overflow: visible;
+    text-align: center;
+    padding-left: 10px;
+}
+#nayRollCallSegment {
+    position: absolute;
+    background-color: rgb(255, 119, 119);
+    right: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    overflow: visible;
+    text-align: center;
+}
+#abstainRollCallSegment {
+    position: absolute;
+    background-color: #ddd;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    text-align: center;
+}
+#rollCallButtonContainer {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+}
+#rollCallButtonContainer > * {
+    width: 100%;
+    height: 100px;
+}
+#rollCallBottomArea {
+    display: inline-flex;
+    width: 100%;
+    overflow: auto;
+    gap: 10px;
+    max-height: 70%;;
+}
+#rollCallBottomArea > * {
+    width: 100%;
+}
+#rollCallPastChoices {
+    padding: 20px;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+}
+#rollCallPastChoices > * {
+    border-radius: 15px;
+    width: 100%;
+    border: 1px solid #888;
+    display: flex;
+    padding: 15px;
+    vertical-align: middle;
+    margin: 10px;
+    transition: all linear 0.15s;
+}
+.expandAllTheWay {
+    width: 100%;
+}
+#rollCallVotePopup {
+    overflow: hidden !important;
+}
+#rollCallVotePopup > * {
+    margin: 0;
+}
+#allAbsentButton:active {
+    background-color: red;
+}

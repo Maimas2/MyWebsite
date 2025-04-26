@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/png" href="/favicon.png"/>
+        <title>Model UN</title>
+        <script src="/lib/Sortable.js"></script>
+        <script src="/lib/jquery.js"></script>
+        <script src="/lib/jquery-sortable.js"></script>
+    </head>
+    <body>
+        <div id="topbar" class="outlineddiv">
+            <div id="peopleeditcontainer">
+                <div id="peopleedit" class="outlineddiv">
+                    <div id="leftDelegateBox">
+                        <p><span id="numberOfDelegates">0</span> Delegates</p>
+                        <button id="editdelegatelistbutton">Edit List</button>
+                        <button id="takeAttendanceButton">Attendance</button>
+                    </div>
+                    <div class="middleLine"></div>
+                    <div id="rightDelegateBox">
+                        <p style="text-align: center;">Simple majority: <span id="simpleMajorityLabel">0/0</span></p>
+                        <p style="text-align: center;">Two thirds: <span id="twoThirdsLabel">0/0</span></p>
+                    </div>
+                </div>
+            </div>
+            <div id="newmotioncontainer">
+                <div id="newmotions" class="outlineddiv" style="overflow-y:scroll;">
+                    <h2>New Motion</h2><br>
+                    <!--<button id="setAgenda">Set Agenda</button>-->
+                    <div id="newSpeakersList" class="outlineddiv">Speakers List</div>
+                    <div id="newMod" class="outlineddiv">Moderated Caucus</div>
+                    <div id="newUnmod" class="outlineddiv">Unmoderated Caucus</div>
+                    <div id="newRoundRobin" class="outlineddiv">Round Robin</div>
+                    <div id="newIntroduce" class="outlineddiv">Introduce Papers</div>
+                </div>
+            </div>
+            <div id="exitCurrentMotionContainer" style="display: none;">
+                <div id="exitCurrentMotion" class="outlineddiv" style="vertical-align: middle;">
+                    <button style="width: 100%;height:100%;border-radius: 15px;" onclick="endCurrentMotion()">End Current Motion</button>
+                </div>
+            </div>
+            <div id="commenceRollCallContainer">
+                <button id="commenceRollCall" class="outlineddiv">
+                    Roll Call Vote
+                </button>
+            </div>
+            <div id="logoContainer" class="outlineddiv">
+                <img src="/UN-logo.png" id="UNLogo">
+            </div>
+        </div>
+        <div id="bottomarea" style="display: none;">
+            <div id="leftbottomarea" class="bottomarea">
+                <div id="motiondisplays">
+                    <h1 id="firstMotionPrompt" style="width:100%;text-align:center;">Make a motion to get started</h1>
+                </div>
+            </div>
+            <div id="rightbottomarea" class="bottomarea">
+                <div id="passedMotionDetails" class="outlineddiv">
+                    <div>
+                        <h1 id="passedMotionName">Uh oh</h1>
+                        <br>
+                        <h2 id="passedMotionTopic" style="font-weight: 400;">You fucked up</h2>
+                        <div id="oneLargeTimerContainer">
+                            <p id="oneLargeTimer">0:00</p>
+                            <p id="modPlacementP"><span id="modDelegateIndexSpan">1</span>/<span id="modDelegateTotal">5</span></p><br><br>
+                            <div id="timerControlsContainer">
+                                <button id="toggleMotionButton" onclick="toggleTimer()">Start</button>
+                                <button id="restartMotionTimerButton">Restart</button>
+                                <button id="yieldTimeButton">Yield</button>
+                                <button id="previousSpeakerButton">Previous</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="chosenCountriesContainer">
+                        <div class="outlineddiv" id="chosenCountriesForTimer">
+                            <div class="outlineddiv">EEE</div>
+                            <div class="outlineddiv">CCC</div>
+                            <div class="outlineddiv">DDD</div>
+                            <div class="outlineddiv">AAA</div>
+                        </div>
+                        <p id="numberOfAddedCountriesLabel"><span id="numberOfAddedCountriesSpan">0</span>/<span id="maxNumberOfAddedCountriesSpan">10</span></p>
+                    </div>
+                </div>
+                <div id="passedMotionCountryChooser" class="outlineddiv">
+                    
+                </div>
+            </div>
+        </div>
+        <div id="popupPage">
+            <div id="editDelegateList" class="outlineddiv">
+                <input type="text" id="delegateListSearch" spellcheck="false" placeholder="Search for country...">
+                <div id="innerDelegateList">
+
+                </div>
+            </div>
+            <div id="attendanceList" class="outlineddiv">
+                <h3>Attendance</h3>
+                <button onmousedown="
+                    document.getElementById('attendanceListOfCountries').childNodes.forEach((el) => {
+                        if(typeof el.childNodes['3'] != 'undefined') {
+                            el.childNodes[3].click();
+                        }
+                    });
+                " id="allAbsentButton">All absent</button>
+                <button onmousedown="
+                document.getElementById('attendanceListOfCountries').childNodes.forEach((el) => {
+                    if(typeof el.childNodes['3'] != 'undefined') {
+                        el.childNodes[5].click();
+                    }
+                });
+            ">All present</button>
+                <button onmousedown="
+                document.getElementById('attendanceListOfCountries').childNodes.forEach((el) => {
+                    if(typeof el.childNodes['3'] != 'undefined') {
+                        el.childNodes[7].click();
+                    }
+                });
+            ">All present and voting</button>
+                <br><br>
+                <div id="attendanceListOfCountries">
+                    <p id="attendanceAlert">No delegates added yet! Add them by clicking "Edit List."</p>
+                </div>
+            </div>
+            <div id="newModPopup" class="bottomMarginChildren outlineddiv">
+                <h3>Moderated Caucus</h3>
+                Topic: <input type="text" id="newModTopic" style="width:50%;" value="">
+                <br>
+                Total duration: <input type="text" id="newModPopupDuration" value="5:00" class="largeTextInput">
+                <br>
+                Delegate speaking time: <input type="text" id="newModPopupDelegateDuration" value="1:00" class="largeTextInput">
+            </div>
+            <div id="speakersListPopup" class="bottomMarginChildren outlineddiv">
+                <h3>Open the Speakers List</h3>
+                <br>
+                Number of Speakers: <input type="text" id="speakersListNumDelegates" value="10" class="largeTextInput">
+                <br>
+                Delegate speaking time: <input type="text" id="speakersListPopupDelegateDuration" value="1:00" class="largeTextInput">
+            </div>
+            <div id="newUnmodPopup" class="bottomMarginChildren outlineddiv">
+                <h3>Unmoderated Caucus</h3>
+                Topic: <input type="text" id="newUnmodTopic" style="width:50%;" value="">
+                <br>
+                Duration: <input type="text" id="newUnmodPopupDuration" value="5:00" class="largeTextInput">
+            </div>
+            <div id="roundRobinPopup" class="bottomMarginChildren outlineddiv">
+                <h3>Round Robin</h3>
+                <br>
+                Topic: <input type="text" id="roundRobinTopic" value="" class="largeTextInput" style="width: 60%; text-align: left !important;">
+                <br>
+                Delegate speaking time: <input type="text" id="roundRobinDelegateDuration" value="0:20" class="largeTextInput">
+            </div>
+            <div id="rollCallVotePopup" class="bottomMarginChildren outlineddiv">
+                <div style="height:20%;">
+                    <h1>Roll Call Vote</h1>
+                    <p><span id="rollCallNumVotesNeededToWin"></span> yeas required to pass</p>
+                </div>
+                <div id="rollCallVoteResults" style="height:40px;line-height: 40px;vertical-align: middle;">
+                    <div id="yeaRollCallSegment"></div>
+                    <div id="abstainRollCallSegment">0 Abstains</div>
+                    <div id="nayRollCallSegment"></div>
+                </div>
+                <div id="rollCallBottomArea">
+                    <div id="rollCallCurrentChoice">
+                        <h2><span id="rollCallCountryName">United States</span> (<span id="rollCallVoterAttendance">Present</span>)</h2>
+                        <div id="rollCallButtonContainer">
+                            <button id="rollCallYeaButton">Yea</button>
+                            <button id="rollCallNayButton">Nay</button>
+                            <button id="rollCallAbstainButton">Abstain</button>
+                        </div>
+                    </div>
+                    <div id="rollCallPastChoices">
+                        
+                    </div>
+                </div>
+            </div>
+            <div id="exitButtons">
+                <button id="quitPopup" onclick="quitPopup()">Discard</button>
+                <button id="exitPopup">Submit</button>
+            </div>
+        </div>
+        <div id="prefabs" style="display: none !important;">
+            <div id="attendanceButtonsPrefab">
+                <p style="display: inline-block;width:300px;"></p>
+                <button onclick="firstAttendanceClick(this)">Ab</button>
+                <button onclick="secondAttendanceClick(this)">Pr</button>
+                <button onclick="thirdAttendanceClick(this)">Pr&V</button>
+            </div>
+            <div id="modMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="mod">
+                <div>
+                    <h1 style="margin-right: 20px;display:inline;">Moderated Caucus</h1>
+                    <div>
+                        <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
+                        <button onclick="this.parentNode.parentNode.parentNode.remove()" style="margin-right: 20px;">Motion Failed</button>
+                    </div>
+                </div>
+                <div class="middleLine"></div>
+                <div class="zoomInALittle">
+                    Topic: <input style="text-align: left;" type="text" style="width:70%;" value="">
+                    <br>
+                    Total duration: <input type="text" value="5:00" class="largeTextInput">
+                    <br>
+                    Delegate speaking time: <input type="text" value="1:00" class="largeTextInput">
+                </div>
+            </div>
+            <div id="speakersListMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="speakersList">
+                <div>
+                    <h1 style="margin-right: 20px;display:inline;">Open the Speakers List</h1>
+                    <div>
+                        <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
+                        <button onclick="this.parentNode.parentNode.parentNode.remove()" style="margin-right: 20px;">Motion Failed</button>
+                    </div>
+                </div>
+                <div class="middleLine"></div>
+                <div class="zoomInALittle">
+                    Number of Speakers: <input type="text" value="10" class="largeTextInput">
+                    <br>
+                    Delegate speaking time: <input type="text" value="1:00" class="largeTextInput">
+                </div>
+            </div>
+            <div id="unmodMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="unmod">
+                <div>
+                    <h1 style="display:inline;margin-right: 20px;">Unmoderated Caucus</h1>
+                    <div>
+                        <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
+                        <button onclick="this.parentNode.parentNode.parentNode.remove()" style="margin-right: 20px;">Motion Failed</button>
+                    </div>
+                </div>
+                <div class="middleLine"></div>
+                <div class="zoomInALittle">
+                    Topic: <input style="text-align: left;" type="text" style="width:50%;" value="">
+                    <br>
+                    Duration: <input type="text" value="5:00" class="largeTextInput">
+                </div>
+            </div>
+            <div id="roundRobinMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="roundRobin">
+                <div>
+                    <h1 style="margin-right: 20px;display:inline;">Round Robin</h1>
+                    <div>
+                        <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
+                        <button onclick="this.parentNode.parentNode.parentNode.remove()" style="margin-right: 20px;">Motion Failed</button>
+                    </div>
+                </div>
+                <div class="middleLine"></div>
+                <div class="zoomInALittle">
+                    Topic: <input type="text" value="" class="largeTextInput" style="width: 60%; text-align: left !important;">
+                    <br>
+                    Delegate speaking time: <input type="text" value="0:15" class="largeTextInput">
+                </div>
+            </div>
+            <div id="presentPapersMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="presentPapers">
+                <div>
+                    <h1 style="margin-right: 20px;display:inline;">Present Papers</h1>
+                    <div>
+                        <button onclick="parsePassedMotionJSON(introducePapersJSONConfig);" style="margin-right: 20px;">Motion Passed</button>
+                        <button onclick="this.parentNode.parentNode.parentNode.remove();">Motion Failed</button>
+                    </div>
+                </div>
+                <div class="middleLine"></div>
+                <div class="zoomInALittle">
+                    
+                </div>
+            </div>
+        </div>
+        <div id="alertContainer" class="outlineddiv" onclick="this.style.display = 'none';">
+            <p id="alertText" style="width: 100%;text-align: center;">This is really really bad</p>
+            <div>
+                <button style="margin: auto;" onclick="this.parentNode.parentNode.style.display = 'none';">Dismiss</button>
+            </div>
+        </div>
+        <div id="hiddenChosenCountries" style="display: none !important;">
+            
+        </div>
+        <!--
+            <span class="alignchildrenspan"> Nice clicker
+                <button class="incrementButton">-</button>
+                <input type="number" id="newModPopupDuration" min="0">
+                <button class="incrementButton">+</button>
+            </span>
+        -->
+    </body>
+    <script src="/worker.js"></script>
+</html>
