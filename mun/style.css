@@ -1,6 +1,6 @@
 @font-face {
     font-family: ComputerModern;
-    src: url(/ComputerModernSerif.ttf);
+    src: url(/mun/ComputerModernSerif.ttf);
 }
 * {
     font-family: ComputerModern;
@@ -144,8 +144,8 @@ input[type=number] {
     place-items: center;
 }
 .middleLine {
-    border: #555 solid 1px;
-    width: 0 !important;
+    background-color: #555;
+    width: 2px !important;
     height: 100%;
     padding: 0 !important;
 }
@@ -294,14 +294,14 @@ input {
     padding: 10px;
     margin-bottom: 20px;
 }
-input[type="text"] {
+input[type="text"], input[type="number"] {
     font-size: 100%;
     border-radius: 15px;
     text-align: center;
     padding: 3px;
     transition: all 200ms linear;
 }
-input[type="text"]:focus-visible {
+input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     border-radius: 5px;
 }
 #newModTopic {

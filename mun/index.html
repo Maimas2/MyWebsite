@@ -6,7 +6,7 @@
         <title>Model UN</title>
         <script src="/mun/lib/Sortable.js"></script>
         <script src="/mun/lib/jquery.js"></script>
-        <script src="/lib/jquery-sortable.js"></script>
+        <script src="/mun/lib/jquery-sortable.js"></script>
     </head>
     <body>
         <div id="topbar" class="outlineddiv">
@@ -46,7 +46,7 @@
                 </button>
             </div>
             <div id="logoContainer" class="outlineddiv">
-                <img src="/UN-logo.png" id="UNLogo">
+                <img src="/mun/UN-logo.png" id="UNLogo">
             </div>
         </div>
         <div id="bottomarea" style="display: none;">
@@ -185,6 +185,8 @@
                 <button onclick="firstAttendanceClick(this)">Ab</button>
                 <button onclick="secondAttendanceClick(this)">Pr</button>
                 <button onclick="thirdAttendanceClick(this)">Pr&V</button>
+                <br>
+                <div style="display:inline-block;width:50%;background-color: rgb(163, 163, 163);height:2px !important;"></div>
             </div>
             <div id="modMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="mod">
                 <div>
@@ -196,7 +198,7 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    Topic: <input style="text-align: left;" type="text" style="width:70%;" value="">
+                    Topic: <input style="text-align: left; width:70%;" type="text" value="">
                     <br>
                     Total duration: <input type="text" value="5:00" class="largeTextInput">
                     <br>
@@ -228,7 +230,7 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    Topic: <input style="text-align: left;" type="text" style="width:50%;" value="">
+                    Topic: <input style="text-align: left; width: 70%;" type="text" value="">
                     <br>
                     Duration: <input type="text" value="5:00" class="largeTextInput">
                 </div>
@@ -243,7 +245,7 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    Topic: <input type="text" value="" class="largeTextInput" style="width: 60%; text-align: left !important;">
+                    Topic: <input type="text" value="" class="largeTextInput" style="width: 70%; text-align: left !important;">
                     <br>
                     Delegate speaking time: <input type="text" value="0:15" class="largeTextInput">
                 </div>
