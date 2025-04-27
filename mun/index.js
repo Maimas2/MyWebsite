@@ -1,6 +1,7 @@
-const express = require('express');
-const app = express();
-const port = process.env.port || 3000;
+const express    = require("express");
+const fs         = require("fs");
+const app        = express();
+const port       = 3000;
 const bodyParser = require("body-parser");
 
 //const urlEncoded = bodyParser.urlencoded({extended: false}); Only for login type stuff ig????
@@ -9,7 +10,12 @@ var currentCountryList = {
     list: ["United States of America", "France", "China", "Russia", "United Kingdom"]
 }
 
-app.use(bodyParser.json());
+var savedSaveData = {
+
+}
+
+var jsonParse = bodyParser.json();
+app.use(express.json());
 
 var usableDirname = __dirname;
 
@@ -64,4 +70,56 @@ app.get("/getcountrylist", (req, res) => {
     res.json(currentCountryList);
 });
 
+app.post("/savesavedata", jsonParse, (req, res) => {
+    if(req.body.id in savedSaveData) {
+        savedSaveData[req.body.id] = JSON.stringify(req.body.data);
+
+        res.send(JSON.stringify({
+            success : true,
+            code    : 201,
+            message : "Save data successfully stored, overwriting a previous entry"
+        }));
+        return;
+    }
+    if(req.body.id == "DELETE_ALL_SAVES") {
+        savedSaveData = [];
+        return;
+    }
+    savedSaveData[req.body.id] = req.body.data;
+    res.send(JSON.stringify({
+        success : true,
+        code    : 201,
+        message : "Save data successfully stored"
+    }));
+});
+
+app.post("/getsavedata", jsonParse, (req, res) => {
+    if(req.body.id in savedSaveData) {
+        res.send(savedSaveData[req.body.id]);
+    } else {
+        res.send(JSON.stringify({
+            success : false,
+            code    : 404,
+            message : "Data not found"
+        }));
+    }
+});
+
 module.exports.app = app;
+
+module.exports.startUpFunction = function() {
+    if(fs.existsSync("./data/mun_save_data.txt")) {
+        var d = fs.readFileSync("./data/mun_save_data.txt", "utf-8");
+
+        savedSaveData = JSON.parse(d);
+    }
+}
+
+module.exports.shutDownFunction = function() {
+    console.log("Shutting down MUN...");
+
+    let d = JSON.stringify(savedSaveData);
+    fs.writeFileSync("./data/mun_save_data.txt", d, "utf-8", (error) => {
+        if(error) console.log(error);
+    });
+}
