@@ -174,6 +174,7 @@ input[type=number] {
     display: inline;
     justify-content: start;
     margin-bottom: 5px;
+    vertical-align: middle;
 }
 #newmotions > div {
     display: inline-block;
@@ -378,14 +379,17 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     margin: 10px;
     right: 0;
     top: 0;
-    width: 10%;
+    width: calc(10% - 20px);
     height: calc(100% - 20px);
     padding: 20px;
+    text-align: center;
+    line-height: 100%;
 }
 #UNLogo {
-    width: 100%;
-    aspect-ratio: 1;
-    margin-top: auto;
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+    margin: auto;
 }
 #timerControlsContainer {
     display: flex;
@@ -421,7 +425,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 #rollCallVotePopup {
     height: 60% !important;
     padding: 20px;
-    display: grid;
+    display: none;
 }
 #rollCallVoteResults {
     background-color: #ddd;
@@ -510,4 +514,23 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #allAbsentButton:active {
     background-color: red;
+}
+.entireLineHeight {
+    line-height: 100%;
+    vertical-align: middle;
+}
+#cloudStuffContainer {
+    position: absolute;
+    left: 75%;
+    top: 0;
+    width: 15%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+#cloudStuffInner {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-items: center;
 }

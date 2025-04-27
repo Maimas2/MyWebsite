@@ -45,6 +45,14 @@
                     Roll Call Vote
                 </button>
             </div>
+            <div id="cloudStuffContainer">
+                <div id="cloudStuffInner" class="outlineddiv">
+                    <div></div>
+                    <button id="saveToCloudButton">Save to Cloud</button>
+                    <button id="loadFromCloudButton">Load from Cloud</button>
+                    <div></div>
+                </div>
+            </div>
             <div id="logoContainer" class="outlineddiv">
                 <img src="/mun/UN-logo.png" id="UNLogo">
             </div>
@@ -151,9 +159,10 @@
                 Delegate speaking time: <input type="text" id="roundRobinDelegateDuration" value="0:20" class="largeTextInput">
             </div>
             <div id="rollCallVotePopup" class="bottomMarginChildren outlineddiv">
-                <div style="height:20%;">
+                <div>
                     <h1>Roll Call Vote</h1>
                     <p><span id="rollCallNumVotesNeededToWin"></span> yeas required to pass</p>
+                    <p>&#8595;</p>
                 </div>
                 <div id="rollCallVoteResults" style="height:40px;line-height: 40px;vertical-align: middle;">
                     <div id="yeaRollCallSegment"></div>
@@ -173,6 +182,20 @@
                         
                     </div>
                 </div>
+            </div>
+            <div id="saveToTheCloudPopup" class="bottomMarginChildren outlineddiv">
+                <h1>Save Current State</h1>
+                <br>
+                Give it an ID (don't forget it): <input type="text" id="saveToCloudName" maxlength="64" style="width: 50% !important;text-align: left;">
+                <br>
+                <button id="saveToCloudSubmit">Save to Cloud</button>
+            </div>
+            <div id="loadFromTheCloudPopup" class="bottomMarginChildren outlineddiv">
+                <h1>Load State From Cloud</h1>
+                <br>
+                ID: <input type="text" id="loadFromCloudName" maxlength="64" style="width: 50% !important;text-align: left;">
+                <br>
+                <button id="loadFromCloudSubmit">Load from Cloud</button>
             </div>
             <div id="exitButtons">
                 <button id="quitPopup" onclick="quitPopup()">Discard</button>
