@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 //const urlEncoded = bodyParser.urlencoded({extended: false}); Only for login type stuff ig????
 
 var currentCountryList = {
-    list: ["Botswana", "France", "Ireland", "United States of America", "Chad", "Holy See", "Thailand", "Togo", "Zambia"]
+    list: ["United States of America", "France", "China", "Russia", "United Kingdom"]
 }
 
 app.use(bodyParser.json());
