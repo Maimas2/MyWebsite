@@ -758,7 +758,7 @@ function bigPopup() {
 
 window.onload = function(_event) {
     $.ajax({
-        url: "mun/getcountrylist",
+        url: "/mun/getcountrylist",
         success: function(res) {
             setCurrentCountryList(res["list"]);
             recalcDelegates();
