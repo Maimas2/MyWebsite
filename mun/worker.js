@@ -956,6 +956,15 @@ window.onload = function(_event) {
         });
         quitPopup();
     });
+
+    $("#logoContainer").on("dblclick", function(_e) {
+        if(isPopupShown) return;
+        showPopup();
+        bigPopup();
+        $("#legalStuffEwww").css("display", "block").css("height", "60%");
+        $("#quitPopup").text("Close");
+        $("#exitPopup").css("display", "none");
+    });
 }
 
 var hasRollCallFinished = false;
