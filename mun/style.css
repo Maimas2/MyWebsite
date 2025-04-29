@@ -384,12 +384,14 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     padding: 20px;
     text-align: center;
     line-height: 100%;
+    display: flex;
 }
 #UNLogo {
     display: inline-block;
     vertical-align: middle;
-    height: 100%;
-    margin: auto;
+    width: 100%;
+    height: auto;
+    align-self: center;
 }
 #timerControlsContainer {
     display: flex;
@@ -533,4 +535,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     width: 100%;
     display: grid;
     place-items: center;
+}
+#legalStuffEwww {
+    padding: 30px;
 }

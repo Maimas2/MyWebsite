@@ -16,7 +16,35 @@ app.get("/", (req, res) => {
 });
 
 app.get("/shartell", (req, res) => {
-    res.send("Shartell hehe");
+    res.send("Shart hehe");
+});
+
+app.get("/lordprotector", (req, res) => {
+    res.send("All hail Lord Protector Cheney ✊");
+});
+
+app.get("/pesko", (req, res) => {
+    res.send("Pesto");
+});
+
+app.get("/virtue", (req, res) => {
+    res.send("Bro we only got to WWII 💀");
+});
+
+app.get("/basset", (req, res) => {
+    res.send("Bro we forgot to use sig figs 💀");
+});
+
+app.get("/collins", (req, res) => {
+    res.send("yoink");
+});
+
+app.get("/waz", (req, res) => {
+    res.send("Regardez mon prof, mec, je vais rater 💀");
+});
+
+app.get("/ben-stewart", (req, res) => {
+    res.redirect("https://en.wikipedia.org/wiki/Gay");
 });
 
 app.listen(port, () => {
