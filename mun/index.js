@@ -83,6 +83,11 @@ app.post("/savesavedata", jsonParse, (req, res) => {
     }
     if(req.body.id == "DELETE_ALL_SAVES") {
         savedSaveData = [];
+        res.send(JSON.stringify({
+            success : true,
+            code    : 201,
+            message : "All save data deleted"
+        }));
         return;
     }
     savedSaveData[req.body.id] = req.body.data;
