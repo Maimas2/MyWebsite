@@ -94,6 +94,12 @@ app.post("/savesavedata", jsonParse, (req, res) => {
 });
 
 app.post("/getsavedata", jsonParse, (req, res) => {
+    if(!("id" in req.body)) {
+        res.status(400).send({
+            success : false,
+            message : "Did not send `id`!"
+        });
+    }
     if(req.body.id in savedSaveData) {
         res.send(savedSaveData[req.body.id]);
     } else {
