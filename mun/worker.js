@@ -938,8 +938,9 @@ window.onload = function(_event) {
             return;
         }
         var d = {
-            id   : $("#saveToCloudName").val()
+            id   : $("#loadFromCloudName").val()
         };
+        console.log(d);
         $.ajax({
             type    : "POST",
             url     : "/mun/getsavedata",
