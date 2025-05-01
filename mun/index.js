@@ -70,6 +70,11 @@ app.get("/getcountrylist", (req, res) => {
     res.json(currentCountryList);
 });
 
+app.get("/me.png", (req, res) => {
+    res.type("image/png");
+    res.sendFile("./images/me.png", {root : __dirname});
+})
+
 app.post("/savesavedata", jsonParse, (req, res) => {
     if(req.body.id in savedSaveData) {
         savedSaveData[req.body.id] = JSON.stringify(req.body.data);

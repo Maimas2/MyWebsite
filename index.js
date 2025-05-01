@@ -11,9 +11,10 @@ process.on("SIGTERM", receivedKillSignal);
 process.on("SIGINT",  receivedKillSignal);
 
 app.use(vhost("mun.alex-seltzer.com", munApp));
+app.use(vhost("mun.localhost", munApp));
 
 app.get("/mun", (req, res) => {
-    res.redirect("mun.alex-seltzer.com");
+    res.redirect("https://mun.alex-seltzer.com");
 })
 
 app.get("/", (req, res) => {
@@ -50,6 +51,10 @@ app.get("/waz", (req, res) => {
 
 app.get("/ben-stewart", (req, res) => {
     res.redirect("https://en.wikipedia.org/wiki/Gay");
+});
+
+app.use(function(req, res, next) {
+    res.redirect("https://alex-seltzer.com/");
 });
 
 app.listen(port, () => {
