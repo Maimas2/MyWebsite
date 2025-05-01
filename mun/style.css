@@ -1,6 +1,6 @@
 @font-face {
     font-family: ComputerModern;
-    src: url(/mun/ComputerModernSerif.ttf);
+    src: url(/ComputerModernSerif.ttf);
 }
 * {
     font-family: ComputerModern;

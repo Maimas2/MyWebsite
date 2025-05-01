@@ -911,7 +911,7 @@ window.onload = function(_event) {
         };
         $.ajax({
             type    : "POST",
-            url     : "/mun/savesavedata",
+            url     : "/savesavedata",
             contentType: 'application/json',
             success : function(returned) {
                 createAlert(JSON.parse(returned).message);

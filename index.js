@@ -1,4 +1,5 @@
-const express = require('express');
+const express = require("express");
+const vhost   = require("vhost");
 
 const app = express();
 const port = process.env.port || 3000;
@@ -6,10 +7,14 @@ const port = process.env.port || 3000;
 var munFile = require('./mun/index');
 var munApp = munFile.app;
 
-app.use("/mun", munApp);
-
 process.on("SIGTERM", receivedKillSignal);
 process.on("SIGINT",  receivedKillSignal);
+
+app.use(vhost("mun.alex-seltzer.com", munApp));
+
+app.get("/mun", (req, res) => {
+    res.redirect("mun.alex-seltzer.com");
+})
 
 app.get("/", (req, res) => {
     res.sendFile("./index.html", {root: __dirname});
