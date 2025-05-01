@@ -10,6 +10,13 @@
 body {
     overflow: hidden;
     background-color: powderblue;
+    display: flex;
+    flex-direction: column;
+    border: 0;
+    height: 100vh;
+    max-height: 100vh;
+    padding: 0;
+    margin: 0;
 }
 p, button {
     font-size: 14pt;
@@ -52,16 +59,19 @@ input[type=number] {
     appearance: textfield;
 }
 #topbar {
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
     width: 100%;
-    height: max(20%, 150px);
+    min-height: 200px;
     border-radius: 0;
     z-index: 10;
 }
 #topbar, #passedMotionDetails {
     background-color: color-mix(in srgb, powderblue 20%, white 80%);
+}
+#topbar > div {
+    min-height: 150px !important;
 }
 #numberinfocontainer {
     position: absolute;
@@ -69,19 +79,16 @@ input[type=number] {
     width: 15%;
     height: 100%;
 }
-.bottomarea {
-    position: absolute;
-    top: max(20%, 150px);
-    height: calc(100% - max(20%, 100px));
+#bottomarea {
+    height: 100%;
     border: 1px #c0c0c0 solid;
     background-color: transparent;
+    overflow-y: scroll;
 }
 #leftbottomarea, #rightbottomarea {
-    position: absolute;
-    left: 0;
-    top: max(20%, 150px);
     width: 100%;
-    height: calc(100% - max(20%, 100px));
+    height: 100%;
+    border: 0;
     background-color: transparent;
 }
 #leftbottomarea {
@@ -91,13 +98,14 @@ input[type=number] {
 }
 #rightbottomarea {
     z-index: 5;
-    padding: 20px;
+    padding-left:  20px;
+    padding-right: 20px;
     display: flex;
     flex-direction: row;
     gap: 20px;
     width: 100%;
     transition: all 300ms linear;
-    opacity: 0;
+    padding: 20px;
 }
 #passedMotionCountryChooser, #passedMotionDetails {
     box-sizing: border-box;
@@ -108,11 +116,15 @@ input[type=number] {
 #passedMotionCountryChooser {
     width: 40%;
     overflow-y: scroll;
+    height: 100%;
+    max-height: 100%;
 }
 #passedMotionDetails {
     display: flex;
     flex-direction: row;
     gap: 20px;
+    height: 100%;
+    padding-bottom: 20px;
 }
 #passedMotionDetails > * {
     width: 100%;
@@ -188,9 +200,10 @@ input[type=number] {
 }
 #motiondisplays {
     width: 100%;
-    height: 170px;
+    height: 100%;
     padding: 15px;
-    transition: 300ms all linear;
+    border: 0;
+    overflow-y: scroll;
 }
 .innermotiondisplay {
     width: 100%;
@@ -373,6 +386,9 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 #alertContainer > * {
     margin: auto;
 }
+#alertContainer > p {
+    padding: 5px 10px 5px 10px;
+}
 #logoContainer {
     position: absolute;
     margin: 10px;
@@ -391,6 +407,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     width: 100%;
     height: auto;
     align-self: center;
+    border-radius: 10%;
 }
 #timerControlsContainer {
     display: flex;
@@ -406,9 +423,6 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #timerControlsContainer > *:hover {
     border-radius: 5px;
-}
-.startClear {
-    transition: 200ms opacity linear;
 }
 #commenceRollCallContainer {
     position: absolute;

@@ -397,7 +397,6 @@ function parsePassedMotionJSON(details) {
     $("#passedMotionName").text(details["fancyMotionTitle"]);
 
     $("#rightbottomarea").css("display", "");
-    setTimeout(function(_e) {$("#rightbottomarea").css("opacity", "1");}, 1);
 
     document.getElementById("exitCurrentMotionContainer").style.display = "block";
 
@@ -449,11 +448,8 @@ function parsePassedMotionJSON(details) {
         $("#chosenCountriesForTimer").css("display", "none");
     }
 
-    $("#motiondisplays").css("opacity", "0");
-    setTimeout(function(_e) {
-        $("#motiondisplays > *").remove();
-        $("#motiondisplays").css("opacity", "1");
-    }, 300);
+    $("#motiondisplays > *").remove();
+    $("#leftbottomarea").css("display", "none");
 
     refreshTimer();
     $(":focus").blur();
@@ -513,6 +509,10 @@ document.getElementById("exitPopup").onclick = function(_event) {
 };
 
 document.getElementById("takeAttendanceButton").onclick = function(_e) {
+    if(numDelegatesInCommittee == 0) {
+        createAlert("Add some delegates to the committee before you take attendance!");
+        return;
+    }
     if(!isPopupShown) {
         showPopup();
         bigPopup();
@@ -569,9 +569,14 @@ document.getElementById("delegateListSearch").oninput = refreshDelegateListSearc
 
 document.onkeydown = function(event) {
     if(document.getElementById("delegateListSearch") == document.activeElement) refreshDelegateListSearch();
-    else if(!isPopupShown && document.activeElement == document.body) {
+    else if(!isPopupShown && (document.activeElement == document.body)) {
         if(event.key == "m") document.getElementById("newMod").click();
         if(event.key == "e") document.getElementById("editdelegatelistbutton").click();
+        if(event.key == "i" && event.ctrlKey) {
+            $("#UNLogo").attr("src", "/me.png");
+            return false;
+        }
+        if(event.key == "Escape") $("#alertContainer").css("display", "none");
     } else if(isPopupShown) {
         if(event.key == "Enter") {
             $("#exitPopup").trigger("click");
@@ -671,10 +676,8 @@ function refreshTimer(e=true) {
 
 function endCurrentMotion() {
     stopTimer();
-    $("#rightbottomarea").css("opacity", "0");
-    setTimeout(function(_e) {
-        $("#rightbottomarea").css("display", "none");
-    }, 300);
+    $("#rightbottomarea").css("display", "none");
+    $("#leftbottomarea").css("display", "");
     document.getElementById("exitCurrentMotionContainer").style.display = "none";
 
     currentMotion = null;
@@ -961,7 +964,7 @@ window.onload = function(_event) {
         quitPopup();
     });
 
-    $("#logoContainer").on("dblclick", function(_e) {
+    $("#logoContainer").on("click", function(_e) {
         if(isPopupShown) return;
         showPopup();
         bigPopup();
