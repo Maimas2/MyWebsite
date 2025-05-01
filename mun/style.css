@@ -365,7 +365,6 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     left: 20%;
     top: 5%;
     width: 60%;
-    height: 10%;
     z-index: 1000;
     padding: 20px;
     padding-right: 50px;

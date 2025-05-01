@@ -460,7 +460,7 @@ function parsePassedMotionJSON(details) {
     isTimerHalted = false;
 }
 
-document.getElementById("newMod").onclick = function(_event) {
+$("#newMod").on("click", function(_event) {
     if(numDelegatesInCommittee == 0) {
         createAlert('You have not chosen any delegates to be in committee. Click "Edit List" to do so.');
         return;
@@ -472,7 +472,7 @@ document.getElementById("newMod").onclick = function(_event) {
     document.getElementById("newModPopupDelegateDuration").value = "1:00";
 
     document.getElementById("newModTopic").focus()
-}
+});
 
 document.getElementById("newSpeakersList").onclick = function(_event) {
     if(numDelegatesInCommittee == 0) {
@@ -757,13 +757,13 @@ function bigPopup() {
 }
 
 window.onload = function(_event) {
-    $.ajax({
+    $/* .ajax({
         url: "/mun/getcountrylist",
         success: function(res) {
             setCurrentCountryList(res["list"]);
             recalcDelegates();
         }
-    });
+    }); */
 
     getListOfCountries().forEach(function(v) {
         var cont = document.getElementById("attendanceButtonsPrefab").cloneNode(true);
@@ -832,6 +832,10 @@ window.onload = function(_event) {
         });
         
         numPossibleVoters = Object.keys(votingListThing).length;
+        if(numDelegatesInCommittee == 0) {
+            createAlert('You have not chosen any delegates to be in committee. Click "Edit List" then take attendance to take a roll call vote.');
+            return;
+        }
         if(numPossibleVoters == 0) {
             createAlert("Take attendance before taking a roll call vote");
             return;
@@ -965,6 +969,9 @@ window.onload = function(_event) {
         $("#quitPopup").text("Close");
         $("#exitPopup").css("display", "none");
     });
+
+    setCurrentCountryList([]);
+    recalcDelegates();
 }
 
 var hasRollCallFinished = false;
