@@ -759,9 +759,17 @@ function bigPopup() {
     $("#popupPage").css("height", "115%");
 }
 
+window.addEventListener("beforeunload", function (_e) {
+    return "Your current website state will not be automatically saved.";
+});
+window.addEventListener("onbeforeunload", function (_e) {
+    _e.preventDefault();
+    return "Your current website state will not be automatically saved.";
+});
+
 window.onload = function(_event) {
-    $/* .ajax({
-        url: "/mun/getcountrylist",
+    /* $.ajax({
+        url: "/getcountrylist",
         success: function(res) {
             setCurrentCountryList(res["list"]);
             recalcDelegates();

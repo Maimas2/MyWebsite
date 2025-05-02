@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="/lib/jquery.js"></script>
+    </head>
+    <body>
+        <div style="margin:auto">
+            <h1>Enter your code</h1>
+            <input type="password" id="in">
+            <button id="submit">Submit</button>
+            <h3>Response</h3>
+            <p id="res">[ None ]</p>
+        </div>
+    </body>
+    <script>
+        $("#submit").on("click", function(_e) {
+            var d = {
+                code : $("#in").val()
+            };
+            $.ajax({
+                type : "POST",
+                url: "/adminaccesspoint",
+                contentType: 'application/json',
+                data : JSON.stringify(d),
+                success: function(res) {
+                    $("#res").html(JSON.stringify(res, null, 2).replaceAll("\n", "<br>"));
+                }
+            });
+        })
+    </script>
+</html>
