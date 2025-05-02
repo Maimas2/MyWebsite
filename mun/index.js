@@ -19,6 +19,10 @@ app.use(express.json());
 
 var usableDirname = __dirname;
 
+var adminPasswords = {
+    // Loaded at runtime
+};
+
 //express.static.mime.define({"text/css": ["css"]});
 
 app.get('/', (req, res) => {
@@ -73,7 +77,22 @@ app.get("/getcountrylist", (req, res) => {
 app.get("/me.png", (req, res) => {
     res.type("image/png");
     res.sendFile("./images/me.png", {root : __dirname});
-})
+});
+
+app.get("/admin", (req, res) => {
+    res.sendFile("./admin.html", {root : __dirname});
+});
+
+app.post("/adminaccesspoint", jsonParse, (req, res) => {
+    if(req.body.code == adminPasswords.viewSaves) {
+        res.send(savedSaveData);
+    } else if(req.body.code == adminPasswords.resetSaves) {
+            savedSaveData = [];
+            res.send("All save data deleted");
+    } else {
+        res.send("Invalid");
+    }
+});
 
 app.post("/savesavedata", jsonParse, (req, res) => {
     if(req.body.id in savedSaveData) {
@@ -83,15 +102,6 @@ app.post("/savesavedata", jsonParse, (req, res) => {
             success : true,
             code    : 201,
             message : "Save data successfully stored, overwriting a previous entry"
-        }));
-        return;
-    }
-    if(req.body.id == "DELETE_ALL_SAVES") {
-        savedSaveData = [];
-        res.send(JSON.stringify({
-            success : true,
-            code    : 201,
-            message : "All save data deleted"
         }));
         return;
     }
@@ -128,6 +138,13 @@ module.exports.startUpFunction = function() {
         var d = fs.readFileSync("./data/mun_save_data.txt", "utf-8");
 
         savedSaveData = JSON.parse(d);
+    }
+    if(fs.existsSync("./mun/admin_passwords.json")) {
+        var d = fs.readFileSync("./mun/admin_passwords.json", "utf-8");
+
+        adminPasswords = JSON.parse(d);
+    } else {
+        console.log("Could not find MUN PW Log!!!");
     }
 }
 
