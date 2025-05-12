@@ -96,12 +96,12 @@ var testJson2 = JSON.parse(`{
     }
   }`);
 
-var extraCountries = new Array(
+var customDelegates = new Array(
     
 );
 
 function getListOfCountries() {
-    return basicListOfCountries.concat(extraCountries);
+    return basicListOfCountries.concat(customDelegates);
 }
 
 var listOfPresentCountries = [];
@@ -122,6 +122,9 @@ var canSortChosenCountries = true;
 
 var isTimerHalted = false;
 
+var hidingAlertInterval;
+var hidingPopupInterval;
+
 var votingListThing = {
 
 };
@@ -131,11 +134,16 @@ var rollCallNumYeas      = 0;
 var rollCallNumNays      = 0;
 var rollCallNumAbstains  = 0;
 
+var hasMadeNewDelegate = false;
+
+function getDelegatePresenseNodes() {
+    return $("#normalDelegateList > button").toArray().concat($("#customDelegateList > button").toArray());
+}
+
 function recalcDelegates() {
     numDelegatesInCommittee = 0;
-    document.getElementById("attendanceAlert").style.display = "none";
     listOfPresentCountries = [];
-    document.getElementById("innerDelegateList").childNodes.forEach((e) => {
+    getDelegatePresenseNodes().forEach((e) => {
         if(typeof e.getAttribute != "undefined") {
             var isc = e.getAttribute("data-isclicked") == "true";
             if(isc) {
@@ -148,12 +156,11 @@ function recalcDelegates() {
             }
         }
     })
-    document.getElementById("numberOfDelegates").textContent = numDelegatesInCommittee;
+    document.getElementById("numberOfDelegates").textContent = numDelegatesInCommittee + " Delegate" + (numDelegatesInCommittee == 1 ? "" : "s");
     document.getElementById("simpleMajorityLabel").textContent = `${Math.ceil((numDelegatesInCommittee+0.1)/2)}/${numDelegatesInCommittee}`;
     document.getElementById("twoThirdsLabel").textContent = `${Math.ceil(numDelegatesInCommittee*2/3)}/${numDelegatesInCommittee}`;
     if(numDelegatesInCommittee == 0) {
         document.getElementById("simpleMajorityLabel").textContent = "0/0";
-        document.getElementById("attendanceAlert").style.display = "block";
     }
 }
 
@@ -165,14 +172,19 @@ function showPopup() {
             }
         });
 
-        document.getElementById("popupPage").style.opacity = "1";
-        document.getElementById("popupPage").style.display = "block";
+        $("#popupPage").css("opacity", "0");
+        $("#popupPage").css("display", "block");
         $("#popupPage").css("top", "0");
         $("#popupPage").css("height", "100%");
         $("#quitPopup").text("Discard");
         $("#exitPopup").css("display", "inline");
+        $("#popupPage").css("user-select", "");
 
-        document.getElementById("quitPopup").style.display = "";
+        $("#popupPage").animate({
+            opacity : 1
+        }, 150);
+
+        $("#quitPopup").css("display", "");
 
         isPopupShown = true;
     }
@@ -199,7 +211,56 @@ function appendMotion(m) {
 
     m.appendTo("#motiondisplays");
 
+    var ph = m.css("height");
+    var pp = m.css("padding");
+    var pmt = m.css("margin-top");
+    var pmb = m.css("margin-bottom");
+
+    m.css("opacity", "0");
+
+    m.css("height", "0");
+    m.css("padding", "0");
+    m.css("margin-top", "0");
+    m.css("margin-bottom", "0");
+
+    m.animate({
+        opacity : 1,
+        height : ph,
+        padding : pp,
+        "margin-top" : pmt,
+        "margin-bottom" : pmb
+    }, 150);
+
     resortMotions();
+}
+
+function addAttendanceNodes() {
+    getListOfCountries().forEach(function(v) {
+        var cont = $("#attendanceButtonsPrefab").clone(true);
+        cont.children("p").get(0).textContent = v;
+        cont.attr("id", "attendanceNode" + v.replaceAll(" ", ""));
+        cont.children("button").get(0).click();
+
+        $("#attendanceListOfCountries").append(cont);
+    });
+}
+
+function refreshAttendanceNodes() {
+    let t = getAttendanceRecord();
+    $("#attendanceListOfCountries > *").remove();
+    addAttendanceNodes();
+    implementAttendanceList(t);
+}
+
+function implementAttendanceList(att) {
+    Object.keys(att).forEach((country) => {
+        var tan = $("#attendanceNode" + country.replaceAll(" ", ""));
+        if(att[country] == "Pr") {
+            tan.children("button").get(1).click();
+        } else if(att[country] == "Pr&V") {
+            tan.children("button").get(2).click();
+        }
+    });
 }
 
 function hidePopup() {
@@ -219,6 +280,10 @@ function hidePopup() {
             }
             if(stringToDuration($("#newModPopupDelegateDuration").val()) <= 0) {
                 createAlert("Duration can't be zero");
+                return;
+            }
+            if(Math.floor( stringToDuration($("#newModPopupDuration").val()) / stringToDuration($("#newModPopupDelegateDuration").val()) ) > numDelegatesInCommittee) {
+                createAlert("You don't have enough delegates in committee to make such a mod");
                 return;
             }
         } else if(document.getElementById("newUnmodPopup").style.display != "none") {
@@ -243,6 +308,10 @@ function hidePopup() {
                 createAlert("Duration can't be zero");
                 return;
             }
+            if($("#speakersListNumDelegates").val() > numDelegatesInCommittee) {
+                createAlert("You don't have enough delegates in committee to open such a speakers list");
+                return;
+            }
         } else if(document.getElementById("roundRobinPopup").style.display != "none") {
             if(isNaN($("#roundRobinDelegateDuration").val().replaceAll(":","").replaceAll(" "))) {
                 createAlert("Invalid duration");
@@ -253,26 +322,9 @@ function hidePopup() {
         }
 
         if(document.getElementById("editDelegateList").style.display != "none") {
+            refreshAttendanceNodes();
+            
             recalcDelegates();
-
-            let ddd = {
-                list: listOfPresentCountries
-            };
-            let d = JSON.stringify(ddd);
-            if(false) { // Ignore this
-                $.ajax({
-                    type: 'POST',
-                    url: 'mun/setcountrylist',
-                    data: d,
-                    contentType: 'application/json',
-                    success: function(response) {
-                        //console.log(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr, status, error);
-                    }
-                });
-            }
         } else if(document.getElementById("newModPopup").style.display != "none") {
             var toAdd = $("#modMotionPrefab").clone(true);
             var inputList = toAdd.find("input");
@@ -312,11 +364,35 @@ function quitPopup() {
     if(isPopupShown) {
         isPopupShown = false;
 
-        $("#popupPage").css("display", "none");
-        $("#popupPage > *").css("display", "none");
+        $("#popupPage").animate({
+            opacity : 0
+        }, 150, (_e) => {
+            $("#popupPage").css("display", "none");
+            $("#popupPage > *").css("display", "none");
+            $("#popupPage").css("user-select", "none");
+        });
 
         $(":focus").blur();
     }
+}
+
+function killMotionDisplayParent(el) {
+    var parentEl = $(el);
+
+    parentEl.css('overflow','hidden');
+    parentEl.animate({
+        height : 0,
+        opacity : 0,
+        "margin-top" : 0,
+        "margin-bottom" : 0,
+        padding: 0
+    }, 150, (_e) => {
+        parentEl.remove()
+    });
+}
+
+function killMotionDisplay(el) {
+    killMotionDisplayParent(el.parentNode.parentNode.parentNode);
 }
 
 function stringToDuration(st) {
@@ -396,9 +472,8 @@ function parsePassedMotionJSON(details) {
     }
     $("#passedMotionName").text(details["fancyMotionTitle"]);
 
-    $("#rightbottomarea").css("display", "");
-
-    document.getElementById("exitCurrentMotionContainer").style.display = "block";
+    $("#exitCurrentMotion").css("display", "block");
+    $("#newmotions").css("display", "none");
 
     $("#passedMotionTopic").text(details["motionTopic"]);
 
@@ -448,8 +523,23 @@ function parsePassedMotionJSON(details) {
         $("#chosenCountriesForTimer").css("display", "none");
     }
 
-    $("#motiondisplays > *").remove();
-    $("#leftbottomarea").css("display", "none");
+    $("#motiondisplays").children().toArray().forEach((el) => {
+        killMotionDisplayParent(el);
+    });
+    $("#leftbottomarea").animate({
+        opacity : 0
+    }, 150, function(_e) {
+        $("#leftbottomarea").css("display", "none");
+
+        $("#rightbottomarea").css("display", "");
+        $("#rightbottomarea").css("opacity", "0");
+
+        $("#rightbottomarea").animate({
+            opacity : 1
+        });
+    });
+    //$("#passedMotionDetails").css("display", "none");
+    //$("#leftbottomarea").css("display", "none");
 
     refreshTimer();
     $(":focus").blur();
@@ -458,7 +548,9 @@ function parsePassedMotionJSON(details) {
 
 $("#newMod").on("click", function(_event) {
     if(numDelegatesInCommittee == 0) {
-        createAlert('You have not chosen any delegates to be in committee. Click "Edit List" to do so.');
+        createAlert('You have not chosen any delegates to be in committee. Click "Edit List" to do so.', (_e) => {
+            $("#editdelegatelistbutton").click()
+        });
         return;
     }
     showPopup();
@@ -472,7 +564,9 @@ $("#newMod").on("click", function(_event) {
 
 document.getElementById("newSpeakersList").onclick = function(_event) {
     if(numDelegatesInCommittee == 0) {
-        createAlert('You have not chosen any delegates to be in committee. Click "Edit List" to do so.');
+        createAlert('You have not chosen any delegates to be in committee. Click "Edit List" to do so.', (_e) => {
+            $("#editdelegatelistbutton").click()
+        });
         return;
     }
     showPopup();
@@ -510,7 +604,9 @@ document.getElementById("exitPopup").onclick = function(_event) {
 
 document.getElementById("takeAttendanceButton").onclick = function(_e) {
     if(numDelegatesInCommittee == 0) {
-        createAlert("Add some delegates to the committee before you take attendance!");
+        createAlert("Add some delegates to the committee before you take attendance!", (_e) => {
+            $("#editdelegatelistbutton").click()
+        });
         return;
     }
     if(!isPopupShown) {
@@ -539,7 +635,9 @@ $("#newIntroduce").on("click", function(_e) {
 
 document.getElementById("newRoundRobin").onclick = function(_event) {
     if(numDelegatesInCommittee == 0) {
-        createAlert('You have not chosen any delegates to be in committee. Click "Edit List" to do so.');
+        createAlert('You have not chosen any delegates to be in committee. Click "Edit List" to do so.', (_e) => {
+            $("#editdelegatelistbutton").click()
+        });
         return;
     }
     showPopup();
@@ -553,7 +651,7 @@ document.getElementById("newRoundRobin").onclick = function(_event) {
 function refreshDelegateListSearch(_e_ = null) {
     setTimeout(() => {
         var t = document.getElementById("delegateListSearch").value.toLowerCase();
-        document.getElementById("innerDelegateList").childNodes.forEach((e) => {
+        getDelegatePresenseNodes().forEach((e) => {
             if(typeof e.style != "undefined") {
                 if(e.textContent.toLowerCase().includes(t)) {
                     e.style.display = "";
@@ -599,9 +697,21 @@ function changeClickedEventResponder(_event) {
     }
 }
 
-function createAlert(message) {
+function createAlert(message, otherOptionFunction=null) {
     $("#alertContainer").css("display", "flex");
+    $("#alertContainer").css("opacity", 0);
+    $("#alertContainer").animate({
+        opacity: 1
+    }, 150);
     $("#alertText").text(message);
+
+    if(otherOptionFunction == null) {
+        $("#alertOtherOption").css("display", "none");
+    } else {
+        $("#alertOtherOption").css("display", "block");
+        $("#alertOtherOption").off("click");
+        $("#alertOtherOption").on("click", otherOptionFunction);
+    }
 }
 
 function canStartTimer() {
@@ -678,7 +788,9 @@ function endCurrentMotion() {
     stopTimer();
     $("#rightbottomarea").css("display", "none");
     $("#leftbottomarea").css("display", "");
-    document.getElementById("exitCurrentMotionContainer").style.display = "none";
+
+    $("#exitCurrentMotion").css("display", "none");
+    $("#newmotions").css("display", "block");
 
     currentMotion = null;
 
@@ -690,7 +802,9 @@ function endCurrentMotion() {
 }
 
 function setCurrentCountryList(newList) {
-    $("#innerDelegateList > *").remove();
+    getDelegatePresenseNodes().forEach((el) => {
+        $(el).remove();
+    })
     getListOfCountries().forEach(function(v) {
         var cb = document.createElement("button");
         cb.classList.add("countryListOne");
@@ -698,7 +812,7 @@ function setCurrentCountryList(newList) {
         cb.textContent = v;
         cb.onclick = changeClickedEventResponder;
         
-        $("#innerDelegateList").append(cb);
+        $("#normalDelegateList").append(cb);
 
         if(newList.includes(v)) {
             cb.click();
@@ -759,32 +873,22 @@ function bigPopup() {
     $("#popupPage").css("height", "115%");
 }
 
-window.addEventListener("beforeunload", function (_e) {
+window.addEventListener("beforeunload", function (e) {
+    e.preventDefault();
+    e.returnValue = "Your current website state will not be automatically saved.";
     return "Your current website state will not be automatically saved.";
 });
-window.addEventListener("onbeforeunload", function (_e) {
-    _e.preventDefault();
+window.addEventListener("onbeforeunload", function (e) {
+    e.preventDefault();
+    e.returnValue = "Your current website state will not be automatically saved.";
     return "Your current website state will not be automatically saved.";
 });
 
 window.onload = function(_event) {
-    /* $.ajax({
-        url: "/getcountrylist",
-        success: function(res) {
-            setCurrentCountryList(res["list"]);
-            recalcDelegates();
-        }
-    }); */
+    $("#committeeName").val("");
+    $("#newDelegateInput").val("");
 
-    getListOfCountries().forEach(function(v) {
-        var cont = document.getElementById("attendanceButtonsPrefab").cloneNode(true);
-        cont.childNodes[1].textContent = v;
-        cont.id = "attendanceNode" + v.replaceAll(" ", "");
-        cont.childNodes[3].click();
-
-        document.getElementById("attendanceListOfCountries").appendChild(cont);
-        //document.getElementById("attendancegetListOfCountries()").appendChild(document.createElement("br"));
-    });
+    addAttendanceNodes();
 
     document.getElementById("rightbottomarea").style.display = "none";
 
@@ -844,7 +948,16 @@ window.onload = function(_event) {
         
         numPossibleVoters = Object.keys(votingListThing).length;
         if(numDelegatesInCommittee == 0) {
-            createAlert('You have not chosen any delegates to be in committee. Click "Edit List" then take attendance to take a roll call vote.');
+            createAlert('You have not chosen any delegates to be in committee. Click "Edit List" then take attendance to take a roll call vote.',
+            (e) => {
+                $("#editdelegatelistbutton").click()
+            });
+            return;
+        } else if(numPossibleVoters == 0) {
+            createAlert('You have not taken attendance. Click "Attendance" before you take a roll call vote.',
+            (e) => {
+                $("#takeAttendanceButton").click()
+            });
             return;
         }
         if(numPossibleVoters == 0) {
@@ -981,9 +1094,79 @@ window.onload = function(_event) {
         $("#exitPopup").css("display", "none");
     });
 
+    $("#newDelegateSubmit").on("click", function(_e) {
+        if($("#newDelegateInput").val() == "") return;
+
+        customDelegates.push($("#newDelegateInput").val());
+
+        var cb = $("<button>");
+        cb.addClass("countryListOne");
+        cb.attr("data-isclicked", "false");
+        cb.text($("#newDelegateInput").val());
+        cb.on("click", changeClickedEventResponder);
+        
+        $("#customDelegateList").append(cb);
+
+        $("#newDelegateInput").val("");
+
+        hasMadeNewDelegate = true;
+    });
+
+    $("#impromptuTimerButton").on("click", function(_e) {
+        if(isPopupShown) return;
+        showPopup();
+        bigPopup();
+        $("#impromptuTimer").css("display", "block").css("height", "60%");
+        $("#exitPopup").css("display", "none");
+        $("#quitPopup").text("Close");
+    });
+    $("#impromptuTimerStartStop").on("click", function(_e) {
+        if(isImpromptuTimerGoing) {
+            isImpromptuTimerGoing = false;
+            $("#impromptuTimerStartStop").text("Start");
+        } else {
+            isImpromptuTimerGoing = true;
+            $("#impromptuTimerStartStop").text("Pause");
+        }
+    });
+    $("#impromptuTimerLabel").on("focus", function(_e) {
+        isImpromptuTimerGoing = false;
+        $("#impromptuTimerStartStop").text("Start");
+    });
+    $("#impromptuTimerLabel").on("blur", function(_e) {
+        if(isNaN($("#impromptuTimerLabel").val().replaceAll(":",""))) {
+            $("#impromptuTimerLabel").val("5:00");
+        }
+        impromptuTime = stringToDuration($("#impromptuTimerLabel").val());
+        originalImpromptuTime = impromptuTime;
+    });
+    $("#impromptuTimerReset").on("click", function(_e) {
+        impromptuTime = originalImpromptuTime;
+        isImpromptuTimerGoing = false;
+        $("#impromptuTimerLabel").val(durationToString(impromptuTime));
+    });
+    setInterval(function(_e) {
+        if(document.activeElement == document.getElementById("impromptuTimerLabel")) return;
+        if(isImpromptuTimerGoing) {
+            impromptuTime--;
+            if(impromptuTime <= 0) {
+                impromptuTime = 0;
+                isImpromptuTimerGoing = false;
+                $("#impromptuTimerStartStop").text("Start");
+            }
+            $("#impromptuTimerLabel").val(durationToString(impromptuTime));
+        }
+    }, 1000);
+
+    $("#impromptuTimerLabel").val("5:00");
+
     setCurrentCountryList([]);
     recalcDelegates();
 }
+
+var isImpromptuTimerGoing = false;
+var impromptuTime         = 300;
+var originalImpromptuTime = 300;
 
 var hasRollCallFinished = false;
 
@@ -1094,8 +1277,29 @@ function durationToString(n) {
     return Math.floor(n/60) + ":" + (n%60 < 10 ? "0" : "") + (n%60);
 }
 
+function getAttendanceRecord() {
+    var toReturn = {};
+    listOfPresentCountries.forEach((el) => {
+        var tel = document.getElementById("attendanceNode" + el.replaceAll(" ", "")).getElementsByTagName("button");
+        var state = "";
+        if(tel[0].getAttribute("data-clicked") == "true") {
+            state = "A";
+        } else if(tel[1].getAttribute("data-clicked") == "true") {
+            state = "Pr";
+        } else {
+            state = "Pr&V";
+        }
+        toReturn[el] = state;
+    });
+    return toReturn;
+}
+
 function getStateJSON() {
     var toReturn = {
+        committeeName : $("#committeeName").val(),
+
+        customDelegates : customDelegates,
+
         attendance: {
             // Ex. "United States" : "PV"
         },
@@ -1119,18 +1323,7 @@ function getStateJSON() {
         }
     };
 
-    listOfPresentCountries.forEach((el) => {
-        var tel = document.getElementById("attendanceNode" + el.replaceAll(" ", "")).getElementsByTagName("button");
-        var state = "";
-        if(tel[0].getAttribute("data-clicked") == "true") {
-            state = "A";
-        } else if(tel[1].getAttribute("data-clicked") == "true") {
-            state = "Pr";
-        } else {
-            state = "Pr&V";
-        }
-        toReturn["attendance"][el] = state;
-    });
+    toReturn.attendance = getAttendanceRecord();
 
     $("#motiondisplays").children().each(function(e) {
         if(this.nodeName != "DIV") return;
@@ -1207,14 +1400,11 @@ function implementStateJSON(newState) {
     $("#allAbsentButton").click();
     recalcDelegates();
 
-    Object.keys(newState.attendance).forEach((country) => {
-        var tan = $("#attendanceNode" + country.replaceAll(" ", ""));
-        if(newState.attendance[country] == "Pr") {
-            tan.children("button").get(1).click();
-        } else if(newState.attendance[country] == "Pr&V") {
-            tan.children("button").get(2).click();
-        }
-    });
+    customDelegates = newState.customDelegates;
+
+    $("#committeeName").val(newState.committeeName);
+
+    implementAttendanceList(newState.attendance);
 
     if(!newState.isThereACurrentMotion) {
         for(var i = 0; i < newState.proposedMotions.length; i++) {
@@ -1242,7 +1432,6 @@ function implementStateJSON(newState) {
 
                 appendMotion(toAdd);
             } else if(cm.type == "speakersList") {
-                console.log(cm);
                 var toAdd = $("#speakersListMotionPrefab").clone(true);
                 var inputList = toAdd.find("input");
                 inputList[0].value = cm.numberOfSpeakers;
