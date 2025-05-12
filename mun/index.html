@@ -9,13 +9,16 @@
         <script src="/lib/jquery-sortable.js"></script>
     </head>
     <body>
+        <div id="committeeNameContainer">
+            <input id="committeeName" type="text" placeholder="Committee name..."></input>
+        </div>
         <div id="topbar" class="outlineddiv">
             <div id="peopleeditcontainer">
                 <div id="peopleedit" class="outlineddiv">
                     <div id="leftDelegateBox">
-                        <p><span id="numberOfDelegates">0</span> Delegates</p>
+                        <p><span id="numberOfDelegates">0 Delegates</span></p>
                         <button id="editdelegatelistbutton">Edit List</button>
-                        <button id="takeAttendanceButton">Attendance</button>
+                        <button id="takeAttendanceButton">Take Attendance</button>
                     </div>
                     <div class="middleLine"></div>
                     <div id="rightDelegateBox">
@@ -24,38 +27,26 @@
                     </div>
                 </div>
             </div>
-            <div id="newmotioncontainer">
-                <div id="newmotions" class="outlineddiv" style="overflow-y:scroll;">
-                    <h2>New Motion</h2><br>
-                    <!--<button id="setAgenda">Set Agenda</button>-->
-                    <div id="newSpeakersList" class="outlineddiv">Speakers List</div>
-                    <div id="newMod" class="outlineddiv">Moderated Caucus</div>
-                    <div id="newUnmod" class="outlineddiv">Unmoderated Caucus</div>
-                    <div id="newRoundRobin" class="outlineddiv">Round Robin</div>
-                    <div id="newIntroduce" class="outlineddiv">Introduce Papers</div>
-                </div>
+            <div id="newmotions" class="outlineddiv" style="overflow-y:scroll;">
+                <h1>New Motion</h1><br>
+                <!--<button id="setAgenda">Set Agenda</button>-->
+                <div id="newSpeakersList" class="outlineddiv">Speakers List</div>
+                <div id="newMod" class="outlineddiv">Moderated Caucus</div>
+                <div id="newUnmod" class="outlineddiv">Unmoderated Caucus</div>
+                <div id="newRoundRobin" class="outlineddiv">Round Robin</div>
+                <div id="newIntroduce" class="outlineddiv">Introduce Papers</div>
             </div>
-            <div id="exitCurrentMotionContainer" style="display: none;">
-                <div id="exitCurrentMotion" class="outlineddiv" style="vertical-align: middle;">
-                    <button style="width: 100%;height:100%;border-radius: 15px;" onclick="endCurrentMotion()">End Current Motion</button>
-                </div>
+            <div id="exitCurrentMotion" class="outlineddiv" style="vertical-align: middle;display:none;">
+                <button style="width: 100%;height:100%;border-radius: 15px;" onclick="endCurrentMotion()">End Current Motion</button>
             </div>
-            <div id="commenceRollCallContainer">
-                <button id="commenceRollCall" class="outlineddiv">
-                    Roll Call Vote
-                </button>
+            
+            <div id="cloudStuffInner" class="outlineddiv">
+                <div></div>
+                <button id="saveToCloudButton">Save to Cloud</button>
+                <button id="loadFromCloudButton">Load from Cloud</button>
+                <button id="logoContainer" class="outlineddiv">Notes</button>
+                <div></div>
             </div>
-            <div id="cloudStuffContainer">
-                <div id="cloudStuffInner" class="outlineddiv">
-                    <div></div>
-                    <button id="saveToCloudButton">Save to Cloud</button>
-                    <button id="loadFromCloudButton">Load from Cloud</button>
-                    <div></div>
-                </div>
-            </div>
-            <button id="logoContainer" class="outlineddiv">
-                <img src="/UN-logo.png" id="UNLogo">
-            </button>
         </div>
         <div id="bottomarea" style="display: none;">
             <div id="leftbottomarea" class="bottomarea">
@@ -98,8 +89,15 @@
         <div id="popupPage">
             <div id="editDelegateList" class="outlineddiv">
                 <input type="text" id="delegateListSearch" spellcheck="false" placeholder="Search for country...">
-                <div id="innerDelegateList">
-
+                <div id="normalDelegateList">
+                    <h2>Normal UN Delegates</h2>
+                </div>
+                <div id="customDelegateList">
+                    <h2>Custom UN Delegates</h2>
+                </div>
+                <div id="newDelegate" style="display: flex;width:100%;">
+                    <input type="text" id="newDelegateInput" maxlength="100" placeholder="New delegate name..." style="width:80%;margin:10px;">
+                    <button id="newDelegateSubmit" style="width:20%;margin:10px;">New Delegate</button>
                 </div>
             </div>
             <div id="attendanceList" class="outlineddiv">
@@ -117,17 +115,17 @@
                         el.childNodes[5].click();
                     }
                 });
-            ">All present</button>
+                " id="allPresentButton">All present</button>
                 <button onmousedown="
                 document.getElementById('attendanceListOfCountries').childNodes.forEach((el) => {
                     if(typeof el.childNodes['3'] != 'undefined') {
                         el.childNodes[7].click();
                     }
                 });
-            ">All present and voting</button>
+                " id="allPrVButton">All present and voting</button>
                 <br><br>
                 <div id="attendanceListOfCountries">
-                    <p id="attendanceAlert">No delegates added yet! Add them by clicking "Edit List."</p>
+
                 </div>
             </div>
             <div id="newModPopup" class="bottomMarginChildren outlineddiv">
@@ -200,11 +198,19 @@
             <div id="legalStuffEwww" class="bottomMarginChildren outlineddiv">
                 <h1>Notes</h1>
                 <br>
-                <p>I made this website for my high school's Capstone project. I specifically made it for my school's club. It's intended to be used as a tool during a conference, not to run the entire thing. That's why there are some features missing, for example the threadbare system to present papers.</p>
+                <p>I made this website for my high school's Capstone project. It was specifically made for use in my school's club. I intended it to be used as a tool during a conference, not to run every little bit of it. That's why there are some features missing, like a system to present papers.</p>
                 <br>
                 <p>This website's source code is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU GPLv3 License</a>. The source code is hosted <a href="https://github.com/Maimas2/MyWebsite/tree/master/mun">here</a>.</p>
                 <br>
-                <p>This website uses jQuery, <a href="https://github.com/SortableJS/Sortable">SortableJS</a> for the sortable lists, and <a href="https://github.com/SortableJS/jquery-sortablejs">jQuery-Sortable</a> for jQuery bindings.</p>
+                <p>This website uses <a href="https://jquery.com/">jQuery</a>; <a href="https://github.com/SortableJS/Sortable">SortableJS</a> for the sortable lists; and <a href="https://github.com/SortableJS/jquery-sortablejs">jQuery-Sortable</a> for jQuery bindings.</p>
+            </div>
+            <div id="impromptuTimer" class="bottomMarginChildren outlineddiv">
+                <h1>Timer</h1>
+                <input type="text" value="1:00" id="impromptuTimerLabel"></input>
+                <div id="impromptuTimerControls">
+                    <button id="impromptuTimerStartStop">Start</button>
+                    <button id="impromptuTimerReset">Reset</button>
+                </div>
             </div>
             <div id="exitButtons">
                 <button id="quitPopup" onclick="quitPopup()">Discard</button>
@@ -225,7 +231,7 @@
                     <h1 style="margin-right: 20px;display:inline;">Moderated Caucus</h1>
                     <div>
                         <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
-                        <button onclick="this.parentNode.parentNode.parentNode.remove()" style="margin-right: 20px;">Motion Failed</button>
+                        <button onclick="killMotionDisplay(this);" style="margin-right: 20px;">Motion Failed</button>
                     </div>
                 </div>
                 <div class="middleLine"></div>
@@ -242,7 +248,7 @@
                     <h1 style="margin-right: 20px;display:inline;">Open the Speakers List</h1>
                     <div>
                         <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
-                        <button onclick="this.parentNode.parentNode.parentNode.remove()" style="margin-right: 20px;">Motion Failed</button>
+                        <button onclick="killMotionDisplay(this);" style="margin-right: 20px;">Motion Failed</button>
                     </div>
                 </div>
                 <div class="middleLine"></div>
@@ -257,7 +263,7 @@
                     <h1 style="display:inline;margin-right: 20px;">Unmoderated Caucus</h1>
                     <div>
                         <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
-                        <button onclick="this.parentNode.parentNode.parentNode.remove()" style="margin-right: 20px;">Motion Failed</button>
+                        <button onclick="killMotionDisplay(this);" style="margin-right: 20px;">Motion Failed</button>
                     </div>
                 </div>
                 <div class="middleLine"></div>
@@ -272,7 +278,7 @@
                     <h1 style="margin-right: 20px;display:inline;">Round Robin</h1>
                     <div>
                         <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
-                        <button onclick="this.parentNode.parentNode.parentNode.remove()" style="margin-right: 20px;">Motion Failed</button>
+                        <button onclick="killMotionDisplay(this);" style="margin-right: 20px;">Motion Failed</button>
                     </div>
                 </div>
                 <div class="middleLine"></div>
@@ -287,7 +293,7 @@
                     <h1 style="margin-right: 20px;display:inline;">Present Papers</h1>
                     <div>
                         <button onclick="parsePassedMotionJSON(introducePapersJSONConfig);" style="margin-right: 20px;">Motion Passed</button>
-                        <button onclick="this.parentNode.parentNode.parentNode.remove();">Motion Failed</button>
+                        <button onclick="killMotionDisplay(this);">Motion Failed</button>
                     </div>
                 </div>
                 <div class="middleLine"></div>
@@ -296,11 +302,22 @@
                 </div>
             </div>
         </div>
-        <div id="alertContainer" class="outlineddiv" onclick="this.style.display = 'none';">
+        <div id="alertContainer" class="outlineddiv" onclick="clearInterval(hidingAlertInterval);$(this).animate({opacity: 0}, 150);hidingAlertInterval=setInterval(((_e) => {this.style.display = 'none';clearInterval(hidingAlertInterval);}), 150)">
             <p id="alertText" style="width: 100%;text-align: center;">This is really really bad</p>
             <div>
-                <button style="margin: auto;" onclick="this.parentNode.parentNode.style.display = 'none';">Dismiss</button>
+                <button style="margin: auto;" onclick="this.parentNode.parentNode.click();">Dismiss</button>
             </div>
+            <button id="alertOtherOption" style="white-space:nowrap;">
+                Do that
+            </button>
+        </div>
+        <div id="floatBottomRight">
+            <button id="commenceRollCall" class="outlineddiv">
+                Roll Call Vote
+            </button>
+            <button id="impromptuTimerButton">
+                Timer
+            </button>
         </div>
         <div id="hiddenChosenCountries" style="display: none !important;">
             
