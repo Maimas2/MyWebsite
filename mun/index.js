@@ -111,6 +111,7 @@ app.post("/savesavedata", jsonParse, (req, res) => {
         code    : 201,
         message : "Save data successfully stored"
     }));
+    console.log(savedSaveData);
 });
 
 app.post("/getsavedata", jsonParse, (req, res) => {
