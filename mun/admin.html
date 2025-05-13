@@ -23,6 +23,7 @@
                 contentType: 'application/json',
                 data : JSON.stringify(d),
                 success: function(res) {
+                    console.log(res);
                     $("#res").html(JSON.stringify(res, null, 2).replaceAll("\n", "<br>"));
                 }
             });

@@ -1394,6 +1394,7 @@ function getStateJSON() {
 
 function implementStateJSON(newState) {
     console.log(newState);
+    if("success" in newState && !newState.success) return;
     $("#motiondisplays > *").remove();
     if(isPopupShown) quitPopup();
 
