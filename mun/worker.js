@@ -1035,7 +1035,7 @@ window.onload = function(_event) {
         };
         $.ajax({
             type    : "POST",
-            url     : "/savesavedata",
+            url     : "https://mun.alex-seltzer.com/savesavedata",
             contentType: 'application/json',
             success : function(returned) {
                 createAlert(JSON.parse(returned).message);
@@ -1071,7 +1071,7 @@ window.onload = function(_event) {
         console.log(d);
         $.ajax({
             type    : "POST",
-            url     : "/mun/getsavedata",
+            url     : "https://mun.alex-seltzer.com/mun/getsavedata",
             contentType: 'application/json',
             success : function(returned) {
                 implementStateJSON(returned);
@@ -1393,6 +1393,7 @@ function getStateJSON() {
 }
 
 function implementStateJSON(newState) {
+    console.log(newState);
     $("#motiondisplays > *").remove();
     if(isPopupShown) quitPopup();
 
