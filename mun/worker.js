@@ -671,7 +671,7 @@ document.onkeydown = function(event) {
         if(event.key == "m") document.getElementById("newMod").click();
         if(event.key == "e") document.getElementById("editdelegatelistbutton").click();
         if(event.key == "i" && event.ctrlKey) {
-            $("#UNLogo").attr("src", "/me.png");
+            $("body").css("background-image", "url(https://mun.alex-seltzer.com/me.png)");
             return false;
         }
         if(event.key == "Escape") $("#alertContainer").css("display", "none");
