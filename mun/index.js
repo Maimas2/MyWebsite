@@ -96,7 +96,7 @@ app.post("/adminaccesspoint", jsonParse, (req, res) => {
 
 app.post("/savesavedata", jsonParse, (req, res) => {
     if(req.body.id in savedSaveData) {
-        savedSaveData[req.body.id] = JSON.stringify(req.body.data);
+        savedSaveData[req.body.id] = req.body.data;
 
         res.send(JSON.stringify({
             success : true,
