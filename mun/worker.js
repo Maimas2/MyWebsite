@@ -1035,7 +1035,7 @@ window.onload = function(_event) {
         };
         $.ajax({
             type    : "POST",
-            url     : "https://mun.alex-seltzer.com/savesavedata",
+            url     : "/savesavedata",
             contentType: 'application/json',
             success : function(returned) {
                 createAlert(JSON.parse(returned).message);
@@ -1071,13 +1071,13 @@ window.onload = function(_event) {
         console.log(d);
         $.ajax({
             type    : "POST",
-            url     : "https://mun.alex-seltzer.com/mun/getsavedata",
+            url     : "/getsavedata",
             contentType: 'application/json',
             success : function(returned) {
                 implementStateJSON(returned);
             },
             error   : function(returned) {
-                createAlert(JSON.parse(returned));
+                createAlert(returned);
                 console.log(returned);
             },
             data    : JSON.stringify(d)
