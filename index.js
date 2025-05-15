@@ -53,6 +53,18 @@ app.get("/ben-stewart", (req, res) => {
     res.redirect("https://en.wikipedia.org/wiki/Gay");
 });
 
+app.get("/colleen-strum", (req, res) => {
+    res.redirect("https://en.wikipedia.org/wiki/Bisexuality");
+});
+
+app.get("/zaya-haglund", (req, res) => {
+    res.redirect("https://en.wikipedia.org/wiki/Advanced_Placement_exams#:~:text=1: No recommendation");
+});
+
+app.get("/sydney-hurrell", (req, res) => {
+    res.redirect("https://en.wiktionary.org/wiki/soulless");
+});
+
 app.use(function(req, res, next) {
     res.redirect("https://alex-seltzer.com/");
 });
