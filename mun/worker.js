@@ -670,7 +670,7 @@ document.onkeydown = function(event) {
     else if(!isPopupShown && (document.activeElement == document.body)) {
         if(event.key == "m") document.getElementById("newMod").click();
         if(event.key == "e") document.getElementById("editdelegatelistbutton").click();
-        if(event.key == "i" && event.ctrlKey) {
+        if(event.key == "c" && event.ctrlKey) {
             $("body").css("background-image", "url(https://mun.alex-seltzer.com/me.png)");
             return false;
         }
@@ -804,7 +804,8 @@ function endCurrentMotion() {
 function setCurrentCountryList(newList) {
     getDelegatePresenseNodes().forEach((el) => {
         $(el).remove();
-    })
+    });
+    $("#customDelegateList > button").remove();
     getListOfCountries().forEach(function(v) {
         var cb = document.createElement("button");
         cb.classList.add("countryListOne");
@@ -812,12 +813,21 @@ function setCurrentCountryList(newList) {
         cb.textContent = v;
         cb.onclick = changeClickedEventResponder;
         
-        $("#normalDelegateList").append(cb);
+
+        if(basicListOfCountries.includes(v)) {
+            $("#normalDelegateList").append(cb);
+        } else {
+            $("#customDelegateList").append(cb);
+        }
 
         if(newList.includes(v)) {
             cb.click();
         }
     });
+}
+
+function setCustomDelegates(newCustomDelegates) {
+    customDelegates = newCustomDelegates;
 }
 
 function refreshModCountryList() {
@@ -1394,19 +1404,23 @@ function getStateJSON() {
 
 function implementStateJSON(newState) {
     console.log(newState);
-    if("success" in newState && !newState.success) return;
+    if("success" in newState && !newState.success) {
+        createAlert("Request unsuccessful");
+        return;
+    }
     $("#motiondisplays > *").remove();
     if(isPopupShown) quitPopup();
+
+    setCustomDelegates(newState.customDelegates);
+
+    refreshAttendanceNodes();
+    implementAttendanceList(newState.attendance);
 
     setCurrentCountryList(Object.keys(newState.attendance));
     $("#allAbsentButton").click();
     recalcDelegates();
 
-    customDelegates = newState.customDelegates;
-
     $("#committeeName").val(newState.committeeName);
-
-    implementAttendanceList(newState.attendance);
 
     if(!newState.isThereACurrentMotion) {
         for(var i = 0; i < newState.proposedMotions.length; i++) {

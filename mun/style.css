@@ -146,9 +146,6 @@ input[type=number] {
     padding-left: 10px;
     padding-right: 10px;
 }
-#peopleedit > *:not(.middleLine) {
-    
-}
 #leftDelegateBox {
     height: 100%;
     text-align: center;
@@ -397,7 +394,6 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #timerControlsContainer {
     display: flex;
-    height: 150px;
 }
 #timerControlsContainer > * {
     width: 100%;
@@ -533,6 +529,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 #floatBottomRight > * {
     padding: 10px;
     margin: 10px;
+    box-shadow: 0px 0px 7px #777;
 }
 #committeeNameContainer {
     text-align: center;
