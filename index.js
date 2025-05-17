@@ -53,7 +53,7 @@ app.get("/ben-stewart", (req, res) => {
     res.redirect("https://en.wikipedia.org/wiki/Gay");
 });
 
-app.get("/colleen-strum", (req, res) => {
+app.get("/colleen-sturm", (req, res) => {
     res.redirect("https://en.wikipedia.org/wiki/Bisexuality");
 });
 
