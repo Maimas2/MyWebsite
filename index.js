@@ -7,11 +7,20 @@ const port = process.env.port || 3000;
 var munFile = require('./mun/index');
 var munApp = munFile.app;
 
+var scibowlFile = require('./scibowlonline/index');
+var scibowlApp = scibowlFile.app;
+
+var namesFile = require("./names");
+app.use(namesFile.app);
+
 process.on("SIGTERM", receivedKillSignal);
 process.on("SIGINT",  receivedKillSignal);
 
 app.use(vhost("mun.alex-seltzer.com", munApp));
 app.use(vhost("mun.localhost", munApp));
+
+app.use(vhost("scibowl.alex-seltzer.com", scibowlApp));
+app.use(vhost("scibowl.localhost", scibowlApp));
 
 app.get("/mun", (req, res) => {
     res.redirect("https://mun.alex-seltzer.com");
@@ -21,63 +30,30 @@ app.get("/", (req, res) => {
     res.sendFile("./index.html", {root: __dirname});
 });
 
-app.get("/shartell", (req, res) => {
-    res.send("Shart hehe");
-});
-
-app.get("/lordprotector", (req, res) => {
-    res.send("All hail Lord Protector Cheney ✊");
-});
-
-app.get("/pesko", (req, res) => {
-    res.send("Pesto");
-});
-
-app.get("/virtue", (req, res) => {
-    res.send("Bro we only got to WWII 💀");
-});
-
-app.get("/basset", (req, res) => {
-    res.send("Bro we forgot to use sig figs 💀");
-});
-
-app.get("/collins", (req, res) => {
-    res.send("yoink");
-});
-
-app.get("/waz", (req, res) => {
-    res.send("Regardez mon prof, mec, je vais rater 💀");
-});
-
-app.get("/ben-stewart", (req, res) => {
-    res.redirect("https://en.wikipedia.org/wiki/Gay");
-});
-
-app.get("/colleen-sturm", (req, res) => {
-    res.redirect("https://en.wikipedia.org/wiki/Bisexuality");
-});
-
-app.get("/zaya-haglund", (req, res) => {
-    res.redirect("https://en.wikipedia.org/wiki/Advanced_Placement_exams#:~:text=1: No recommendation");
-});
-
-app.get("/sydney-hurrell", (req, res) => {
-    res.redirect("https://en.wiktionary.org/wiki/soulless");
+app.get("/lib/jquery.js", (req, res) => {
+    res.type(".js");
+    res.sendFile("./mun/lib/jquery-3.7.1.min.js", {root: __dirname});
 });
 
 app.use(function(req, res, next) {
-    res.redirect("https://alex-seltzer.com/");
+    res.send("404 couldn't find that page :(");
 });
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 
     munFile.startUpFunction();
+    scibowlFile.startUpFunction();
+});
+
+app.listen(3001, () => {
+    console.log("WebSocket port is up");
 });
 
 function receivedKillSignal() {
     console.log("Shutting down...");
     munFile.shutDownFunction();
+    scibowlFile.shutDownFunction();
 
     process.exit(0);
 }

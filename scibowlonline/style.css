@@ -1,0 +1,22 @@
+:root {
+    --back: #ffffff;
+    --front: #000000;
+    transition-duration: 0.3s;
+}
+* {
+    font-family: Helvetica, sans-serif;
+    text-align: center;
+    color: var(--front);
+    transition-duration: 0.3s;
+}
+html > * {
+    margin: auto;
+    background-color: var(--back);
+}
+input, button {
+    border: 1px solid var(--front);
+    border-radius: 5px;
+}
+button {
+    background-color: var(--back);
+}
