@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<document>
+    <head>
+        <title>SBO Operator</title>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://mun.alex-seltzer.com/lib/jquery.js"></script>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            #Session {
+                display: none;
+                flex-direction: column;
+                max-height: 100vh;
+                height: 100vh;
+                max-width: 100vw;
+                width: 100vw;
+            }
+            #timerContainer {
+                justify-content: center;
+            }
+            #time {
+                text-align: center;
+                font-family: serif;
+                font-size: 56pt;
+            }
+            #CreateSession {
+                display: none;
+            }
+            #YourId {
+                width: 100%;
+                background-color: powderblue;
+                padding: 10px;
+                margin: 0;
+                border-radius: 0;
+                border-top: 1px grey solid;
+            }
+            button {
+                padding: 15px;
+                width: 200px;
+            }
+            #allquestionstuff {
+                padding-left: 20%;
+                padding-right: 20%;
+            }
+            .halfButton {
+                font-family: serif;
+                font-size: 20pt;
+            }
+            #Controls {
+                display: flex;
+                flex-direction: row;
+                height: 100%;
+            }
+            #Controls > * {
+                height: 100%;
+                width: 50%;
+                margin: 20px;
+                padding: 20px;
+                border-radius: 15px;
+                border: 1px black solid;
+            }
+        </style>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+
+    <body>
+        <div id="createSession">
+            You don't have a timing session. Click below to create one:
+            <button id="CreateId">Create</button>
+            <br>
+            To view questions without a timer, click <a href="questionviewer">here</a>.
+        </div>
+        <div id="Session">
+            <div id="Controls">
+                <div id="ControlsPt1">
+                    <div id="timerContainer">
+                        <h1 id="time">20.00</h1>
+                    </div>
+                    <button id="start" class="halfButton">Start</button>
+                    <button id="stop" class="halfButton" style="display:none">Stop</button>
+                    <br><br>
+                    <button id="zero" class="halfButton">0</button>
+                    <button id="five" class="halfButton">5</button>
+                    <button id="seven" class="halfButton">7</button>
+                    <button id="twenty" class="halfButton">20</button>
+                    <!--<button id="updateToServer" class="halfButton">Update time</button>-->
+                </div>
+                <div id="ControlsPt2">
+                    <div id="allquestionstuff">
+                        <h2 id="questionType"></h2>
+                        <p id="questionText"></p>
+                        <p id="questionAnswer"></p>
+                        <br>
+                        <h3 id="bonusFormat"></h3>
+                        <p id="bonusText"></p>
+                        <p id="bonusAnswer"></p>
+                        <button id="refreshQuestion">New Question</button>
+                        <button id="hideQuestion" onclick="
+                            $('#questionType').text('');
+                            $('#questionText').text('');
+                            $('#questionAnswer').text('');
+                            $('#bonusFormat').text('');
+                            $('#bonusText').text('');
+                            $('#bonusAnswer').text('');
+                        ">Hide Question</button>
+                    </div>
+    
+                    <div id="peopleControls">
+                        <p id="whobuzzedlabel"></p>
+                        <button onclick="$('#whobuzzedlabel').text('');">Reset buzzers</button>
+                    </div>
+                </div>
+            </div>
+
+            <p id="YourId"></p>
+        </div>
+    </body>
+    <script>
+        var cidb = $("#CreateId")
+        var id = -1;
+        var currentTime = 5000;
+        var referenceTime = new Date().getTime();
+        var isStopped = true;
+        var ws = new WebSocket(`ws://localhost:3001`);
+        const timerText = $("#time");
+
+        function texify(str) {
+            return str;
+            let sp = str.split("`");
+            let bi = "";
+            for(var i = 0; i < sp.length; i++) {
+                bi += sp[i];
+                if(i < sp.length-1) {
+                    if(i % 2 == 0) {
+                        bi += "\\(";
+                    } else {
+                        bi += "\\(";
+                    }
+                }
+            }
+            return bi;
+        }
+
+        function httpGetAsync(theUrl, callback) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() { 
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    callback(xmlHttp.responseText);
+            }
+            xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+            xmlHttp.send(null);
+        }
+
+        function refreshQuestion() {
+            httpGetAsync("/getquestion", questionAcquired);
+        }
+
+        function idAcquired(data) {
+            var d = JSON.parse(data);
+            ws.send(d.id.toString());
+            id = d.id;
+            $("#createSession").css("display", "none");
+            $("#Session").css("display", "flex");
+
+            refreshQuestion();
+            $("#YourId").text(`Your id is ${d.id}`);
+        }
+        
+        function questionAcquired(data) {
+            var currq = JSON.parse(data);
+
+            //currq.tossup_question = currq.tossup_question.split(/ [W-Z]) /)
+            currq.tossup_question = currq.tossup_question.replaceAll("\n", "<br>")
+            currq.bonus_question = currq.bonus_question.replaceAll("\n", "<br>")
+
+            $("#questionText").html(texify(currq.tossup_question));
+            $("#questionType").text("TOSS-UP - " + currq.category + " - " + currq.tossup_format);
+            $("#questionAnswer").text("ANSWER: " + currq.tossup_answer);
+
+            $("#bonusText").html(texify(currq.bonus_question));
+            $("#bonusFormat").text("BONUS - " + currq.category + " - " + currq.bonus_format);
+            $("#bonusAnswer").text("ANSWER: " + currq.bonus_answer);
+        }
+
+        function getId() {
+            httpGetAsync("/getnewid", idAcquired);
+        }
+
+        function sendState() {
+            ws.send(JSON.stringify({ // These JSON names no NOT match up with any of the variable names on the other side
+                "id": id,
+                "currentTime": new Date().getTime(),
+                "displayTime": currentTime,
+                "isStopped": isStopped
+            }));
+        }
+
+        ws.onmessage = (event) => {
+            var d = JSON.parse(event.data);
+            if(d.hasOwnProperty("whoBuzzed") && $("#whobuzzedlabel").text() == "") {
+                if(!isStopped) stopTimer();
+                $("#whobuzzedlabel").text(d.whoBuzzed + " buzzed in");
+                let sound = new Audio('/buzz_effect');
+                sound.play();
+                sendState();
+            }
+        };
+
+        cidb.on("click", getId);
+
+        function stopTimer() {
+            currentTime = referenceTime + currentTime - new Date().getTime();
+            refernceTime = new Date().getTime()
+
+            isStopped = true;
+
+            $("#start").css("display", "inline");
+            $("#stop").css("display", "none");
+        }
+        function startTimer() {
+            isStopped = false;
+            referenceTime = new Date().getTime();
+
+            $("#start").css("display", "none");
+            $("#stop").css("display", "inline");
+        }
+
+        $("#start").onclick = function() {
+            if(!isStopped) return;
+            startTimer()
+            sendState();
+        }
+        $("#stop").onclick = function() {
+            if(isStopped) return;
+            stopTimer()
+            sendState();
+        }
+
+        function updateTimeText() {
+            if(isStopped) {
+                var tt = currentTime;
+                //timerText.textContent = Math.floor(tt/1000) + "." + ('' + ((tt/10) % 100)*100).substr(0, 2);
+                timerText.text(Math.floor(tt/1000) + "." + (((tt+0.001) / 1000) % 1).toString()[2]);
+                return;
+            }
+            var tt = referenceTime + currentTime - new Date().getTime();
+            if(tt <= 0) {
+                tt = 0;
+                isStopped = true;
+                currentTime = 0;
+                sendState();
+            }
+            //timerText.textContent = Math.floor(tt/1000) + "." + ('' + ((tt/10) % 100)*100).substr(0, 2);
+            timerText.text(Math.floor(tt/1000) + "." + (((tt+0.001) / 1000) % 1).toString()[2]);
+        }
+        setInterval(updateTimeText, 30);
+        
+        var rooot = document.querySelector(':root');
+
+        window.onkeydown = function(event) {
+            if(event.key == 'd') {
+                if(getComputedStyle(rooot).getPropertyValue("--front") == "#000000") {
+                    rooot.style.setProperty('--front', '#ffffff');
+                    rooot.style.setProperty('--back', '#000000');
+                } else {
+                    rooot.style.setProperty('--front', '#000000');
+                    rooot.style.setProperty('--back', '#ffffff');
+                }
+            }
+        }
+
+        function setTime(t) {
+            currentTime = t;
+            isStopped = true;
+            sendState();
+        }
+        $("#zero").on("click", function() {
+            setTime(0);
+        });
+        $("#five").on("click", function() {
+            setTime(5000);
+        });
+        $("#seven").on("click", function() {
+            setTime(7000);
+        });
+        $("#twenty").on("click", function() {
+            setTime(20000);
+        });
+        $("#updateToServer").on("click", sendState);
+        $("#refreshQuestion").on("click", refreshQuestion);
+
+        window.onload = getId;
+    </script>
+</document>

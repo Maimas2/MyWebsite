@@ -134,8 +134,8 @@ app.post("/getsavedata", jsonParse, (req, res) => {
 module.exports.app = app;
 
 module.exports.startUpFunction = function() {
-    if(fs.existsSync("./data/mun_save_data.txt")) {
-        var d = fs.readFileSync("./data/mun_save_data.txt", "utf-8");
+    if(fs.existsSync("./saves/mun_save_data.txt")) {
+        var d = fs.readFileSync("./saves/mun_save_data.txt", "utf-8");
 
         savedSaveData = JSON.parse(d);
     }
@@ -144,7 +144,7 @@ module.exports.startUpFunction = function() {
 
         adminPasswords = JSON.parse(d);
     } else {
-        console.log("Could not find MUN PW Log!!!");
+        console.warn("Could not find MUN PW Log!!!");
     }
 }
 
@@ -152,7 +152,7 @@ module.exports.shutDownFunction = function() {
     console.log("Shutting down MUN...");
 
     let d = JSON.stringify(savedSaveData);
-    fs.writeFileSync("./data/mun_save_data.txt", d, "utf-8", (error) => {
+    fs.writeFileSync("./saves/mun_save_data.txt", d, "utf-8", (error) => {
         if(error) console.log(error);
     });
 }

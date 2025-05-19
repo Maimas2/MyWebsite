@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<document>
+    <head>
+        <title>SBO Question Viewer</title>
+        <style>
+            #Session {
+                display:none;
+            }
+            #timerContainer {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 33%;
+                justify-content: center;
+            }
+            #time {
+                text-align: center;
+            }
+            #ControlsPt1 {
+                width: 100%;
+                height: 33%;
+                position:absolute;
+                top: 200px;
+            }
+            /* .halfButton {
+                
+            } */
+            #YourId {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+            }
+            #showTossup, #showBonus {
+                display: none;
+            }
+        </style>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+
+    <body>
+        <div id="allquestionstuff">
+            <input type="checkbox" id="showsAnswer" checked="true">Hide answer
+            <br>
+            <h2 id="questionType"></h2>
+            <p id="questionText"></p>
+            <button id="showTossup">Show Answer</button><p id="questionAnswer"></p>
+            <br>
+            <h3 id="bonusFormat"></h3>
+            <p id="bonusText"></p>
+            <button id="showBonus">Show Answer</button><p id="bonusAnswer"></p><br><br>
+            <button id="refreshQuestion">New Question</button>
+        </div>
+    </body>
+    <script>
+        function httpGetAsync(theUrl, callback) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() { 
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    callback(xmlHttp.responseText);
+            }
+            xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+            xmlHttp.send(null);
+        }
+
+        function refreshQuestion() {
+            httpGetAsync("/getquestion", questionAcquired);
+        }
+        
+        function questionAcquired(data) {
+            var currq = JSON.parse(data);
+
+            //currq.tossup_question = currq.tossup_question.split(/ [W-Z]) /)
+            currq.tossup_question = currq.tossup_question.replaceAll("\n", "<br>")
+            currq.bonus_question = currq.bonus_question.replaceAll("\n", "<br>")
+
+            document.getElementById("questionText").innerHTML = currq.tossup_question;
+            document.getElementById("questionType").textContent = "TOSS-UP - " + currq.category + " - " + currq.tossup_format;
+            document.getElementById("questionAnswer").textContent = "ANSWER: " + currq.tossup_answer;
+
+            document.getElementById("bonusText").innerHTML = currq.bonus_question;
+            document.getElementById("bonusFormat").textContent = "BONUS - " + currq.category + " - " + currq.bonus_format;
+            document.getElementById("bonusAnswer").textContent = "ANSWER: " + currq.bonus_answer;
+
+            if(document.getElementById("showsAnswer").checked) {
+                document.getElementById("bonusAnswer").style.display = "none";
+                document.getElementById("questionAnswer").style.display = "none";
+
+                document.getElementById("showBonus").style.display = "inline";
+                document.getElementById("showTossup").style.display = "inline";
+            } else {
+                document.getElementById("bonusAnswer").style.display = "inline";
+                document.getElementById("questionAnswer").style.display = "inline";
+            }
+        }
+        document.getElementById("refreshQuestion").onclick = refreshQuestion;
+        window.onload = refreshQuestion;
+
+        document.getElementById("showBonus").onclick = function() {
+            document.getElementById("showBonus").style.display = "none";
+            document.getElementById("bonusAnswer").style.display = "inline";
+        };
+        document.getElementById("showTossup").onclick = function() {
+            document.getElementById("showTossup").style.display = "none";
+            document.getElementById("questionAnswer").style.display = "inline";
+        };
+    </script>
+</document>

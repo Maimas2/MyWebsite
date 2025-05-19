@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<document>
+
+    <head>
+        <style>
+            h1#timer {
+                font-family: serif;
+                font-size: 56pt;
+            }
+            #connected {
+                display: none;
+                position: absolute;
+                height: 60%;
+                top: 20%;
+                width: 100%;
+                left: 0;
+                vertical-align: auto;
+
+                justify-content: center;
+                align-items: center;
+            }
+            #setup {
+                position: absolute;
+                height: 60%;
+                width: 60%;
+                top: 40%;
+                left: 20%;
+            }
+            #setup > * {
+                margin-top: 25px;
+            }
+            #idInput {
+                text-align: center;
+                font-size: 28pt;
+                padding: 5px;
+                border-radius: 15px;
+                background-color: var(--back);
+            }
+            #submitId {
+                padding: 15px;
+            }
+        </style>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <title>SBO Timer</title>
+    </head>
+
+    <body>
+        <div id="setup">
+            <input type="number" id="idInput">
+            <br>
+            <button id="submitId">Connect to ID</button>
+        </div>
+        <div id="connected">
+            <h1 id="timer">--.--</h1>
+        </div>
+    </body>
+    <script>
+        var ws = new WebSocket(`ws://localhost:3001`);
+        const timerText = document.getElementById("timer");
+        var currentTime = -1;
+        var referenceTime = new Date().getTime();
+        var isStopped = true;
+
+        document.getElementById("submitId").onclick = function(event) {
+            if(isNaN(document.getElementById("idInput").value) || document.getElementById("idInput").value == "") return;
+            ws.send(document.getElementById("idInput").value);
+            document.getElementById("setup").style.display = "none";
+            document.getElementById("connected").style.display = "flex";
+        }
+
+        ws.onmessage = (event) => {
+            var d = JSON.parse(event.data);
+            if(d.hasOwnProperty("currentTime")) {
+                referenceTime = Number(d.currentTime);
+                currentTime = Number(d.displayTime);
+                isStopped = Boolean(d.isStopped);
+            }
+        };
+
+        var rooot = document.querySelector(':root');
+        window.onkeydown = function(event) {
+            if(event.key == "Enter") {
+                document.getElementById("submitId").click();
+            }
+            if(event.key == 'd') {
+                if(getComputedStyle(rooot).getPropertyValue("--front") == "#000000") {
+                    rooot.style.setProperty('--front', '#ffffff');
+                    rooot.style.setProperty('--back', '#000000');
+                } else {
+                    rooot.style.setProperty('--front', '#000000');
+                    rooot.style.setProperty('--back', '#ffffff');
+                }
+            }
+        }
+
+        function updateTimeText() {
+            if(isStopped) {
+                var tt = currentTime;
+                if(tt == -1) {
+                    timerText.textContent = "Waiting for next update...";
+                } else {
+                    //timerText.textContent = Math.floor(tt/1000) + "." + ('' + ((tt/10) % 100)*100).substr(0, 2);
+                    timerText.textContent = Math.floor(tt/1000) + "." + (((tt+0.001) / 1000) % 1).toString()[2];
+                }
+                return;
+            }
+            if(currentTime == -1) {
+                timerText.textContent = "Waiting for next event...";
+            } else {
+                var tt = referenceTime + currentTime - new Date().getTime();
+                if(tt <= 0) {
+                    tt = 0;
+                }
+                //timerText.textContent = Math.floor(tt/1000) + "." + ('' + ((tt/10) % 100)*100).substr(0, 2);
+                timerText.textContent = Math.floor(tt/1000) + "." + (((tt+0.001) / 1000) % 1).toString()[2];
+            }
+        }
+        setInterval(updateTimeText, 30);
+    </script>
+</document>

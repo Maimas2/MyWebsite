@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<document>
+
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <style>
+            h1#timer {
+                text-align: center;
+                font-family: sans-serif;
+            }
+            #connected {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            #buzzin {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                display: flexbox;
+            }
+            #setup {
+                margin: auto;
+                display: flex;
+                width: 100%;
+                height: 300px;
+                flex-direction: column;
+                position: absolute;
+                left: 0;
+                top: calc(50% - 150px);
+            }
+            #setup > * {
+                margin: auto;
+            }
+            #idInput {
+                text-align: center;
+                font-size: 28pt;
+                width: 200px;
+                border-radius: 15px !important;
+            }
+            #nameinput {
+                height: 30px;
+            }
+            #text {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+            }
+            #nameinput, #idInput {
+                background-color: var(--back);
+            }
+        </style>
+        <title>SBO Player</title>
+    </head>
+
+    <body>
+        <div id="setup">
+            <label for="nameinput">Enter your name</label>
+            <input type="text" id="nameinput" style="width: 400px">
+            <div style="height:30px"></div>
+            <label for="idInput">Enter the game id</label>
+            <input type="number" id="idInput">
+            <div style="height:20px"></div>
+            <button id="submitId">Connect to ID</button>
+        </div>
+        <div id="connected">
+            <div id="buzzin"><p id="text">Buzz</p></div>
+        </div>
+    </body>
+    <script>
+        var ws = new WebSocket(`ws://localhost:3001`);
+        var canBuzz = false;
+
+        document.getElementById("submitId").onclick = function(event) {
+            if(!isNaN(document.getElementById("idInput").value)) {
+                ws.send(document.getElementById("idInput").value);
+                document.getElementById("setup").style.display = "none";
+                document.getElementById("connected").style.display = "inline";
+                canBuzz = true;
+            }
+        }
+        function buzz(event) {
+            if(canBuzz) {
+                ws.send(JSON.stringify({
+                    "id": document.getElementById("idInput").value,
+                    "whoBuzzed": document.getElementById("nameinput").value
+                }));
+            }
+        }
+        document.getElementById("buzzin").onmousedown = buzz;
+        window.onkeydown = function(event) {
+            if(event.key == ' ' || event.key == "Enter") {
+                buzz(null);
+            }
+            if(event.key == 'd') {
+                if(getComputedStyle(rooot).getPropertyValue("--front") == "#000000") {
+                    rooot.style.setProperty('--front', '#ffffff');
+                    rooot.style.setProperty('--back', '#000000');
+                } else {
+                    rooot.style.setProperty('--front', '#000000');
+                    rooot.style.setProperty('--back', '#ffffff');
+                }
+            }
+        }
+
+        var rooot = document.querySelector(':root');
+    </script>
+</document>
