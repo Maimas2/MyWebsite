@@ -18,7 +18,7 @@ body {
     padding: 0;
     margin: 0;
 }
-p, button {
+p, button:not(.smallTextButton) {
     font-size: 14pt;
 }
 .outlineddiv {
@@ -569,8 +569,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 #backgroundLogoContainer {
     position: absolute;
     left: 10%;
-    top: 0;
-    height: 100%;
+    top: calc(50vh - 40vw);
     width: 80%;
     max-width: 80vw;
     z-index: -10;
@@ -578,4 +577,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #backgroundLogo {
     width: 100%;
+}
+#quickStartPopup > p {
+    font-size: 100%;
 }
