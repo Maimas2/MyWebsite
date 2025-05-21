@@ -79,8 +79,12 @@ var isInQuickStart = false;
 
 var hasMadeNewDelegate = false;
 
+function sanitizeForID(id) {
+    return id.replaceAll(" ", "").replaceAll("'", "");
+}
+
 function getDelegatePresenseNodes() {
-    return $("#normalDelegateList > button").toArray().concat($("#customDelegateList > button").toArray());
+    return $("#normalDelegateList > div").toArray().concat($("#customDelegateList > div").toArray());
 }
 
 function refreshPresentDelegateList() {
@@ -88,14 +92,15 @@ function refreshPresentDelegateList() {
     listOfCountriesInCommittee = [];
     getDelegatePresenseNodes().forEach((e) => {
         if(typeof e.getAttribute != "undefined") {
-            var isc = e.getAttribute("data-isclicked") == "true";
+            if(!$(e).children().length) return;
+            var isc = $(e).children().get(0).getAttribute("data-isclicked") == "true";
             if(isc) {
                 numDelegatesInCommittee++;
-                $("#attendanceNode" + e.textContent.replaceAll(" ", "")).css("display", "block");
+                $("#attendanceNode" + sanitizeForID(e.textContent)).css("display", "block");
 
                 listOfCountriesInCommittee.push(e.textContent);
             } else {
-                $("#attendanceNode" + e.textContent.replaceAll(" ", "")).css("display", "none");
+                $("#attendanceNode" + sanitizeForID(e.textContent)).css("display", "none");
             }
         }
     });
@@ -205,7 +210,7 @@ function addAttendanceNodes() {
         if(!typeof v == "string") return;
         var cont = $("#attendanceButtonsPrefab").clone(true);
         cont.children("p").get(0).textContent = v;
-        cont.attr("id", "attendanceNode" + v.replaceAll(" ", ""));
+        cont.attr("id", "attendanceNode" + sanitizeForID(v));
         cont.children("button").get(0).click();
 
         $("#attendanceListOfCountries").append(cont);
@@ -222,10 +227,10 @@ function refreshAttendanceNodes() {
 function implementAttendanceList(att) {
     $("#attendanceListOfCountries > *").css("display", "none");
     listOfCountriesInCommittee.forEach(function(el) {
-        $("#attendanceNode" + el.replaceAll(" ", "")).css("display", "block");
+        $("#attendanceNode" + sanitizeForID(el)).css("display", "block");
     });
     Object.keys(att).forEach((country) => {
-        var tan = $("#attendanceNode" + country.replaceAll(" ", ""));
+        var tan = $("#attendanceNode" + sanitizeForID(country));
         if(att[country] == "Pr") {
             tan.children("button").get(1).click();
         } else if(att[country] == "Pr&V") {
@@ -508,7 +513,7 @@ function parsePassedMotionJSON(details) {
 
         $("#chosenCountriesForTimer > *").remove();
         getListOfVotingCountries().forEach(function(val) {
-            $(`<button class="countryListOne outlineddiv">${val}</button>`).css("display", "block").css("width", "100%").attr("id", "modCaucusCountryChooser" + val.replaceAll(" ", "")).on("click", modCountryChooserClickEventFunctionResponder).appendTo($("#passedMotionCountryChooser"));
+            $(`<button class="countryListOne outlineddiv">${val}</button>`).css("display", "block").css("width", "100%").attr("id", "modCaucusCountryChooser" + sanitizeForID(val)).on("click", modCountryChooserClickEventFunctionResponder).appendTo($("#passedMotionCountryChooser"));
         });
     } else {
         $("#chosenCountriesForTimer").css("display", "none");
@@ -661,6 +666,7 @@ function refreshDelegateListSearch(_e_ = null) {
     setTimeout(() => {
         var t = document.getElementById("delegateListSearch").value.toLowerCase();
         getDelegatePresenseNodes().forEach((e) => {
+            if(!$(e).hasClass("countryListOne")) return;
             if(typeof e.style != "undefined") {
                 if(e.textContent.toLowerCase().includes(t)) {
                     e.style.display = "";
@@ -826,27 +832,44 @@ function endCurrentMotion() {
     $("#passedMotionCountryChooser > *").remove();
 }
 
+function createDelegateCountryNode(name, clicked=false) {
+    var outer = $("<div>");
+    outer.addClass("countryListOne");
+
+    var cb = $("<div>");
+    cb.attr("data-isclicked", "false");
+    cb.addClass("countryListInner");
+    cb.text(name);
+    cb.css("margin", "0");
+    cb.on("click", changeClickedEventResponder);
+
+    outer.append(cb);
+    //outer.append($("<br>"));
+    outer.append( $("#dividerLinePrefab").clone(true).attr("id", "").css("display", "block").css("margin", "10px 0 10px 25%") );
+
+    if(clicked) {
+        cb.click();
+    }
+
+    return outer;
+}
+
 function setCurrentCountryList(newList) {
     getDelegatePresenseNodes().forEach((el) => {
         $(el).remove();
     });
-    $("#customDelegateList > button").remove();
+    $("#customDelegateList > div").remove();
+
+    $("#normalDelegateList").append( $("#dividerLinePrefab").clone(true).attr("id", "").css("display", "block").css("margin", "10px 0 10px 25%") );
+    $("#customDelegateList").append( $("#dividerLinePrefab").clone(true).attr("id", "").css("display", "block").css("margin", "10px 0 10px 25%") );
+
     getListOfCountries().forEach(function(v) {
-        var cb = document.createElement("button");
-        cb.classList.add("countryListOne");
-        cb.setAttribute("data-isclicked", "false");
-        cb.textContent = v;
-        cb.onclick = changeClickedEventResponder;
-        
+        var tempNode = createDelegateCountryNode(v, newList.includes(v));
 
         if(basicListOfCountries.includes(v)) {
-            $("#normalDelegateList").append(cb);
+            $("#normalDelegateList").append(tempNode);
         } else {
-            $("#customDelegateList").append(cb);
-        }
-
-        if(newList.includes(v)) {
-            cb.click();
+            $("#customDelegateList").append(tempNode);
         }
     });
 }
@@ -880,7 +903,7 @@ function modCountryChooserClickEventFunctionResponder() {
     
     $(`<button class="outlineddiv marginizechildren countryListOne"></button>`).css("padding", "15px").css("display", "block").css("width", "98%").on("click", function() {
         if(canSortChosenCountries) {
-            $("#modCaucusCountryChooser" + this.textContent.replaceAll(" ", "")).css("display", "");
+            $("#modCaucusCountryChooser" + sanitizeForID(this.textContent)).css("display", "");
 
             this.remove();
 
@@ -1142,14 +1165,8 @@ window.onload = function(_event) {
         if($("#newDelegateInput").val() == "") return;
 
         customDelegates.push($("#newDelegateInput").val());
-
-        var cb = $("<button>");
-        cb.addClass("countryListOne");
-        cb.attr("data-isclicked", "false");
-        cb.text($("#newDelegateInput").val());
-        cb.on("click", changeClickedEventResponder);
         
-        $("#customDelegateList").append(cb);
+        $("#customDelegateList").append(createDelegateCountryNode($("#newDelegateInput").val()));
 
         $("#newDelegateInput").val("");
 
@@ -1211,6 +1228,7 @@ window.onload = function(_event) {
     });
 
     $("#impromptuTimerLabel").val("5:00");
+    $("#quickStartAttendance").prop("disabled", true);
 
     setCurrentCountryList([]);
     recalcDelegates();
@@ -1504,7 +1522,7 @@ function implementStateJSON(newState) {
         parsePassedMotionJSON(newState.currentMotion);
         if(newState.currentMotion.motionType == "mod" || newState.currentMotion.motionType == "speakersList") {
             newState.currentMotion.chosenCountries.forEach((el) => {
-                $("#modCaucusCountryChooser" + el.replaceAll(" ", "")).click();
+                $("#modCaucusCountryChooser" + sanitizeForID(el)).click();
             });
             largeTimerCurrentTime      = newState.currentMotion.currentTime;
             perDelegateCurrentPosition = newState.currentMotion.currentDelegate;
