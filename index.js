@@ -42,6 +42,8 @@ app.use(function(req, res, next) {
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 
+    munFile.setParentShutdownCallback(receivedKillSignal);
+
     munFile.startUpFunction();
     scibowlFile.startUpFunction();
 });
