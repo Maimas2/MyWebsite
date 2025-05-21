@@ -90,7 +90,7 @@
             <div id="editDelegateList" class="outlineddiv">
                 <input type="text" id="delegateListSearch" spellcheck="false" placeholder="Search for country...">
                 <div id="normalDelegateList">
-                    <h2>Normal UN Delegates</h2>
+                    <h2 style="text-align: center;">Normal UN Delegates</h2>
                 </div>
                 <div id="customDelegateList">
                     <h2>Custom UN Delegates</h2>
@@ -209,7 +209,7 @@
             <div id="quickStartPopup" class="bottomMarginChildren outlineddiv">
                 <h1>Quick Start</h1>
                 <div style="display:inline-block;width:50%;background-color: black;height:1px !important;"></div>
-                <p>Choose who is slated to be in your committee</p>
+                <p>Choose which countries are slated to be in your committee</p>
                 <button onclick="
                 hidePopup(function() {
                     isInQuickStart = true;
@@ -223,7 +223,7 @@
                 hidePopup(function() {
                     $('#takeAttendanceButton').click();
                 })
-                " disabled="disabled" id="quickStartAttendance">Do that</button>
+                " id="quickStartAttendance">Do that</button>
             </div>
             <div id="exitButtons">
                 <button id="quitPopup" onclick="quitPopup()">Discard</button>
@@ -314,6 +314,7 @@
                     
                 </div>
             </div>
+            <div id="dividerLinePrefab" style="display:inline-block;width:50%;background-color: black;height:1px !important;"></div>
         </div>
         <div id="alertContainer" class="outlineddiv" onclick="clearInterval(hidingAlertInterval);$(this).animate({opacity: 0}, 150);hidingAlertInterval=setInterval(((_e) => {this.style.display = 'none';clearInterval(hidingAlertInterval);}), 150)">
             <p id="alertText" style="width: 100%;text-align: center;">This is really really bad</p>
