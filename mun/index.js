@@ -49,7 +49,7 @@ app.get("/favicon.png", (req, res) => {
 });
 
 app.get("/UN-logo.png", (req, res) => {
-    res.sendFile("./favicon.png", {root: __dirname});
+    res.sendFile("./UN_logo.png", {root: __dirname});
 });
 
 app.get("/lib/jquery.js", (req, res) => {

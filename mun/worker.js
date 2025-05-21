@@ -1156,6 +1156,14 @@ window.onload = function(_event) {
         }
     }, 1000);
 
+    $("#allPresentButton").on("mousedown", function(_e) {
+        Array(...document.getElementById('attendanceListOfCountries').children).forEach((el) => {
+            if($(el).css("display") != "none" && typeof el.childNodes[5] != 'undefined') {
+                el.childNodes[5].click();
+            }
+        });
+    });
+
     $("#impromptuTimerLabel").val("5:00");
 
     setCurrentCountryList([]);

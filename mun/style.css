@@ -566,3 +566,16 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     width:  100%;
     min-height: 0;
 }
+#backgroundLogoContainer {
+    position: absolute;
+    left: 10%;
+    top: 0;
+    height: 100%;
+    width: 80%;
+    max-width: 80vw;
+    z-index: -10;
+    opacity: 0.2;
+}
+#backgroundLogo {
+    width: 100%;
+}
