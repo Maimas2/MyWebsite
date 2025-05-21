@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 
 //const urlEncoded = bodyParser.urlencoded({extended: false}); Only for login type stuff ig????
 
+var parentShutdown;
+
 var currentCountryList = {
     list: ["United States of America", "France", "China", "Russia", "United Kingdom"]
 }
@@ -87,8 +89,10 @@ app.post("/adminaccesspoint", jsonParse, (req, res) => {
     if(req.body.code == adminPasswords.viewSaves) {
         res.send(savedSaveData);
     } else if(req.body.code == adminPasswords.resetSaves) {
-            savedSaveData = [];
-            res.send("All save data deleted");
+        savedSaveData = [];
+        res.send("All save data deleted");
+    } else if(req.body.code == adminPasswords.shutDown) {
+        parentShutdown();
     } else {
         res.send("Invalid");
     }
@@ -155,4 +159,8 @@ module.exports.shutDownFunction = function() {
     fs.writeFileSync("./saves/mun_save_data.txt", d, "utf-8", (error) => {
         if(error) console.log(error);
     });
+}
+
+module.exports.setParentShutdownCallback = function(call) {
+    parentShutdown = call;
 }
