@@ -75,6 +75,8 @@ var rollCallNumNays      = 0;
 var rollCallNumAbstains  = 0;
 var rollCallCurrentVotes = [];
 
+var isInQuickStart = false;
+
 var hasMadeNewDelegate = false;
 
 function getDelegatePresenseNodes() {
@@ -103,11 +105,27 @@ function recalcDelegates() {
     refreshPresentDelegateList();
 
     var voters = getListOfVotingCountries().length;
-    document.getElementById("numberOfDelegates").textContent = voters + " Delegate" + (voters == 1 ? "" : "s");
-    document.getElementById("simpleMajorityLabel").textContent = `${Math.ceil((voters+0.1)/2)}/${voters}`;
-    document.getElementById("twoThirdsLabel").textContent = `${Math.ceil(voters*2/3)}/${voters}`;
+    $("#numberOfDelegates").text(voters + " Delegate" + (voters == 1 ? "" : "s"));
+    $("#simpleMajorityLabel").text(`${Math.ceil((voters+0.1)/2)}/${voters}`);
+    $("#twoThirdsLabel").text(`${Math.ceil(voters*2/3)}/${voters}`);
     if(voters == 0) {
         document.getElementById("simpleMajorityLabel").textContent = "0/0";
+
+        $("#newSpeakersList").prop("disabled", true);
+        $("#newMod").prop("disabled", true);
+        $("#newRoundRobin").prop("disabled", true);
+        $("#commenceRollCall").prop("disabled", true);
+    } else {
+        $("#newSpeakersList").prop("disabled", false);
+        $("#newMod").prop("disabled", false);
+        $("#newRoundRobin").prop("disabled", false);
+        $("#commenceRollCall").prop("disabled", false);
+    }
+
+    if(numDelegatesInCommittee == 0) {
+        $("#takeAttendanceButton").prop("disabled", true);
+    } else {
+        $("#takeAttendanceButton").prop("disabled", false);
     }
 }
 
@@ -123,9 +141,10 @@ function showPopup() {
         $("#popupPage").css("display", "block");
         $("#popupPage").css("top", "0");
         $("#popupPage").css("height", "100%");
-        $("#quitPopup").text("Discard");
         $("#exitPopup").css("display", "inline");
         $("#popupPage").css("user-select", "");
+
+        $("#quitPopup").text("Discard");
 
         $("#popupPage").animate({
             opacity : 1
@@ -215,7 +234,12 @@ function implementAttendanceList(att) {
     });
 }
 
-function hidePopup() {
+function hidePopup(nextFunction = null) {
+    var quickStartKeyToGoOn = 0; /**
+    * 0: Do nothing
+    * 1: Delegate list done, go back to start
+    * 2: Attendance done, exit out
+    */
     if(isPopupShown) {
         if(document.getElementById("newModPopup").style.display != "none") { // Check if inputs are valid
             if(isNaN($("#newModPopupDuration").val().replaceAll(":","").replaceAll(" "))) {
@@ -279,6 +303,8 @@ function hidePopup() {
             recalcDelegates();
             
             refreshAttendanceNodes();
+
+            if(isInQuickStart) quickStartKeyToGoOn = 1;
         } else if(document.getElementById("newModPopup").style.display != "none") {
             var toAdd = $("#modMotionPrefab").clone(true);
             var inputList = toAdd.find("input");
@@ -310,13 +336,22 @@ function hidePopup() {
             appendMotion(toAdd);
         }
 
-        quitPopup();
+        if(quickStartKeyToGoOn == 1) {
+            nextFunction = function() {
+                showQuickStart();
+                $("#quickStartDelegates").prop("disabled", true);
+                $("#quickStartAttendance").prop("disabled", false);
+            };
+        }
+
+        quitPopup(nextFunction);
     }
 }
 
-function quitPopup() {
+function quitPopup(nextFunction = null) {
     if(isPopupShown) {
-        isPopupShown = false;
+        isPopupShown   = false;
+        isInQuickStart = false;
 
         $("#popupPage").animate({
             opacity : 0
@@ -324,6 +359,8 @@ function quitPopup() {
             $("#popupPage").css("display", "none");
             $("#popupPage > *").css("display", "none");
             $("#popupPage").css("user-select", "none");
+
+            if(nextFunction != null) nextFunction();
         });
 
         $(":focus").blur();
@@ -872,6 +909,15 @@ function bigPopup() {
     $("#popupPage").css("height", "115%");
 }
 
+function showQuickStart() {
+    showPopup();
+    bigPopup();
+    $("#quickStartPopup").css("display", "block");
+    $("#quickStartPopup").css("height", "60%");
+    $("#quitPopup").text("No thanks");
+    $("#exitPopup").css("display", "none");
+}
+
 window.addEventListener("beforeunload", function (e) {
     e.preventDefault();
     e.returnValue = "Your current website state will not be automatically saved.";
@@ -1168,6 +1214,8 @@ window.onload = function(_event) {
 
     setCurrentCountryList([]);
     recalcDelegates();
+
+    showQuickStart();
 }
 
 var isImpromptuTimerGoing = false;
