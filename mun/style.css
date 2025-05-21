@@ -466,8 +466,9 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     display: inline-flex;
     width: 100%;
     overflow: auto;
+    margin-top: 10px !important;
     gap: 10px;
-    max-height: 70%;;
+    max-height: 70%;
 }
 #rollCallBottomArea > * {
     width: 100%;
@@ -484,7 +485,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     display: flex;
     padding: 15px;
     vertical-align: middle;
-    margin: 10px;
+    margin-bottom: 20px;
     transition: all linear 0.15s;
 }
 .expandAllTheWay {
