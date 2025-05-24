@@ -73,7 +73,7 @@
         </div>
     </body>
     <script>
-        var ws = new WebSocket(`ws://scibowl.alex-seltzer.com:3001`);
+        var ws;
         var canBuzz = false;
 
         document.getElementById("submitId").onclick = function(event) {
@@ -109,5 +109,9 @@
         }
 
         var rooot = document.querySelector(':root');
+
+        window.onload = function() {
+            ws = new WebSocket(`wss://scibowl.alex-seltzer.com:3001`);
+        }
     </script>
 </document>

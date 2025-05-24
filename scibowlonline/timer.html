@@ -55,7 +55,7 @@
         </div>
     </body>
     <script>
-        var ws = new WebSocket(`ws://scibowl.alex-seltzer.com:3001`);
+        var ws;
         const timerText = document.getElementById("timer");
         var currentTime = -1;
         var referenceTime = new Date().getTime();
@@ -116,5 +116,9 @@
             }
         }
         setInterval(updateTimeText, 30);
+
+        window.onload = function() {
+            ws = new WebSocket(`wss://scibowl.alex-seltzer.com:3001`);
+        }
     </script>
 </document>
