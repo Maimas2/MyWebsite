@@ -122,7 +122,7 @@
         var currentTime = 5000;
         var referenceTime = new Date().getTime();
         var isStopped = true;
-        var ws = new WebSocket(`ws://scibowl.alex-seltzer.com:3001`);
+        var ws;
         const timerText = $("#time");
 
         function texify(str) {
@@ -290,6 +290,9 @@
         $("#updateToServer").on("click", sendState);
         $("#refreshQuestion").on("click", refreshQuestion);
 
-        window.onload = getId;
+        window.onload = function(e) {
+            ws = new WebSocket(`wss://scibowl.alex-seltzer.com:3001`);
+            getId();
+        }
     </script>
 </document>
