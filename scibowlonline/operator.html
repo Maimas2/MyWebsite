@@ -196,17 +196,6 @@
             }));
         }
 
-        ws.onmessage = (event) => {
-            var d = JSON.parse(event.data);
-            if(d.hasOwnProperty("whoBuzzed") && $("#whobuzzedlabel").text() == "") {
-                if(!isStopped) stopTimer();
-                $("#whobuzzedlabel").text(d.whoBuzzed + " buzzed in");
-                let sound = new Audio('/buzz_effect');
-                sound.play();
-                sendState();
-            }
-        };
-
         cidb.on("click", getId);
 
         function stopTimer() {
@@ -292,6 +281,18 @@
 
         window.onload = function(e) {
             ws = new WebSocket(`wss://scibowl.alex-seltzer.com:3001`);
+
+            ws.onmessage = (event) => {
+                var d = JSON.parse(event.data);
+                if(d.hasOwnProperty("whoBuzzed") && $("#whobuzzedlabel").text() == "") {
+                    if(!isStopped) stopTimer();
+                    $("#whobuzzedlabel").text(d.whoBuzzed + " buzzed in");
+                    let sound = new Audio('/buzz_effect');
+                    sound.play();
+                    sendState();
+                }
+            };
+
             getId();
         }
     </script>

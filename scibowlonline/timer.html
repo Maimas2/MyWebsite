@@ -68,15 +68,6 @@
             document.getElementById("connected").style.display = "flex";
         }
 
-        ws.onmessage = (event) => {
-            var d = JSON.parse(event.data);
-            if(d.hasOwnProperty("currentTime")) {
-                referenceTime = Number(d.currentTime);
-                currentTime = Number(d.displayTime);
-                isStopped = Boolean(d.isStopped);
-            }
-        };
-
         var rooot = document.querySelector(':root');
         window.onkeydown = function(event) {
             if(event.key == "Enter") {
@@ -119,6 +110,15 @@
 
         window.onload = function() {
             ws = new WebSocket(`wss://scibowl.alex-seltzer.com:3001`);
+
+            ws.onmessage = (event) => {
+                var d = JSON.parse(event.data);
+                if(d.hasOwnProperty("currentTime")) {
+                    referenceTime = Number(d.currentTime);
+                    currentTime = Number(d.displayTime);
+                    isStopped = Boolean(d.isStopped);
+                }
+            };
         }
     </script>
 </document>
