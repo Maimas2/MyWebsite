@@ -26,6 +26,7 @@ wss.on('connection', (ws) => {
 	unsortedclients.add(ws);
 
 	ws.on('message', (message) => {
+		console.log(message);
       if(!isNaN(message.toString())) {
         idconnections[Number(message.toString())].add(ws);
         unsortedclients.delete(ws);
@@ -101,7 +102,7 @@ app.get('/play', (req, res) => {
 	res.sendFile("player.html", {root: __dirname});
 });
 
-server.listen(3001, () => {
+app.listen(3001, () => {
 	console.log(`SciBowlWS is listening on port ${3001}`);
 });
 

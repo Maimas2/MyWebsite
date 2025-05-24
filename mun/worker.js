@@ -80,7 +80,7 @@ var isInQuickStart = false;
 var hasMadeNewDelegate = false;
 
 function sanitizeForID(id) {
-    return id.replaceAll(" ", "").replaceAll("'", "");
+    return id.replaceAll(" ", "").replaceAll("'", "").replaceAll(".", "").replaceAll("#", "");
 }
 
 function getDelegatePresenseNodes() {

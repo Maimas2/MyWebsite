@@ -92,6 +92,7 @@ app.post("/adminaccesspoint", jsonParse, (req, res) => {
         savedSaveData = [];
         res.send("All save data deleted");
     } else if(req.body.code == adminPasswords.shutDown) {
+		res.send("Shutting down");
         parentShutdown();
     } else {
         res.send("Invalid");
