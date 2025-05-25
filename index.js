@@ -10,6 +10,9 @@ var munApp = munFile.app;
 var scibowlFile = require('./scibowlonline/index');
 var scibowlApp = scibowlFile.app;
 
+var sbestFile = require("./scibowltopics/index");
+var sbestApp = sbestFile.app;
+
 var namesFile = require("./names");
 app.use(namesFile.app);
 
@@ -21,6 +24,9 @@ app.use(vhost("mun.localhost", munApp));
 
 app.use(vhost("scibowl.alex-seltzer.com", scibowlApp));
 app.use(vhost("scibowl.localhost", scibowlApp));
+
+app.use(vhost("sbest.alex-seltzer.com", sbestApp));
+app.use(vhost("sbest.localhost", sbestApp));
 
 app.get("/mun", (req, res) => {
     res.redirect("https://mun.alex-seltzer.com");
@@ -46,6 +52,7 @@ app.listen(port, () => {
 
     munFile.startUpFunction();
     scibowlFile.startUpFunction();
+    sbestFile.startUpFunction();
 });
 
 app.listen(3001, () => {
@@ -55,7 +62,7 @@ app.listen(3001, () => {
 function receivedKillSignal() {
     console.log("Shutting down...");
     munFile.shutDownFunction();
-    scibowlFile.shutDownFunction();
+    sbestFile.shutDownFunction();
 
     process.exit(0);
 }

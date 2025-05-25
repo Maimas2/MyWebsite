@@ -1,0 +1,54 @@
+PageDisplayTitle:Fusion
+PageDescription:Immense heat and pressure fuses small nuclei
+SubtopicName:
+
+__knowledge__This section requires a working understanding of chemistry and chemical reactions.__
+
+In the core of a star, the heat and pressure are so great that small hydrogen nuclei can fuse into helium. There are several reactions through which this can happen, each of which only happen given enough heat and pressure.
+
+__h2__Hydrogen Fusion__
+
+All processes fulfill this simplified reaction for the fusion of hydrogen:
+
+\[\ce{ 4\:{^1H} -> {^4He} + heat }\]
+
+The way that each gets it done is different and is what sets each apart.
+
+The first and simplest of the fusion processes is called the __b__proton-proton chain__ (P-P chain). It starts to sporadically happen when a star's core reaches four million K, but is only in full force at ten million K.
+
+Four protons all colliding into each other never happens,__footnote__Even three particles colliding is nigh impossible; four never happens. See the study of Chemical Kinetics for more information on this sort of thing.__ so the fusion reaction must take place in a series of steps. The P-P chain goes through three steps to turn six protons into one helium nucleus:
+
+\[\ce{ ^1H + ^1H -> ^2H + {\nu} + e+ + 0.42\text{MeV} }\]
+\[\ce{ {^2H} + {^1H} -> {^3He} + \gamma + 5.493\text{MeV} }\]
+\[\ce{ {^3H} + {^3H} -> {^4He} + {^1H} + {^1H} + 12.859\text{MeV} }\]
+
+Each of these three reactions is at least slightly exothermic, and they all help to heat up the surrounding gas:
+__list n__
+Two protons merge into a deuterium nucleus. One of the protons undergoes beta-plus decay, releasing a neutrino and a positron. Neutrinos seldom react with any matter, so most fly directly out of the core, carrying a small amount of energy with them. The positron is annihilated by one of the nearby electrons, releasing two gamma rays. These high-energy electromagnetic waves further heat the gas in the core.
+__
+A deuterium nucleus combines with a proton to form a tritium nucleus along with energy in the form of another gamma ray.
+__
+Two tritium nuclei combine into a helium nucleus plus two protons as a side product.
+__tsil__
+__imagec__Diagram of the CNO-I cycle__https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/CNO_Cycle.svg/1024px-CNO_Cycle.svg.png__Original: Public Domain__https://en.wikipedia.org/wiki/File:CNO_Cycle.svg__
+
+The P-P chain is the main fusion process for stars up to 1.3 solar masses. Above that, the __b__Carbon-Nitrogen-Oxygen Cycle__ (CNO cycle) takes over. This process uses a Carbon-12 nucleus as a catalyst to fuse hydrogen into helium. It is the main fusion process for O and A class stars (see: __nlink__Harvard Classification__Harvard Classification__).
+
+__b__Important__: the CNO cycle does not produce carbon, nitrogen, or oxygen. It produces helium. The three eponymous elements are the transition states that the Carbon-12 nucleus takes on throughout the reaction. 
+
+There are several pathways that the CNO cycle can progress through, but all they have the same result: a helium nucleus and heat energy. In the reactions, multiple protons collide and merge with a Carbon-12 nucleus to build it up until Nitrogen-15. Beta-plus decay also occurs twice, releasing neutrinos and positrons. When another proton collides with the Nitrogen-15 nucleus, it splits into a Helium-4 nucleus and a Carbon-12 nucleus ready to start the process anew.
+
+Because it uses a catalyst unlike the P-P chain, the CNO cycle fuses hydrogen faster that the P-P chain, so it overall releases more energy. This contributes towards the fact that larger stars have shorter lifespans.
+
+__h2__Other Fusion__
+__linkto__TripleAlpha__
+Stars that are late in life or are extremely large can also fuse helium into larger elements. Larger nuclei need much hotter core temperatures to fuse. The most important of these fusion reactions is the fusion of helium to create carbon, which occurs through the __b__Triple-Alpha Process__ (triple-α process). It converts three Helium-4 nuclei into one Carbon-12 and occurs in two steps:
+
+\[ \ce{^4He + {^4He} + 0.0918\text{MeV} -> ^8Be} \]
+\[\ce{ ^8Be + ^4He -> {^{12}C} + 2{\gamma} + 7.367\text{MeV} }\]
+
+One reason that this reaction requires a very high temperature is that \(\ce{^8Be}\), the product of the first reaction, is very unstable, with a half-life of just \(8.19\cdot10^{-17}\) seconds. It decays back into two alpha particle unless another one happens to collide with it before it decays. Until there are enough helium nuclei in the core moving fast enough, this seldom happens, so the triple-α process produces very little carbon.
+
+Another reason the triple-α process takes a long time to produce meaningful amounts of carbon is that the produced Carbon-12 nuclei are in a special state called the __link__Hoyle state__https://en.wikipedia.org/wiki/Carbon-12#Hoyle_state__, which decays back to three Helium-4 nuclei 99.956% of the time. It must hit the one-in-2400 jackpot to release meaningful amounts of energy, which severely limits the speed of the triple-α process as a whole.
+
+Elements beyond helium can also fuse, though they release less energy. The triple-α process creates carbon, which can fuse into neon. Neon decays to oxygen, which can fuse to silicon. Silicon can fuse with itself to create nickel, which quickly decays to iron. Iron is the most stable nucleus of all the elements,__footnote__See nuclear binding energy, not covered on this website.__, so no energy can be produced by fusing it.

@@ -1,0 +1,12 @@
+PageDisplayTitle:Logarithms
+PageDescription:The inverse of the exponential
+SubtopicName:Math
+
+__knowledge__Logarithms can be a difficult concept to grasp for the unfamiliar. There are better explanations of them out on the internet, if this one doesn't work for you.__
+
+The __b__logarithm__ is the inverse of the exponential function; a logarithm "undoes" an exponential:
+
+\[ a^x=b \to \log_a b = x \]
+\[ \log_a\left( a^x \right)=x \]
+
+Just like exponentials, logarithms have a base.
