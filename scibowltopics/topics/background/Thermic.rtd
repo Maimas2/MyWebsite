@@ -1,0 +1,17 @@
+PageDisplayTitle:Endothermic and Exothermic Reactions
+PageDescription:Heat change associated with a chemical reaction
+SubtopicName:Chemistry
+
+In a chemical reaction, energy flows between the system its surroundings. If the energy goes from the system to the surroundings, the reaction is considered __b__exothermic__. If the energy flows the other way, from the surroundings to the system, the reaction is called __b__endothermic__.
+__newl__
+
+__newl__
+For example, the combustion of hydrogen with oxygen is exothermic. If you include energy as a part of the chemical equation, it would be a product:
+
+\[ \ce{2H2 (g) + O2 (g) -> 2H2O (g) + 288\text{kJ}} \]__footnote__In a chemical equation, the amount of energy is customarily given in \( \text{J}/\text{mol} \) for normal chemical reactions. Different units may be used in different subject areas, such as astronomy.__
+
+Chemists often represent this energy change using \(\Delta H \) notation, where the \(H\) represents __b__enthalpy__, which can intuitively thought of as the total energy of a system. There is more to it, but that is not covered under Earth and Space.
+__newl__
+\(\Delta H\) represents the energy change as if it were a reactant; so, a negative \(\Delta H\) means the reaction is exothermic, and positive means endothermic. It goes opposite to intuition. The combustion can be represented as follows with \(\Delta H\) notation:
+
+\[\ce{ 2H2 (g) + O2 (g) -> 2H2O (g) \qquad \Delta H = -288\text{kJ} }\]

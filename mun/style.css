@@ -286,9 +286,11 @@ input {
     margin: 0;
 }
 .countryListInner {
+    width: 60%;
     padding: 10px;
     border-radius: 7px;
     margin: 0;
+    margin-left: 20% !important;
     transition: all 150ms linear;
 }
 .countryListInner:hover {
