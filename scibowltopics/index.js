@@ -33,7 +33,11 @@ app.get('/', (req, res) => {
     // TODO : Implement actual home screen
 });
 
-app.get("/favicon.(png|ico)", (req, res) => {
+app.get("/favicon.png", (req, res) => {
+    res.sendFile("./favicon.png", {root: __dirname});
+});
+
+app.get("/favicon.ico", (req, res) => {
     res.sendFile("./favicon.png", {root: __dirname});
 });
 
