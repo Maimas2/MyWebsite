@@ -51,9 +51,9 @@ app.get("/reader.js", (req, res) => {
     res.sendFile("./reader.js", {root: __dirname});
 });
 
-app.get("/topics/*", (req, res) => {
-    if(!req.url.endsWith("/")) {
-        res.redirect(req.url + "/");
+app.use("/topics/*", (req, res) => {
+    if(!req.originalUrl.endsWith("/")) {
+        res.redirect(req.originalUrl + "/");
     } else {
         res.sendFile("reader.html", {root: __dirname});
     }
@@ -63,8 +63,8 @@ app.get("/jquery.js", (req, res) => {
     res.sendFile("jquery-3.7.1.min.js", {root: __dirname});
 });
 
-app.get("/images/*", (req, res) => {
-    var imageName = decodeURI(req.url).split("/").pop();
+app.use("/images/*", (req, res) => {
+    var imageName = decodeURI(req.originalUrl).split("/").pop();
     if(fs.existsSync(__dirname + "/staticimages/images/" + imageName)) {
         res.sendFile("./staticimages/images/" + imageName, {root: __dirname});
     } else {
@@ -72,8 +72,8 @@ app.get("/images/*", (req, res) => {
     }
 });
 
-app.get("/nlink/*", (req, res) => {
-    var nLinkPageName = decodeURI(req.url.slice(7));
+app.use("/nlink/*", (req, res) => {
+    var nLinkPageName = decodeURI(req.originalUrl.slice(7));
     if(nLinkPageName in namePageNlink) {
         res.redirect(namePageNlink[nLinkPageName]);
     } else {
@@ -83,8 +83,8 @@ app.get("/nlink/*", (req, res) => {
 
 var currentPage; // ONLY TO BE USED IN THE `/api/*` RETURN FUNCTION
 
-app.get('/api/*', (req, res) => {
-    var pathTrace = (req.url.slice(5)).split("/"); // Remove the starting /api/ and split it into subpages
+app.use('/api/*', (req, res) => {
+    var pathTrace = (req.originalUrl.slice(5)).split("/"); // Remove the starting /api/ and split it into subpages
     if(pathTrace[pathTrace.length-1] == "") pathTrace.splice(pathTrace.length-1, 1);
 
     //console.log(pathTrace);
