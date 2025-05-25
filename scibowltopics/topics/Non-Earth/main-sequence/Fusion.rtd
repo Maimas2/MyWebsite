@@ -19,7 +19,7 @@ The first and simplest of the fusion processes is called the __b__proton-proton 
 Four protons all colliding into each other never happens,__footnote__Even three particles colliding is nigh impossible; four never happens. See the study of Chemical Kinetics for more information on this sort of thing.__ so the fusion reaction must take place in a series of steps. The P-P chain goes through three steps to turn six protons into one helium nucleus:
 
 \[\ce{ ^1H + ^1H -> ^2H + {\nu} + e+ + 0.42\text{MeV} }\]
-\[\ce{ {^2H} + {^1H} -> {^3He} + \gamma + 5.493\text{MeV} }\]
+\[\ce{ {^2H} + {^1H} -> {^3He} + {\gamma} + 5.493\text{MeV} }\]
 \[\ce{ {^3H} + {^3H} -> {^4He} + {^1H} + {^1H} + 12.859\text{MeV} }\]
 
 Each of these three reactions is at least slightly exothermic, and they all help to heat up the surrounding gas:
