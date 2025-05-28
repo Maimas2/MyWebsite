@@ -309,7 +309,14 @@ function hidePopup(nextFunction = null) {
             
             refreshAttendanceNodes();
 
-            if(isInQuickStart) quickStartKeyToGoOn = 1;
+            if(isInQuickStart) {
+                if(numDelegatesInCommittee == 0) {
+                    createAlert("Choose some delegates to be in your committee first");
+                    return;
+                } else {
+                    quickStartKeyToGoOn = 1;
+                }
+            }
         } else if(document.getElementById("newModPopup").style.display != "none") {
             var toAdd = $("#modMotionPrefab").clone(true);
             var inputList = toAdd.find("input");
@@ -597,7 +604,7 @@ document.getElementById("newUnmod").onclick = function(_event) {
 document.getElementById("editdelegatelistbutton").onclick = function(_event) {
     showPopup();
     bigPopup();
-    document.getElementById("editDelegateList").style.display = "block";
+    document.getElementById("editDelegateList").style.display = "flex";
     $("#editDelegateList").css("height", "60%");
     document.getElementById("delegateListSearch").value = "";
     refreshDelegateListSearch();
@@ -662,20 +669,28 @@ document.getElementById("newRoundRobin").onclick = function(_event) {
     document.getElementById("roundRobinTopic").focus()
 }
 
-function refreshDelegateListSearch(_e_ = null) {
-    setTimeout(() => {
-        var t = document.getElementById("delegateListSearch").value.toLowerCase();
-        getDelegatePresenseNodes().forEach((e) => {
-            if(!$(e).hasClass("countryListOne")) return;
-            if(typeof e.style != "undefined") {
-                if(e.textContent.toLowerCase().includes(t)) {
-                    e.style.display = "";
-                } else {
-                    e.style.display = "none";
-                }
+function doYourThing() {
+    var t = document.getElementById("delegateListSearch").value.toLowerCase();
+    getDelegatePresenseNodes().forEach((e) => {
+        if(!$(e).hasClass("countryListOne")) return;
+        if(typeof e.style != "undefined") {
+            if(e.textContent.toLowerCase().includes(t)) {
+                e.style.display = "";
+            } else {
+                e.style.display = "none";
             }
-        });
-    }, 0.1);
+        }
+    });
+}
+
+function refreshDelegateListSearch(_e_ = null, delay = 0.1) {
+    if(delay < 0.001) {
+        doYourThing();
+        return;
+    }
+    setTimeout(() => {
+        doYourThing();
+    }, delay);
 }
 
 document.getElementById("delegateListSearch").oninput = refreshDelegateListSearch;
@@ -845,7 +860,7 @@ function createDelegateCountryNode(name, clicked=false) {
 
     outer.append(cb);
     //outer.append($("<br>"));
-    outer.append( $("#dividerLinePrefab").clone(true).attr("id", "").css("display", "block").css("margin", "10px 0 10px 25%") );
+    outer.append( $("#dividerLinePrefab").clone(true).attr("id", "").css("display", "block").css("margin", "5px 0 5px 25%") );
 
     if(clicked) {
         cb.click();
@@ -1033,7 +1048,7 @@ window.onload = function(_event) {
         var ttt = 0;
         getListOfVotingCountries().forEach(function(el) {
             $("#rollCallPastChoices").append(
-                $("<div>").attr("data-num", ttt++).append($(`<p class="expandAllTheWay">${el}</p>`)).append($(`<p class="expandAllTheWay entireLineHeight">No Vote</p>`)).on("click", function(_e) {
+                $("<div>").attr("data-num", ttt++).attr("data-bg-color", "#ffffff").append($(`<p class="expandAllTheWay">${el}</p>`)).append($(`<p class="expandAllTheWay entireLineHeight">No Vote</p>`)).on("click", function(_e) {
                     rollCallCurrentVoter = $(this).attr("data-num");
                     goToNextRollCallVote(false);
                 })
@@ -1047,6 +1062,7 @@ window.onload = function(_event) {
         $("#exitPopup").css("display", "none");
 
         rollCallCurrentVoter = 0;
+        rollCallCurrentVotes = new Array(numPossibleVoters).fill("No Vote");
         rollCallNumNays      = 0;
         rollCallNumYeas      = 0;
         rollCallNumAbstains  = 0;
@@ -1058,10 +1074,10 @@ window.onload = function(_event) {
         
         $("#rollCallCountryName").text(getListOfVotingCountries()[rollCallCurrentVoter]);
         $("#rollCallVoterAttendance").text(
-            getListOfVotingCountries()[rollCallCurrentVoter][1][1] == "Pr" ? "Present" : "Present and Voting"
+            getDictOfVotingCountries()[getListOfVotingCountries()[rollCallCurrentVoter]] == "Pr" ? "Present" : "Present and Voting"
         );
         
-        if(getListOfVotingCountries()[rollCallCurrentVoter][1][1] == "Pr") {
+        if(getDictOfVotingCountries()[getListOfVotingCountries()[rollCallCurrentVoter]] == "Pr") {
             $("#rollCallAbstainButton").prop("disabled", false);
         } else {
             $("#rollCallAbstainButton").prop("disabled", true);
@@ -1076,7 +1092,7 @@ window.onload = function(_event) {
         $("#abstainRollCallSegment").text(rollCallNumAbstains + (rollCallNumAbstains != 1 ? " abstains" : " abstain"));
         $("#nayRollCallSegment").text(rollCallNumNays + (rollCallNumNays != 1 ? " nays" : " nay"));
 
-        $(`#rollCallPastChoices`).children().toArray()[0].scrollIntoView();
+        //$(`#rollCallPastChoices`).children().toArray()[0].scrollIntoView();
     });
 
 
@@ -1171,6 +1187,8 @@ window.onload = function(_event) {
         $("#newDelegateInput").val("");
 
         hasMadeNewDelegate = true;
+
+        refreshDelegateListSearch(0);
     });
 
     $("#impromptuTimerButton").on("click", function(_e) {
@@ -1247,22 +1265,24 @@ function goToNextRollCallVote(proceeds=true) { // It's best to not look at this 
     if(hasRollCallFinished) {
         return;
     }
-    $($(`#rollCallPastChoices`).children()).css("background-color", "");
+    $(`#rollCallPastChoices`).children().toArray().forEach((el) => {
+        $(el).css("background-color", $(el).attr("data-bg-color"));
+    });
     if(proceeds) rollCallCurrentVoter++;
     if(rollCallCurrentVoter == numPossibleVoters) {
         rollCallCurrentVoter--;
-        hasRollCallFinished = true;
+        //hasRollCallFinished = true;
     }
     $($(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter]).css("background-color", "powderblue");
 
-    $(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter].scrollIntoView({behavior: "smooth"});
+    if(proceeds) $(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter].scrollIntoView({behavior: "smooth"});
 
     $("#rollCallCountryName").text(getListOfVotingCountries()[rollCallCurrentVoter]);
     $("#rollCallVoterAttendance").text(
-        getListOfVotingCountries()[rollCallCurrentVoter][1][1] == "Pr" ? "Present" : "Present and Voting"
+        getDictOfVotingCountries()[getListOfVotingCountries()[rollCallCurrentVoter]] == "Pr" ? "Present" : "Present and Voting"
     );
 
-    if(getListOfVotingCountries()[rollCallCurrentVoter][1][1] == "Pr") {
+    if(getDictOfVotingCountries()[getListOfVotingCountries()[rollCallCurrentVoter]] == "Pr") {
         $("#rollCallAbstainButton").prop("disabled", false);
     } else {
         $("#rollCallAbstainButton").prop("disabled", true);
@@ -1279,7 +1299,10 @@ function goToNextRollCallVote(proceeds=true) { // It's best to not look at this 
 
     if(hasRollCallFinished) {
         $("#rollCallButtonContainer > *").prop("disabled", true);
-        $("#rollCallPastChoices > *").css("background-color", "");
+
+        $(`#rollCallPastChoices`).children().toArray().forEach((el) => {
+            $(el).css("background-color", $(el).attr("data-bg-color"));
+        });
     }
 }
 
@@ -1287,11 +1310,13 @@ $("#rollCallYeaButton").on("click", function(_e) {
     if(!hasRollCallFinished) {
         if(rollCallCurrentVotes[rollCallCurrentVoter] == "Yea") rollCallNumYeas--;
         else if(rollCallCurrentVotes[rollCallCurrentVoter] == "Nay") rollCallNumNays--;
-        else if(rollCallCurrentVotes[rollCallCurrentVoter] == "Abstains") rollCallNumAbstains--;
+        else if(rollCallCurrentVotes[rollCallCurrentVoter] == "Abstain") rollCallNumAbstains--;
 
         $($(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter]).children().toArray()[1].textContent = "Yea";
         rollCallCurrentVotes[rollCallCurrentVoter] = "Yea";
         rollCallNumYeas++;
+
+        $($("#rollCallPastChoices").children().get(rollCallCurrentVoter)).attr("data-bg-color", "#a1fc85");
     }
     goToNextRollCallVote();
 });
@@ -1300,11 +1325,13 @@ $("#rollCallNayButton").on("click", function(_e) {
     if(!hasRollCallFinished) {
         if(rollCallCurrentVotes[rollCallCurrentVoter] == "Yea") rollCallNumYeas--;
         else if(rollCallCurrentVotes[rollCallCurrentVoter] == "Nay") rollCallNumNays--;
-        else if(rollCallCurrentVotes[rollCallCurrentVoter] == "Abstains") rollCallNumAbstains--;
+        else if(rollCallCurrentVotes[rollCallCurrentVoter] == "Abstain") rollCallNumAbstains--;
 
         $($(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter]).children().toArray()[1].textContent = "Nay";
-        rollCallCurrentVotes[rollCallCurrentVoter] = "Yea";
+        rollCallCurrentVotes[rollCallCurrentVoter] = "Nay";
         rollCallNumNays++;
+
+        $($("#rollCallPastChoices").children().get(rollCallCurrentVoter)).attr("data-bg-color", "#f9877c");
     }
     goToNextRollCallVote();
 });
@@ -1313,10 +1340,13 @@ $("#rollCallAbstainButton").on("click", function(_e) {
     if(!hasRollCallFinished) {
         if(rollCallCurrentVotes[rollCallCurrentVoter] == "Yea") rollCallNumYeas--;
         else if(rollCallCurrentVotes[rollCallCurrentVoter] == "Nay") rollCallNumNays--;
-        else if(rollCallCurrentVotes[rollCallCurrentVoter] == "Abstains") rollCallNumAbstains--;
+        else if(rollCallCurrentVotes[rollCallCurrentVoter] == "Abstain") rollCallNumAbstains--;
 
         rollCallNumAbstains++;
         $($(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter]).children().toArray()[1].textContent = "Abstain";
+        rollCallCurrentVotes[rollCallCurrentVoter] = "Abstain";
+
+        $($("#rollCallPastChoices").children().get(rollCallCurrentVoter)).attr("data-bg-color", "#7a7a7a");
     }
     
     goToNextRollCallVote();

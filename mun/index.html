@@ -88,16 +88,21 @@
         </div>
         <div id="popupPage">
             <div id="editDelegateList" class="outlineddiv">
-                <input type="text" id="delegateListSearch" spellcheck="false" placeholder="Search for country...">
-                <div id="normalDelegateList">
-                    <h2 style="text-align: center;">Normal UN Delegates</h2>
+                <div id="searchbarContainer">
+                    <input type="text" id="delegateListSearch" spellcheck="false" placeholder="Search for a country...">
+                    <button onclick="$('#delegateListSearch').val('');refreshDelegateListSearch();" style="padding: 2px;aspect-ratio: 1;">X</button>
                 </div>
-                <div id="customDelegateList">
-                    <h2>Custom UN Delegates</h2>
-                </div>
-                <div id="newDelegate" style="display: flex;width:100%;">
-                    <input type="text" id="newDelegateInput" maxlength="100" placeholder="New delegate name..." style="width:80%;margin:10px;">
-                    <button id="newDelegateSubmit" style="width:20%;margin:10px;">New Delegate</button>
+                <div id="delegateListSearchBottomContainer">
+                    <div id="normalDelegateList">
+                        <h2 style="text-align: center;">Normal UN Delegates</h2>
+                    </div>
+                    <div id="customDelegateList">
+                        <h2 style="text-align: center;">Custom UN Delegates</h2>
+                    </div>
+                    <div id="newDelegate" style="display: flex;width:100%;">
+                        <input type="text" id="newDelegateInput" maxlength="100" placeholder="New delegate name..." style="width:80%;margin:10px;">
+                        <button id="newDelegateSubmit" style="width:20%;margin:10px;">New Delegate</button>
+                    </div>
                 </div>
             </div>
             <div id="attendanceList" class="outlineddiv">

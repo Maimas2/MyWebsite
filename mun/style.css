@@ -274,10 +274,12 @@ input {
     grid-auto-flow: column;
 }
 #editDelegateList {
-    overflow: scroll;
     text-align: left;
-    display: initial;
+    display: flex;
     padding: 15px !important;
+    align-items: stretch;
+    overflow: hidden !important;
+    flex-direction: column;
 }
 .countryListOne {
     transition: all 150ms linear;
@@ -287,7 +289,7 @@ input {
 }
 .countryListInner {
     width: 60%;
-    padding: 10px;
+    padding: 5px;
     border-radius: 7px;
     margin: 0;
     margin-left: 20% !important;
@@ -301,11 +303,9 @@ input {
     height: 85%;
 }
 #delegateListSearch {
-    height: 10%;
     width: 100%;
     z-index: 5;
     padding: 10px;
-    margin-bottom: 20px;
 }
 input[type="text"], input[type="number"] {
     font-size: 100%;
@@ -587,4 +587,14 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #quickStartPopup > p {
     font-size: 100%;
+}
+#delegateListSearchBottomContainer {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+#searchbarContainer {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
 }
