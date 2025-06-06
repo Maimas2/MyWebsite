@@ -33,7 +33,7 @@ function createMessage(data, isFromSelf=false) {
 }
 
 window.onload = function() {
-    wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:2053/ws" : "wss://" + window.location.host + ":2053/ws";
+    wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:2053/" : "wss://" + window.location.host + ":2053/";
     $("#join").on("click", function(_e) {
         var d = {
             name     : $("#jccName").val(),
