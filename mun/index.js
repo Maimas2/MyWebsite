@@ -265,7 +265,7 @@ app.post("/jccLogin", (req, res) => {
     });
 })
 
-app.ws('/', function(ws, req) {
+app.ws("/ws", function(ws, req) {
     //unsortedWs.add(ws);
 
     ws.on("message", (message) => { // No error codes or any of that shit here, just discard invalid inputs
