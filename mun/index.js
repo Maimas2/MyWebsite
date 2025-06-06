@@ -267,6 +267,7 @@ app.post("/jccLogin", (req, res) => {
 
 app.ws("/ws", function(ws, req) {
     //unsortedWs.add(ws);
+    console.log(59839203);
 
     ws.on("message", (message) => { // No error codes or any of that shit here, just discard invalid inputs
         console.log(message);
@@ -344,6 +345,7 @@ app.post("/getsavedata", jsonParse, (req, res) => {
             success : false,
             message : "Did not send `id`!"
         });
+        return;
     }
     if(req.body.id in savedSaveData) {
         res.send(savedSaveData[req.body.id]);

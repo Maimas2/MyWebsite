@@ -80,9 +80,9 @@ app.listen(port, () => {
     }
 });
 
-app.listen(3001, () => {
+/* app.listen(3001, () => {
     console.log("WebSocket port is up");
-});
+}); */
 
 function receivedKillSignal() {
     console.log("Shutting down...");
