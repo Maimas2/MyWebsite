@@ -974,7 +974,7 @@ window.onload = function(_event) {
         createAlert("This website is NOT meant to be used on a mobile device! It is meant to be on a large screen up at the front of the conference. But you do you, I guess.")
     }
 
-    wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:3002" : "wss://" + window.location.host + ":3002";
+    wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:3002/ws" : "wss://" + window.location.host + ":3002/ws";
 
     $("#committeeName").val("");
     $("#newDelegateInput").val("");
