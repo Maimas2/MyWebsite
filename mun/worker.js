@@ -1350,7 +1350,7 @@ function setupJccData(data) {
     jccData = data;
     $("#jccNameSpan").text(data.name);
 
-    ws = new WebSocket("ws://" + window.location.host, "echo-protocol");
+    ws = new WebSocket("wss://" + window.location.host, "echo-protocol");
     
     ws.addEventListener("open", function(_e) {
         ws.send(JSON.stringify({
