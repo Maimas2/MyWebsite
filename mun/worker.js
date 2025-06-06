@@ -974,6 +974,8 @@ window.onload = function(_event) {
         createAlert("This website is NOT meant to be used on a mobile device! It is meant to be on a large screen up at the front of the conference. But you do you, I guess.")
     }
 
+    wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:3002" : "wss://" + window.location.host + ":3002";
+
     $("#committeeName").val("");
     $("#newDelegateInput").val("");
 
@@ -1350,9 +1352,10 @@ function setupJccData(data) {
     jccData = data;
     $("#jccNameSpan").text(data.name);
 
-    ws = new WebSocket("wss://" + window.location.host, "echo-protocol");
+    ws = new WebSocket(wsUrl, "echo-protocol");
     
     ws.addEventListener("open", function(_e) {
+        console.log("Connected to WebSocket");
         ws.send(JSON.stringify({
             name       : data.name,
             type       : "setup",

@@ -4,6 +4,9 @@ var ws;
 
 var jccData;
 
+
+var wsUrl;
+
 function createMessage(data, isFromSelf=false) {
     var toAdd = $("<div>").addClass("outlineddiv").css("padding", "15px");
 
@@ -30,6 +33,7 @@ function createMessage(data, isFromSelf=false) {
 }
 
 window.onload = function() {
+    wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:3002" : "wss://" + window.location.host + ":3002";
     $("#join").on("click", function(_e) {
         var d = {
             name     : $("#jccName").val(),
