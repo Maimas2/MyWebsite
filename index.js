@@ -64,7 +64,7 @@ app.use(function(req, res, next) {
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
-
+    
     munFile.setParentShutdownCallback(receivedKillSignal);
 
     munFile.startUpFunction();
@@ -73,7 +73,7 @@ app.listen(port, () => {
 
     if(fs.existsSync("./saves/todo_list.txt")) {
         var d = fs.readFileSync("./saves/todo_list.txt", "utf-8");
-        console.log(d);
+        //console.log(d);
         todoList = d;
     } else {
         console.warn("Could not find Todo list file!!!");

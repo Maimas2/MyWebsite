@@ -1,0 +1,35 @@
+#topbar {
+    flex-direction: column;
+    overflow: visible;
+    min-height: 500px;
+}
+#newmotions {
+    flex-direction: row;
+}
+#newMotionLabel {
+    display: flex;
+    align-items: center;
+    margin-left:  20px;
+    margin-right: 20px;
+}
+#newmotionsinner {
+    width: 100%;
+
+}
+#leftDelegateBox, #rightDelegateBox {
+    width: 50%;
+}
+#committeeName {
+    font-size: 300%;
+}
+#popupPage > div.outlineddiv {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    left: 10%;
+    top: 10%;
+    box-shadow: 2px 2px 7px #777;
+    overflow: scroll;
+    display: flex;
+    font-size: 150%;
+}

@@ -27,14 +27,18 @@
                     </div>
                 </div>
             </div>
-            <div id="newmotions" class="outlineddiv" style="overflow-y:scroll;">
-                <h1>New Motion</h1><br>
+            <div id="newmotions" class="outlineddiv" style="overflow-y:scroll;"> <!-- Wow this turned out a lot worse than I could have hoped -->
+                <div id="newMotionLabel"><h1>New Motion</h1></div>
                 <!--<button id="setAgenda">Set Agenda</button>-->
-                <button id="newSpeakersList" class="outlineddiv">Speakers List</button>
-                <button id="newMod" class="outlineddiv">Moderated Caucus</button>
-                <button id="newUnmod" class="outlineddiv">Unmoderated Caucus</button>
-                <button id="newRoundRobin" class="outlineddiv">Round Robin</button>
-                <button id="newIntroduce" class="outlineddiv">Introduce Papers</button>
+                <div id="newmotionsinner">
+                    <div id="newmotionsinnerinner">
+                        <button id="newSpeakersList" class="outlineddiv">Speakers List</button>
+                        <button id="newMod" class="outlineddiv">Moderated Caucus</button>
+                        <button id="newUnmod" class="outlineddiv">Unmoderated Caucus</button>
+                        <button id="newRoundRobin" class="outlineddiv">Round Robin</button>
+                        <button id="newIntroduce" class="outlineddiv">Introduce Papers</button>
+                    </div>
+                </div>
             </div>
             <div id="exitCurrentMotion" class="outlineddiv" style="vertical-align: middle;display:none;">
                 <button style="width: 100%;height:100%;border-radius: 15px;" onclick="endCurrentMotion()">End Current Motion</button>
@@ -44,8 +48,9 @@
                 <div></div>
                 <button id="saveToCloudButton">Save to Cloud</button>
                 <button id="loadFromCloudButton">Load from Cloud</button>
-                <button id="logoContainer" class="outlineddiv">Notes</button>
-                <div></div>
+                <button id="logoContainer">Notes</button>
+                <button id="startJCC">Join JCC</button>
+                <button id="jccInfo" style="display:none">JCC Info</button>
             </div>
         </div>
         <div id="bottomarea" style="display: none;">
@@ -80,6 +85,11 @@
                         </div>
                         <p id="numberOfAddedCountriesLabel"><span id="numberOfAddedCountriesSpan">0</span>/<span id="maxNumberOfAddedCountriesSpan">10</span></p>
                     </div>
+                    <div id="jccPassPaperContainer">
+                        <h2>Pass Papers</h2>
+                        <input id="passedPaperNameInput" type="text">
+                        <button id="passedPaperButton">Pass</button>
+                    </div>
                 </div>
                 <div id="passedMotionCountryChooser" class="outlineddiv">
                     
@@ -87,7 +97,7 @@
             </div>
         </div>
         <div id="popupPage">
-            <div id="editDelegateList" class="outlineddiv">
+            <div id="editDelegateList" class="outlineddiv largePopup">
                 <div id="searchbarContainer">
                     <input type="text" id="delegateListSearch" spellcheck="false" placeholder="Search for a country...">
                     <button onclick="$('#delegateListSearch').val('');refreshDelegateListSearch();" style="padding: 2px;aspect-ratio: 1;">X</button>
@@ -105,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            <div id="attendanceList" class="outlineddiv">
+            <div id="attendanceList" class="outlineddiv largePopup">
                 <h3>Attendance</h3>
                 <button onmousedown="
                     document.getElementById('attendanceListOfCountries').childNodes.forEach((el) => {
@@ -155,7 +165,7 @@
                 <br>
                 Delegate speaking time: <input type="text" id="roundRobinDelegateDuration" value="0:20" class="largeTextInput">
             </div>
-            <div id="rollCallVotePopup" class="bottomMarginChildren outlineddiv">
+            <div id="rollCallVotePopup" class="bottomMarginChildren outlineddiv largePopup">
                 <div>
                     <h1>Roll Call Vote</h1>
                     <p><span id="rollCallNumVotesNeededToWin"></span> yeas required to pass</p>
@@ -194,7 +204,7 @@
                 <br>
                 <button id="loadFromCloudSubmit">Load from Cloud</button>
             </div>
-            <div id="legalStuffEwww" class="bottomMarginChildren outlineddiv">
+            <div id="legalStuffEwww" class="bottomMarginChildren outlineddiv largePopup">
                 <h1>Notes</h1>
                 <br>
                 <p>I made this website for my high school's Capstone project. It was specifically made for use in my school's club. I intended it to be used as a tool during a conference, not to run every little bit of it. That's why there are some features missing, like a system to present papers.</p>
@@ -203,7 +213,7 @@
                 <br>
                 <p>This website uses <a href="https://jquery.com/">jQuery</a>; <a href="https://github.com/SortableJS/Sortable">SortableJS</a> for the sortable lists; and <a href="https://github.com/SortableJS/jquery-sortablejs">jQuery-Sortable</a> for jQuery bindings.</p>
             </div>
-            <div id="impromptuTimer" class="bottomMarginChildren outlineddiv">
+            <div id="impromptuTimer" class="bottomMarginChildren outlineddiv largePopup">
                 <h1>Timer</h1>
                 <input type="text" value="1:00" id="impromptuTimerLabel"></input>
                 <div id="impromptuTimerControls">
@@ -211,7 +221,7 @@
                     <button id="impromptuTimerReset">Reset</button>
                 </div>
             </div>
-            <div id="quickStartPopup" class="bottomMarginChildren outlineddiv">
+            <div id="quickStartPopup" class="bottomMarginChildren outlineddiv largePopup">
                 <h1>Quick Start</h1>
                 <div style="display:inline-block;width:50%;background-color: black;height:1px !important;"></div>
                 <p>Choose which countries are slated to be in your committee</p>
@@ -229,6 +239,22 @@
                     $('#takeAttendanceButton').click();
                 })
                 " id="quickStartAttendance">Do that</button>
+            </div>
+            <div id="joinJccPopup" class="bottomMarginChildren outlineddiv">
+                <h1>Join a Joint Crisis Committee</h1>
+                <br>
+                Name: <input type="text" id="newJccName">
+                <br>
+                Password: <input type="text" id="newJccPassword">
+                <br>
+                <button id="newJCC">New JCC</button>
+                <button id="joinJCC">Join existing JCC</button>
+            </div>
+            <div id="jccInfoPopup" class="bottomMarginChildren outlineddiv largePopup">
+                <h1>Joint Crisis Committee Name: <span id="jccNameSpan"></span></h1>
+                <br>
+                <input type="text" id="jccSendMessageInput">
+                <button id="jccSendMessageButton">Send</button>
             </div>
             <div id="exitButtons">
                 <button id="quitPopup" onclick="quitPopup()">Discard</button>

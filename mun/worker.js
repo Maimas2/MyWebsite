@@ -544,6 +544,12 @@ function parsePassedMotionJSON(details) {
         }, 150);
     });
 
+    if(details["motionType"] == "presentPapers" && ws != undefined) {
+        $("#jccPassPaperContainer").css("display", "block");
+    } else {
+        $("#jccPassPaperContainer").css("display", "none");
+    }
+
     refreshTimer();
     $(":focus").blur();
     isTimerHalted = false;
@@ -603,7 +609,6 @@ document.getElementById("newUnmod").onclick = function(_event) {
 
 document.getElementById("editdelegatelistbutton").onclick = function(_event) {
     showPopup();
-    bigPopup();
     document.getElementById("editDelegateList").style.display = "flex";
     $("#editDelegateList").css("height", "60%");
     document.getElementById("delegateListSearch").value = "";
@@ -626,7 +631,6 @@ document.getElementById("takeAttendanceButton").onclick = function(_e) {
     }
     if(!isPopupShown) {
         showPopup();
-        bigPopup();
         document.getElementById("attendanceList").style.display = "block";
         $("#attendanceList").css("height", "60%");
         document.getElementById("quitPopup").style.display = "none";
@@ -942,14 +946,8 @@ function motionTypeToImportance(el) {
     return -100000; // :)
 }
 
-function bigPopup() {
-    $("#popupPage").css("top", "-15%");
-    $("#popupPage").css("height", "115%");
-}
-
 function showQuickStart() {
     showPopup();
-    bigPopup();
     $("#quickStartPopup").css("display", "block");
     $("#quickStartPopup").css("height", "60%");
     $("#quitPopup").text("No thanks");
@@ -968,6 +966,14 @@ window.addEventListener("onbeforeunload", function (e) {
 });
 
 window.onload = function(_event) {
+    if(window.location.href.includes("mobile")) { // Do mobile setup things
+        $("head").append($("<link>").attr("rel", "stylesheet").attr("href", "/mobile-style.css"));
+
+        $("#quickStartPopup").removeClass("largePopup");
+
+        createAlert("This website is NOT meant to be used on a mobile device! It is meant to be on a large screen up at the front of the conference. But you do you, I guess.")
+    }
+
     $("#committeeName").val("");
     $("#newDelegateInput").val("");
 
@@ -1056,7 +1062,6 @@ window.onload = function(_event) {
         });
 
         showPopup();
-        bigPopup();
         $("#rollCallVotePopup").css("display", "block");
         $("#quitPopup").text("Close");
         $("#exitPopup").css("display", "none");
@@ -1171,7 +1176,6 @@ window.onload = function(_event) {
     $("#logoContainer").on("click", function(_e) {
         if(isPopupShown) return;
         showPopup();
-        bigPopup();
         $("#legalStuffEwww").css("display", "block").css("height", "60%");
         $("#quitPopup").text("Close");
         $("#exitPopup").css("display", "none");
@@ -1194,7 +1198,6 @@ window.onload = function(_event) {
     $("#impromptuTimerButton").on("click", function(_e) {
         if(isPopupShown) return;
         showPopup();
-        bigPopup();
         $("#impromptuTimer").css("display", "block").css("height", "60%");
         $("#exitPopup").css("display", "none");
         $("#quitPopup").text("Close");
@@ -1245,6 +1248,95 @@ window.onload = function(_event) {
         });
     });
 
+    $("#startJCC").on("click", function(_e) {
+        showPopup();
+        $("#joinJccPopup").css("display", "block");
+    });
+    $("#jccInfo").on("click", function(_e) {
+        showPopup();
+        $("#jccInfoPopup").css("display", "block");
+    });
+    $("#newJCC").on("click", function(_e) {
+        if($("#newJccName").val() == "") {
+            createAlert("JCC name cannot be empty");
+            return;
+        }
+        var d = {
+            name     : $("#newJccName").val(),
+            password : $("#newJccPassword").val()
+        };
+        hidePopup();
+        $("#startJCC").css("display", "none");
+        $.ajax({
+            type    : "POST",
+            url     : "/createJCC",
+            contentType: 'application/json',
+            success : function(returned) {
+                console.log(returned);
+
+                setupJccData(returned);
+            },
+            error   : function(returned) {
+                console.error(JSON.parse(returned.responseText));
+                createAlert(JSON.parse(returned.responseText).message);
+                $("#startJCC").css("display", "inline-block");
+            },
+            data    : JSON.stringify(d)
+        });
+    });
+    $("#joinJCC").on("click", function(_e) {
+        if($("#newJccName").val() == "") {
+            createAlert("JCC name cannot be empty");
+            return;
+        }
+        var d = {
+            name     : $("#newJccName").val(),
+            password : $("#newJccPassword").val()
+        };
+        hidePopup();
+        $("#startJCC").css("display", "none");
+        $.ajax({
+            type    : "POST",
+            url     : "/jccLogin",
+            contentType: 'application/json',
+            success : function(returned) {
+                console.log(returned);
+
+                setupJccData(returned);
+            },
+            error   : function(returned) {
+                console.error(JSON.parse(returned.responseText));
+                createAlert(JSON.parse(returned.responseText).message);
+                $("#startJCC").css("display", "inline-block");
+            },
+            data    : JSON.stringify(d)
+        });
+    });
+    $("#jccSendMessageButton").on("click", function(_e) {
+        if(ws == undefined) return;
+        var d = {
+            name : jccData.name,
+            salt : jccData.salt,
+            type : "message",
+            messageBody : $("#jccSendMessageInput").val(),
+            sender     : $("#committeeName").val()
+        };
+        ws.send(JSON.stringify(d));
+        $("#jccSendMessageInput").val("");
+    });
+    $("#passedPaperButton").on("click", function(_e) {
+        if(ws == undefined) return;
+        var d = {
+            name : jccData.name,
+            salt : jccData.salt,
+            type : "paperPassed",
+            messageBody : $("#passedPaperNameInput").val(),
+            sender     : $("#committeeName").val()
+        };
+        ws.send(JSON.stringify(d));
+        $("#passedPaperNameInput").val("");
+    });
+
     $("#impromptuTimerLabel").val("5:00");
     $("#quickStartAttendance").prop("disabled", true);
 
@@ -1253,6 +1345,30 @@ window.onload = function(_event) {
 
     showQuickStart();
 }
+
+function setupJccData(data) {
+    jccData = data;
+    $("#jccNameSpan").text(data.name);
+
+    ws = new WebSocket("ws://mun.localhost:3002", "echo-protocol");
+    
+    ws.addEventListener("open", function(_e) {
+        ws.send(JSON.stringify({
+            name       : data.name,
+            type       : "setup",
+            salt       : data.salt,
+            clientType : "bigScreen"
+        }));
+        $("#jccInfo").css("display", "inline-block");
+    });
+    ws.addEventListener("message", function(m) {
+        console.log(m);
+        createAlert("Message: " + m.data.messageBody);
+    });
+}
+
+var ws;
+var jccData;
 
 var isImpromptuTimerGoing = false;
 var impromptuTime         = 300;
@@ -1275,7 +1391,7 @@ function goToNextRollCallVote(proceeds=true) { // It's best to not look at this 
     }
     $($(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter]).css("background-color", "powderblue");
 
-    if(proceeds) $(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter].scrollIntoView({behavior: "smooth"});
+    //if(proceeds) $(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter].scrollIntoView({behavior: "smooth"});
 
     $("#rollCallCountryName").text(getListOfVotingCountries()[rollCallCurrentVoter]);
     $("#rollCallVoterAttendance").text(

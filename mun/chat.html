@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="/lib/jquery.js"></script>
+        <link rel="stylesheet" href="/style.css">
+        <link rel="stylesheet" href="/chat.css">
+        <link rel="icon" type="image/png" href="/favicon.png"/>
+    </head>
+    <body>
+        <div id="joinJcc">
+            <div id="innerJoinJcc" class="outlineddiv">
+                <h2>Join JCC</h2>
+                <p>Name:</p>
+                <input id="jccName" type="text">
+                <br><br>
+                <p>Password:</p>
+                <input id="jccPassword" type="text">
+                <br><br>
+                <button id="join">Join</button>
+            </div>
+        </div>
+        <div id="joinedJcc">
+            <h1 id="topLabel">JCC Chat: <span id="jccNameSpanTop"></span></h1>
+            <div id="setNameContainer">
+                <h3 style="padding: 15px;flex-shrink: 0;margin:0;">Your Name:</h3>
+                <input id="yourNameInput" type="text">
+            </div>
+            <div id="chatMessageContainer">
+
+            </div>
+            <div id="messageSendContainer">
+                <input id="newMessageType" type="text">
+                <button id="sendMessageButton">Send</button>
+            </div>
+        </div>
+    </body>
+    <script src="/chat.js"></script>
+</html>
