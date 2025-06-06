@@ -72,7 +72,7 @@ function setupJccData(data) {
 
     $("#joinedJcc").css("display", "flex");
 
-    ws = new WebSocket("ws://mun.localhost:3002", "echo-protocol");
+    ws = new WebSocket("ws://" + window.location.host, "echo-protocol");
     
     ws.addEventListener("open", function(_e) {
         ws.send(JSON.stringify({
