@@ -1,0 +1,15 @@
+PageDisplayTitle:Ideal Gas Law
+PageDescription:Mathematic relation for an ideal gas
+SubtopicName:Physics
+
+The __b__Ideal Gas Law__ states that:
+
+\[ \ce{PV=nRT} \]
+
+The variables in this equation are as follows:
+__list__
+\(\text{P}\): pressure__
+\(\text{V}\): volume__
+\(n\): moles of gas__
+\(\text{R}\): Ideal Gas Constant__
+\(\text{T}\): temperature__tsil__

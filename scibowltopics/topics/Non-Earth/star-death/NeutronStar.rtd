@@ -2,4 +2,8 @@ PageDisplayTitle:Neutron Star
 PageDescription:Small, extremely dense compact object composed entirely of neutrons
 SubtopicName:Results
 
-What in the actual sigma
+If a star's core at time of collapse is more than about \(1.4M_\odot\) and exceeds the Chandrasekhar Limit, then the electron degeneracy pressure will not be strong enough to support the weight, and the core will collapse into a __b__neutron star__. The immense pressure forces __b__electron-capture__ to occur:
+
+\[\ce{ {p^+} + {e^-} -> n + \nu }\]
+
+The substance that is left behind is comprises almost entirely neutrons. Instead of electron degeneracy pressure propping the compact object up, neutron-neutron repulsions now take hold: __b__neutron degeneracy pressure__. This force is stronger than the degenerate electrons, but the particles are also packed much closer to each other, making the entire star unbelievably dense. Neutron stars are as dense as atomic nuclei, about \(4\cdot10^{17}\text{kg/m}^3\).

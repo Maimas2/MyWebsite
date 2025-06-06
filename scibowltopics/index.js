@@ -1,7 +1,8 @@
-const exp = require('constants')
-const express = require('express')
-const fs = require('fs')
-const { parse } = require('path')
+const exp     = require('constants');
+const express = require('express');
+const fs      = require('fs');
+const parse   = require('path');
+const os      = require("os");
 
 const app = express()
 const port = 3000
@@ -28,6 +29,8 @@ class PageClass {
     }
 }
 
+var wildcardString = os.hostname().includes("alex") ? "*" : "{*any}";
+
 app.get('/', (req, res) => {
     res.redirect("/topics/");
     // TODO : Implement actual home screen
@@ -51,7 +54,7 @@ app.get("/reader.js", (req, res) => {
     res.sendFile("./reader.js", {root: __dirname});
 });
 
-app.get("/topics/{*any", (req, res) => {
+app.get("/topics/" + wildcardString, (req, res) => {
     if(!req.originalUrl.endsWith("/")) {
         res.redirect(req.originalUrl + "/");
     } else {
@@ -63,7 +66,7 @@ app.get("/jquery.js", (req, res) => {
     res.sendFile("jquery-3.7.1.min.js", {root: __dirname});
 });
 
-app.get("/images/{*any}", (req, res) => {
+app.get("/images/" + wildcardString, (req, res) => {
     var imageName = decodeURI(req.originalUrl).split("/").pop();
     if(fs.existsSync(__dirname + "/staticimages/images/" + imageName)) {
         res.sendFile("./staticimages/images/" + imageName, {root: __dirname});
@@ -72,10 +75,16 @@ app.get("/images/{*any}", (req, res) => {
     }
 });
 
-app.get("/nlink/{*any}", (req, res) => {
+app.get("/nlink/" + wildcardString, (req, res) => {
     var nLinkPageName = decodeURI(req.originalUrl.slice(7));
+    var subpage = "";
+    if(nLinkPageName.includes("/")) {
+        subpage = nLinkPageName.split("/")[1];
+        nLinkPageName = nLinkPageName.split("/")[0];
+    }
+    console.log
     if(nLinkPageName in namePageNlink) {
-        res.redirect(namePageNlink[nLinkPageName]);
+        res.redirect(namePageNlink[nLinkPageName] + (subpage == "" ? "" : "/" + subpage));
     } else {
         res.send("KILL YOURSELF");
     }
@@ -83,7 +92,7 @@ app.get("/nlink/{*any}", (req, res) => {
 
 var currentPage; // ONLY TO BE USED IN THE `/api/*` RETURN FUNCTION
 
-app.get('/api/{*any}', (req, res) => {
+app.get('/api/' + wildcardString, (req, res) => {
     var pathTrace = (req.originalUrl.slice(5)).split("/"); // Remove the starting /api/ and split it into subpages
     if(pathTrace[pathTrace.length-1] == "") pathTrace.splice(pathTrace.length-1, 1);
 
@@ -93,7 +102,7 @@ app.get('/api/{*any}', (req, res) => {
     var stackTrace = [];
     var stackTraceUrls = [];
 
-    var scrollTo = "";
+    var scrollTo = pathTrace[pathTrace.length-1];
 
     var i = 0;
     while(++i < pathTrace.length) {
@@ -113,7 +122,7 @@ app.get('/api/{*any}', (req, res) => {
 
         if(found) continue;
         
-        if(pathTrace[pathTrace.length-1] == currentPage.name) break;
+        if(pathTrace[pathTrace.length-2] == currentPage.name) break;
 
         res.send(JSON.stringify({ // Subpage not found
             success : false,
@@ -185,7 +194,8 @@ function parseFile(path) {
 
     toReturn.fullText = lines.join("\n");
 
-    namePageNlink[toReturn.fancyName] = path.replace(".rtd", "").replace("/index", "").substring(1);
+    namePageNlink[toReturn.fancyName] = path.replace(".rtd", "").replace("/index", "").replace("/scibowltopics", "").substring(1);
+    //console.log(namePageNlink[toReturn.fancyName]);
 
     return toReturn;
 }
@@ -212,11 +222,11 @@ function readOverFolder(path) { // ALL WORKING FILE PATHS MUST HAVE A TRAILING S
     return toReturn;
 }
 
-/* app.get("/reloadList", (req, res) => {
-    pageHierarchy = readOverFolder("./topics/");
+if(os.hostname().includes("alex")) app.get("/reloadList", (req, res) => {
+    pageHierarchy = readOverFolder("./scibowltopics/topics/");
     console.log("Reloaded data files");
     res.send("Reloaded");
-}); */
+});
 
 exports.app = app;
 

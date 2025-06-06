@@ -115,9 +115,15 @@ function processText(oggText, splitter="__") {
             lines = lines.concat(
                 $("<a>").attr("href", "/topics/" + dest).text(display).css("display", "inline")
             );
-        } else if(splitIntoTags[i] == "nlink") {
+        } else if(splitIntoTags[i].startsWith("nlink")) {
+            var og = splitIntoTags[i];
+
             var display = splitIntoTags[++i];
             var dest    = splitIntoTags[++i];
+
+            if(og.includes("s")) { // Go to a LinkTo inside the page
+                dest += "/" + splitIntoTags[++i];
+            }
 
             lines = lines.concat(
                 $("<a>").attr("href", "/nlink/" + dest).text(display).css("display", "inline")
@@ -218,6 +224,8 @@ function processText(oggText, splitter="__") {
 }
 
 function setupPage() {
+    console.log(data);
+
     if(data.type != "page") return;
     if(!data.success) {
         $("#pageTitleLabel").text("404 Page not found");
@@ -252,7 +260,7 @@ function setupPage() {
 
     if(data.scrollToId != "") {
         if($("#ScrollId" + data.scrollToId).length) {
-            $("html, body").prop("scrollTop", $("#ScrollId" + data.scrollToId).offset().top);
+            $("#ScrollId" + data.scrollToId).get(0).scrollIntoView();
             var splitUrl = window.location.href.split("/");
             splitUrl.pop();
             splitUrl.pop();

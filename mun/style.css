@@ -59,12 +59,9 @@ input[type=number] {
     appearance: textfield;
 }
 #topbar {
-    left: 0;
-    top: 0;
     width: 100%;
     min-height: 200px;
     border-radius: 0;
-    z-index: 10;
     display: flex;
     align-items: stretch;
     overflow-x: scroll;
@@ -175,20 +172,30 @@ input[type=number] {
     padding: 10px;
     text-align: center;
 }
-#newmotions > * {
+#newmotions {
+    display: flex;
+    flex-direction: column;
+}
+#newmotionsinner {
+    height: 100%;
+    align-items: center;
+    display: flex;
+}
+#newmotionsinnerinner {
+    width: 100%;
+}
+#newmotionsinnerinner > * {
     display: inline;
     min-width: calc(33% - 10px);
     justify-content: start;
     margin-bottom: 5px;
     vertical-align: middle;
     padding: 5px;
-}
-#newmotions > div {
     display: inline-block;
     transition: all 150ms linear;
     font-size: 110%;
 }
-#newmotions > div:hover {
+#newmotionsinnerinner > div:hover {
     background-color: #ddd;
     border-radius: 5px;
 }
@@ -241,11 +248,15 @@ input[type=number] {
     display: grid;
     place-items: center;
 }
+#popupPage > div.largePopup {
+    top: 20%;
+    height: 60%;
+}
 #exitButtons {
     position: absolute;
     width: 50%;
     left: 25%;
-    bottom: 72%;
+    top: 5%;
     display: block !important;
     text-align: center;
 }
@@ -307,7 +318,7 @@ input {
     z-index: 5;
     padding: 10px;
 }
-input[type="text"], input[type="number"] {
+input[type="text"], input[type="password"], input[type="number"] {
     font-size: 100%;
     border-radius: 15px;
     text-align: center;
@@ -597,4 +608,10 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     display: flex;
     align-items: stretch;
     gap: 10px;
+}
+#newMotionLabel > * {
+    margin: 0;
+}
+#jccPassPaperContainer {
+    display: none;
 }

@@ -3,14 +3,16 @@ const fs         = require("fs");
 const app        = express();
 const port       = 3000;
 const bodyParser = require("body-parser");
+const useragent  = require('express-useragent');
+const ews        = require("express-ws")(app);
 
 //const urlEncoded = bodyParser.urlencoded({extended: false}); Only for login type stuff ig????
 
-var parentShutdown;
+var parentShutdownFunction;
 
-var currentCountryList = {
+/* var currentCountryList = {
     list: ["United States of America", "France", "China", "Russia", "United Kingdom"]
-}
+} */
 
 var savedSaveData = {
 
@@ -19,15 +21,66 @@ var savedSaveData = {
 var jsonParse = bodyParser.json();
 app.use(express.json());
 
+app.use(useragent.express());
+
 var usableDirname = __dirname;
+
+var unsortedWs = new Set();
 
 var adminPasswords = {
     // Loaded at runtime
 };
 
-//express.static.mime.define({"text/css": ["css"]});
+class PassedPaper {
+    name;
+    committeeName;
+
+    constructor() {
+        this.name          = "";
+        this.committeeName = "";
+    }
+}
+
+class JCCclass {
+    salt; // Internal password sorta thing idk
+    name;
+    password;
+    bigScreenConnections;
+    chatConnections;
+    passedPapers;
+    
+    constructor() {
+        this.name = "";
+        this.password = "";
+        this.bigScreenConnections = new Set();
+        this.chatConnections = new Set();
+        this.passedPapers = [];
+    }
+}
+
+var listOfJCCs = {
+    // Filled at runtime ig
+};
+
+const randomCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+function createSalt() {
+    var building = "";
+    for(var i = 0; i < 20; i++) {
+        building += randomCharacters[Math.floor(Math.random() * (randomCharacters.length))];
+    }
+    return building;
+}
 
 app.get('/', (req, res) => {
+    if(req.useragent.isMobile && !req.url.includes("?nomobile")) {
+        res.redirect("/mobile");
+    } else {
+        res.sendFile("index.html", {root: usableDirname});
+    }
+});
+
+app.get("/mobile", (req, res) => {
     res.sendFile("index.html", {root: usableDirname});
 });
 
@@ -38,6 +91,11 @@ app.get('/worker.js', (req, res) => {
 app.get('/style.css', (req, res) => {
     res.type("text/css");
     res.sendFile("style.css", {root: usableDirname});
+});
+
+app.get('/mobile-style.css', (req, res) => {
+    res.type("text/css");
+    res.sendFile("mobile-style.css", {root: usableDirname});
 });
 
 app.get("/ComputerModernSerif.ttf", (req, res) => {
@@ -67,18 +125,32 @@ app.get("/lib/Sortable.js", (req, res) => {
     res.sendFile("./lib/Sortable.js", {root: usableDirname});
 });
 
-app.post("/setcountrylist", (req, res) => {
+/* app.post("/setcountrylist", (req, res) => {
     currentCountryList = req.body;
     res.status(200).send("All good");
 });
 
 app.get("/getcountrylist", (req, res) => {
     res.json(currentCountryList);
-});
+}); */
 
 app.get("/me.png", (req, res) => {
     res.type("image/png");
     res.sendFile("./images/me.png", {root : __dirname});
+});
+
+app.get("/chat", (req, res) => {
+    res.sendFile("./chat.html", {root : __dirname});
+});
+
+app.get("/chat.css", (req, res) => {
+    res.type("text/css");
+    res.sendFile("./chat.css", {root : __dirname});
+});
+
+app.get("/chat.js", (req, res) => {
+    res.type("text/javascript");
+    res.sendFile("./chat.js", {root : __dirname});
 });
 
 app.get("/admin", (req, res) => {
@@ -93,11 +165,159 @@ app.post("/adminaccesspoint", jsonParse, (req, res) => {
         res.send("All save data deleted");
     } else if(req.body.code == adminPasswords.shutDown) {
 		res.send("Shutting down");
-        parentShutdown();
+        parentShutdownFunction();
     } else {
         res.send("Invalid");
     }
 });
+
+app.post("/createJCC", jsonParse, (req, res) => {
+    if(typeof req.body == "undefined") {
+        res.status(400).send({
+            status : 400,
+            success: false,
+            message: "No message data sent, or it couldn't be found."
+        });
+        return;
+    }
+    
+    var data = req.body;
+
+    if( !( "name" in data && "password" in data ) ) {
+        res.status(400).send({
+            status : 400,
+            success: false,
+            message: "Message data was sent, but it is missing some or all of the required fields."
+        });
+        return;
+    }
+
+    if(listOfJCCs[data.name] != undefined) {
+        
+        res.status(400).send({
+            status : 400,
+            success: false,
+            message: "JCC with that name already exists."
+        });
+        return;
+    }
+
+    var newJCC = new JCCclass();
+    newJCC.name     = data.name;
+    newJCC.password = data.password;
+    newJCC.salt     = createSalt();
+
+    listOfJCCs[data.name] = newJCC;
+
+    res.status(200).send({
+        name    : data.name,
+        status  : 200,
+        success : true,
+        JCCname : newJCC.name,
+        salt    : newJCC.salt
+    });
+
+    console.log(listOfJCCs);
+});
+
+app.post("/jccLogin", (req, res) => {
+    if(typeof req.body == "undefined") {
+        res.status(400).send({
+            status : 400,
+            success: false,
+            message: "No message data sent, or it couldn't be found."
+        });
+        return;
+    }
+    
+    var data = req.body;
+
+    if( !( "name" in data && "password" in data ) ) {
+        res.status(400).send({
+            status : 400,
+            success: false,
+            message: "Message data was sent, but it is missing some or all of the required fields."
+        });
+        return;
+    }
+
+    if(listOfJCCs[data.name] == undefined) {
+        res.status(400).send({
+            status : 400,
+            success: false,
+            message: "No JCC with that name exists."
+        });
+        return;
+    }
+
+    if(listOfJCCs[data.name].password != data.password) {
+        res.status(400).send({
+            status : 400,
+            success: false,
+            message: "Invalid password."
+        });
+        return;
+    }
+
+    res.status(200).send({
+        name : data.name,
+        salt : listOfJCCs[data.name].salt
+    });
+})
+
+app.ws('/', function(ws, req) {
+    //unsortedWs.add(ws);
+
+    ws.on("message", (message) => { // No error codes or any of that shit here, just discard invalid inputs
+        console.log(message);
+        var d;
+        var failed = false;
+        try {
+            d = JSON.parse(message);
+            if(typeof d != "object") failed = true;
+        } catch(e) {
+            
+        }
+        if(failed || typeof d != "object") return;
+
+        if(!( "name" in d && "type" in d && "salt" in d )) return;
+
+        if(!( d.name in listOfJCCs )) return;
+
+        if(!( listOfJCCs[d.name].salt == d.salt )) return;
+
+        if(d.type == "setup") {
+            if(d.clientType == "bigScreen") {
+                listOfJCCs[d.name].bigScreenConnections.add(ws);
+            } else if(d.clientType == "chatScreen") {
+                listOfJCCs[d.name].chatConnections.add(ws);
+            }
+        }
+        if(d.type == "paperPassed") {
+            var newPaper = new PassedPaper();
+            newPaper.name = d.messageBody;
+            newPaper.committeeName = d.sender;
+
+            listOfJCCs[d.name].passedPapers.push(newPaper);
+        }
+        if(d.type == "message" || d.type == "paperPassed") {
+            console.log(d.messageBody);
+            listOfJCCs[d.name].bigScreenConnections.forEach((el) => {
+                if(el.readyState == ws.CLOSED) listOfJCCs[d.name].bigScreenConnections.delete(el);
+            });
+            listOfJCCs[d.name].chatConnections.forEach((el) => {
+                if(el.readyState == ws.CLOSED) listOfJCCs[d.name].chatConnections.delete(el);
+            });
+
+            listOfJCCs[d.name].bigScreenConnections.forEach(function(ws2) {
+                if(ws != ws2) ws2.send(JSON.stringify(d));
+            });
+            listOfJCCs[d.name].chatConnections.forEach(function(ws2) {
+                if(ws != ws2) ws2.send(JSON.stringify(d));
+            });
+        }
+    })
+})
 
 app.post("/savesavedata", jsonParse, (req, res) => {
     if(req.body.id in savedSaveData) {
@@ -136,6 +356,10 @@ app.post("/getsavedata", jsonParse, (req, res) => {
     }
 });
 
+app.listen(3002, () => {
+	console.log(`MunWS is listening on port ${3002}`);
+});
+
 module.exports.app = app;
 
 module.exports.startUpFunction = function() {
@@ -163,5 +387,5 @@ module.exports.shutDownFunction = function() {
 }
 
 module.exports.setParentShutdownCallback = function(call) {
-    parentShutdown = call;
+    parentShutdownFunction = call;
 }

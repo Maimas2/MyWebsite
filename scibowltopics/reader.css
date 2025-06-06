@@ -2,6 +2,9 @@
     font-family: serif;
     box-sizing: border-box;
 }
+body {
+    background-color: white;
+}
 p, h1, h2, h3, h4, h5, h6 {
     text-decoration: none;
 }
@@ -34,6 +37,12 @@ p, h1, h2, h3, h4, h5, h6 {
     left: 200px;
     width: calc(100% - 400px);
     top: 0;
+}
+a {
+    text-decoration: none;
+}
+.subtopicchip > * {
+    text-decoration: none;
 }
 .subtopicchip > h3 {
     font-size: 150%;
