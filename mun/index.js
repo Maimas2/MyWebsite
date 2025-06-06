@@ -6,13 +6,7 @@ const bodyParser = require("body-parser");
 const useragent  = require('express-useragent');
 const ews        = require("express-ws")(app);
 
-//const urlEncoded = bodyParser.urlencoded({extended: false}); Only for login type stuff ig????
-
 var parentShutdownFunction;
-
-/* var currentCountryList = {
-    list: ["United States of America", "France", "China", "Russia", "United Kingdom"]
-} */
 
 var savedSaveData = {
 
@@ -265,9 +259,8 @@ app.post("/jccLogin", (req, res) => {
     });
 })
 
-app.ws("/ws", function(ws, req) {
+app.ws('/', function(ws, req) {
     //unsortedWs.add(ws);
-    console.log(59839203);
 
     ws.on("message", (message) => { // No error codes or any of that shit here, just discard invalid inputs
         console.log(message);
@@ -345,7 +338,6 @@ app.post("/getsavedata", jsonParse, (req, res) => {
             success : false,
             message : "Did not send `id`!"
         });
-        return;
     }
     if(req.body.id in savedSaveData) {
         res.send(savedSaveData[req.body.id]);
@@ -358,8 +350,8 @@ app.post("/getsavedata", jsonParse, (req, res) => {
     }
 });
 
-app.listen(3002, () => {
-	console.log(`MunWS is listening on port ${3002}`);
+app.listen(2053, () => {
+	console.log(`MunWS is listening on port ${2053}`);
 });
 
 module.exports.app = app;
