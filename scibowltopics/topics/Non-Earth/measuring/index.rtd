@@ -1,0 +1,76 @@
+PageDisplayTitle:Measuring the Cosmos
+PageDescription:The weights and measures for observing outer space
+SubtopicName:
+
+__knowledge__This is not intended to be a complete list of every single unit used in astronomy. There are others that are used, but I didn't include because they are already commonplace, such as the meter or the year.__
+
+Being so large, outer space and its objects have their own special units. Several of them are unusual in nature, either due to tradition or ultimate convenience.
+__newl__
+Note that these do not entirely replace the normal SI units in the field of astronomy. These special units are used some times, the basic SI units are used other times; it depends on which is more convenient to use.
+
+__h2__Solar Units__
+
+When measuring stars, astronomers commonly use solar units to describe them. These are each units definted by some aspect of our Sun. For example, one solar mass is defined as the mass of our Sun. All solar units have a subscript circle with a dot to tell that they are in relation to the Sun. For example, a solar mass is represented by \(1M_\odot\).
+__newl__
+Here is a list of the most common solar units:
+
+__list__
+\(M_\odot\): Solar mass, the mass of the Solar System; \( 1.988\cdot10^{30} \) kilograms.__
+\(L_\odot\): Solar luminosity, the average luminosity of the Sun; \( 3.828\cdot10^{26} \) watts.__
+\(R_\odot\): Solar radius, the radius of the Sun; \( 6.957\cdot10^{8} \) meters==footnote==Because the Sun's dimensions are ordinarily mushy at best, the solar radius is defined as the radius of the ##nlink##Photosphere##photosphere## where the ##link e##optical depth##https://en.wikipedia.org/wiki/Optical_depth_(astrophysics)## is 2/3. Weird.==.__
+\(T_\odot\): Solar temperature, the average surface temperature of the Sun; 5800°K__tsil__
+
+__h2__Arcminutes and Arcseconds__
+
+__image c__Astronomical objects and their anglular diameters__https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Comparison_angular_diameter_solar_system.svg/1024px-Comparison_angular_diameter_solar_system.svg.png__By Cmglee - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=19148474__https://commons.wikimedia.org/wiki/File:Comparison_angular_diameter_solar_system.svg__
+
+Each of the 360 degrees in a circle is split into sixty __b__arcminutes__. They are represented with a small tickmark, so 30' represents thirty arcminutes. These can be used to better measure very small angles and angular diameters.
+
+In astronomy, however, most objects' are so far away that their angular diameters are smaller than an arcminute, so they are instead measured in __b__arcseconds__, each of which is a sixtieth of an arcminute. These are represented with two small tickmarks, so 10" is ten arcseconds.
+
+These measurements are probably smaller than your intuition thinks. Here are some commonplace objects and their angular diameters (more astronomical objects in the image):
+
+__list__
+The Sun and Moon in the sky both subtend about 30' (they change by one or two in their orbits)__
+A regulation soccer ball across a 100 meter football field subtends 3.5'. __
+A grain of rice across the same 100 meter football field subtends 8.25".__tsil__
+
+These angle measurements are insanely tiny, but they must be used when observing the stars due to their distance.
+
+__h2__Distance__
+
+There are several distance units used depending on the context.
+
+__h3__Astronomical Unit__
+
+The __b__astronomical unit__ is the most common unit used when measuring distances inside the Solar System. It is the distance between the Earth and the Sun; because the distance fluxuates, the astronomical unit is defined as the average, 149.6 million kilometers.
+
+__h3__Light Year__ +++ Not used much!!! +++
+
+The __b__light-year__ is defined as the distance that lights travels in a vacuum over a year, or \( 9.4607 \cdot 10^{13} \) kilometers.
+
+It is most commonly used when measuring very large distances, such as across an entire galaxy or universe (such as the __nlink__Great Wall__Great Wall__). However, hobbyists and science fiction inflate the term's relevance compared to professional astronomy.
+
+__h3__Parsec__
+
+__image__Diagram showing the definition of a parsec (not to scale)__/images/parsec-diagram.png__Public domain (created by Alex Seltzer)__
+
+A __b__parsec__ is the most common unit for measuring distances in astronomy. For larger distances, the __b__kiloparsec__ or __b__megaparsec__ may be used, which are one thousand and one million parsecs, respectively.
+
+A parsec is defined as the distance at which the distance between the Earth and Sun subtend one arcsecond. This distance ends up being \( 3.09 \cdot 10^{13} \) kilometers or 3.26 light years.
+
+Due to its relation to the Earth's orbital distance, the parsec is incredibly useful when measuring the distance of nearby stars through __nlink__Parallax__parallax__.
+
++++ TODO: more on this +++
+
+__h2__Luminosity__
+
+__b__Luminosity__ is the total amount of energy released from an object every second. It is measured in units of power, the normal units being joules per second or watts. In the context of stars, where the luminosity is on the order of \(10^{25}\) watts, most astronomical measurements use the solar luminosity instead (definition above).
+
+__h3__Flux__
+
+__b__Flux__ is defined as the amount of energy that hits a square meter per second. In the context of stars, while the luminosity of a star is inhirint to the star, the same star's flux also depends on the distance.
+
+Flux is useful for measuring the __nlink__Relative magnitude__relative magnitudes__ of stars. It is also the units of the __nlink__Solar Constant__Solar Constant__.
+
+__h2__Energy__

@@ -1366,7 +1366,7 @@ function setupJccData(data) {
     });
     ws.addEventListener("message", function(m) {
         console.log(m);
-        createAlert("Message: " + m.data.messageBody);
+        createAlert("Message: " + JSON.parse(m.data).messageBody);
     });
 }
 

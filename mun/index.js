@@ -350,10 +350,10 @@ app.post("/getsavedata", jsonParse, (req, res) => {
     }
 });
 
-app.listen(3000, () => {
+/* app.listen(3000, () => {
 	console.log(`MunWS is listening on port ${3000}`);
 });
-
+ */
 module.exports.app = app;
 
 module.exports.startUpFunction = function() {
