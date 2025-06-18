@@ -58,7 +58,11 @@ app.get("/topics/" + wildcardString, (req, res) => {
     if(!req.originalUrl.endsWith("/")) {
         res.redirect(req.originalUrl + "/");
     } else {
-        res.sendFile("reader.html", {root: __dirname});
+        var dat = getFileData(req.path);
+        var ogText = fs.readFileSync("./scibowltopics/reader.html").toString();
+        ogText = ogText.replace("<!-- REPLACE ME SERVER -->", JSON.stringify(dat).replaceAll("\\", "\\\\"));
+        res.type("html");
+        res.send(ogText);
     }
 });
 
@@ -92,8 +96,8 @@ app.get("/nlink/" + wildcardString, (req, res) => {
 
 var currentPage; // ONLY TO BE USED IN THE `/api/*` RETURN FUNCTION
 
-app.get('/api/' + wildcardString, (req, res) => {
-    var pathTrace = (req.originalUrl.slice(5)).split("/"); // Remove the starting /api/ and split it into subpages
+function getFileData(ogPathThing) {
+    var pathTrace = (ogPathThing.slice(5)).split("/"); // Remove the starting /api/ and split it into subpages
     if(pathTrace[pathTrace.length-1] == "") pathTrace.splice(pathTrace.length-1, 1);
 
     //console.log(pathTrace);
@@ -124,11 +128,11 @@ app.get('/api/' + wildcardString, (req, res) => {
         
         if(pathTrace[pathTrace.length-2] == currentPage.name) break;
 
-        res.send(JSON.stringify({ // Subpage not found
+        return { // Subpage not found
             success : false,
             code    : 404,
             temp    : currentPage.name
-        }));
+        };
         return;
     }
 
@@ -156,8 +160,8 @@ app.get('/api/' + wildcardString, (req, res) => {
         });
     }
 
-    res.send(JSON.stringify(toSend));
-});
+    return toSend;
+};
 
 function parseFile(path) {
     var toReturn = new PageClass();

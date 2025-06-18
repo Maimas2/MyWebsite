@@ -1,5 +1,7 @@
 var data = null;
 
+const tagSplitList = ["__", "==", "##", "$$", "%%"]
+
 window.MathJax = {
     loader: {load: ['[tex]/mhchem']},
     tex: {packages: {'[+]': ['mhchem']}}
@@ -27,13 +29,9 @@ function createSubtopicElement(el) {
 }
 
 window.onload = (event) => {
-    fetch("/api" + window.location.pathname)
-        .then(response => response.json())
-        .then(dataa => {
-            data = dataa;
-            setupPage();
-        })
-        .catch(error => console.error("Error:", error));
+    data = JSON.parse($("#rawDataText").text());
+    setupPage();
+    $("#rawDataText").remove();
     
     $("#loadingSpinner").animate({
         rotate: "-1080deg"
@@ -54,7 +52,7 @@ function hideImageZoom() {
 
 var footnotes = []
 
-function processText(oggText, splitter="__") {
+function processText(oggText, splitterLevel=0, stringify=false) { // Doesn't actually return a string, actually returns an array like a chad
     //ogText.replaceAll("\n\n", "<br>");
     var commentSplit = oggText.split("+++");
     var ogText = "";
@@ -62,10 +60,11 @@ function processText(oggText, splitter="__") {
         ogText += commentSplit[i];
     }
     ogText = ogText.replaceAll("\n\n\n\n", "\n\n");
-    var splitIntoTags = ogText.split(splitter);
+    var splitIntoTags = ogText.split(tagSplitList[splitterLevel]);
     var lines = [splitIntoTags[0]];
 
     for(var i = 1; i < splitIntoTags.length; i++) {
+        if(splitIntoTags[i].startsWith("\n\n")) splitIntoTags[i] = splitIntoTags[i].slice(2);
         if(splitIntoTags[i].startsWith("image")) {
             var og       = splitIntoTags[i];
 
@@ -90,7 +89,7 @@ function processText(oggText, splitter="__") {
             var licenseEl;
             if(og.includes("c")) licenseEl = $("<a>").attr("href", ogLink);
             else                 licenseEl = $("<p>");
-            licenseEl.text(license).css("font-size", "75%").appendTo(t);
+            licenseEl.text(license + (og.includes("c") ? " 🗗" : "")).css("font-size", "75%").appendTo(t);
 
             t.on("mousedown", function(e) {
                 if(e.which == 1 || e.which == 3) {
@@ -108,12 +107,14 @@ function processText(oggText, splitter="__") {
             });
 
             lines = lines.concat(t);
-        } else if(splitIntoTags[i] == "link") {
+        } else if(splitIntoTags[i].startsWith("link")) {
+            var og = splitIntoTags[i];
+
             var display = splitIntoTags[++i];
             var dest    = splitIntoTags[++i];
 
             lines = lines.concat(
-                $("<a>").attr("href", "/topics/" + dest).text(display).css("display", "inline")
+                $("<a>").attr("href", og.includes("e") ? dest : ("/topics/" + dest)).text(display + (og.includes("e") ? " 🗗" : "")).css("display", "inline")
             );
         } else if(splitIntoTags[i].startsWith("nlink")) {
             var og = splitIntoTags[i];
@@ -179,6 +180,7 @@ function processText(oggText, splitter="__") {
                     $("<p>").text(display.replaceAll("\n","")).css("display", "inline-block").css("margin", "0").css("width", "100%")
                 )
             );
+            lines = lines.concat($("<br>"));
         } else if(splitIntoTags[i].startsWith("list")) {
             var og = splitIntoTags[i];
             
@@ -189,9 +191,15 @@ function processText(oggText, splitter="__") {
                 toAdd = $("<ul>");
             }
 
-            while(splitIntoTags[++i].replaceAll("\n", "") != "tsil") {
+            while(splitIntoTags[++i].replaceAll("\n", "<br>") != "tsil") {
+                var els = processText(splitIntoTags[i].replaceAll("\n", ""), splitterLevel+1);
+                var toapp = $("<li>").append();
+                els.forEach((el) => {
+                    if(typeof el == "object") toapp.append(el);
+                    else toapp.append(document.createTextNode(el))
+                });
                 toAdd.append(
-                    $("<li>").text(splitIntoTags[i].replaceAll("\n", ""))
+                    toapp
                 )
             }
 
@@ -201,30 +209,59 @@ function processText(oggText, splitter="__") {
             lines = lines.concat(splitIntoTags[i]);
         }
     }
-
-    for(var i = 0; i < lines.length; i++) {
-        if(typeof lines[i] == "object") { // jQuery element
-            $("#textcontain").append(lines[i]);
-        } else {
-            var t = lines[i].split("<br>");
-            t.forEach((el) => {
-                $("#textcontain").append( $(document.createTextNode(el)) ).css("display", "inline");
-                if(el != t[t.length-1]) $("#textcontain").append( $("<br>") );
-            });
+    if(splitterLevel == 0) {
+        for(var i = 0; i < lines.length; i++) {
+            if(typeof lines[i] == "object") { // jQuery element
+                $("#textcontain").append(lines[i]);
+            } else {
+                var t = lines[i].split("<br>");
+                t.forEach((el) => {
+                    $("#textcontain").append( $(document.createTextNode(el)) ).css("display", "inline");
+                    if(el != t[t.length-1]) $("#textcontain").append( $("<br>") );
+                });
+            }
         }
-    }
-    if(footnotes.length) {
-        $("#textcontain").append($("<br>")).append($("<br>"));
-        $("#textcontain").append($("<hr>"));
-        $("#textcontain").append($("<br>"));
-    }
-    for(var i = 0; i < footnotes.length; i++) {
-        $("#textcontain").append($("<sup>").text(i+1)).append(document.createTextNode(" " + footnotes[i]));
+
+        if(footnotes.length) {
+            $("#textcontain").append($("<br>")).append($("<br>"));
+            $("#textcontain").append($("<hr>"));
+            $("#textcontain").append($("<br>"));
+
+            for(var i = 0; i < footnotes.length; i++) {
+                $("#textcontain").append($("<sup>").text((i+1) + " "));
+
+                processText(footnotes[i], smartDetectSplitterLevel(footnotes[i]), true).forEach(el => {
+                    $("#textcontain").append(el);
+                });
+            }
+
+            $("#textcontain").append($("<br>")).append($("<br>"));
+            $("#textcontain").append($("<br>")).append($("<br>"));
+        }
+        
+    } else {
+        if(stringify) {
+            var toReturn = [];
+            lines.forEach((line) => {
+                if(typeof line == "object") toReturn = toReturn.concat(line);
+                else                        toReturn = toReturn.concat(document.createTextNode(line));
+            });
+            return toReturn;
+        } else {
+            return lines;
+        }
     }
 }
 
+function smartDetectSplitterLevel(s) { // This is not a very smart function
+    for(var i = tagSplitList.length; i > 1; i--) {
+        if(s.includes(tagSplitList[i])) return i;
+    }
+    return 1;
+}
+
 function setupPage() {
-    console.log(data);
+    //console.log(data);
 
     if(data.type != "page") return;
     if(!data.success) {
