@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<document>
+    <head>
+        <title>Voter? I hardly know 'er!</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="https://mun.alex-seltzer.com/lib/jquery.js"></script>
+        <script src="http://mun.localhost:3000/lib/jquery.js"></script>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+        <div id="allDiv">
+            <div id="topBar" class="outlineddiv paddeddiv">
+                <h2 id="topLabel">Current vote: <span id="currentVoteSpan">Loading...</span></h2>
+                <button id="resendVoteButton">Reload</button>
+                <div id="statusDiv" class="outlineddiv"><p id="statusp">Updating...</p></div>
+            </div>
+            <div id="bottomBar" class="outlineddiv paddeddiv">
+                <button id="yeaButton" disabled="true">Yea</button>
+                <button id="nayButton" disabled="true">Nay</button>
+                <button id="abstainButton" disabled="true">Abstain</button>
+            </div>
+        </div>
+        <div id="login">
+            <div id="loginContainer">
+                <h1>Login</h1>
+                <select id="selectName" disabled="true">
+                    
+                </select>
+                <br>
+                <br>
+                <button id="loginButton" disabled="true">Login</button>
+                <br>
+                <br>
+                <br>
+                <label for="nameLabel">Name</label>
+                <input id="nameLabel" type="text">
+                <br>
+                <br>
+                <button id="newuserButton" disabled="true">New User</button>
+            </div>
+        </div>
+    </body>
+    <script src="/vote.js"></script>
+</document>

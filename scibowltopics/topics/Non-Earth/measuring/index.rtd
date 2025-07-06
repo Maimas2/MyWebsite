@@ -47,9 +47,9 @@ The __b__astronomical unit__ is the most common unit used when measuring distanc
 
 __h3__Light Year__ +++ Not used much!!! +++
 
-The __b__light-year__ is defined as the distance that lights travels in a vacuum over a year, or \( 9.4607 \cdot 10^{13} \) kilometers.
+The __b__light year__ is defined as the distance that lights travels in a vacuum over a year, which is \( 9.4607 \cdot 10^{13} \) kilometers.
 
-It is most commonly used when measuring very large distances, such as across an entire galaxy or universe (such as the __nlink__Great Wall__Great Wall__). However, hobbyists and science fiction inflate the term's relevance compared to professional astronomy.
+It is most commonly used when measuring very large distances, such as across an entire galaxy or universe (such as the __nlink__Great Wall__Great Wall__). However, hobbyists and science fiction inflate the term's relevance compared to professional astronomy. The parsec is generally used more.
 
 __h3__Parsec__
 
@@ -59,7 +59,7 @@ A __b__parsec__ is the most common unit for measuring distances in astronomy. Fo
 
 A parsec is defined as the distance at which the distance between the Earth and Sun subtend one arcsecond. This distance ends up being \( 3.09 \cdot 10^{13} \) kilometers or 3.26 light years.
 
-Due to its relation to the Earth's orbital distance, the parsec is incredibly useful when measuring the distance of nearby stars through __nlink__Parallax__parallax__.
+Due to its relation to the Earth's orbital distance, the parsec is incredibly handy when measuring the distance of nearby stars through __nlink__Parallax__parallax__.
 
 +++ TODO: more on this +++
 
@@ -71,6 +71,9 @@ __h3__Flux__
 
 __b__Flux__ is defined as the amount of energy that hits a square meter per second. In the context of stars, while the luminosity of a star is inhirint to the star, the same star's flux also depends on the distance.
 
-Flux is useful for measuring the __nlink__Relative magnitude__relative magnitudes__ of stars. It is also the units of the __nlink__Solar Constant__Solar Constant__.
+The __nlink__Solar Constant__Solar Constant__ is defined as the average flux of the Sun on the Earth, about 1,360 watts.
+
+Flux is useful for measuring the __nlink__relative magnitude__Relative magnitudes__ of stars.
 
 __h2__Energy__
+
