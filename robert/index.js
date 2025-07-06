@@ -59,7 +59,7 @@ app.get("/topics/" + wildcardString, (req, res) => {
         res.redirect(req.originalUrl + "/");
     } else {
         var dat = getFileData(req.path);
-        var ogText = fs.readFileSync("./scibowltopics/reader.html").toString();
+        var ogText = fs.readFileSync("./robert/reader.html").toString();
         ogText = ogText.replace("<!-- REPLACE ME SERVER -->", JSON.stringify(dat).replaceAll("\\", "\\\\"));
         res.type("html");
         res.send(ogText);
@@ -150,14 +150,16 @@ function getFileData(ogPathThing) {
         stackTraceUrls : stackTraceUrls,
         scrollToId     : scrollTo
     };
-
-    for(var i = 0; i < currentPage.subtopics.length; i++) {
-        toSend.subtopics.push({
-            name         : currentPage.subtopics[i].name,
-            fancyName    : currentPage.subtopics[i].fancyName,
-            description  : currentPage.subtopics[i].description,
-            subtopicName : currentPage.subtopics[i].subtopicName,
-        });
+    
+    if(Object.hasOwn(currentPage, "subtopics")) {
+        for(var i = 0; i < currentPage.subtopics.length; i++) {
+            toSend.subtopics.push({
+                name         : currentPage.subtopics[i].name,
+                fancyName    : currentPage.subtopics[i].fancyName,
+                description  : currentPage.subtopics[i].description,
+                subtopicName : currentPage.subtopics[i].subtopicName,
+            });
+        }
     }
 
     return toSend;
@@ -198,7 +200,7 @@ function parseFile(path) {
 
     toReturn.fullText = lines.join("\n");
 
-    namePageNlink[toReturn.fancyName] = path.replace(".rtd", "").replace("/index", "").replace("/scibowltopics", "").substring(1);
+    namePageNlink[toReturn.fancyName] = path.replace(".rtd", "").replace("/index", "").replace("/robert", "").substring(1);
     //console.log(namePageNlink[toReturn.fancyName]);
 
     return toReturn;
@@ -227,7 +229,7 @@ function readOverFolder(path) { // ALL WORKING FILE PATHS MUST HAVE A TRAILING S
 }
 
 if(os.hostname().includes("alex")) app.get("/reloadList", (req, res) => {
-    pageHierarchy = readOverFolder("./scibowltopics/topics/");
+    pageHierarchy = readOverFolder("./robert/topics/");
     console.log("Reloaded data files");
     res.send("Reloaded");
 });
@@ -236,7 +238,7 @@ exports.app = app;
 
 exports.startUpFunction = function() {
     console.log("Reading over SBEST data files...");
-    pageHierarchy = readOverFolder(`./scibowltopics/topics/`);
+    pageHierarchy = readOverFolder(`./robert/topics/`);
 }
 
 exports.shutDownFunction = function() {

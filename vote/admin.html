@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<document>
+    <head>
+        <title>Voter? I hardly know 'er!</title>
+        <link rel="stylesheet" type="text/css" href="admin.css">
+        <script src="https://mun.alex-seltzer.com/lib/jquery.js"></script>
+        <script src="http://mun.localhost:3000/lib/jquery.js"></script>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+        <div id="allDiv">
+            <div id="topBar" class="outlineddiv paddeddiv">
+                <!-- <h2 id="topLabel">Current vote: <input type="text" value="" id="currentVoteSpan"></input></h2> -->
+                <h1 id="totalPresent"></h1>
+                <h1 id="yeas"></h1>
+                <h1 id="nays"></h1>
+                <button id="setNewMotion">New Vote</button>
+            </div>
+            <div id="bottomBar" class="outlineddiv">
+                <!-- <p id="votesText"></p> -->
+            </div>
+        </div>
+        <div id="login">
+            <div id="loginContainer">
+                <h1>Admin Login</h1>
+                <label for="pwLabel">Password  </label>
+                <input id="pwLabel" type="password" data-bwignore="true">
+                <br>
+                <br>
+                <button id="loginButton">Login</button>
+            </div>
+        </div>
+    </body>
+    <script src="/admin.js"></script>
+</document>

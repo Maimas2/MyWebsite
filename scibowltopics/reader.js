@@ -142,6 +142,12 @@ function processText(oggText, splitterLevel=0, stringify=false) { // Doesn't act
             lines = lines.concat(
                 $("<b>").text(display)
             );
+        } else if(splitIntoTags[i] == "i") {
+            var display = splitIntoTags[++i];
+
+            lines = lines.concat(
+                $("<i>").text(display)
+            );
         } else if(splitIntoTags[i] == "h2") {
             var display = splitIntoTags[++i].trim();
 
@@ -231,7 +237,7 @@ function processText(oggText, splitterLevel=0, stringify=false) { // Doesn't act
                 $("#textcontain").append($("<sup>").text((i+1) + " "));
 
                 processText(footnotes[i], smartDetectSplitterLevel(footnotes[i]), true).forEach(el => {
-                    $("#textcontain").append(el);
+                    $("#textcontain").append(el).append($("<br>"));
                 });
             }
 
@@ -261,7 +267,7 @@ function smartDetectSplitterLevel(s) { // This is not a very smart function
 }
 
 function setupPage() {
-    //console.log(data);
+    console.log(data);
 
     if(data.type != "page") return;
     if(!data.success) {

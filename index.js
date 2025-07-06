@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = process.env.port || 3000;
 
+
+
 var munFile = require('./mun/index');
 var munApp = munFile.app;
 
@@ -14,6 +16,11 @@ var scibowlApp = scibowlFile.app;
 
 var sbestFile = require("./scibowltopics/index");
 var sbestApp = sbestFile.app;
+
+var voteFile = require("./vote/index");
+var voteApp = voteFile.app;
+
+
 
 var namesFile = require("./names");
 app.use(namesFile.app);
@@ -26,14 +33,16 @@ var todoList = "";
 process.on("SIGTERM", receivedKillSignal);
 process.on("SIGINT",  receivedKillSignal);
 
-app.use(vhost("mun.alex-seltzer.com", munApp));
-app.use(vhost("mun.localhost", munApp));
+var sdl = fs.readFileSync("./subdomains.txt", "utf8")
 
-app.use(vhost("scibowl.alex-seltzer.com", scibowlApp));
-app.use(vhost("scibowl.localhost", scibowlApp));
+var l = sdl.split("\n");
 
-app.use(vhost("sbest.alex-seltzer.com", sbestApp));
-app.use(vhost("sbest.localhost", sbestApp));
+for(var i = 0; i < l.length; i++) {
+    let b = l[i];
+    var tapp = require(`./${b.split(" ")[1]}/index`).app;
+    app.use(vhost(b.split(" ")[0] + ".localhost", tapp));
+    app.use(vhost(b.split(" ")[0] + ".alex-seltzer.com", tapp));
+}
 
 app.get("/mun", (req, res) => {
     res.redirect("https://mun.alex-seltzer.com");
