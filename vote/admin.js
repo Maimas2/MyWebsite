@@ -40,9 +40,29 @@ function reloadVotes() {
                 //toReturn += keys[i] + ": " + returned[keys[i]] + "<br>";
 
                 $("#bottomBar").append(
-                    $("<div>").addClass("outlineddiv").css("width", "30%").css("display", "inline-block").css("padding", "5px").css("margin", "3px").css("background-color", toColor(returned[keys[i]])).append(
+                    $("<div>").addClass("outlineddiv").css("width", "30%").css("display", "inline-block").css("padding", "5px").css("margin", "3px").css("background-color", toColor(returned[keys[i]])).css("flex-direction", "row").prop("data-name", keys[i]).append(
                         $("<p>").css("display", "inline").text(keys[i])// + ": " + toColor(returned[keys[i]]))
-                    )
+                    ).on("click", function(_e) {
+                        var d = {
+                            person : $(this).prop("data-name")
+                        }
+                        console.log(d);
+
+                        $.ajax({
+                            type    : "POST",
+                            url     : "/deleteperson",
+                            contentType : "application/json",
+                            success : function(returned) {
+                                console.log(returned);
+                            },
+                            error   : function(returned) {
+                                console.error(returned);
+                            },
+                            data    : JSON.stringify(d)
+                        });
+
+                        reloadVotes();
+                    })
                 )
             }
 
