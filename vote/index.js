@@ -8,7 +8,7 @@ app.use(express.json());
 
 var votes = {
 	"Aaron" : "",
-	"Alex C" : "",
+	"Alex V" : "",
 	"Alex S" : "",
 	"Drew" : "",
 	"JT" : "",
@@ -57,7 +57,12 @@ app.get("/getcurrentmotion", (req, res) => {
 
 app.get("/getpeople", (req, res) => {
 	res.send({people : Object.keys(votes)});
-})
+});
+
+app.post("/deleteperson", jsonParse, (req, res) => {
+	delete votes[req.body.person];
+	res.send(`Deleted ${req.body.person}`);
+});
 
 app.post("/setcurrentmotion", jsonParse, (req, res) => {
 	currentMotionTopic = req.body.newMotion;
