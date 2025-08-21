@@ -176,6 +176,12 @@ function processText(oggText, splitterLevel=0, stringify=false) { // Doesn't act
             lines = lines.concat(
                 $("<div>").attr("id", "ScrollId" + term)
             );
+        } else if(splitIntoTags[i] == "collapse") {
+            var tc = $("#collapsePrefab").clone();
+            tc.children("h3")[0].textContent = "▶ " + splitIntoTags[++i];
+            tc.children("div")[0].innerHTML  = splitIntoTags[++i];
+
+            lines = lines.concat(tc);
         } else if(splitIntoTags[i] == "knowledge") {
             var display = splitIntoTags[++i].trim();
 
