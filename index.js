@@ -6,21 +6,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = process.env.port || 3000;
 
-
-
-var munFile = require('./mun/index');
-var munApp = munFile.app;
-
-var scibowlFile = require('./scibowlonline/index');
-var scibowlApp = scibowlFile.app;
-
-var sbestFile = require("./scibowltopics/index");
-var sbestApp = sbestFile.app;
-
-var voteFile = require("./vote/index");
-var voteApp = voteFile.app;
-
-
+var listOfSubdomainFiles = []
 
 var namesFile = require("./names");
 app.use(namesFile.app);
@@ -39,7 +25,11 @@ var l = sdl.split("\n");
 
 for(var i = 0; i < l.length; i++) {
     let b = l[i];
-    var tapp = require(`./${b.split(" ")[1]}/index`).app;
+    if(b.trim() == "") continue;
+    var tf = require(`./${b.split(" ")[1]}/index`)
+    listOfSubdomainFiles.push(tf)
+    tf.startUpFunction()
+    var tapp = tf.app;
     app.use(vhost(b.split(" ")[0] + ".localhost", tapp));
     app.use(vhost(b.split(" ")[0] + ".alex-seltzer.com", tapp));
 }
@@ -73,16 +63,17 @@ app.use(function(req, res, next) {
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
-    
-    munFile.setParentShutdownCallback(receivedKillSignal);
 
-    munFile.startUpFunction();
-    scibowlFile.startUpFunction();
-    sbestFile.startUpFunction();
+    // munFile.startUpFunction();
+    // scibowlFile.startUpFunction();
+    // sbestFile.startUpFunction();
+
+    // for(f in listOfSubdomainFiles) {
+    //     if(typeof f.startUpFunction == "function") f.startUpFunction()
+    // }
 
     if(fs.existsSync("./saves/todo_list.txt")) {
         var d = fs.readFileSync("./saves/todo_list.txt", "utf-8");
-        //console.log(d);
         todoList = d;
     } else {
         console.warn("Could not find Todo list file!!!");
@@ -95,8 +86,10 @@ app.listen(port, () => {
 
 function receivedKillSignal() {
     console.log("Shutting down...");
-    munFile.shutDownFunction();
-    sbestFile.shutDownFunction();
+    
+    for(f in listOfSubdomainFiles) {
+        f.shutDownFunction()
+    }
 
     fs.writeFileSync("./saves/todo_list.txt", todoList, "utf-8", (error) => {
         if(error) console.log(error);
