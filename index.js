@@ -4,6 +4,7 @@ const fs         = require("fs");
 const bodyParser = require("body-parser");
 
 const app = express();
+const ews = require("express-ws")(app);
 const port = process.env.port || 3000;
 
 var listOfSubdomainFiles = []
@@ -61,6 +62,7 @@ app.use(function(req, res, next) {
     res.send("404 couldn't find that page :(");
 });
 
+
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 
@@ -88,6 +90,7 @@ function receivedKillSignal() {
     console.log("Shutting down...");
     
     for(f in listOfSubdomainFiles) {
+        console.log("Shutting down " + f + "...")
         f.shutDownFunction()
     }
 

@@ -66,7 +66,7 @@ function createSalt() {
     return building;
 }
 
-app.get('/', (req, res) => {
+app.get('/', (req, res, next) => {
     if(req.useragent.isMobile && !req.url.includes("?nomobile")) {
         res.redirect("/mobile");
     } else {
@@ -74,7 +74,7 @@ app.get('/', (req, res) => {
     }
 });
 
-app.get("/mobile", (req, res) => {
+app.get("/mobile", (req, res, next) => {
     res.sendFile("index.html", {root: usableDirname});
 });
 
@@ -259,11 +259,10 @@ app.post("/jccLogin", (req, res) => {
     });
 })
 
-app.ws('/', function(ws, req) {
-    //unsortedWs.add(ws);
+app.ws('/', function(ws, req) {   
 
     ws.on("message", (message) => { // No error codes or any of that shit here, just discard invalid inputs
-        console.log(message);
+        //console.log(message);
         var d;
         var failed = false;
         try {
@@ -350,10 +349,10 @@ app.post("/getsavedata", jsonParse, (req, res) => {
     }
 });
 
-/* app.listen(3000, () => {
-	console.log(`MunWS is listening on port ${3000}`);
-});
- */
+// app.listen(3000, () => {
+// 	console.log(`MunWS is listening on port ${3000}`);
+// });
+
 module.exports.app = app;
 
 module.exports.startUpFunction = function() {

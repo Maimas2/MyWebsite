@@ -33,7 +33,7 @@ function createMessage(data, isFromSelf=false) {
 }
 
 window.onload = function() {
-    wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost/" : "wss://" + window.location.host + "/";
+    wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:3000/" : "wss://" + window.location.host + "/";
     $("#join").on("click", function(_e) {
         var d = {
             name     : $("#jccName").val(),
@@ -76,7 +76,7 @@ function setupJccData(data) {
 
     $("#joinedJcc").css("display", "flex");
 
-    ws = new WebSocket("wss://" + window.location.host, "echo-protocol");
+    ws = new WebSocket(wsUrl, "echo-protocol");
     
     ws.addEventListener("open", function(_e) {
         ws.send(JSON.stringify({
