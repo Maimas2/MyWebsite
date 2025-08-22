@@ -1,0 +1,56 @@
+@font-face {
+    font-family: ComputerModern;
+    src: url(/ComputerModernSerif.ttf);
+}
+* {
+    font-family: ComputerModern;
+    box-sizing: border-box;
+}
+h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+}
+p {
+    font-size: 110%;
+}
+html > * {
+    margin: auto;
+}
+#allDiv {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* display: flex; */
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    flex-direction: column;
+}
+body > * {
+    width: 100vw;
+}
+.outlineddiv {
+    border-radius: 20px;
+    /*box-shadow: 2px 2px 7px #DDDDDD;**/
+    border: 1px #888888 solid;
+    background-color: white;
+    user-select: none;
+}
+#allDiv > * {
+    height: 100%;
+    position: absolute;
+    /* background-color: #888888; */
+}
+#leftSide {
+    width: calc(50% - 5px);
+    padding: 20px;
+}
+#mainCanvas {
+    width: calc(50% - 5px);
+    right: 0;
+}
+#resizer {
+    width: 10px;
+    left: calc(50% - 5px);
+    background-color: black;
+}

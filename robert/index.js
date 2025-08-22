@@ -237,7 +237,7 @@ if(os.hostname().includes("alex")) app.get("/reloadList", (req, res) => {
 exports.app = app;
 
 exports.startUpFunction = function() {
-    console.log("Reading over SBEST data files...");
+    console.log("Reading over Robert's Rules' data files...");
     pageHierarchy = readOverFolder(`./robert/topics/`);
 }
 
