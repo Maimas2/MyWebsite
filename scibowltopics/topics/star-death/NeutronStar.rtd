@@ -26,10 +26,10 @@ __collapse__Mathematical derivation for neutron stars' surface gravity__
     ==
     \(m_1\) is the mass of the neutron star. Most are about \( 1.3 M_\odot = 2.585 \times 10^{30} \text{kg} \).
     ==
-    \(r\) is the radius of the neutron star, about 6,000km.
+    \(r\) is the radius of the neutron star, about 10km.
     ==tsil==
     
-    \[ a = G\frac{2.585 \times 10^{30} \text{kg}}{\left(6,000\text{km}\right)^2} = 2.88 \times 10^{10} \: \frac{\text{m}}{\text{s}^2} \]
+    \[ a = G\frac{2.585 \times 10^{30} \text{kg}}{\left(10\text{km}\right)^2} =  \: \frac{\text{m}}{\text{s}^2} \]
     
     Compare to Earth's acceleration of 9.8m/s².
 __
