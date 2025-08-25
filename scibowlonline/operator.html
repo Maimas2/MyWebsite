@@ -280,7 +280,8 @@
         $("#refreshQuestion").on("click", refreshQuestion);
 
         window.onload = function(e) {
-            ws = new WebSocket(`wss://scibowl.alex-seltzer.com:3001`);
+            //ws = new WebSocket(`wss://scibowl.alex-seltzer.com:3001`);
+            ws = new WebSocket(`ws://scibowl.localhost:3000`);
 
             ws.onmessage = (event) => {
                 var d = JSON.parse(event.data);
@@ -293,7 +294,9 @@
                 }
             };
 
-            getId();
+            ws.onopen = (event) => {
+                getId();
+            }
         }
     </script>
 </document>

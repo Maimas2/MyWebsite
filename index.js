@@ -27,12 +27,16 @@ var l = sdl.split("\n");
 for(var i = 0; i < l.length; i++) {
     let b = l[i];
     if(b.trim() == "") continue;
-    var tf = require(`./${b.split(" ")[1]}/index`)
-    listOfSubdomainFiles.push(tf)
-    tf.startUpFunction()
-    var tapp = tf.app;
-    app.use(vhost(b.split(" ")[0] + ".localhost", tapp));
-    app.use(vhost(b.split(" ")[0] + ".alex-seltzer.com", tapp));
+    try {
+        var tf = require(`./${b.split(" ")[1]}/index`);
+        listOfSubdomainFiles.push(tf);
+        tf.startUpFunction();
+        var tapp = tf.app;
+        app.use(vhost(b.split(" ")[0] + ".localhost", tapp));
+        app.use(vhost(b.split(" ")[0] + ".alex-seltzer.com", tapp));
+    } catch(e) {
+        console.warn(`Could not find subdomain ${b.split(" ")[0]}, skipping...`);
+    }
 }
 
 app.get("/mun", (req, res) => {
@@ -48,16 +52,6 @@ app.get("/lib/jquery.js", (req, res) => {
     res.sendFile("./mun/lib/jquery-3.7.1.min.js", {root: __dirname});
 });
 
-app.post("/settodo", textParse, (req, res) => {
-    todoList = req.body;
-    //console.log(req.body);
-    res.status(200).send("Set todo list");
-});
-
-app.get("/gettodo", (req, res) => {
-    res.send(todoList);
-});
-
 app.use(function(req, res, next) {
     res.send("404 couldn't find that page :(");
 });
@@ -65,33 +59,16 @@ app.use(function(req, res, next) {
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
-
-    // munFile.startUpFunction();
-    // scibowlFile.startUpFunction();
-    // sbestFile.startUpFunction();
-
-    // for(f in listOfSubdomainFiles) {
-    //     if(typeof f.startUpFunction == "function") f.startUpFunction()
-    // }
-
-    if(fs.existsSync("./saves/todo_list.txt")) {
-        var d = fs.readFileSync("./saves/todo_list.txt", "utf-8");
-        todoList = d;
-    } else {
-        console.warn("Could not find Todo list file!!!");
-    }
 });
-
-/* app.listen(3001, () => {
-    console.log("WebSocket port is up");
-}); */
 
 function receivedKillSignal() {
     console.log("Shutting down...");
     
     for(f in listOfSubdomainFiles) {
-        console.log("Shutting down " + f + "...")
-        f.shutDownFunction()
+        if(f.shutDownFunction) {
+            console.log("Shutting down " + f + "...");
+            f.shutDownFunction();
+        }
     }
 
     fs.writeFileSync("./saves/todo_list.txt", todoList, "utf-8", (error) => {

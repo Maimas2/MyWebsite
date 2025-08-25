@@ -107,7 +107,7 @@ function processText(oggText, splitterLevel=0, stringify=false) { // Doesn't act
             });
 
             lines = lines.concat(t);
-        } else if(splitIntoTags[i].startsWith("link")) {
+        } else if(splitIntoTags[i].startsWith("link") && !splitIntoTags[i].startsWith("linkto")) {
             var og = splitIntoTags[i];
 
             var display = splitIntoTags[++i];
@@ -178,10 +178,27 @@ function processText(oggText, splitterLevel=0, stringify=false) { // Doesn't act
             );
         } else if(splitIntoTags[i] == "collapse") {
             var tc = $("#collapsePrefab").clone();
-            tc.children("h3")[0].textContent = "▶ " + splitIntoTags[++i];
-            tc.children("div")[0].innerHTML  = splitIntoTags[++i];
 
+            tc.children("h3").text("▶ " + splitIntoTags[++i]);
+            tc.children("h3").prop("--data-open", "false");
+            tc.children("h3").on("click", function(_e) {
+                tc.children("h3").prop("--data-open", !tc.children("h3").prop("--data-open"));
+
+                if(tc.children("h3").prop("--data-open")) {
+                    tc.children("div").css("display", "none");
+                } else {
+                    tc.children("div").css("display", "");
+                }
+            });
+
+            processText(splitIntoTags[++i], smartDetectSplitterLevel(splitIntoTags[i]), true).forEach(el => {
+                tc.children("div").append(el);
+            });
+            tc.children("div").css("display", "none");
+
+            lines = lines.concat($("<br>"));
             lines = lines.concat(tc);
+            lines = lines.concat($("<br>"));
         } else if(splitIntoTags[i] == "knowledge") {
             var display = splitIntoTags[++i].trim();
 
@@ -308,7 +325,7 @@ function setupPage() {
     processText(data.fullText);
 
     if(data.scrollToId != "") {
-        if($("#ScrollId" + data.scrollToId).length) {
+        if($("#ScrollId" + data.scrollToId.trim()).length) {
             $("#ScrollId" + data.scrollToId).get(0).scrollIntoView();
             var splitUrl = window.location.href.split("/");
             splitUrl.pop();
