@@ -1,5 +1,9 @@
+@font-face {
+    font-family: ComputerModern;
+    src: url(/ComputerModernSerif.ttf);
+}
 * {
-    font-family: serif;
+    font-family: ComputerModern;
     box-sizing: border-box;
 }
 body {

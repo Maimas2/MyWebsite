@@ -1,11 +1,7 @@
 const express = require('express');
-const http    = require('http');
-const WebSocket = require('ws');
 const fs      = require('fs');
-
-const app = express();
-const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const app     = express();
+const ews     = require("express-ws")(app);
 
 const port = 3000;
 
@@ -21,7 +17,7 @@ var questionList;
 
 // You should refactor to multiple lists of connections: operator, timer, player
 
-wss.on('connection', (ws) => {
+app.ws('connection', (ws, req) => {
   // Add the new client to the set
 	unsortedclients.add(ws);
 

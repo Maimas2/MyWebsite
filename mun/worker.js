@@ -1368,6 +1368,10 @@ function setupJccData(data) {
         console.log(m);
         createAlert("Message: " + JSON.parse(m.data).messageBody);
     });
+    ws.addEventListener("close", function(_e) {
+        createAlert("Disconnected from server, trying to reconnect...");
+        $("#newJCC").click();
+    });
 }
 
 var ws;

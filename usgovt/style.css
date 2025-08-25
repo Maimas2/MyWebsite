@@ -1,0 +1,39 @@
+@font-face {
+    font-family: ComputerModern;
+    src: url(/ComputerModernSerif.ttf);
+}
+* {
+    font-family: ComputerModern;
+    box-sizing: border-box;
+}
+h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+}
+p {
+    font-size: 110%;
+}
+html > * {
+    margin: auto;
+}
+body {
+    background-color: powderblue;
+}
+#text {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30%;
+    height: 100%;
+    background-color: white;
+    z-index: 5;
+    padding: 20px;
+}
+#mainCanvas {
+    display: block;
+    position: absolute;
+    left: 30%;
+    top: 0;
+    width: 80vw;
+    height: 100vh;
+    z-index: 0;
+}

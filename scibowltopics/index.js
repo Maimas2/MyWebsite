@@ -66,6 +66,10 @@ app.get("/topics/" + wildcardString, (req, res) => {
     }
 });
 
+app.get("/ComputerModernSerif.ttf", (req, res) => {
+    res.sendFile("./fonts/cmunrm.ttf", {root: __dirname});
+});
+
 app.get("/jquery.js", (req, res) => {
     res.sendFile("jquery-3.7.1.min.js", {root: __dirname});
 });
@@ -90,7 +94,8 @@ app.get("/nlink/" + wildcardString, (req, res) => {
     if(nLinkPageName in namePageNlink) {
         res.redirect(namePageNlink[nLinkPageName] + (subpage == "" ? "" : "/" + subpage));
     } else {
-        res.send("KILL YOURSELF");
+        //res.send("KILL YOURSELF");
+        res.send("Page not found");
     }
 });
 
@@ -99,8 +104,6 @@ var currentPage; // ONLY TO BE USED IN THE `/api/*` RETURN FUNCTION
 function getFileData(ogPathThing) {
     var pathTrace = (ogPathThing.slice(5)).split("/"); // Remove the starting /api/ and split it into subpages
     if(pathTrace[pathTrace.length-1] == "") pathTrace.splice(pathTrace.length-1, 1);
-
-    //console.log(pathTrace);
 
     currentPage = pageHierarchy;
     var stackTrace = [];
@@ -192,7 +195,7 @@ function parseFile(path) {
         }
     }
 
-    while(lines[0].trim() == "") {
+    while(lines.size && lines[0].trim() == "") {
         lines.splice(0, 1);
     }
 
