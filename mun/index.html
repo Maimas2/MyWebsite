@@ -18,7 +18,7 @@
                     <div id="leftDelegateBox">
                         <p><span id="numberOfDelegates">0 Delegates</span></p>
                         <button id="editdelegatelistbutton">Edit List</button>
-                        <button id="takeAttendanceButton">Take Attendance</button>
+                        <button id="takeAttendanceButton">Attendance</button>
                     </div>
                     <div class="middleLine"></div>
                     <div id="rightDelegateBox">
@@ -239,6 +239,15 @@
                     $('#takeAttendanceButton').click();
                 })
                 " id="quickStartAttendance">Do that</button>
+                <br><div style="display:inline-block;width:90%;background-color: black;height:1px !important;"></div>
+                <h2>Other Pages</h2>
+                <a href="mirror">
+                    <button>Mirror a screen</button>
+                </a>
+                <br>
+                <a href="chat">
+                    <button>Join a room's chat</button>
+                </a>
             </div>
             <div id="joinJccPopup" class="bottomMarginChildren outlineddiv">
                 <h1>Join a Joint Crisis Committee</h1>
@@ -256,6 +265,28 @@
                 <input type="text" id="jccSendMessageInput">
                 <button id="jccSendMessageButton">Send</button>
             </div>
+            <div id="mirrorSetupPopup" class="bottomMarginChildren outlineddiv largePopup">
+                <div id="mirrorFirstStep">
+                    <h1>Setup Screen Mirroring</h1>
+                    <br>
+                    Name: <input type="text" id="mirroringName">
+                    <br>
+                    Password: <input type="text" id="mirroringPassword">
+                    <br>
+                    <button id="startMirroringButton">Join</button>
+                </div>
+                <div id="mirrorSecondStep">
+                    <h1>Searching for screens to mirror...</h1>
+
+                    <p>Note: if the control screen disconnects for whatever reason and they need to sign back into the JCC, you will need to refresh this site as well.</p>
+
+                    <br>
+
+                    <div id="listOfMirrorables">
+
+                    </div>
+                </div>
+            </div>
             <div id="exitButtons">
                 <button id="quitPopup" onclick="quitPopup()">Discard</button>
                 <button id="exitPopup">Submit</button>
@@ -272,7 +303,7 @@
             </div>
             <div id="modMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="mod">
                 <div>
-                    <h1 style="margin-right: 20px;display:inline;">Moderated Caucus</h1>
+                    <h1 style="padding-right: 20px;display:inline;">Moderated Caucus</h1>
                     <div>
                         <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
                         <button onclick="killMotionDisplay(this);" style="margin-right: 20px;">Motion Failed</button>
@@ -280,16 +311,16 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    Topic: <input style="text-align: left; width:70%;" type="text" value="">
+                    <b>Topic:</b> <input style="text-align: left; width:70%;" type="text" value="">
                     <br>
-                    Total duration: <input type="text" value="5:00" class="largeTextInput">
+                    <b>Total duration:</b> <input type="text" value="5:00" class="largeTextInput">
                     <br>
-                    Delegate speaking time: <input type="text" value="1:00" class="largeTextInput">
+                    <b>Delegate speaking time:</b> <input type="text" value="1:00" class="largeTextInput">
                 </div>
             </div>
             <div id="speakersListMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="speakersList">
                 <div>
-                    <h1 style="margin-right: 20px;display:inline;">Open the Speakers List</h1>
+                    <h1 style="padding-right: 20px;display:inline;">Open the Speakers List</h1>
                     <div>
                         <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
                         <button onclick="killMotionDisplay(this);" style="margin-right: 20px;">Motion Failed</button>
@@ -297,14 +328,14 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    Number of Speakers: <input type="text" value="10" class="largeTextInput">
+                    <b>Number of Speakers:</b> <input type="text" value="10" class="largeTextInput">
                     <br>
-                    Delegate speaking time: <input type="text" value="1:00" class="largeTextInput">
+                    <b>Delegate speaking time:</b> <input type="text" value="1:00" class="largeTextInput">
                 </div>
             </div>
             <div id="unmodMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="unmod">
                 <div>
-                    <h1 style="display:inline;margin-right: 20px;">Unmoderated Caucus</h1>
+                    <h1 style="display:inline;padding-right: 20px;">Unmoderated Caucus</h1>
                     <div>
                         <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
                         <button onclick="killMotionDisplay(this);" style="margin-right: 20px;">Motion Failed</button>
@@ -312,14 +343,14 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    Topic: <input style="text-align: left; width: 70%;" type="text" value="">
+                    <b>Topic:</b> <input style="text-align: left; width: 70%;" type="text" value="">
                     <br>
-                    Duration: <input type="text" value="5:00" class="largeTextInput">
+                    <b>Duration:</b> <input type="text" value="5:00" class="largeTextInput">
                 </div>
             </div>
             <div id="roundRobinMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="roundRobin">
                 <div>
-                    <h1 style="margin-right: 20px;display:inline;">Round Robin</h1>
+                    <h1 style="padding-right: 20px;display:inline;">Round Robin</h1>
                     <div>
                         <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
                         <button onclick="killMotionDisplay(this);" style="margin-right: 20px;">Motion Failed</button>
@@ -327,14 +358,14 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    Topic: <input type="text" value="" class="largeTextInput" style="width: 70%; text-align: left !important;">
+                    <b>Topic:</b> <input type="text" value="" class="largeTextInput" style="width: 70%; text-align: left !important;">
                     <br>
-                    Delegate speaking time: <input type="text" value="0:15" class="largeTextInput">
+                    <b>Delegate speaking time:</b> <input type="text" value="0:15" class="largeTextInput">
                 </div>
             </div>
             <div id="presentPapersMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="presentPapers">
                 <div>
-                    <h1 style="margin-right: 20px;display:inline;">Present Papers</h1>
+                    <h1 style="padding-right: 20px;display:inline;">Present Papers</h1>
                     <div>
                         <button onclick="parsePassedMotionJSON(introducePapersJSONConfig);" style="margin-right: 20px;">Motion Passed</button>
                         <button onclick="killMotionDisplay(this);">Motion Failed</button>
@@ -370,13 +401,6 @@
         <div id="backgroundLogoContainer">
             <img src="/UN-logo.png" id="backgroundLogo">
         </div>
-        <!--
-            <span class="alignchildrenspan"> Nice clicker
-                <button class="incrementButton">-</button>
-                <input type="number" id="newModPopupDuration" min="0">
-                <button class="incrementButton">+</button>
-            </span>
-        -->
     </body>
     <script src="/worker.js"></script>
 </html>

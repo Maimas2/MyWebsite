@@ -152,8 +152,9 @@ input[type=number] {
 .middleLine {
     background-color: #555;
     width: 2px !important;
-    height: 100%;
+    height: 100% !important;
     padding: 0 !important;
+    margin: 5px;
 }
 #rightDelegateBox {
     height: 100%;
@@ -206,7 +207,7 @@ input[type=number] {
 }
 .innermotiondisplay {
     width: 100%;
-    height: 150px;
+    min-height: 150px;
     padding: 15px;
     padding-left: 35px;
     padding-right: 35px;
@@ -542,8 +543,8 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #floatBottomRight {
     position: absolute;
-    right: 30px;
-    bottom: 30px;
+    right: 3vh;
+    bottom: 3vh;
 }
 #floatBottomRight > * {
     padding: 10px;
@@ -569,11 +570,12 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     border: 1px solid transparent;
     transition: 150ms;
 }
-#impromptuTimerLabel:hover {
+#impromptuTimerLabel:not(p):hover {
     border: 1px solid black;
 }
-#impromptuTimerLabel:active {
+#impromptuTimerLabel:not(p):active {
     border: 1px solid black;
+    border-radius: 15px;
 }
 #impromptuTimer {
     display: flex;
@@ -613,5 +615,8 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     margin: 0;
 }
 #jccPassPaperContainer {
+    display: none;
+}
+#mirrorSecondStep {
     display: none;
 }
