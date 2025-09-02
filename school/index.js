@@ -1,5 +1,6 @@
 const express    = require('express');
 const bodyParser = require("body-parser");
+const fs         = require("fs");
 
 const app = express();
 
@@ -10,6 +11,12 @@ const port = 3000;
 
 app.get('/', (req, res) => {
 	res.sendFile('index.html', {root: __dirname})
+});
+
+fs.readdirSync("school/static").forEach((file) => {
+    app.get(`/static/${file}`, (req, res) => {
+        res.sendFile(`static/${file}`, {root: __dirname});
+    });
 });
 
 app.get('/style.css', (req, res) => {

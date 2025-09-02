@@ -36,6 +36,7 @@ for(var i = 0; i < l.length; i++) {
         app.use(vhost(b.split(" ")[0] + ".alex-seltzer.com", tapp));
     } catch(e) {
         console.warn(`Could not find subdomain ${b.split(" ")[0]}, skipping...`);
+        //console.warn(e);
     }
 }
 

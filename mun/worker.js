@@ -24,8 +24,8 @@ function getListOfCountries() {
 function getDictOfVotingCountries() {
     var toReturn = {};
     listOfCountriesInCommittee.forEach(function(v) {
-        if($("#attendanceNode" + v.replaceAll(" ", "")).length && $("#attendanceNode" + v.replaceAll(" ", "")).css("display") != "none") {
-            var buttons = document.getElementById("attendanceNode" + v.replaceAll(" ", "")).getElementsByTagName("button");
+        if($("#attendanceNode" + sanitizeForID(v)).length && $("#attendanceNode" + sanitizeForID(v)).css("display") != "none") {
+            var buttons = document.getElementById("attendanceNode" + sanitizeForID(v)).getElementsByTagName("button");
             if(buttons[1].getAttribute("data-clicked") == "true") {
                 toReturn[v] = "Pr";
             } else if(buttons[2].getAttribute("data-clicked") == "true") {
@@ -162,45 +162,73 @@ function showPopup() {
 }
 
 function resortMotions() {
+    if(isMirroring) return;
     var listedMotions = $("#motiondisplays").children().get();
     listedMotions.sort(function(first, second) {
         return motionTypeToImportance(first) < motionTypeToImportance(second);
     });
     $.each(listedMotions, function(first, second) {
         $("#motiondisplays").append(second);
-    })
+    });
+
+    resendMirror();
 }
 
 function appendMotion(m) {
     if($("#firstMotionPrompt").length) $("#firstMotionPrompt").remove();
 
-    m.find("input").toArray().forEach(function(el) {
-        $(el).on("change", resortMotions);
-    });
+    if(isMirroring) {
+        m.find("input").toArray().forEach((el) => {
+            $(el).replaceWith($("<span>").append(document.createTextNode(el.value)));
+        });
+
+        m.find("button").remove();
+    } else {
+        m.find("input").toArray().forEach(function(el) {
+            $(el).on("change", resortMotions);
+        });
+    }
 
     m.attr("id", "");
+    m.attr("data-rngid", Math.floor(Math.random()*10000).toString()); // Random id to add to keep track of motions that otherwise are identical, esp. for saving/restoring state
 
     m.appendTo("#motiondisplays");
 
-    var ph = m.css("height");
-    var pp = m.css("padding");
-    var pmt = m.css("margin-top");
-    var pmb = m.css("margin-bottom");
+    if(!isMirroring) {
+        var ph = m.css("height");
+        var pp = m.css("padding");
+        var pmt = m.css("margin-top");
+        var pmb = m.css("margin-bottom");
 
-    m.css("opacity", "0");
+        m.css("opacity", "0");
 
-    m.css("height", "0");
-    m.css("padding", "0");
-    m.css("margin-top", "0");
-    m.css("margin-bottom", "0");
+        m.css("height", "0");
+        m.css("padding", "0");
+        m.css("margin-top", "0");
+        m.css("margin-bottom", "0");
 
-    m.animate({
-        opacity : 1,
-        height : ph,
-        padding : pp,
-        "margin-top" : pmt,
-        "margin-bottom" : pmb
-    }, 150);
+        m.css("min-height", "0");
+
+        m.animate({
+            opacity : 1,
+            height : ph,
+            padding : pp,
+            "margin-top" : pmt,
+            "margin-bottom" : pmb
+        }, 150, function(_e) {
+            m.css("min-height", "");
+        });
+    } else {
+        var ph = m.css("height");
+        var pp = m.css("padding");
+        var pmt = m.css("margin-top");
+        var pmb = m.css("margin-bottom");
+
+        m.css("height", ph);
+        m.css("padding", pp);
+        m.css("margin-top", pmt);
+        m.css("margin-bottom", pmb);
+    }
 
     resortMotions();
 }
@@ -239,6 +267,10 @@ function implementAttendanceList(att) {
     });
 }
 
+function isTimeInvalid(s) {
+    return !((!isNaN(s.replaceAll(":","").replaceAll(" ", ""))) && s != "")
+}
+
 function hidePopup(nextFunction = null) {
     var quickStartKeyToGoOn = 0; /**
     * 0: Do nothing
@@ -247,7 +279,7 @@ function hidePopup(nextFunction = null) {
     */
     if(isPopupShown) {
         if(document.getElementById("newModPopup").style.display != "none") { // Check if inputs are valid
-            if(isNaN($("#newModPopupDuration").val().replaceAll(":","").replaceAll(" "))) {
+            if(isTimeInvalid($("#newModPopupDuration").val())) {
                 createAlert("Invalid duration");
                 return
             }
@@ -255,7 +287,7 @@ function hidePopup(nextFunction = null) {
                 createAlert("Duration can't be zero");
                 return;
             }
-            if(isNaN($("#newModPopupDelegateDuration").val().replaceAll(":","").replaceAll(" "))) {
+            if(isTimeInvalid($("#newModPopupDelegateDuration").val())) {
                 createAlert("Invalid delegate duration");
                 return
             }
@@ -268,7 +300,7 @@ function hidePopup(nextFunction = null) {
                 return;
             }
         } else if(document.getElementById("newUnmodPopup").style.display != "none") {
-            if(isNaN($("#newUnmodPopupDuration").val().replaceAll(":","").replaceAll(" "))) {
+            if(isTimeInvalid($("#newUnmodPopupDuration").val())) {
                 createAlert("Invalid duration");
                 return;
             }
@@ -277,11 +309,11 @@ function hidePopup(nextFunction = null) {
                 return;
             }
         } else if(document.getElementById("speakersListPopup").style.display != "none") {
-            if(isNaN($("#speakersListNumDelegates").val()) || Number($("#speakersListNumDelegates").val()) <= 0) {
+            if(isTimeInvalid($("#speakersListNumDelegates").val()) || Number($("#speakersListNumDelegates").val()) <= 0) {
                 createAlert("Invalid number of delegates");
                 return;
             }
-            if(isNaN($("#speakersListPopupDelegateDuration").val().replaceAll(":","").replaceAll(" "))) {
+            if(isTimeInvalid($("#speakersListPopupDelegateDuration").val())) {
                 createAlert("Invalid delegate duration");
                 return;
             }
@@ -294,7 +326,7 @@ function hidePopup(nextFunction = null) {
                 return;
             }
         } else if(document.getElementById("roundRobinPopup").style.display != "none") {
-            if(isNaN($("#roundRobinDelegateDuration").val().replaceAll(":","").replaceAll(" "))) {
+            if(isTimeInvalid($("#roundRobinDelegateDuration").val())) {
                 createAlert("Invalid duration");
                 return;
             }
@@ -317,6 +349,8 @@ function hidePopup(nextFunction = null) {
                     quickStartKeyToGoOn = 1;
                 }
             }
+
+            resendMirror();
         } else if(document.getElementById("newModPopup").style.display != "none") {
             var toAdd = $("#modMotionPrefab").clone(true);
             var inputList = toAdd.find("input");
@@ -373,14 +407,20 @@ function quitPopup(nextFunction = null) {
             $("#popupPage").css("user-select", "none");
 
             if(nextFunction != null) nextFunction();
+
+            resendMirror();
         });
 
         $(":focus").blur();
+
+        lastSent = -1000;
     }
 }
 
 function killMotionDisplayParent(el) {
     var parentEl = $(el);
+
+    parentEl.css("min-height", "0");
 
     parentEl.css('overflow','hidden');
     parentEl.animate({
@@ -390,7 +430,9 @@ function killMotionDisplayParent(el) {
         "margin-bottom" : 0,
         padding: 0
     }, 150, (_e) => {
-        parentEl.remove()
+        parentEl.remove();
+
+        resendMirror();
     });
 }
 
@@ -411,50 +453,61 @@ function stringToDuration(st) {
 function constructJSON(parentEl) {
     var ty = parentEl.getAttribute("data-motiontype");
     var building = JSON.parse("{}");
+
+    var elementNameToGet = "input"
+    if(isMirroring) elementNameToGet = "span";
+
+    var propertyToGet = "value";
+    if(isMirroring) propertyToGet = "textContent";
+
+    building["fancyMotionTitle"] = parentEl.getElementsByTagName("h1")[0].textContent;
+
     if(ty == "mod") {
         building["motionType"] = "mod";
-        building["fancyMotionTitle"] = "Moderated Caucus";
+        //building["fancyMotionTitle"] = "Moderated Caucus";
 
         building["requiresDelegateList"] = true;
         building["timerType"] = "perDelegate";
 
-        var inputs = parentEl.getElementsByTagName("input");
-        building["motionTopic"] = inputs[0].value;
-        building["duration"] = stringToDuration(inputs[1].value);
-        building["delegateDuration"] = stringToDuration(inputs[2].value);
+        var inputs = parentEl.getElementsByTagName(elementNameToGet);
+        building["motionTopic"] = inputs[0][propertyToGet];
+        building["duration"] = stringToDuration(inputs[1][propertyToGet]);
+        building["delegateDuration"] = stringToDuration(inputs[2][propertyToGet]);
+
+        inputs[0]
     } else if(ty == "unmod") {
         building["motionType"] = "unmod";
-        building["fancyMotionTitle"] = "Unmoderated Caucus";
+        //building["fancyMotionTitle"] = "Unmoderated Caucus";
 
         building["requiresDelegateList"] = false;
         building["timerType"] = "one";
 
-        var inputs = parentEl.getElementsByTagName("input");
-        building["motionTopic"] = inputs[0].value;
-        building["duration"] = stringToDuration(inputs[1].value);
+        var inputs = parentEl.getElementsByTagName(elementNameToGet);
+        building["motionTopic"] = inputs[0][propertyToGet];
+        building["duration"] = stringToDuration(inputs[1][propertyToGet]);
     } else if(ty == "speakersList") {
         building["motionType"] = "speakersList";
-        building["fancyMotionTitle"] = "Speakers List";
+        //building["fancyMotionTitle"] = "Speakers List";
 
         building["motionTopic"] = "";
 
         building["requiresDelegateList"] = true;
         building["timerType"] = "perDelegate";
 
-        var inputs = parentEl.getElementsByTagName("input");
-        building["duration"] = Number(inputs[0].value) * stringToDuration(inputs[1].value);
-        building["delegateDuration"] = stringToDuration(inputs[1].value);
+        var inputs = parentEl.getElementsByTagName(elementNameToGet);
+        building["duration"] = Number(inputs[0][propertyToGet]) * stringToDuration(inputs[1][propertyToGet]);
+        building["delegateDuration"] = stringToDuration(inputs[1][propertyToGet]);
     } else if(ty == "roundRobin") {
         building["motionType"] = "roundRobin";
-        building["fancyMotionTitle"] = "Round Robin";
+        //building["fancyMotionTitle"] = "Round Robin";
 
         building["requiresDelegateList"] = false;
         building["timerType"] = "perDelegate";
 
-        var inputs = parentEl.getElementsByTagName("input");
-        building["duration"] = getListOfVotingCountries().length * stringToDuration(inputs[1].value);
-        building["delegateDuration"] = stringToDuration(inputs[1].value);
-        building["motionTopic"] = inputs[0].value;
+        var inputs = parentEl.getElementsByTagName(elementNameToGet);
+        building["duration"] = getListOfVotingCountries().length * stringToDuration(inputs[1][propertyToGet]);
+        building["delegateDuration"] = stringToDuration(inputs[1][propertyToGet]);
+        building["motionTopic"] = inputs[0][propertyToGet];
     }
     return building;
 }
@@ -466,7 +519,7 @@ function passMotion(parentEl) {
 function parsePassedMotionJSON(details) {
     currentMotion = details;
 
-    if(details["requiresDelegateList"] == true) {
+    if(details["requiresDelegateList"]) {
         $("#passedMotionCountryChooser").css("display", "block");
         $("#chosenCountriesContainer").css("display", "flex");
     } else {
@@ -542,6 +595,8 @@ function parsePassedMotionJSON(details) {
         $("#rightbottomarea").animate({
             opacity : 1
         }, 150);
+
+        resendMirror();
     });
 
     if(details["motionType"] == "presentPapers" && ws != undefined) {
@@ -555,123 +610,13 @@ function parsePassedMotionJSON(details) {
     isTimerHalted = false;
 }
 
-$("#newMod").on("click", function(_event) {
-    if(numDelegatesInCommittee == 0) {
-        createAlert('You have not chosen any delegates to be in committee.', (_e) => {
-            $("#editdelegatelistbutton").click()
-        });
-        return;
-    }
-    if(getListOfVotingCountries().length <= 0) {
-        createAlert('You have not taken attendance', (_e) => {
-            $("#takeAttendanceButton").click()
-        });
-        return;
-    }
-    showPopup();
-    document.getElementById("newModPopup").style.display = "block";
-    document.getElementById("newModTopic").value = "";
-    document.getElementById("newModPopupDuration").value = "5:00";
-    document.getElementById("newModPopupDelegateDuration").value = "1:00";
-
-    document.getElementById("newModTopic").focus()
-});
-
-document.getElementById("newSpeakersList").onclick = function(_event) {
-    if(numDelegatesInCommittee == 0) {
-        createAlert('You have not chosen any delegates to be in committee. Click "Edit List" to do so.', (_e) => {
-            $("#editdelegatelistbutton").click()
-        });
-        return;
-    }
-    if(getListOfVotingCountries().length <= 0) {
-        createAlert('You have not taken attendance', (_e) => {
-            $("#takeAttendanceButton").click()
-        });
-        return;
-    }
-    showPopup();
-    document.getElementById("speakersListPopup").style.display = "block";
-    document.getElementById("speakersListNumDelegates").value = "10";
-    document.getElementById("speakersListPopupDelegateDuration").value = "1:00";
-
-    document.getElementById("speakersListNumDelegates").focus()
-}
-
-document.getElementById("newUnmod").onclick = function(_event) {
-    showPopup();
-    document.getElementById("newUnmodPopup").style.display = "block";
-    document.getElementById("newUnmodTopic").value = "";
-    document.getElementById("newUnmodPopupDuration").value = "5:00";
-
-    document.getElementById("newUnmodTopic").focus()
-}
-
-document.getElementById("editdelegatelistbutton").onclick = function(_event) {
-    showPopup();
-    document.getElementById("editDelegateList").style.display = "flex";
-    $("#editDelegateList").css("height", "60%");
-    document.getElementById("delegateListSearch").value = "";
-    refreshDelegateListSearch();
-    document.getElementById("quitPopup").style.display = "none";
-};
-
-document.getElementById("exitPopup").onclick = function(_event) {
-    if(isPopupShown) {
-        hidePopup();
-    }
-};
-
-document.getElementById("takeAttendanceButton").onclick = function(_e) {
-    if(numDelegatesInCommittee == 0) {
-        createAlert("Add some delegates to the committee before you take attendance!", (_e) => {
-            $("#editdelegatelistbutton").click()
-        });
-        return;
-    }
-    if(!isPopupShown) {
-        showPopup();
-        document.getElementById("attendanceList").style.display = "block";
-        $("#attendanceList").css("height", "60%");
-        document.getElementById("quitPopup").style.display = "none";
-    }
-};
-
 const introducePapersJSONConfig = {
     "motionType":           "presentPapers",
-    "fancyMotionTitle":     "Introduce Papers",
+    //"fancyMotionTitle":     "Introduce Papers",
     "requiresDelegateList":  false,
     "timerType":            "none",
     "motionTopic":          ""
 };
-
-$("#newIntroduce").on("click", function(_e) {
-    // parsePassedMotionJSON(introducePapersJSONConfig);
-    var toAdd = $("#presentPapersMotionPrefab").clone(true);
-
-    appendMotion(toAdd);
-});
-
-document.getElementById("newRoundRobin").onclick = function(_event) {
-    if(numDelegatesInCommittee == 0) {
-        createAlert('You have not chosen any delegates to be in committee. Click "Edit List" to do so.', (_e) => {
-            $("#editdelegatelistbutton").click()
-        });
-        return;
-    }
-    if(getListOfVotingCountries().length <= 0) {
-        createAlert('You have not taken attendance', (_e) => {
-            $("#takeAttendanceButton").click()
-        });
-        return;
-    }
-    showPopup();
-    document.getElementById("roundRobinPopup").style.display = "block";
-    document.getElementById("roundRobinTopic").value = "";
-    $("#roundRobinDelegateDuration").val("0:15")
-
-    document.getElementById("roundRobinTopic").focus()
-}
 
 function doYourThing() {
     var t = document.getElementById("delegateListSearch").value.toLowerCase();
@@ -700,6 +645,7 @@ function refreshDelegateListSearch(_e_ = null, delay = 0.1) {
 document.getElementById("delegateListSearch").oninput = refreshDelegateListSearch;
 
 document.onkeydown = function(event) {
+    if(isMirroring) return;
     if(document.getElementById("delegateListSearch") == document.activeElement) refreshDelegateListSearch();
     else if(!isPopupShown && (document.activeElement == document.body)) {
         if(event.key == "m") document.getElementById("newMod").click();
@@ -719,7 +665,7 @@ document.onkeydown = function(event) {
         if(event.key == "Space") toggleTimer();
     }
     if(event.key == "Escape") {
-        if(document.getElementById("quitPopup").style.display == "none") hidePopup();
+        if(!isInQuickStart) if(document.getElementById("quitPopup").style.display == "none") hidePopup();
         else quitPopup();
     }
 };
@@ -800,6 +746,7 @@ function moveToNextDelegate() {
     }
 
     refreshTimer(false);
+    resendMirror();
 }
 
 function refreshTimer(e=true) {
@@ -811,6 +758,7 @@ function refreshTimer(e=true) {
     
                 moveToNextDelegate();
             }
+            resendMirror();
         }
     }
     document.getElementById("oneLargeTimer").textContent = timeToString(largeTimerCurrentTime);
@@ -835,7 +783,7 @@ function endCurrentMotion() {
         $("#leftbottomarea").animate({
             opacity: 1
         }, 150, function(_e) {
-
+            resendMirror();
         });
     });
 
@@ -927,12 +875,14 @@ function modCountryChooserClickEventFunctionResponder() {
             this.remove();
 
             refreshModCountryList();
+            resendMirror();
         }
     }).append(`<p>${this.textContent}</p>`).appendTo($("#chosenCountriesForTimer"));
 
     $(this).css("display", "none");
 
     refreshModCountryList();
+    resendMirror();
 }
 
 function motionTypeToImportance(el) {
@@ -965,6 +915,8 @@ window.addEventListener("onbeforeunload", function (e) {
     return "Your current website state will not be automatically saved.";
 });
 
+var isMirroring = false;
+
 window.onload = function(_event) {
     if(window.location.href.includes("mobile")) { // Do mobile setup things
         $("head").append($("<link>").attr("rel", "stylesheet").attr("href", "/mobile-style.css"));
@@ -974,42 +926,72 @@ window.onload = function(_event) {
         createAlert("This website is NOT meant to be used on a mobile device! It is meant to be on a large screen up at the front of the conference. But you do you, I guess.")
     }
 
+    if(window.location.href.includes("mirror")) { // Do mirror setup things
+        isMirroring = true;
+
+        $("#newmotions").remove();
+        $("#exitCurrentMotion").remove();
+        $("#cloudStuffInner").remove();
+        $("#firstMotionPrompt").remove();
+        $("#exitButtons").remove();
+        $("#editdelegatelistbutton").remove();
+        $("#takeAttendanceButton").remove();
+        $("#timerControlsContainer").remove();
+        $("#impromptuTimerControls").remove();
+        $("#jccPassPaperContainer").remove();
+
+        $("#floatBottomRight").css("display", "none");
+
+        $("#impromptuTimerLabel").replaceWith($("<p>").prop("id", "impromptuTimerLabel").text("5:00"))
+
+        $("#committeeName").remove();
+        $("#committeeNameContainer").append(
+            $("<h1>").prop("id", "committeeName").css("background-color", "rgb(0, 0, 0, 0)")
+        );
+
+        $("#startMirroringButton").on("click", function(_e) {
+            var d = {
+                name     : $("#mirroringName").val(),
+                password : $("#mirroringPassword").val()
+            };
+
+            $("#mirroringName").prop("disabled", true);
+            $("#mirroringPassword").prop("disabled", true);
+            $("#startMirroringButton").prop("disabled", true);
+
+            $.ajax({
+                type    : "POST",
+                url     : "/jccLogin",
+                contentType: 'application/json',
+                success : function(returned) {
+                    console.log(returned);
+                    jccData = returned;
+                    setupMirroring(returned);
+
+                    $("#mirrorFirstStep").remove();
+                },
+                error   : function(returned) {
+                    console.error(JSON.parse(returned.responseText));
+                    createAlert(JSON.parse(returned.responseText).message);
+
+                    $("#mirroringName").prop("disabled", false);
+                    $("#mirroringPassword").prop("disabled", false);
+                    $("#startMirroringButton").prop("disabled", false);
+                },
+                data    : JSON.stringify(d)
+            });
+        });
+    }
+
     wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:3000/" : "wss://" + window.location.host + "/";
 
     $("#committeeName").val("");
+    $("#committeeName").text("[No name]");
     $("#newDelegateInput").val("");
 
     addAttendanceNodes();
 
     document.getElementById("rightbottomarea").style.display = "none";
-
-    $("#restartMotionTimerButton").on("click", function(_e) {
-        if(!isTimerHalted) {
-            stopTimer();
-            if(currentMotion["timerType"] == "one") {
-                largeTimerCurrentTime = currentMotion["duration"];
-            } else if(currentMotion["timerType"] == "perDelegate") {
-                largeTimerCurrentTime = currentMotion["delegateDuration"];
-            }
-            refreshTimer();   
-        }
-    });
-
-    $("#previousSpeakerButton").on("click", function(_e) {
-        if(perDelegateCurrentPosition > 0) {
-            stopTimer();
-            --perDelegateCurrentPosition;
-            largeTimerCurrentTime = largeTimerOriginalDuration;
-            refreshModCurrentCountryNumberBackground();
-            refreshTimer();
-        }
-    });
-
-    $("#yieldTimeButton").on("click", function(_e) {
-        if(!isTimerHalted && !canSortChosenCountries && perDelegateCurrentPosition <= largeTimerNumDelegates-1) {
-            moveToNextDelegate();
-        }
-    });
 
     /*$("#motiondisplays").sortable({
         animation: 100
@@ -1021,6 +1003,393 @@ window.onload = function(_event) {
 
     $("#UNLogo").on("dragstart", function(_e) {
         return false;
+    });
+
+    if(!isMirroring) {
+        $("#restartMotionTimerButton").on("click", function(_e) {
+            if(!isTimerHalted) {
+                stopTimer();
+                if(currentMotion["timerType"] == "one") {
+                    largeTimerCurrentTime = currentMotion["duration"];
+                } else if(currentMotion["timerType"] == "perDelegate") {
+                    largeTimerCurrentTime = currentMotion["delegateDuration"];
+                }
+                refreshTimer();   
+            }
+        });
+    
+        $("#previousSpeakerButton").on("click", function(_e) {
+            if(perDelegateCurrentPosition > 0) {
+                stopTimer();
+                --perDelegateCurrentPosition;
+                largeTimerCurrentTime = largeTimerOriginalDuration;
+                refreshModCurrentCountryNumberBackground();
+                refreshTimer();
+            }
+        });
+    
+        $("#yieldTimeButton").on("click", function(_e) {
+            if(!isTimerHalted && !canSortChosenCountries && perDelegateCurrentPosition <= largeTimerNumDelegates-1) {
+                moveToNextDelegate();
+            }
+        });
+    
+        $("#saveToCloudButton").on("click", function(_e) {
+            if(!window.navigator.onLine) {
+                createAlert("You must be connected to the internet");
+                return;
+            }
+            showPopup();
+            $("#saveToTheCloudPopup").css("display", "block");
+            $("#exitPopup").css("display", "none");
+            $("#saveToCloudName").val("");
+        });
+    
+        $("#saveToCloudSubmit").on("click", function(_e) {
+            if($("#saveToCloudName").val().length <= 0) {
+                createAlert("Name cannot be empty");
+                return;
+            }
+            var d = {
+                id   : $("#saveToCloudName").val(),
+                data : getStateJSON()
+            };
+            $.ajax({
+                type    : "POST",
+                url     : "/savesavedata",
+                contentType: 'application/json',
+                success : function(returned) {
+                    createAlert(JSON.parse(returned).message);
+                },
+                error   : function(returned) {
+                    createAlert(JSON.parse(returned));
+                    console.log(returned);
+                },
+                data    : JSON.stringify(d)
+            });
+            quitPopup();
+        });
+    
+        $("#loadFromCloudButton").on("click", function(_e) {
+            if(!window.navigator.onLine) {
+                createAlert("You must be connected to the internet");
+                return;
+            }
+            showPopup();
+            $("#loadFromTheCloudPopup").css("display", "block");
+            $("#exitPopup").css("display", "none");
+            $("#loadFromCloudName").val("");
+        });
+    
+        $("#loadFromCloudSubmit").on("click", function(_e) {
+            if($("#loadFromCloudName").val().length <= 0) {
+                createAlert("Name cannot be empty");
+                return;
+            }
+            var d = {
+                id   : $("#loadFromCloudName").val()
+            };
+            console.log(d);
+            $.ajax({
+                type    : "POST",
+                url     : "/getsavedata",
+                contentType: 'application/json',
+                success : function(returned) {
+                    implementStateJSON(JSON.parse(returned));
+                },
+                error   : function(returned) {
+                    createAlert(returned);
+                    console.log(returned);
+                },
+                data    : JSON.stringify(d)
+            });
+            quitPopup();
+        });
+    
+        $("#logoContainer").on("click", function(_e) {
+            if(isPopupShown) return;
+            showPopup();
+            $("#legalStuffEwww").css("display", "block").css("height", "60%");
+            $("#quitPopup").text("Close");
+            $("#exitPopup").css("display", "none");
+        });
+    
+        $("#newDelegateSubmit").on("click", function(_e) {
+            if($("#newDelegateInput").val() == "") return;
+    
+            customDelegates.push($("#newDelegateInput").val());
+            
+            $("#customDelegateList").append(createDelegateCountryNode($("#newDelegateInput").val()));
+    
+            $("#newDelegateInput").val("");
+    
+            hasMadeNewDelegate = true;
+    
+            refreshDelegateListSearch(0);
+        });
+
+        $("#impromptuTimerStartStop").on("click", function(_e) {
+            if(isImpromptuTimerGoing) {
+                isImpromptuTimerGoing = false;
+                $("#impromptuTimerStartStop").text("Start");
+            } else {
+                isImpromptuTimerGoing = true;
+                $("#impromptuTimerStartStop").text("Pause");
+            }
+        });
+        $("#impromptuTimerLabel").on("focus", function(_e) {
+            isImpromptuTimerGoing = false;
+            $("#impromptuTimerStartStop").text("Start");
+        });
+        $("#impromptuTimerLabel").on("blur", function(_e) {
+            if(isTimeInvalid($("#impromptuTimerLabel").val())) {
+                $("#impromptuTimerLabel").val("5:00");
+            }
+            impromptuTime = stringToDuration($("#impromptuTimerLabel").val());
+            originalImpromptuTime = impromptuTime;
+        });
+        $("#impromptuTimerReset").on("click", function(_e) {
+            impromptuTime = originalImpromptuTime;
+            isImpromptuTimerGoing = false;
+            $("#impromptuTimerLabel").val(durationToString(impromptuTime));
+
+            resendMirror();
+        });
+    
+        $("#allPresentButton").on("mousedown", function(_e) {
+            Array(...document.getElementById('attendanceListOfCountries').children).forEach((el) => {
+                if($(el).css("display") != "none" && typeof el.childNodes[5] != 'undefined') {
+                    el.childNodes[5].click();
+                }
+            });
+        });
+    
+        $("#startJCC").on("click", function(_e) {
+            showPopup();
+            $("#joinJccPopup").css("display", "block");
+        });
+        $("#jccInfo").on("click", function(_e) {
+            showPopup();
+            $("#jccInfoPopup").css("display", "block");
+        });
+        $("#newJCC").on("click", function(_e) {
+            if($("#newJccName").val() == "") {
+                createAlert("JCC name cannot be empty");
+                return;
+            }
+            var d = {
+                name     : $("#newJccName").val(),
+                password : $("#newJccPassword").val()
+            };
+            hidePopup();
+            $("#startJCC").css("display", "none");
+            $.ajax({
+                type    : "POST",
+                url     : "/createJCC",
+                contentType: 'application/json',
+                success : function(returned) {
+                    console.log(returned);
+    
+                    setupJccData(returned);
+                },
+                error   : function(returned) {
+                    console.error(JSON.parse(returned.responseText));
+                    createAlert(JSON.parse(returned.responseText).message);
+                    $("#startJCC").css("display", "inline-block");
+                },
+                data    : JSON.stringify(d)
+            });
+        });
+        $("#joinJCC").on("click", function(_e) {
+            if($("#newJccName").val() == "") {
+                createAlert("JCC name cannot be empty");
+                return;
+            }
+            var d = {
+                name     : $("#newJccName").val(),
+                password : $("#newJccPassword").val()
+            };
+            hidePopup();
+            $("#startJCC").css("display", "none");
+            $.ajax({
+                type    : "POST",
+                url     : "/jccLogin",
+                contentType: 'application/json',
+                success : function(returned) {
+                    console.log(returned);
+    
+                    setupJccData(returned);
+                },
+                error   : function(returned) {
+                    console.error(JSON.parse(returned.responseText));
+                    createAlert(JSON.parse(returned.responseText).message);
+                    $("#startJCC").css("display", "inline-block");
+                },
+                data    : JSON.stringify(d)
+            });
+        });
+        $("#jccSendMessageButton").on("click", function(_e) {
+            if(ws == undefined) return;
+            var d = {
+                name : jccData.name,
+                salt : jccData.salt,
+                type : "message",
+                messageBody : $("#jccSendMessageInput").val(),
+                sender     : $("#committeeName").val()
+            };
+            ws.send(JSON.stringify(d));
+            $("#jccSendMessageInput").val("");
+        });
+        $("#passedPaperButton").on("click", function(_e) {
+            if(ws == undefined) return;
+            var d = {
+                name : jccData.name,
+                salt : jccData.salt,
+                type : "paperPassed",
+                messageBody : $("#passedPaperNameInput").val(),
+                sender     : $("#committeeName").val()
+            };
+            ws.send(JSON.stringify(d));
+            $("#passedPaperNameInput").val("");
+        });
+    
+        $("#newMod").on("click", function(_event) {
+            if(numDelegatesInCommittee == 0) {
+                createAlert('You have not chosen any delegates to be in committee.', (_e) => {
+                    $("#editdelegatelistbutton").click()
+                });
+                return;
+            }
+            if(getListOfVotingCountries().length <= 0) {
+                createAlert('You have not taken attendance', (_e) => {
+                    $("#takeAttendanceButton").click()
+                });
+                return;
+            }
+            showPopup();
+            document.getElementById("newModPopup").style.display = "block";
+            document.getElementById("newModTopic").value = "";
+            document.getElementById("newModPopupDuration").value = "5:00";
+            document.getElementById("newModPopupDelegateDuration").value = "1:00";
+        
+            document.getElementById("newModTopic").focus()
+        });
+        
+        document.getElementById("newSpeakersList").onclick = function(_event) {
+            if(numDelegatesInCommittee == 0) {
+                createAlert('You have not chosen any delegates to be in committee. Click "Edit List" to do so.', (_e) => {
+                    $("#editdelegatelistbutton").click()
+                });
+                return;
+            }
+            if(getListOfVotingCountries().length <= 0) {
+                createAlert('You have not taken attendance', (_e) => {
+                    $("#takeAttendanceButton").click()
+                });
+                return;
+            }
+            showPopup();
+            document.getElementById("speakersListPopup").style.display = "block";
+            document.getElementById("speakersListNumDelegates").value = "10";
+            document.getElementById("speakersListPopupDelegateDuration").value = "1:00";
+        
+            document.getElementById("speakersListNumDelegates").focus()
+        }
+        
+        document.getElementById("newUnmod").onclick = function(_event) {
+            showPopup();
+            document.getElementById("newUnmodPopup").style.display = "block";
+            document.getElementById("newUnmodTopic").value = "";
+            document.getElementById("newUnmodPopupDuration").value = "5:00";
+        
+            document.getElementById("newUnmodTopic").focus()
+        }
+    
+        $("#newIntroduce").on("click", function(_e) {
+            // parsePassedMotionJSON(introducePapersJSONConfig);
+            var toAdd = $("#presentPapersMotionPrefab").clone(true);
+        
+            appendMotion(toAdd);
+        });
+        
+        document.getElementById("newRoundRobin").onclick = function(_event) {
+            if(numDelegatesInCommittee == 0) {
+                createAlert('You have not chosen any delegates to be in committee. Click "Edit List" to do so.', (_e) => {
+                    $("#editdelegatelistbutton").click()
+                });
+                return;
+            }
+            if(getListOfVotingCountries().length <= 0) {
+                createAlert('You have not taken attendance', (_e) => {
+                    $("#takeAttendanceButton").click()
+                });
+                return;
+            }
+            showPopup();
+            document.getElementById("roundRobinPopup").style.display = "block";
+            document.getElementById("roundRobinTopic").value = "";
+            $("#roundRobinDelegateDuration").val("0:15")
+        
+            document.getElementById("roundRobinTopic").focus()
+        }
+        
+        document.getElementById("editdelegatelistbutton").onclick = function(_event) {
+            showPopup();
+            document.getElementById("editDelegateList").style.display = "flex";
+            $("#editDelegateList").css("height", "60%");
+            document.getElementById("delegateListSearch").value = "";
+            refreshDelegateListSearch();
+            document.getElementById("quitPopup").style.display = "none";
+        };
+        
+        document.getElementById("exitPopup").onclick = function(_event) {
+            if(isPopupShown) {
+                hidePopup();
+            }
+        };
+        
+        document.getElementById("takeAttendanceButton").onclick = function(_e) {
+            if(numDelegatesInCommittee == 0) {
+                createAlert("Add some delegates to the committee before you take attendance!", (_e) => {
+                    $("#editdelegatelistbutton").click()
+                });
+                return;
+            }
+            if(!isPopupShown) {
+                showPopup();
+                document.getElementById("attendanceList").style.display = "block";
+                $("#attendanceList").css("height", "60%");
+                document.getElementById("quitPopup").style.display = "none";
+            }
+        };
+    
+        setInterval(function(_e) {
+            if(document.activeElement == document.getElementById("impromptuTimerLabel")) return;
+            if(isImpromptuTimerGoing) {
+                impromptuTime--;
+                if(impromptuTime <= 0) {
+                    impromptuTime = 0;
+                    isImpromptuTimerGoing = false;
+                    $("#impromptuTimerStartStop").text("Start");
+                }
+                $("#impromptuTimerLabel").val(durationToString(impromptuTime));
+                $("#impromptuTimerLabel").text(durationToString(impromptuTime));
+
+                resendMirror();
+            }
+        }, 1000);
+
+        $("#committeeName").on("change", resendMirror);
+    }
+
+    $("#impromptuTimerButton").on("click", function(_e) {
+        if(isPopupShown) return;
+        showPopup();
+        $("#impromptuTimer").css("display", "block").css("height", "60%");
+        $("#exitPopup").css("display", "none");
+        $("#quitPopup").text("Close");
+
+        resendMirror();
     });
 
     $("#commenceRollCall").on("click", function(_e) {
@@ -1044,10 +1413,6 @@ window.onload = function(_event) {
             (e) => {
                 $("#takeAttendanceButton").click()
             });
-            return;
-        }
-        if(numPossibleVoters == 0) {
-            createAlert("Take attendance before taking a roll call vote");
             return;
         }
 
@@ -1100,243 +1465,8 @@ window.onload = function(_event) {
         $("#nayRollCallSegment").text(rollCallNumNays + (rollCallNumNays != 1 ? " nays" : " nay"));
 
         //$(`#rollCallPastChoices`).children().toArray()[0].scrollIntoView();
-    });
-
-
-    $("#saveToCloudButton").on("click", function(_e) {
-        if(!window.navigator.onLine) {
-            createAlert("You must be connected to the internet");
-            return;
-        }
-        showPopup();
-        $("#saveToTheCloudPopup").css("display", "block");
-        $("#exitPopup").css("display", "none");
-        $("#saveToCloudName").val("");
-    });
-
-    $("#saveToCloudSubmit").on("click", function(_e) {
-        if($("#saveToCloudName").val().length <= 0) {
-            createAlert("Name cannot be empty");
-            return;
-        }
-        var d = {
-            id   : $("#saveToCloudName").val(),
-            data : getStateJSON()
-        };
-        $.ajax({
-            type    : "POST",
-            url     : "/savesavedata",
-            contentType: 'application/json',
-            success : function(returned) {
-                createAlert(JSON.parse(returned).message);
-            },
-            error   : function(returned) {
-                createAlert(JSON.parse(returned));
-                console.log(returned);
-            },
-            data    : JSON.stringify(d)
-        });
-        quitPopup();
-    });
-
-    $("#loadFromCloudButton").on("click", function(_e) {
-        if(!window.navigator.onLine) {
-            createAlert("You must be connected to the internet");
-            return;
-        }
-        showPopup();
-        $("#loadFromTheCloudPopup").css("display", "block");
-        $("#exitPopup").css("display", "none");
-        $("#loadFromCloudName").val("");
-    });
-
-    $("#loadFromCloudSubmit").on("click", function(_e) {
-        if($("#loadFromCloudName").val().length <= 0) {
-            createAlert("Name cannot be empty");
-            return;
-        }
-        var d = {
-            id   : $("#loadFromCloudName").val()
-        };
-        console.log(d);
-        $.ajax({
-            type    : "POST",
-            url     : "/getsavedata",
-            contentType: 'application/json',
-            success : function(returned) {
-                implementStateJSON(returned);
-            },
-            error   : function(returned) {
-                createAlert(returned);
-                console.log(returned);
-            },
-            data    : JSON.stringify(d)
-        });
-        quitPopup();
-    });
-
-    $("#logoContainer").on("click", function(_e) {
-        if(isPopupShown) return;
-        showPopup();
-        $("#legalStuffEwww").css("display", "block").css("height", "60%");
-        $("#quitPopup").text("Close");
-        $("#exitPopup").css("display", "none");
-    });
-
-    $("#newDelegateSubmit").on("click", function(_e) {
-        if($("#newDelegateInput").val() == "") return;
-
-        customDelegates.push($("#newDelegateInput").val());
-        
-        $("#customDelegateList").append(createDelegateCountryNode($("#newDelegateInput").val()));
-
-        $("#newDelegateInput").val("");
-
-        hasMadeNewDelegate = true;
-
-        refreshDelegateListSearch(0);
-    });
-
-    $("#impromptuTimerButton").on("click", function(_e) {
-        if(isPopupShown) return;
-        showPopup();
-        $("#impromptuTimer").css("display", "block").css("height", "60%");
-        $("#exitPopup").css("display", "none");
-        $("#quitPopup").text("Close");
-    });
-    $("#impromptuTimerStartStop").on("click", function(_e) {
-        if(isImpromptuTimerGoing) {
-            isImpromptuTimerGoing = false;
-            $("#impromptuTimerStartStop").text("Start");
-        } else {
-            isImpromptuTimerGoing = true;
-            $("#impromptuTimerStartStop").text("Pause");
-        }
-    });
-    $("#impromptuTimerLabel").on("focus", function(_e) {
-        isImpromptuTimerGoing = false;
-        $("#impromptuTimerStartStop").text("Start");
-    });
-    $("#impromptuTimerLabel").on("blur", function(_e) {
-        if(isNaN($("#impromptuTimerLabel").val().replaceAll(":",""))) {
-            $("#impromptuTimerLabel").val("5:00");
-        }
-        impromptuTime = stringToDuration($("#impromptuTimerLabel").val());
-        originalImpromptuTime = impromptuTime;
-    });
-    $("#impromptuTimerReset").on("click", function(_e) {
-        impromptuTime = originalImpromptuTime;
-        isImpromptuTimerGoing = false;
-        $("#impromptuTimerLabel").val(durationToString(impromptuTime));
-    });
-    setInterval(function(_e) {
-        if(document.activeElement == document.getElementById("impromptuTimerLabel")) return;
-        if(isImpromptuTimerGoing) {
-            impromptuTime--;
-            if(impromptuTime <= 0) {
-                impromptuTime = 0;
-                isImpromptuTimerGoing = false;
-                $("#impromptuTimerStartStop").text("Start");
-            }
-            $("#impromptuTimerLabel").val(durationToString(impromptuTime));
-        }
-    }, 1000);
-
-    $("#allPresentButton").on("mousedown", function(_e) {
-        Array(...document.getElementById('attendanceListOfCountries').children).forEach((el) => {
-            if($(el).css("display") != "none" && typeof el.childNodes[5] != 'undefined') {
-                el.childNodes[5].click();
-            }
-        });
-    });
-
-    $("#startJCC").on("click", function(_e) {
-        showPopup();
-        $("#joinJccPopup").css("display", "block");
-    });
-    $("#jccInfo").on("click", function(_e) {
-        showPopup();
-        $("#jccInfoPopup").css("display", "block");
-    });
-    $("#newJCC").on("click", function(_e) {
-        if($("#newJccName").val() == "") {
-            createAlert("JCC name cannot be empty");
-            return;
-        }
-        var d = {
-            name     : $("#newJccName").val(),
-            password : $("#newJccPassword").val()
-        };
-        hidePopup();
-        $("#startJCC").css("display", "none");
-        $.ajax({
-            type    : "POST",
-            url     : "/createJCC",
-            contentType: 'application/json',
-            success : function(returned) {
-                console.log(returned);
-
-                setupJccData(returned);
-            },
-            error   : function(returned) {
-                console.error(JSON.parse(returned.responseText));
-                createAlert(JSON.parse(returned.responseText).message);
-                $("#startJCC").css("display", "inline-block");
-            },
-            data    : JSON.stringify(d)
-        });
-    });
-    $("#joinJCC").on("click", function(_e) {
-        if($("#newJccName").val() == "") {
-            createAlert("JCC name cannot be empty");
-            return;
-        }
-        var d = {
-            name     : $("#newJccName").val(),
-            password : $("#newJccPassword").val()
-        };
-        hidePopup();
-        $("#startJCC").css("display", "none");
-        $.ajax({
-            type    : "POST",
-            url     : "/jccLogin",
-            contentType: 'application/json',
-            success : function(returned) {
-                console.log(returned);
-
-                setupJccData(returned);
-            },
-            error   : function(returned) {
-                console.error(JSON.parse(returned.responseText));
-                createAlert(JSON.parse(returned.responseText).message);
-                $("#startJCC").css("display", "inline-block");
-            },
-            data    : JSON.stringify(d)
-        });
-    });
-    $("#jccSendMessageButton").on("click", function(_e) {
-        if(ws == undefined) return;
-        var d = {
-            name : jccData.name,
-            salt : jccData.salt,
-            type : "message",
-            messageBody : $("#jccSendMessageInput").val(),
-            sender     : $("#committeeName").val()
-        };
-        ws.send(JSON.stringify(d));
-        $("#jccSendMessageInput").val("");
-    });
-    $("#passedPaperButton").on("click", function(_e) {
-        if(ws == undefined) return;
-        var d = {
-            name : jccData.name,
-            salt : jccData.salt,
-            type : "paperPassed",
-            messageBody : $("#passedPaperNameInput").val(),
-            sender     : $("#committeeName").val()
-        };
-        ws.send(JSON.stringify(d));
-        $("#passedPaperNameInput").val("");
+        lastSent = -1000;
+        resendMirror();
     });
 
     $("#impromptuTimerLabel").val("5:00");
@@ -1345,8 +1475,98 @@ window.onload = function(_event) {
     setCurrentCountryList([]);
     recalcDelegates();
 
-    showQuickStart();
+    if(!isMirroring) {
+        showQuickStart();
+    } else {
+        showPopup();
+        $("#mirrorSetupPopup").css("display", "block");
+    }
 }
+
+function getTime() {
+    let dat = new Date()
+    return dat.getMinutes()*60 + dat.getSeconds() + dat.getMilliseconds()/1000
+}
+
+var lastSent = -1000;
+
+function resendMirror() {
+    //if(getTime - lastSent < 1.5) return;
+    if(!jccData || ws.readyState != 1 || isMirroring) return;
+
+    var d = {
+        name  : jccData.name,
+        type  : "sendMirror",
+        salt  : jccData.salt,
+        state : getStateJSON()
+    }
+    if(ws && ws.readyState == 1 && mySalt) {
+        ws.send(JSON.stringify(d));
+    }
+}
+
+var seenStates = {  };
+
+var hasChoosenMirrorable = false;
+var chosenMirrorableSalt = "";
+
+function setupMirroring(data) {
+    jccData = data;
+
+    ws = new WebSocket(wsUrl, "echo-protocol");
+
+    ws.addEventListener("open", function(_e) {
+        console.log("Connected to WebSocket");
+        ws.send(JSON.stringify({
+            name       : jccData.name,
+            type       : "setup",
+            salt       : jccData.salt,
+            clientType : "mirror"
+        }));
+    });
+    ws.addEventListener("message", function(m) {
+        if(m.data == "Connected") {
+            ws.send(JSON.stringify({
+                name       : jccData.name,
+                salt       : jccData.salt,
+                type       : "requestMirrors"
+            }));
+            console.log("Requesting mirrors...");
+
+            $("#mirrorSecondStep").css("display", "block");
+        } else if(!hasChoosenMirrorable) {
+            var d = JSON.parse(m.data).state;
+            if(!seenStates[d.mySalt]) {
+                $("#listOfMirrorables").append(
+                    $("<button>").css("padding", "10px").css("margin", "10px").css("display", "inline-block").text(d.committeeName).on("click", function(_e) {
+                        hasChoosenMirrorable = true;
+                        chosenMirrorableSalt = d.mySalt;
+                        hidePopup();
+                        implementAttendanceList(d);
+
+                        ws.send(JSON.stringify({
+                            name       : jccData.name,
+                            salt       : jccData.salt,
+                            type       : "requestMirrors"
+                        }));
+                    })
+                );
+                $("#listOfMirrorables").append($("<br>"));
+            }
+            seenStates[d.mySalt] = d;
+        } else {
+            if(JSON.parse(m.data).state.mySalt == chosenMirrorableSalt) {
+                implementStateJSON(JSON.parse(m.data).state);
+            }
+        }
+    });
+    ws.addEventListener("close", function(_e) {
+        createAlert("Disconnected from server, trying to reconnect...");
+        setupMirroring();
+    });
+}
+
+var mySalt = "";
 
 function setupJccData(data) {
     jccData = data;
@@ -1365,8 +1585,14 @@ function setupJccData(data) {
         $("#jccInfo").css("display", "inline-block");
     });
     ws.addEventListener("message", function(m) {
-        console.log(m);
-        createAlert("Message: " + JSON.parse(m.data).messageBody);
+        console.log(m.data);
+        //createAlert("Message: " + JSON.parse(m.data).messageBody);
+        if(JSON.parse(m.data).type == "returnSalt" && JSON.parse(m.data).salt) {
+            mySalt = JSON.parse(m.data).salt;
+            resendMirror();
+        } else if(JSON.parse(m.data).type == "requestMirrors") {
+            resendMirror();
+        }
     });
     ws.addEventListener("close", function(_e) {
         createAlert("Disconnected from server, trying to reconnect...");
@@ -1517,8 +1743,12 @@ function durationToString(n) {
 }
 
 function getStateJSON() {
+    if(isMirroring) return { };
+
     var toReturn = {
-        committeeName : $("#committeeName").val(),
+        mySalt        : mySalt,
+
+        committeeName : $("#committeeName").val() || $("#committeeName").text(),
 
         customDelegates : customDelegates,
 
@@ -1533,6 +1763,10 @@ function getStateJSON() {
         isThereACurrentMotion : $("#rightbottomarea").css("display") != "none",
 
         isThereARollCall      : $("#rollCallVotePopup").css("display") == "block",
+
+        isImpromptuTimerOpen  : $("#impromptuTimer").css("display") == "block",
+
+        impromptuTime         : impromptuTime,
 
         currentMotion : {
 
@@ -1551,6 +1785,7 @@ function getStateJSON() {
         if(this.nodeName != "DIV") return;
         var t = {};
         t["type"] = this.getAttribute("data-motiontype");
+        t["rngid"] = this.getAttribute("data-rngid");
         var inputs = this.getElementsByTagName("input");
         if(t["type"] == "mod") {
             t["topic"] = inputs[0].value;
@@ -1614,14 +1849,86 @@ function getStateJSON() {
     return toReturn;
 }
 
+var lastMotionList = [];
+
+function getIdOfMotionJSON(m) {
+    var toReturn = "";
+    for(k in Object.keys(m)) {
+        toReturn += Object.keys(m)[k];
+        toReturn += m[Object.keys(m)[k]];
+    }
+    return toReturn;
+}
+
 function implementStateJSON(newState) {
-    console.log(newState);
-    if("success" in newState && !newState.success) {
-        createAlert("Request unsuccessful");
+    if("success" in newState && !newState.success) { // Network sent an error =(
+        createAlert(`Request unsuccessful with error code ${newState.code}: ${newState.message}`);
+        console.log(newState);
         return;
     }
-    $("#motiondisplays > *").remove();
-    if(isPopupShown) quitPopup();
+
+    var newMotions = [];
+
+    if(isMirroring && false) { // Tried to make the transition work all nice. I failed.
+        var toRemove   = [];
+
+        // Check for motions in newState but not on the screen
+        for(m1i in newState.proposedMotions) { // Oops! O(n²)!
+            let m1 = newState.proposedMotions[m1i];
+            var m1id = getIdOfMotionJSON(m1);
+            var isNewMotion = true;
+            for(m2i in lastMotionList) {
+                let m2 = newState.proposedMotions[m2i];
+                if(m1id == getIdOfMotionJSON(m2)) {
+                    isNewMotion = false;
+                    break;
+                }
+            }
+            if(isNewMotion) newMotions.push(m1);
+        }
+
+        // Check for motions on the screen but not in newState
+        for(m1i in lastMotionList) { // Oops! O(n²)!
+            var m1id = getIdOfMotionJSON(lastMotionList[m1i]);
+            var isStillHere = false;
+            for(m2 in newState.proposedMotions) {
+                if(m1id == getIdOfMotionJSON(m2)) {
+                    isStillHere = true;
+                    break;
+                }
+            }
+            if(!isStillHere) {
+                toRemove.push(m1id);
+            }
+        }
+
+        console.log(toRemove);
+
+        lastMotionList = newState.proposedMotions;
+
+        $("#motiondisplays").children().toArray().forEach((el) => {
+            if(toRemove.includes(getIdOfMotionJSON(constructJSON(el)))) {
+                el.remove();
+            }
+        });
+    } else {
+        $("#motiondisplays > *").remove();
+        newMotions = newState.proposedMotions;
+    }
+
+    if(!isMirroring) {
+        hidePopup();
+    } else {
+        if(isPopupShown) {
+            if(newState.isImpromptuTimerOpen && $("#impromptuTimer").css("display") != "none") {
+                
+            } else if(newState.isThereARollCall && $("#rollCallVotePopup").css("display") != "none") {
+                
+            } else {
+                hidePopup();
+            }
+        }
+    }
 
     setCustomDelegates(newState.customDelegates);
 
@@ -1633,37 +1940,50 @@ function implementStateJSON(newState) {
     recalcDelegates();
 
     $("#committeeName").val(newState.committeeName);
+    $("#committeeName").text(newState.committeeName);
 
     if(!newState.isThereACurrentMotion) {
-        for(var i = 0; i < newState.proposedMotions.length; i++) {
-            var cm = newState.proposedMotions[i];
+        for(var i = 0; i < newMotions.length; i++) {
+            var cm = newMotions[i];
             if(cm.type == "mod") {
                 var toAdd = $("#modMotionPrefab").clone(true);
                 var inputList = toAdd.find("input");
                 inputList[0].value = cm.topic;
                 inputList[1].value = durationToString(cm.totalDuration);
+                inputList[1].textContent = durationToString(cm.totalDuration);
+
                 inputList[2].value = durationToString(cm.delegateDuration);
+                inputList[2].textContent = durationToString(cm.delegateDuration);
 
                 appendMotion(toAdd);
             } else if(cm.type == "unmod") {
                 var toAdd = $("#unmodMotionPrefab").clone(true);
                 var inputList = toAdd.find("input");
                 inputList[0].value = cm.topic;
+                inputList[0].textContent = cm.topic;
+
                 inputList[1].value = durationToString(cm.duration);
+                inputList[1].textContent = durationToString(cm.duration);
 
                 appendMotion(toAdd);
             } else if(cm.type == "roundRobin") {
                 var toAdd = $("#roundRobinMotionPrefab").clone(true);
                 var inputList = toAdd.find("input");
                 inputList[0].value = cm.topic;
+                inputList[0].textContent = cm.topic;
+
                 inputList[1].value = durationToString(cm.delegateDuration);
+                inputList[1].textContent = durationToString(cm.delegateDuration);
 
                 appendMotion(toAdd);
             } else if(cm.type == "speakersList") {
                 var toAdd = $("#speakersListMotionPrefab").clone(true);
                 var inputList = toAdd.find("input");
                 inputList[0].value = cm.numberOfSpeakers;
+                inputList[0].textContent = cm.numberOfSpeakers;
+
                 inputList[1].value = durationToString(cm.delegateDuration);
+                inputList[1].textContent = durationToString(cm.delegateDuration);
 
                 appendMotion(toAdd);
             } else if(cm.type == "presentPapers") {
@@ -1692,6 +2012,13 @@ function implementStateJSON(newState) {
 
             refreshTimer(false);
         }
+    }
+
+    if(newState.isImpromptuTimerOpen) {
+        $("#impromptuTimerButton").click();
+
+        $("#impromptuTimerLabel").val(durationToString(newState.impromptuTime));
+        $("#impromptuTimerLabel").text(durationToString(newState.impromptuTime));
     }
 
     if(newState.isThereARollCall) {

@@ -25,6 +25,15 @@ var adminPasswords = {
     // Loaded at runtime
 };
 
+class BigScreen {
+    ws;
+    salt;
+    constructor(nws, nsalt) {
+        this.ws = nws;
+        this.salt = nsalt;
+    }
+}
+
 class PassedPaper {
     name;
     committeeName;
@@ -41,6 +50,7 @@ class JCCclass {
     password;
     bigScreenConnections;
     chatConnections;
+    mirrors;
     passedPapers;
     
     constructor() {
@@ -48,6 +58,7 @@ class JCCclass {
         this.password = "";
         this.bigScreenConnections = new Set();
         this.chatConnections = new Set();
+        this.mirrors = new Set();
         this.passedPapers = [];
     }
 }
@@ -72,6 +83,9 @@ app.get('/', (req, res, next) => {
     } else {
         res.sendFile("index.html", {root: usableDirname});
     }
+});
+app.get('/mirror', (req, res, next) => {
+    res.sendFile("index.html", {root: usableDirname});
 });
 
 app.get("/mobile", (req, res, next) => {
@@ -211,8 +225,12 @@ app.post("/createJCC", jsonParse, (req, res) => {
         salt    : newJCC.salt
     });
 
-    console.log(listOfJCCs);
+    //console.log(listOfJCCs);
 });
+
+// app.get("/salt", (req, res) => {
+//     res.send(createSalt());
+// })
 
 app.post("/jccLogin", (req, res) => {
     if(typeof req.body == "undefined") {
@@ -269,7 +287,7 @@ app.ws('/', function(ws, req) {
             d = JSON.parse(message);
             if(typeof d != "object") failed = true;
         } catch(e) {
-            
+            failed = true;
         }
         if(failed || typeof d != "object") return;
 
@@ -281,9 +299,14 @@ app.ws('/', function(ws, req) {
 
         if(d.type == "setup") {
             if(d.clientType == "bigScreen") {
-                listOfJCCs[d.name].bigScreenConnections.add(ws);
+                var s = createSalt();
+                listOfJCCs[d.name].bigScreenConnections.add(new BigScreen(ws, s));
+                ws.send(JSON.stringify({type : "returnSalt", salt : s}));
             } else if(d.clientType == "chatScreen") {
                 listOfJCCs[d.name].chatConnections.add(ws);
+            } else if(d.clientType == "mirror") {
+                listOfJCCs[d.name].mirrors.add(ws);
+                ws.send("Connected");
             }
         }
         if(d.type == "paperPassed") {
@@ -294,19 +317,41 @@ app.ws('/', function(ws, req) {
             listOfJCCs[d.name].passedPapers.push(newPaper);
         }
         if(d.type == "message" || d.type == "paperPassed") {
-            console.log(d.messageBody);
+            //console.log(d.messageBody);
             listOfJCCs[d.name].bigScreenConnections.forEach((el) => {
-                if(el.readyState == ws.CLOSED) listOfJCCs[d.name].bigScreenConnections.delete(el);
+                if(el.ws == undefined || el.ws.readyState == ws.CLOSED) listOfJCCs[d.name].bigScreenConnections.delete(el);
             });
             listOfJCCs[d.name].chatConnections.forEach((el) => {
                 if(el.readyState == ws.CLOSED) listOfJCCs[d.name].chatConnections.delete(el);
             });
 
             listOfJCCs[d.name].bigScreenConnections.forEach(function(ws2) {
-                if(ws != ws2) ws2.send(JSON.stringify(d));
+                if(ws != ws2) ws2.ws.send(JSON.stringify(d));
             });
             listOfJCCs[d.name].chatConnections.forEach(function(ws2) {
                 if(ws != ws2) ws2.send(JSON.stringify(d));
+            });
+        }
+        if(d.type == "sendMirror") {
+            listOfJCCs[d.name].mirrors.forEach((el) => {
+                if(el.readyState == ws.CLOSED) listOfJCCs[d.name].mirrors.delete(el);
+            });
+
+            listOfJCCs[d.name].mirrors.forEach(function(ws2) {
+                if(ws != ws2) ws2.send(JSON.stringify(d));
+            });
+        }
+        if(d.type == "requestMirrors") {
+            Array.from(listOfJCCs[d.name].bigScreenConnections).forEach((el) => {
+                if(el.ws == undefined || el.ws.readyState == ws.CLOSED) {
+                    listOfJCCs[d.name].bigScreenConnections.delete(el);
+                }
+            });
+
+            // console.log(listOfJCCs[d.name]);
+
+            listOfJCCs[d.name].bigScreenConnections.forEach(function(ws2) {
+                ws2.ws.send(JSON.stringify(d));
             });
         }
     })

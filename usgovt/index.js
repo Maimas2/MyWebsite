@@ -1,15 +1,21 @@
 const express    = require('express');
 const bodyParser = require("body-parser");
+const useragent  = require('express-useragent');
 
 const app = express();
 
 var jsonParse = bodyParser.json();
 app.use(express.json());
+app.use(useragent.express());
 
 const port = 3000;
 
 app.get('/', (req, res) => {
-	res.sendFile('index.html', {root: __dirname})
+	if(req.useragent.isMobile && !req.url.includes("mobile")) {
+        res.redirect("/?mobile");
+    } else {
+        res.sendFile('index.html', {root: __dirname});
+    }
 });
 
 app.get('/style.css', (req, res) => {
