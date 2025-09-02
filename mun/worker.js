@@ -565,7 +565,8 @@ function parsePassedMotionJSON(details) {
     }
 
     $("#chosenCountriesForTimer").sortable({
-        animation: 150
+        animation : 150,
+        change    : resendMirror
     });
 
     if(details["requiresDelegateList"]) {
@@ -797,6 +798,8 @@ function endCurrentMotion() {
     });
 
     $("#passedMotionCountryChooser > *").remove();
+
+    resendMirror();
 }
 
 function createDelegateCountryNode(name, clicked=false) {
