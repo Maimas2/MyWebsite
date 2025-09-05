@@ -30,6 +30,10 @@ function createMessage(data, isFromSelf=false) {
     }
 
     $("#chatMessageContainer").append(toAdd);
+
+    $("#chatMessageContainer").animate({
+        scrollTop : $("#chatMessageContainer div:last").offset().top
+    }, 300);
 }
 
 window.onload = function() {
@@ -68,7 +72,7 @@ window.onload = function() {
         ws.send(JSON.stringify(d));
         createMessage(d, true);
         $("#newMessageType").val("");
-    })
+    });
 }
 
 function setupJccData(data) {
@@ -97,4 +101,12 @@ function setupJccData(data) {
             createMessage(JSON.parse(m.data));
         }
     });
+}
+
+document.onkeydown = function(event) {
+    if(ws) {
+        if(event.key == "Enter") {
+            $("#sendMessageButton").click();
+        }
+    }
 }
