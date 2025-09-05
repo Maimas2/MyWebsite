@@ -1098,6 +1098,7 @@ window.onload = function(_event) {
                 url     : "/getsavedata",
                 contentType: 'application/json',
                 success : function(returned) {
+                    console.log(returned);
                     implementStateJSON(JSON.parse(returned));
                 },
                 error   : function(returned) {
