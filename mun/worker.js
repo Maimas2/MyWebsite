@@ -574,7 +574,7 @@ function parsePassedMotionJSON(details) {
 
         $("#chosenCountriesForTimer > *").remove();
         getListOfVotingCountries().forEach(function(val) {
-            $(`<button class="countryListOne outlineddiv">${val}</button>`).css("display", "block").css("width", "100%").attr("id", "modCaucusCountryChooser" + sanitizeForID(val)).on("click", modCountryChooserClickEventFunctionResponder).appendTo($("#passedMotionCountryChooser"));
+            $(`<button class="outlineddiv marginizechildren countryListOne"></button>`).css("padding", "15px").css("display", "block").css("width", "100%").attr("id", "modCaucusCountryChooser" + sanitizeForID(val)).append($("<p>").text(val)).on("click", modCountryChooserClickEventFunctionResponder).appendTo($("#passedMotionCountryChooser"));
         });
     } else {
         $("#chosenCountriesForTimer").css("display", "none");
@@ -764,7 +764,7 @@ function refreshTimer(e=true) {
     }
     document.getElementById("oneLargeTimer").textContent = timeToString(largeTimerCurrentTime);
 
-    $("#chosenCountriesForTimer").children().css("background-color", "white");
+    $("#chosenCountriesForTimer").children().css("background-color", "");
     if(!canSortChosenCountries) $($("#chosenCountriesForTimer").children()[perDelegateCurrentPosition]).css("background-color", "powderblue");
 
     $("#modDelegateIndexSpan").text(perDelegateCurrentPosition+1);
@@ -855,7 +855,7 @@ function refreshModCountryList() {
 
 function refreshModCurrentCountryNumberBackground() {
     if(currentMotion["timerType"] == "perDelegate") {
-        $("#chosenCountriesForTimer").children().css("background-color", "white");
+        $("#chosenCountriesForTimer").children().css("background-color", "");
         $($("#chosenCountriesForTimer").children()[perDelegateCurrentPosition]).css("background-color", "powderblue");
 
         $("#chosenCountriesForTimer").sortable("destroy");
@@ -871,9 +871,9 @@ function modCountryChooserClickEventFunctionResponder() {
         return;
     }
     
-    $(`<button class="outlineddiv marginizechildren countryListOne"></button>`).css("padding", "15px").css("display", "block").css("width", "98%").on("click", function() {
+    $(`<button class="outlineddiv marginizechildren countryListOne"></button>`).css("padding", "15px").css("display", "block").css("width", "100%").on("click", function() {
         if(canSortChosenCountries) {
-            $("#modCaucusCountryChooser" + sanitizeForID(this.textContent)).css("display", "");
+            $("#modCaucusCountryChooser" + sanitizeForID(this.textContent)).css("display", "block");
 
             this.remove();
 

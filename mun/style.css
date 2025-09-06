@@ -64,7 +64,7 @@ input[type=number] {
     border-radius: 0;
     display: flex;
     align-items: stretch;
-    overflow-x: scroll;
+    overflow-x: auto;
     justify-content: center;
 }
 #topbar, #passedMotionDetails {
@@ -83,7 +83,7 @@ input[type=number] {
     height: 100%;
     border: 1px #c0c0c0 solid;
     background-color: transparent;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 #leftbottomarea, #rightbottomarea {
     width: 100%;
@@ -92,7 +92,7 @@ input[type=number] {
     background-color: transparent;
 }
 #leftbottomarea {
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     z-index: 0;
 }
@@ -115,7 +115,7 @@ input[type=number] {
 }
 #passedMotionCountryChooser {
     width: 40%;
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 100%;
     max-height: 100%;
 }
@@ -176,11 +176,13 @@ input[type=number] {
 #newmotions {
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 #newmotionsinner {
     height: 100%;
     align-items: center;
     display: flex;
+    overflow: auto;
 }
 #newmotionsinnerinner {
     width: 100%;
@@ -203,7 +205,7 @@ input[type=number] {
 #motiondisplays {
     padding: 10px;
     border: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .innermotiondisplay {
     width: 100%;
@@ -239,7 +241,7 @@ input[type=number] {
     left: 20%;
     top: 30%;
     box-shadow: 2px 2px 7px #777;
-    overflow: scroll;
+    overflow: auto;
     display: flex;
     font-size: 150%;
 }
@@ -308,7 +310,7 @@ input {
     transition: all 150ms linear;
 }
 .countryListInner:hover {
-    background-color: #ccc;
+    background-color: #ddd;
 }
 #innerDelegateList {
     width: 100%;
@@ -350,13 +352,13 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #chosenCountriesForTimer {
     padding: 20px;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 #chosenCountriesForTimer > * {
     padding: 7px;
 }
-#chosenCountriesForTimer > *:not(:last-child) {
+#chosenCountriesForTimer > *:not(:last-child), #passedMotionCountryChooser > *:not(:last-child) {
     margin-bottom: 10px;
 }
 .marginizechildren {
@@ -425,11 +427,6 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 #timerControlsContainer > *:hover {
     border-radius: 5px;
 }
-#rollCallVotePopup {
-    height: 60% !important;
-    padding: 20px;
-    display: none;
-}
 #rollCallVoteResults {
     background-color: #ddd;
     height: 30px;
@@ -494,7 +491,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #rollCallPastChoices {
     padding: 20px;
-    overflow-y: scroll !important;
+    overflow-y: auto !important;
     overflow-x: hidden !important;
 }
 #rollCallPastChoices > * {
@@ -604,7 +601,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 #delegateListSearchBottomContainer {
     width: 100%;
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 #searchbarContainer {
     display: flex;
@@ -619,4 +616,13 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #mirrorSecondStep {
     display: none;
+}
+#rollCallVotePopup {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+    border: 0 !important;
 }

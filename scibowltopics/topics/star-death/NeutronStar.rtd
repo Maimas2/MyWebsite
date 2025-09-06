@@ -29,7 +29,7 @@ __collapse__Mathematical derivation for neutron stars' surface gravity__
     \(r\) is the radius of the neutron star, about 10km.
     ==tsil==
     
-    \[ a = G\frac{2.585 \times 10^{30} \text{kg}}{\left(10\text{km}\right)^2} =  \: \frac{\text{m}}{\text{s}^2} \]
+    \[ a = G\frac{2.585 \times 10^{30} \text{kg}}{\left(10\text{km}\right)^2} =  1.72 \times 10^{12} \: \frac{\text{m}}{\text{s}^2} \]
     
     Compare to Earth's acceleration of 9.8m/s².
 __

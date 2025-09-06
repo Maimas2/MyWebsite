@@ -6,6 +6,10 @@ const app = express();
 var jsonParse = bodyParser.json();
 app.use(express.json());
 
+var listOfVotes = [
+	
+]
+
 var votes = {
 	"Aaron" : "",
 	"Alex V" : "",
