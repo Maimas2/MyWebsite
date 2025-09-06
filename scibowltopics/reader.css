@@ -37,9 +37,9 @@ p, h1, h2, h3, h4, h5, h6 {
     text-align: center;
 }
 #reading {
-    position: absolute;
-    left: 200px;
-    width: calc(100% - 400px);
+    width: 120vh;
+    max-width: 90%;
+    margin: auto;
     top: 0;
 }
 a {

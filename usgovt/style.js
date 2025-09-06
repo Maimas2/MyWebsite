@@ -47,7 +47,61 @@ var usGovt = {
                     sub      : [
                         {
                             name     : "Independent Agencies",
-                            fullText : "Not considered full departments, independent agencies have a specific topic to regulate, but the president has less control over them. They do not have a representative in the Cabinet."
+                            fullText : "Not considered full departments, independent agencies have a specific topic to regulate, but the president has less control over them. They do not have a representative in the Cabinet. Not every agency is included on this website.",
+                            sub      : [
+                                {
+                                    name     : "CIA",
+                                    fullText : "The Central Intelligence Agency manages foreign intelligence and national security operations."
+                                },
+                                {
+                                    name     : "Consumer Financial Protection Bureau",
+                                    fullText : "The Consumer Financial Protection Bureau helps create and enforce consumer protection policies in the nation."
+                                },
+                                {
+                                    name     : "EPA",
+                                    fullText : "The Environmental Protection Agency helps ensure a clean environment and nature."
+                                },
+                                {
+                                    name     : "FCC",
+                                    fullText : "The Federal Communications Commission manages radio, television, and other related methods of communication."
+                                },
+                                {
+                                    name     : "Federal Deposit Insurance Corporation",
+                                    fullText : "The Federal Deposit Insurance Corporation (FDIC) provides insurance to bank accounts in case of bank failure for all Americans."
+                                },
+                                {
+                                    name     : "The Fed",
+                                    fullText : "The Federal Reserve manages the monetary policy of the nation."
+                                },
+                                {
+                                    name     : "General Services Administration",
+                                    fullText : "The General Services Administation provides general support for the other agencies."
+                                },
+                                {
+                                    name     : "NASA",
+                                    fullText : "NASA does space exploration."
+                                },
+                                {
+                                    name     : "National Science Foundation",
+                                    fullText : "The National Science Foundation supports scientific research in the nation."
+                                },
+                                {
+                                    name     : "Security and Exchange Commission",
+                                    fullText : "The Security and Exchange Commission protects investors who trade bonds and stocks."
+                                },
+                                {
+                                    name     : "Social Security Administration",
+                                    fullText : "The Social Security Administration runs Social Security."
+                                },
+                                {
+                                    name     : "Office of Personnel Management",
+                                    fullText : "The Office of Personnel Management (OPM) provides human resources services for the government."
+                                },
+                                {
+                                    name     : "United States Postal Service",
+                                    fullText : "The USPS runs the federal postal system."
+                                },
+                            ]
                         },
                         {
                             name     : "The Executive Departments",
@@ -295,6 +349,7 @@ function getWidthOfBoxes(thingss, levelDown=0, goDownTo=100) {
             toReturn += max(getWidthOfBoxes(thing, levelDown+1), thing.customWidth || 200);
         }
     });
+    if(things.length >= 5) toReturn += 50;
     return toReturn;
 }
 
@@ -311,6 +366,8 @@ function buildGovt(govt, x, y, levelDown) { // Inefficient ass function
     var currentY = y+max(150, 400 - levelDown*75);
 
     var currentX = x - max(getWidthOfBoxes(govt, levelDown), govt.customWidth || 200)/2;
+
+    if(levelDown == 0) currentX -= 500;
 
     if(govt.sub) {
         for(var i = 0; i < govt.sub.length; i++) {
@@ -334,6 +391,7 @@ function buildGovt(govt, x, y, levelDown) { // Inefficient ass function
             buildGovt(sub, currentX, currentY, levelDown+1);
 
             currentX += tw/2 + max(50, 100 - (levelDown)*15);
+            if(sub.sub && sub.length >= 5) currentX += 50;
             //if(i % maxChildenWidth) currentX += max(50, 100 - (levelDown)*15);
         }
     }
