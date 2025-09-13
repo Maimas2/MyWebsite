@@ -163,9 +163,11 @@ function showPopup() {
 
 function resortMotions() {
     if(isMirroring) return;
-    var listedMotions = $("#motiondisplays").children().get();
-    listedMotions.sort(function(first, second) {
-        return motionTypeToImportance(first) < motionTypeToImportance(second);
+    var listedMotions = $("#motiondisplays > div").detach().toArray().sort(function(first, second) {
+        if(motionTypeToImportance(first) > motionTypeToImportance(second)) {
+            return -1;
+        }
+        return 1;
     });
     $.each(listedMotions, function(first, second) {
         $("#motiondisplays").append(second);
