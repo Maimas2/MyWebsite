@@ -87,6 +87,9 @@ app.get('/', (req, res, next) => {
 app.get('/mirror', (req, res, next) => {
     res.sendFile("index.html", {root: usableDirname});
 });
+app.get('/clock', (req, res, next) => {
+    res.sendFile("index.html", {root: usableDirname});
+});
 
 app.get("/mobile", (req, res, next) => {
     res.sendFile("index.html", {root: usableDirname});

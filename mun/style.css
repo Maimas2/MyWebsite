@@ -533,6 +533,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     place-items: center;
     padding: 10px;
     margin: 10px;
+    overflow-y: auto;
 }
 #legalStuffEwww {
     padding: 30px;
