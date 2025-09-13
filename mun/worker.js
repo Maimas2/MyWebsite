@@ -633,7 +633,7 @@ function doYourThing() {
     });
 }
 
-function refreshDelegateListSearch(_e_ = null, delay = 0.1) {
+function refreshDelegateListSearch(_e_ = null, delay = 0) {
     if(delay < 0.001) {
         doYourThing();
         return;
@@ -645,31 +645,98 @@ function refreshDelegateListSearch(_e_ = null, delay = 0.1) {
 
 document.getElementById("delegateListSearch").oninput = refreshDelegateListSearch;
 
+var keyboardTimeout;
+
 document.onkeydown = function(event) {
     if(isMirroring) return;
-    if(document.getElementById("delegateListSearch") == document.activeElement) refreshDelegateListSearch();
-    else if(!isPopupShown && (document.activeElement == document.body)) {
-        if(event.key == "m") document.getElementById("newMod").click();
-        if(event.key == "e") document.getElementById("editdelegatelistbutton").click();
-        if(event.key == "c" && event.ctrlKey) {
-            $("body").css("background-image", "url(https://mun.alex-seltzer.com/me.png)");
-            return false;
+
+    if(event.key == "Control" && !isPopupShown) {
+        clearInterval(keyboardTimeout);
+        keyboardTimeout = setTimeout(() => {
+            if(event.key == "Control") {
+                $(".keyboardShortcut").css("display", "initial");
+            }
+        }, 300);
+    }
+
+    if(document.getElementById("delegateListSearch") == document.activeElement) {
+        refreshDelegateListSearch();
+    } else if(!isPopupShown) {
+
+        if(event.ctrlKey) {
+            if(event.key == "m") {
+                document.getElementById("newMod").click();
+                return false;
+            }
+            if(event.key == "u") {
+                document.getElementById("newUnmod").click();
+                return false;
+            }
+            if(event.key == "s") {
+                document.getElementById("newSpeakersList").click();
+                return false;
+            }
+            if(event.key == "r") {
+                document.getElementById("newRoundRobin").click();
+                return false;
+            }
+            if(event.key == "i") {
+                document.getElementById("newRoundRobin").click();
+                return false;
+            }
+
+            if(event.key == "d") {
+                document.getElementById("editdelegatelistbutton").click();
+                return false;
+            }
+            if(event.key == "a") {
+                document.getElementById("takeAttendanceButton").click();
+                return false;
+            }
+
+            if(event.key == "t") {
+                document.getElementById("impromptuTimerButton").click();
+                return false;
+            }
+            if(event.key == "v") {
+                document.getElementById("commenceRollCall").click();
+                return false;
+            }
         }
+
+        // if(event.key == "c" && event.ctrlKey) {
+        //     $("body").css("background-image", "url(https://mun.alex-seltzer.com/me.png)");
+        //     return false;
+        // }
+
         if(event.key == "Escape") $("#alertContainer").css("display", "none");
+
     } else if(isPopupShown) {
         if(event.key == "Enter") {
-            $("#exitPopup").trigger("click");
-            $("#exitPopup").blur();
+            $("#exitPopup").click();
         }
     }
     if(document.activeElement.nodeName != "INPUT") {
-        if(event.key == "Space") toggleTimer();
+        if(event.key == " ") {
+            if($("#impromptuTimer").css("display") != "none") {
+                $("#impromptuTimerStartStop").click();
+            } else {
+                toggleTimer();
+            }
+        }
     }
     if(event.key == "Escape") {
         if(!isInQuickStart) if(document.getElementById("quitPopup").style.display == "none") hidePopup();
         else quitPopup();
     }
 };
+
+document.onkeyup = function(event) {
+    if(event.key == "Control") {
+        clearInterval(keyboardTimeout);
+        $(".keyboardShortcut").css("display", "none");
+    }
+}
 
 function changeClickedEventResponder(_event) {
     if(this.getAttribute("data-isclicked") == "false") {
@@ -700,6 +767,7 @@ function createAlert(message, otherOptionFunction=null) {
 
 function canStartTimer() {
     if(isTimerHalted) return false;
+    if(!currentMotion) return false;
     if(currentMotion["timerType"] == "perDelegate" && currentMotion["requiresDelegateList"]) {
         if($("#chosenCountriesForTimer").children().length != largeTimerNumDelegates) {
             createAlert("Add enough delegates to the queue to start!");
@@ -1099,7 +1167,7 @@ window.onload = function(_event) {
                 contentType: 'application/json',
                 success : function(returned) {
                     console.log(returned);
-                    implementStateJSON(JSON.parse(returned));
+                    implementStateJSON(returned);
                 },
                 error   : function(returned) {
                     createAlert(returned);
@@ -1341,6 +1409,7 @@ window.onload = function(_event) {
             showPopup();
             document.getElementById("editDelegateList").style.display = "flex";
             $("#editDelegateList").css("height", "60%");
+            $("#delegateListSearch").focus();
             document.getElementById("delegateListSearch").value = "";
             refreshDelegateListSearch();
             document.getElementById("quitPopup").style.display = "none";
