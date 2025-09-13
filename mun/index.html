@@ -10,15 +10,15 @@
     </head>
     <body>
         <div id="committeeNameContainer">
-            <input id="committeeName" type="text" placeholder="Committee topic..."></input>
+            <input id="committeeName" type="text" placeholder="Committee topic/agenda..."></input>
         </div>
         <div id="topbar" class="outlineddiv">
             <div id="peopleeditcontainer">
                 <div id="peopleedit" class="outlineddiv">
                     <div id="leftDelegateBox">
                         <p><span id="numberOfDelegates">0 Delegates</span></p>
-                        <button id="editdelegatelistbutton">Edit List</button>
-                        <button id="takeAttendanceButton">Attendance</button>
+                        <button id="editdelegatelistbutton">Edit List<span class="keyboardShortcut"> (d)</span></button>
+                        <button id="takeAttendanceButton">Attendance<span class="keyboardShortcut"> (a)</span></button>
                     </div>
                     <div class="middleLine"></div>
                     <div id="rightDelegateBox">
@@ -32,11 +32,11 @@
                 <!--<button id="setAgenda">Set Agenda</button>-->
                 <div id="newmotionsinner">
                     <div id="newmotionsinnerinner">
-                        <button id="newSpeakersList" class="outlineddiv">Speakers List</button>
-                        <button id="newMod" class="outlineddiv">Moderated Caucus</button>
-                        <button id="newUnmod" class="outlineddiv">Unmoderated Caucus</button>
-                        <button id="newRoundRobin" class="outlineddiv">Round Robin</button>
-                        <button id="newIntroduce" class="outlineddiv">Introduce Papers</button>
+                        <button id="newSpeakersList" class="outlineddiv">Speakers List<span class="keyboardShortcut"> (s)</span></button>
+                        <button id="newMod" class="outlineddiv">Moderated Caucus<span class="keyboardShortcut"> (m)</span></button>
+                        <button id="newUnmod" class="outlineddiv">Unmoderated Caucus<span class="keyboardShortcut"> (u)</span></button>
+                        <button id="newRoundRobin" class="outlineddiv">Round Robin<span class="keyboardShortcut"> (r)</span></button>
+                        <button id="newIntroduce" class="outlineddiv">Introduce Papers<span class="keyboardShortcut"> (i)</span></button>
                     </div>
                 </div>
             </div>
@@ -208,7 +208,7 @@
             <div id="legalStuffEwww" class="bottomMarginChildren outlineddiv largePopup">
                 <h1>Notes</h1>
                 <br>
-                <p>I made this website for my high school's Capstone project. It was specifically made for use in my school's club. I intended it to be used as a tool during a conference, not to run every little bit of it. That's why there are some features missing, like a system to present papers.</p>
+                <p>I made this website for my high school's Capstone project (though I have significantly added to it afterwards). It was specifically made for use in my school's club. I intended it to be used as a tool during a conference, not to run every little bit of it.</p>
                 <br>
                 <p>This website's source code is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU GPLv3 License</a>. The source code is hosted <a href="https://github.com/Maimas2/MyWebsite/tree/master/mun">here</a>.</p>
                 <br>
@@ -390,10 +390,10 @@
         </div>
         <div id="floatBottomRight">
             <button id="commenceRollCall" class="outlineddiv">
-                Roll Call Vote
+                Roll Call Vote<span class="keyboardShortcut"> (v)</span>
             </button>
             <button id="impromptuTimerButton">
-                Timer
+                Timer<span class="keyboardShortcut"> (t)</span>
             </button>
         </div>
         <div id="hiddenChosenCountries" style="display: none !important;">

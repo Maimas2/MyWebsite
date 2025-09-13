@@ -626,3 +626,6 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     border-radius: 0 !important;
     border: 0 !important;
 }
+.keyboardShortcut {
+    display: none;
+}
