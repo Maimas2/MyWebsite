@@ -30,7 +30,7 @@
             <div id="newmotions" class="outlineddiv"> <!-- Wow this turned out a lot worse than I could have hoped -->
                 <div id="newMotionLabel"><h1>New Motion</h1></div>
                 <!--<button id="setAgenda">Set Agenda</button>-->
-                <div id="newmotionsinner">
+                <!-- <div id="newmotionsinner"> -->
                     <div id="newmotionsinnerinner">
                         <button id="newSpeakersList" class="outlineddiv">Speakers List<span class="keyboardShortcut"> (s)</span></button>
                         <button id="newMod" class="outlineddiv">Moderated Caucus<span class="keyboardShortcut"> (m)</span></button>
@@ -38,7 +38,7 @@
                         <button id="newRoundRobin" class="outlineddiv">Round Robin<span class="keyboardShortcut"> (r)</span></button>
                         <button id="newIntroduce" class="outlineddiv">Introduce Papers<span class="keyboardShortcut"> (i)</span></button>
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
             <div id="exitCurrentMotion" class="outlineddiv" style="vertical-align: middle;display:none;">
                 <button style="width: 100%;height:100%;border-radius: 15px;" onclick="endCurrentMotion()">End Current Motion</button>
@@ -62,9 +62,9 @@
             <div id="rightbottomarea" class="bottomarea">
                 <div id="passedMotionDetails" class="outlineddiv">
                     <div>
-                        <h1 id="passedMotionName">Uh oh</h1>
+                        <h2 id="passedMotionName">Uh oh</h1>
                         <br>
-                        <h2 id="passedMotionTopic" style="font-weight: 400;">You fucked up</h2>
+                        <h1 id="passedMotionTopic">You fucked up</h2>
                         <div id="oneLargeTimerContainer">
                             <p id="oneLargeTimer">0:00</p>
                             <p id="modPlacementP"><span id="modDelegateIndexSpan">1</span>/<span id="modDelegateTotal">5</span></p><br><br>
@@ -72,11 +72,12 @@
                                 <button id="toggleMotionButton" onclick="toggleTimer()">Start</button>
                                 <button id="restartMotionTimerButton">Restart</button>
                                 <button id="yieldTimeButton">Yield</button>
-                                <button id="previousSpeakerButton">Previous</button>
+                                <!-- <button id="previousSpeakerButton">Previous</button> -->
                             </div>
                         </div>
                     </div>
                     <div id="chosenCountriesContainer">
+                        <p style="font-size: 70%;"><i>(Drag to reorder)</i></p>
                         <div class="outlineddiv" id="chosenCountriesForTimer">
                             <div class="outlineddiv">EEE</div>
                             <div class="outlineddiv">CCC</div>
