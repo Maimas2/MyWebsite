@@ -272,6 +272,7 @@ function isTimeInvalid(s) {
 }
 
 function hidePopup(nextFunction = null) {
+    if(window.location.href.includes("clock")) return;
     var quickStartKeyToGoOn = 0; /**
     * 0: Do nothing
     * 1: Delegate list done, go back to start
@@ -1072,7 +1073,7 @@ window.onload = function(_event) {
         createAlert("This website is NOT meant to be used on a mobile device! It is meant to be on a large screen up at the front of the conference. But you do you, I guess.")
     }
 
-    if(window.location.href.includes("mirror")) { // Do mirror setup things
+    if(window.location.href.includes("mirror") || window.location.href.includes("clock")) { // Do mirror setup things
         isMirroring = true;
 
         $("#newmotions").remove();
@@ -1127,6 +1128,18 @@ window.onload = function(_event) {
                 data    : JSON.stringify(d)
             });
         });
+
+        if(window.location.href.includes("clock")) {
+            $("#popupPage").css("display", "block");
+            $("#impromptuTimer").css("display", "block");
+            $("#impromptuTimer").css("position", "absolute");
+            $("#impromptuTimer").css("left", "0");
+            $("#impromptuTimer").css("top", "0");
+            $("#impromptuTimer").css("width", "100vw");
+            $("#impromptuTimer").css("height", "100vh");
+            $("#impromptuTimer").css("border-radius", "0");
+            $("#impromptuTimer").css("z-index", "13");
+        }
     }
 
     wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:3000/" : "wss://" + window.location.host + "/";
@@ -1697,6 +1710,14 @@ function setupMirroring(data) {
                             salt       : jccData.salt,
                             type       : "requestMirrors"
                         }));
+
+                        if(window.location.href.includes("clock")) {
+                            $("#impromptuTimer").css("display", "block");
+                            $("#impromptuTimerLabel").css("font-size", "50vh");
+                            $("#impromptuTimerLabel").text("--:--");
+                    
+                            $("#impromptuStaticLabel").remove();
+                        }
                     })
                 );
                 $("#listOfMirrorables").append($("<br>"));
@@ -2014,7 +2035,7 @@ function implementStateJSON(newState) {
         console.log(newState);
         return;
     }
-
+    
     var newMotions = [];
 
     if(isMirroring && false) { // Tried to make the transition work all nice. I failed.
@@ -2067,7 +2088,7 @@ function implementStateJSON(newState) {
     if(!isMirroring) {
         hidePopup();
     } else {
-        if(isPopupShown) {
+        if(isPopupShown && !window.location.href.includes("clock")) {
             if(newState.isImpromptuTimerOpen && $("#impromptuTimer").css("display") != "none") {
                 
             } else if(newState.isThereARollCall && $("#rollCallVotePopup").css("display") != "none") {
@@ -2167,6 +2188,11 @@ function implementStateJSON(newState) {
 
             refreshTimer(false);
         }
+
+        
+        if(window.location.href.includes("clock")) {
+            $("#impromptuTimerLabel").text(durationToString(newState.currentMotion.currentTime));
+        }
     }
 
     if(newState.isImpromptuTimerOpen) {
@@ -2174,6 +2200,10 @@ function implementStateJSON(newState) {
 
         $("#impromptuTimerLabel").val(durationToString(newState.impromptuTime));
         $("#impromptuTimerLabel").text(durationToString(newState.impromptuTime));
+    }
+    
+    if(window.location.href.includes("clock") && !newState.isThereACurrentMotion && !newState.isImpromptuTimerOpen) {
+        $("#impromptuTimerLabel").text("--:--");
     }
 
     if(newState.isThereARollCall) {
