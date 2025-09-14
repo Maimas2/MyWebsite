@@ -635,3 +635,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 .keyboardShortcut {
     display: none;
 }
+#saveLoadInput {
+    display: block;
+    width: 100%;
+}

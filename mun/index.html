@@ -46,8 +46,8 @@
             
             <div id="cloudStuffInner" class="outlineddiv">
                 <div></div>
-                <button id="saveToCloudButton">Save to Cloud</button>
-                <button id="loadFromCloudButton">Load from Cloud</button>
+                <button id="saveToCloudButton">Save/Load</button>
+                <!-- <button id="loadFromCloudButton">Load from Cloud</button> -->
                 <button id="logoContainer">Notes</button>
                 <button id="startJCC">Join JCC</button>
                 <button id="jccInfo" style="display:none">JCC Info</button>
@@ -192,28 +192,49 @@
                     </div>
                 </div>
             </div>
-            <div id="saveToTheCloudPopup" class="bottomMarginChildren outlineddiv">
-                <h1>Save Current State</h1>
+            <div id="saveToTheCloudPopup" class="bottomMarginChildren outlineddiv largePopup">
+                <h1>Save/Load State</h1>
                 <br>
-                Give it an ID (don't forget it): <input type="text" id="saveToCloudName" maxlength="64" style="width: 50% !important;text-align: left;">
+                ID: <input type="text" id="saveToCloudName" maxlength="64" style="width: 50% !important;text-align: left;">
                 <br>
                 <button id="saveToCloudSubmit">Save to Cloud</button>
+                <button id="loadFromCloudSubmit">Load from Cloud</button>
+                <hr style="width: 90%;margin-left: 5%;">
+                <h3>Save/Load state from string</h3>
+                <button onclick="navigator.clipboard.writeText(JSON.stringify(getStateJSON())); createAlert('Copied.') ">Copy save string</button>
+                <!-- Spaghetti code go brrrrr --><button onclick="
+                if(!$('#saveLoadInput').val()) { createAlert('No string!'); return; }
+                try {
+                    var t = JSON.parse($('#saveLoadInput').val());
+                    implementStateJSON(t);
+                } catch(e) {
+                    createAlert('Invalid string!');
+                    throw e;
+                }
+                ">Load save string</button>
+                <br>
+                <input id="saveLoadInput" type="text" placeholder="Copy and paste the save string here...">
             </div>
             <div id="loadFromTheCloudPopup" class="bottomMarginChildren outlineddiv">
                 <h1>Load State From Cloud</h1>
                 <br>
                 ID: <input type="text" id="loadFromCloudName" maxlength="64" style="width: 50% !important;text-align: left;">
                 <br>
-                <button id="loadFromCloudSubmit">Load from Cloud</button>
+                <!-- <button id="loadFromCloudSubmit">Load from Cloud</button> -->
             </div>
             <div id="legalStuffEwww" class="bottomMarginChildren outlineddiv largePopup">
-                <h1>Notes</h1>
+                <h1>Help</h1>
                 <br>
                 <p>I made this website for my high school's Capstone project (though I have significantly added to it afterwards). It was specifically made for use in my school's club. I intended it to be used as a tool during a conference, not to run every little bit of it.</p>
                 <br>
                 <p>This website's source code is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU GPLv3 License</a>. The source code is hosted <a href="https://github.com/Maimas2/MyWebsite/tree/master/mun">here</a>.</p>
                 <br>
                 <p>This website uses <a href="https://jquery.com/">jQuery</a>; <a href="https://github.com/SortableJS/Sortable">SortableJS</a> for the sortable lists; and <a href="https://github.com/SortableJS/jquery-sortablejs">jQuery-Sortable</a> for jQuery bindings.</p>
+
+                <hr>
+
+                <p id="enableManualSorting">Motions aren't sorting automatically? Click <button id="enableMotionSorting">here</button> to allow manually sorting them.</p>
+                <p id="disableManualSorting" style="display: none;">Motions are currently only sorted by hand. Click <button id="disableMotionSorting">here</button> to disallow manually sorting them.</p>
             </div>
             <div id="impromptuTimer" class="bottomMarginChildren outlineddiv largePopup">
                 <h1 id="impromptuStaticLabel">Timer</h1>
