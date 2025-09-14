@@ -162,7 +162,7 @@ function showPopup() {
 }
 
 function resortMotions() {
-    if(isMirroring) return;
+    if(isMirroring || isManuallySorting) return;
     var listedMotions = $("#motiondisplays > div").detach().toArray().sort(function(first, second) {
         if(motionTypeToImportance(first) > motionTypeToImportance(second)) {
             return -1;
@@ -1065,6 +1065,7 @@ window.addEventListener("onbeforeunload", function (e) {
 });
 
 var isMirroring = false;
+var isManuallySorting = false;
 
 window.onload = function(_event) {
     if(window.location.href.includes("mobile")) { // Do mobile setup things
@@ -1204,6 +1205,7 @@ window.onload = function(_event) {
             $("#saveToTheCloudPopup").css("display", "block");
             $("#exitPopup").css("display", "none");
             $("#saveToCloudName").val("");
+            $("#saveLoadInput").val("");
         });
     
         $("#saveToCloudSubmit").on("click", function(_e) {
@@ -1243,12 +1245,12 @@ window.onload = function(_event) {
         });
     
         $("#loadFromCloudSubmit").on("click", function(_e) {
-            if($("#loadFromCloudName").val().length <= 0) {
+            if($("#saveToCloudName").val().length <= 0) {
                 createAlert("Name cannot be empty");
                 return;
             }
             var d = {
-                id   : $("#loadFromCloudName").val()
+                id   : $("#saveToCloudName").val()
             };
             console.log(d);
             $.ajax({
@@ -1525,6 +1527,29 @@ window.onload = function(_event) {
                 document.getElementById("quitPopup").style.display = "none";
             }
         };
+
+        $("#enableMotionSorting").on("click", function(_e) {
+            $("#motiondisplays").sortable({
+                animation : 150,
+                change    : resendMirror
+            });
+
+            $("#enableManualSorting").css("display", "none");
+            $("#disableManualSorting").css("display", "block");
+
+            isManuallySorting = true;
+        });
+
+        $("#disableMotionSorting").on("click", function(_e) {
+            $("#motiondisplays").sortable("destroy");
+
+            $("#enableManualSorting").css("display", "block");
+            $("#disableManualSorting").css("display", "none");
+
+            isManuallySorting = true;
+
+            resortMotions();
+        });
     
         setInterval(function(_e) {
             if(document.activeElement == document.getElementById("impromptuTimerLabel")) return;
