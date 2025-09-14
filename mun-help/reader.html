@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>-->
+        <script src="/jquery.js"></script>
+
+        <link rel="icon" type="image/png" href="/favicon.png">
+        <link rel="stylesheet" type="text/css" href="/reader.css">
+    </head>
+    <body>
+        <p id="rawDataText" style="display: none !important;">
+            <!-- REPLACE ME SERVER -->
+        </p>
+        <div id="reading">
+            <h3 id="parentLink"><a href="/topics/">Home</a></h3>
+            <h1 id="pageTitleLabel"></h1>
+            <h2 id="pageSubtitleLabel"></h2>
+            <p id="textcontain"></p>
+            <div id="subtopicsOuterContainer">
+                
+            </div>
+        </div>
+        <div id="prefabs" style="display: none !important;">
+            <a id="imagePrefab" class="floatRightImage" target="_blank">
+                <img>
+                <p></p> <!-- Image caption -->
+                <p style="font-size: 75%;"></p> <!-- Image license -->
+            </a>
+            <div id="collapsePrefab" class="outlineddiv" style="background-color: powderblue;padding:10px;">
+                <h3 style="display:inline;">▶</h3>
+                <div style="margin-top: 20px;"></div>
+            </div>
+        </div>
+        <div id="imageZoomInPopup" onclick="hideImageZoom()">
+            <div id="innerImageZoom" class="outlineddiv">
+                <h2 id="imageZoomCaption">Nuh uh</h2>
+                <img src="" id="imageZoomImage">
+                <p id="imageZoomLicense"></p>
+            </div>
+        </div>
+        <div id="loadingOverlay">
+            <div>
+                <h3>  Loading....</h3>
+                <img id="loadingSpinner" src="/images/loading.png">
+            </div>
+        </div>
+    </body>
+    <script src="/reader.js"></script>
+</html>
