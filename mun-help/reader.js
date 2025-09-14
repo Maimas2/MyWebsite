@@ -2,11 +2,6 @@ var data = null;
 
 const tagSplitList = ["__", "==", "##", "$$", "%%"]
 
-window.MathJax = {
-    loader: {load: ['[tex]/mhchem']},
-    tex: {packages: {'[+]': ['mhchem']}}
-};
-
 function createSubtopicElement(el) {
     if(el.subtopicName == "main") el.subtopicName = ""
 
@@ -53,13 +48,13 @@ function hideImageZoom() {
 var footnotes = []
 
 function processText(oggText, splitterLevel=0, stringify=false) { // Doesn't actually return a string, actually returns an array like a chad
-    //ogText.replaceAll("\n\n", "<br>");
     var commentSplit = oggText.split("+++");
     var ogText = "";
     for(var i = 0; i < commentSplit.length; i += 2) {
         ogText += commentSplit[i];
     }
     ogText = ogText.replaceAll("\n\n\n\n", "\n\n");
+    ogText.replaceAll("\n\n", "<br>");
     var splitIntoTags = ogText.split(tagSplitList[splitterLevel]);
     var lines = [splitIntoTags[0]];
 
@@ -199,16 +194,28 @@ function processText(oggText, splitterLevel=0, stringify=false) { // Doesn't act
             lines = lines.concat($("<br>"));
             lines = lines.concat(tc);
             lines = lines.concat($("<br>"));
-        } else if(splitIntoTags[i] == "knowledge") {
+        } else if(splitIntoTags[i] == "examplemotion") {
             var display = splitIntoTags[++i].trim();
 
-            lines = lines.concat(
-                $("<div>").addClass("knowledgeNotice").addClass("outlineddiv").css("display", "flex").append(
-                    $("<img>").attr("src", "/images/info.svg").css("display", "inline").css("margin-right", "10px")
-                ).append(
-                    $("<p>").text(display.replaceAll("\n","")).css("display", "inline-block").css("margin", "0").css("width", "100%")
-                )
-            );
+            var toAppend = $("<div>").addClass("knowledgeNotice").addClass("outlineddiv").css("margin-top", "10px").css("display", "flex").css("flex-direction", "column").css("width", "100%");
+
+            var t = processText(display, splitterLevel+1);
+
+            t.forEach((el) => {
+                if(typeof el == "object") { // jQuery element
+                    toAppend.append(el.css("display", "inline"));
+                } else {
+                    console.log(el);
+                    var t = el.split("<br>");
+                    t.forEach((el) => {
+                        toAppend.append( $(document.createTextNode(el)) ).css("display", "inline-block");
+                        if(el != t[t.length-1]) toAppend.append( $("<br>") );
+                    });
+                }
+            });
+
+            lines = lines.concat(toAppend);
+            lines = lines.concat($("<br>"));
             lines = lines.concat($("<br>"));
         } else if(splitIntoTags[i].startsWith("list")) {
             var og = splitIntoTags[i];
@@ -322,7 +329,7 @@ function setupPage() {
     $("#parentLink").append(document.createTextNode(data.fancyName));
 
     footnotes = [];
-    processText(data.fullText);
+    processText(data.fullText.replaceAll("\\n", "\n"));
 
     if(data.scrollToId != "") {
         if($("#ScrollId" + data.scrollToId.trim()).length) {
@@ -335,8 +342,6 @@ function setupPage() {
     }
 
     $(document).prop("title", data.fancyName);
-
-    MathJax.typesetPromise();
 
     $("#loadingOverlay").remove();
 }

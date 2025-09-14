@@ -15,8 +15,6 @@ app.use(namesFile.app);
 var textParse = bodyParser.text();
 app.use(textParse);
 
-var todoList = "";
-
 process.on("SIGTERM", receivedKillSignal);
 process.on("SIGINT",  receivedKillSignal);
 
@@ -71,10 +69,6 @@ function receivedKillSignal() {
             f.shutDownFunction();
         }
     }
-
-    fs.writeFileSync("./saves/todo_list.txt", todoList, "utf-8", (error) => {
-        if(error) console.log(error);
-    });
 
     process.exit(0);
 }
