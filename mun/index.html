@@ -247,6 +247,20 @@
             <div id="quickStartPopup" class="bottomMarginChildren outlineddiv largePopup">
                 <h1>Quick Start</h1>
                 <div style="display:inline-block;width:50%;background-color: black;height:1px !important;"></div>
+                <p>Load a preset</p>
+                <select id="presetSelect">
+                    <option disabled>-- choose a preset --</option>
+                    <option>General Assembly</option>
+                    <option>Security Council</option>
+                    <option>G20</option>
+                    <option>Europeon Union</option>
+                    <option>ASEAN</option>
+                </select>
+                <br>
+                <button id="loadPreset">Load</button>
+                <br>
+                <div style="display:inline-block;width:50%;background-color: black;height:1px !important;"></div>
+                <h2 style="margin:0;">Or make your own</h2>
                 <p>Choose which countries are slated to be in your committee</p>
                 <button onclick="
                 hidePopup(function() {
