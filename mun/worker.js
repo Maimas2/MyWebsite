@@ -1187,7 +1187,8 @@ window.onload = function(_event) {
                 } else if(currentMotion["timerType"] == "perDelegate") {
                     largeTimerCurrentTime = currentMotion["delegateDuration"];
                 }
-                refreshTimer();   
+                refreshTimer();
+                resendMirror();
             }
         });
     
