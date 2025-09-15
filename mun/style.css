@@ -28,26 +28,29 @@ p, button:not(.smallTextButton) {
     background-color: white;
     user-select: none;
 }
-button {
+select {
+    font-size: 14pt !important;
+}
+button, select {
     transition: all 150ms linear;
     padding-left: 10px;
     padding-right: 10px;
 }
-button:not(.incrementButton) {
+button:not(.incrementButton), select {
     border-radius: 15px;
     /*box-shadow: 2px 2px 7px #DDDDDD;**/
     border: 1px #888888 solid;
     background-color: white;
 }
-button:hover:not(:disabled) {
+button:hover:not(:disabled), select:hover:not(:disabled) {
     background-color: #dddddd;
     border-radius: 5px;
 }
-button:disabled {
+button:disabled, select:disabled {
     background-color: #bbb;
     color: #666;
 }
-button:active {
+button:active, select:active {
     background-color: #cccccc;
 }
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
@@ -322,7 +325,7 @@ input {
     z-index: 5;
     padding: 10px;
 }
-input[type="text"], input[type="password"], input[type="number"] {
+input[type="text"], input[type="password"], input[type="number"], select {
     font-size: 100%;
     border-radius: 15px;
     text-align: center;
