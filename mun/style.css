@@ -18,7 +18,7 @@ body {
     padding: 0;
     margin: 0;
 }
-p, button:not(.smallTextButton) {
+p, i, button:not(.smallTextButton) {
     font-size: 14pt;
 }
 .outlineddiv {
@@ -644,7 +644,8 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #saveLoadInput {
     display: block;
-    width: 100%;
+    width: 90%;
+    margin-left: 5%;
 }
 #exitPopup {
     display: none;
@@ -661,4 +662,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #quickStartSplitLeft {
     border-right: 1px black solid;
+}
+#attendanceText {
+    display: inline-block;
 }

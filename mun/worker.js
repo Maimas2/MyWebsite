@@ -11,7 +11,9 @@
 // - vHost
 
 
-var basicListOfCountries = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Ivory Coast", "Croatia", "Cuba", "Cyprus", "Czechia", "North Korea", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Republic of Korea", "Republic of Moldova", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syrian Arab Republic", "Tajikistan", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Türkiye", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United Republic of Tanzania", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe", "Holy See");
+var basicListOfCountries = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Ivory Coast", "Croatia", "Cuba", "Cyprus", "Czechia", "North Korea", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Republic of Korea", "Republic of Moldova", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syrian Arab Republic", "Tajikistan", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Türkiye", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United Republic of Tanzania", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe", "Holy See", "Palestine");
+
+const nonVotingBasicMembers = new Array("Holy See", "Palestine");
 
 const GeneralAssemblyLoadString = '{"mySalt":"","committeeName":"[No name]","customDelegates":[],"attendance":{"Afghanistan":"Ab","Albania":"Ab","Algeria":"Ab","Andorra":"Ab","Angola":"Ab","Antigua and Barbuda":"Ab","Argentina":"Ab","Armenia":"Ab","Australia":"Ab","Austria":"Ab","Azerbaijan":"Ab","Bahamas":"Ab","Bahrain":"Ab","Bangladesh":"Ab","Barbados":"Ab","Belarus":"Ab","Belgium":"Ab","Belize":"Ab","Benin":"Ab","Bhutan":"Ab","Bolivia":"Ab","Bosnia and Herzegovina":"Ab","Botswana":"Ab","Brazil":"Ab","Brunei Darussalam":"Ab","Bulgaria":"Ab","Burkina Faso":"Ab","Burundi":"Ab","Cabo Verde":"Ab","Cambodia":"Ab","Cameroon":"Ab","Canada":"Ab","Central African Republic":"Ab","Chad":"Ab","Chile":"Ab","China":"Ab","Colombia":"Ab","Comoros":"Ab","Congo":"Ab","Costa Rica":"Ab","Ivory Coast":"Ab","Croatia":"Ab","Cuba":"Ab","Cyprus":"Ab","Czechia":"Ab","North Korea":"Ab","Democratic Republic of the Congo":"Ab","Denmark":"Ab","Djibouti":"Ab","Dominica":"Ab","Dominican Republic":"Ab","Ecuador":"Ab","Egypt":"Ab","El Salvador":"Ab","Equatorial Guinea":"Ab","Eritrea":"Ab","Estonia":"Ab","Eswatini":"Ab","Ethiopia":"Ab","Fiji":"Ab","Finland":"Ab","France":"Ab","Gabon":"Ab","Gambia":"Ab","Georgia":"Ab","Germany":"Ab","Ghana":"Ab","Greece":"Ab","Grenada":"Ab","Guatemala":"Ab","Guinea":"Ab","Guinea-Bissau":"Ab","Guyana":"Ab","Haiti":"Ab","Honduras":"Ab","Hungary":"Ab","Iceland":"Ab","India":"Ab","Indonesia":"Ab","Iran":"Ab","Iraq":"Ab","Ireland":"Ab","Israel":"Ab","Italy":"Ab","Jamaica":"Ab","Japan":"Ab","Jordan":"Ab","Kazakhstan":"Ab","Kenya":"Ab","Kiribati":"Ab","Kuwait":"Ab","Kyrgyzstan":"Ab","Laos":"Ab","Latvia":"Ab","Lebanon":"Ab","Lesotho":"Ab","Liberia":"Ab","Libya":"Ab","Liechtenstein":"Ab","Lithuania":"Ab","Luxembourg":"Ab","Madagascar":"Ab","Malawi":"Ab","Malaysia":"Ab","Maldives":"Ab","Mali":"Ab","Malta":"Ab","Marshall Islands":"Ab","Mauritania":"Ab","Mauritius":"Ab","Mexico":"Ab","Micronesia":"Ab","Monaco":"Ab","Mongolia":"Ab","Montenegro":"Ab","Morocco":"Ab","Mozambique":"Ab","Myanmar":"Ab","Namibia":"Ab","Nauru":"Ab","Nepal":"Ab","Netherlands":"Ab","New Zealand":"Ab","Nicaragua":"Ab","Niger":"Ab","Nigeria":"Ab","North Macedonia":"Ab","Norway":"Ab","Oman":"Ab","Pakistan":"Ab","Palau":"Ab","Panama":"Ab","Papua New Guinea":"Ab","Paraguay":"Ab","Peru":"Ab","Philippines":"Ab","Poland":"Ab","Portugal":"Ab","Qatar":"Ab","Republic of Korea":"Ab","Republic of Moldova":"Ab","Romania":"Ab","Russia":"Ab","Rwanda":"Ab","Saint Kitts and Nevis":"Ab","Saint Lucia":"Ab","Saint Vincent and the Grenadines":"Ab","Samoa":"Ab","San Marino":"Ab","Sao Tome and Principe":"Ab","Saudi Arabia":"Ab","Senegal":"Ab","Serbia":"Ab","Seychelles":"Ab","Sierra Leone":"Ab","Singapore":"Ab","Slovakia":"Ab","Slovenia":"Ab","Solomon Islands":"Ab","Somalia":"Ab","South Africa":"Ab","South Sudan":"Ab","Spain":"Ab","Sri Lanka":"Ab","Sudan":"Ab","Suriname":"Ab","Sweden":"Ab","Switzerland":"Ab","Syrian Arab Republic":"Ab","Tajikistan":"Ab","Thailand":"Ab","Timor-Leste":"Ab","Togo":"Ab","Tonga":"Ab","Trinidad and Tobago":"Ab","Tunisia":"Ab","Türkiye":"Ab","Turkmenistan":"Ab","Tuvalu":"Ab","Uganda":"Ab","Ukraine":"Ab","United Arab Emirates":"Ab","United Kingdom":"Ab","United Republic of Tanzania":"Ab","United States of America":"Ab","Uruguay":"Ab","Uzbekistan":"Ab","Vanuatu":"Ab","Venezuela":"Ab","Vietnam":"Ab","Yemen":"Ab","Zambia":"Ab","Zimbabwe":"Ab","Holy See":"Ab"},"proposedMotions":[],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}';
 
@@ -23,16 +25,28 @@ const EuropeanUnionLoadString = '{"mySalt":"","committeeName":"[No name]","custo
 
 const ASEANLoadString = '{"mySalt":"","committeeName":"[No name]","customDelegates":[],"attendance":{"Brunei Darussalam":"Ab","Cambodia":"Ab","Indonesia":"Ab","Laos":"Ab","Malaysia":"Ab","Myanmar":"Ab","Philippines":"Ab","Singapore":"Ab","Thailand":"Ab","Vietnam":"Ab"},"proposedMotions":[],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}';
 
+var dictOfBasicDelegates = {
 
-var customDelegates = new Array(
-    
-);
+};
 
-function getListOfCountries() {
-    return basicListOfCountries.concat(customDelegates);
+var dictOfCustomDelegates = {
+
+};
+
+function dictOfDelegates() {
+    //return Object.assign({}, dictOfBasicDelegates, dictOfCustomDelegates)
+    let t = dictOfBasicDelegates;
+    Object.keys(dictOfCustomDelegates).forEach((el) => {
+        t[el] = dictOfCustomDelegates[el];
+    });
+    return t;
 }
 
-function getDictOfVotingCountries() {
+function getListOfCountries() {
+    return Object.keys(dictOfDelegates()).concat(Object.keys(dictOfCustomDelegates)).sort();
+}
+
+function getDictOfPresentCountries() {
     var toReturn = {};
     listOfCountriesInCommittee.forEach(function(v) {
         if($("#attendanceNode" + sanitizeForID(v)).length && $("#attendanceNode" + sanitizeForID(v)).css("display") != "none") {
@@ -45,6 +59,27 @@ function getDictOfVotingCountries() {
                 toReturn[v] = "Ab";
             }
         }
+    });
+    return toReturn;
+}
+
+function getDictOfVotingCountries() {
+    let t = getDictOfPresentCountries();
+    let toReturn = {  };
+    let tdict = dictOfDelegates();
+    Object.keys(t).forEach((el) => {
+        if(tdict[el].canVote) {
+            toReturn[el] = t[el];
+        }
+    });
+    return toReturn;
+}
+
+function getListOfPresentCountries() {
+    var d = getDictOfPresentCountries();
+    var toReturn = [];
+    Object.keys(d).forEach(function(el) {
+        if(d[el] != "Ab") toReturn.push(el);
     });
     return toReturn;
 }
@@ -91,7 +126,7 @@ var isInQuickStart = false;
 var hasMadeNewDelegate = false;
 
 function sanitizeForID(id) {
-    return id.replaceAll(" ", "").replaceAll("'", "").replaceAll(".", "").replaceAll("#", "");
+    return id.replaceAll(" ", "").replaceAll("'", "").replaceAll(".", "").replaceAll("#", "").replaceAll("(non-voting)", "");
 }
 
 function getDelegatePresenseNodes() {
@@ -109,7 +144,7 @@ function refreshPresentDelegateList() {
                 numDelegatesInCommittee++;
                 $("#attendanceNode" + sanitizeForID(e.textContent)).css("display", "block");
 
-                listOfCountriesInCommittee.push(e.textContent);
+                listOfCountriesInCommittee.push(e.textContent.replaceAll(" (non-voting)", ""));
             } else {
                 $("#attendanceNode" + sanitizeForID(e.textContent)).css("display", "none");
             }
@@ -121,20 +156,25 @@ function recalcDelegates() {
     refreshPresentDelegateList();
 
     var voters = getListOfVotingCountries().length;
+    var numPresent = getListOfPresentCountries().length;
     $("#numberOfDelegates").text(voters + " Delegate" + (voters == 1 ? "" : "s"));
     $("#simpleMajorityLabel").text(`${Math.ceil((voters+0.1)/2)}/${voters}`);
     $("#twoThirdsLabel").text(`${Math.ceil(voters*2/3)}/${voters}`);
-    if(voters == 0) {
+    if(numPresent == 0) {
         document.getElementById("simpleMajorityLabel").textContent = "0/0";
 
         $("#newSpeakersList").prop("disabled", true);
         $("#newMod").prop("disabled", true);
         $("#newRoundRobin").prop("disabled", true);
-        $("#commenceRollCall").prop("disabled", true);
     } else {
         $("#newSpeakersList").prop("disabled", false);
         $("#newMod").prop("disabled", false);
         $("#newRoundRobin").prop("disabled", false);
+    }
+
+    if(voters == 0) {
+        $("#commenceRollCall").prop("disabled", true);
+    } else {
         $("#commenceRollCall").prop("disabled", false);
     }
 
@@ -188,7 +228,7 @@ function resortMotions() {
 }
 
 function appendMotion(m) {
-    if($("#firstMotionPrompt").length) $("#firstMotionPrompt").remove();
+    if($("#firstMotionPrompt").length) $("#firstMotionPrompt").css("display", "none");
 
     if(isMirroring) {
         m.find("input").toArray().forEach((el) => {
@@ -250,7 +290,11 @@ function addAttendanceNodes() {
     getListOfCountries().forEach(function(v) {
         if(!typeof v == "string") return;
         var cont = $("#attendanceButtonsPrefab").clone(true);
-        cont.children("p").get(0).textContent = v;
+
+        let tp = $("<p>").text(v).addClass("attendanceText");
+        if(!dictOfDelegates()[v].canVote) tp.append($("<i>").text(" (non-voting)"));
+        cont.prepend(tp);
+
         cont.attr("id", "attendanceNode" + sanitizeForID(v));
         cont.children("button").get(0).click();
 
@@ -309,7 +353,7 @@ function hidePopup(nextFunction = null) {
                 createAlert("Duration can't be zero");
                 return;
             }
-            if(Math.floor( stringToDuration($("#newModPopupDuration").val()) / stringToDuration($("#newModPopupDelegateDuration").val()) ) > getListOfVotingCountries().length) {
+            if(Math.floor( stringToDuration($("#newModPopupDuration").val()) / stringToDuration($("#newModPopupDelegateDuration").val()) ) > getListOfPresentCountries().length) {
                 createAlert("You don't have enough delegates in committee to make such a mod");
                 return;
             }
@@ -335,7 +379,7 @@ function hidePopup(nextFunction = null) {
                 createAlert("Duration can't be zero");
                 return;
             }
-            if($("#speakersListNumDelegates").val() > getListOfVotingCountries().length) {
+            if($("#speakersListNumDelegates").val() > getListOfPresentCountries().length) {
                 createAlert("You don't have enough delegates in committee to open such a speakers list");
                 return;
             }
@@ -519,7 +563,7 @@ function constructJSON(parentEl) {
         building["timerType"] = "perDelegate";
 
         var inputs = parentEl.getElementsByTagName(elementNameToGet);
-        building["duration"] = getListOfVotingCountries().length * stringToDuration(inputs[1][propertyToGet]);
+        building["duration"] = getListOfPresentCountries().length * stringToDuration(inputs[1][propertyToGet]);
         building["delegateDuration"] = stringToDuration(inputs[1][propertyToGet]);
         building["motionTopic"] = inputs[0][propertyToGet];
     }
@@ -589,7 +633,7 @@ function parsePassedMotionJSON(details) {
         var i = 0;
 
         $("#chosenCountriesForTimer > *").remove();
-        getListOfVotingCountries().forEach(function(val) {
+        getListOfPresentCountries().forEach(function(val) {
             var toAdd = $(`<button class="outlineddiv marginizechildren countryListOne"></button>`);
 
             toAdd.css("padding", "15px");
@@ -911,7 +955,7 @@ function createDelegateCountryNode(name, clicked=false) {
     var cb = $("<div>");
     cb.attr("data-isclicked", "false");
     cb.addClass("countryListInner");
-    cb.text(name);
+    cb.append($("<p>").text(  name  ).append($("<i>").text(  (dictOfDelegates()[name].canVote ? "" : " (non-voting)")  )));
     cb.css("margin", "0");
     cb.on("click", changeClickedEventResponder);
 
@@ -948,7 +992,7 @@ function setCurrentCountryList(newList) {
 
 function setCustomDelegates(newCustomDelegates) {
     if(newCustomDelegates == undefined) newCustomDelegates = [];
-    customDelegates = newCustomDelegates;
+    dictOfCustomDelegates = newCustomDelegates;
 }
 
 function refreshModCountryList() {
@@ -1085,6 +1129,10 @@ window.onload = function(_event) {
 
         createAlert("This website is NOT meant to be used on a mobile device! It is meant to be on a large screen up at the front of the conference. But you do you, I guess.")
     }
+
+    basicListOfCountries.forEach((el) => {
+        dictOfDelegates()[el] = {canVote : !nonVotingBasicMembers.includes(el)}
+    });
 
     if(window.location.href.includes("mirror") || window.location.href.includes("clock")) { // Do mirror setup things
         isMirroring = true;
@@ -1280,7 +1328,8 @@ window.onload = function(_event) {
         $("#newDelegateSubmit").on("click", function(_e) {
             if($("#newDelegateInput").val() == "") return;
     
-            customDelegates.push($("#newDelegateInput").val());
+            //customDelegates.push($("#newDelegateInput").val());
+            dictOfCustomDelegates[$("#newDelegateInput").val()] = {canVote : true};
             
             $("#customDelegateList").append(createDelegateCountryNode($("#newDelegateInput").val()));
     
@@ -1318,11 +1367,25 @@ window.onload = function(_event) {
 
             resendMirror();
         });
-    
+        
+        $("#allAbsentButton").on("mousedown", function(_e) {
+            Array(...document.getElementById('attendanceListOfCountries').children).forEach((el) => {
+                if($(el).css("display") != "none") {
+                    $(el).children("button")[0].click();
+                }
+            });
+        });
         $("#allPresentButton").on("mousedown", function(_e) {
             Array(...document.getElementById('attendanceListOfCountries').children).forEach((el) => {
-                if($(el).css("display") != "none" && typeof el.childNodes[5] != 'undefined') {
-                    el.childNodes[5].click();
+                if($(el).css("display") != "none") {
+                    $(el).children("button")[1].click();
+                }
+            });
+        });
+        $("#allPrVButton").on("mousedown", function(_e) {
+            Array(...document.getElementById('attendanceListOfCountries').children).forEach((el) => {
+                if($(el).css("display") != "none") {
+                    $(el).children("button")[2].click();
                 }
             });
         });
@@ -1423,7 +1486,7 @@ window.onload = function(_event) {
                 });
                 return;
             }
-            if(getListOfVotingCountries().length <= 0) {
+            if(getListOfPresentCountries().length <= 0) {
                 createAlert('You have not taken attendance', (_e) => {
                     $("#takeAttendanceButton").click()
                 });
@@ -1445,7 +1508,7 @@ window.onload = function(_event) {
                 });
                 return;
             }
-            if(getListOfVotingCountries().length <= 0) {
+            if(getListOfPresentCountries().length <= 0) {
                 createAlert('You have not taken attendance', (_e) => {
                     $("#takeAttendanceButton").click()
                 });
@@ -1482,7 +1545,7 @@ window.onload = function(_event) {
                 });
                 return;
             }
-            if(getListOfVotingCountries().length <= 0) {
+            if(getListOfPresentCountries().length <= 0) {
                 createAlert('You have not taken attendance', (_e) => {
                     $("#takeAttendanceButton").click()
                 });
@@ -1567,6 +1630,7 @@ window.onload = function(_event) {
                 quitPopup(() => $("#takeAttendanceButton").click());
                 implementStateJSON(JSON.parse(ASEANLoadString));
             }
+            $("#firstMotionPrompt").css("display", "block");
         });
     
         setInterval(function(_e) {
@@ -1599,7 +1663,9 @@ window.onload = function(_event) {
     });
 
     $("#commenceRollCall").on("click", function(_e) {
-        if(getListOfVotingCountries().length <= 0) {
+        let votingCountries = getListOfVotingCountries(); // Reduce calls to this or smth
+
+        if(votingCountries.length <= 0) {
             createAlert("Take attendance before taking a roll call vote!", function() {
                 $("#takeAttendanceButton").click();
             });
@@ -1607,7 +1673,7 @@ window.onload = function(_event) {
         }
         $("#rollCallButtonContainer > *").prop("disabled", false);
         
-        numPossibleVoters = getListOfVotingCountries().length;
+        numPossibleVoters = votingCountries.length;
         if(numDelegatesInCommittee == 0) {
             createAlert('You have not chosen any delegates to be in committee. Click "Edit List" then take attendance to take a roll call vote.',
             (e) => {
@@ -1625,7 +1691,7 @@ window.onload = function(_event) {
         $("#rollCallPastChoices > *").remove();
 
         var ttt = 0;
-        getListOfVotingCountries().forEach(function(el) {
+        votingCountries.forEach(function(el) {
             $("#rollCallPastChoices").append(
                 $("<div>").attr("data-num", ttt++).attr("data-bg-color", "#ffffff").append($(`<p class="expandAllTheWay">${el}</p>`)).append($(`<p class="expandAllTheWay entireLineHeight">No Vote</p>`)).on("click", function(_e) {
                     rollCallCurrentVoter = $(this).attr("data-num");
@@ -1646,16 +1712,16 @@ window.onload = function(_event) {
         rollCallNumAbstains  = 0;
         hasRollCallFinished  = false;
 
-        $("#rollCallNumVotesNeededToWin").text(Math.ceil((getListOfVotingCountries().length+1)/2))
+        $("#rollCallNumVotesNeededToWin").text(Math.ceil((votingCountries.length+1)/2))
 
         $($(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter]).css("background-color", "powderblue");
         
-        $("#rollCallCountryName").text(getListOfVotingCountries()[rollCallCurrentVoter]);
+        $("#rollCallCountryName").text(votingCountries[rollCallCurrentVoter]);
         $("#rollCallVoterAttendance").text(
-            getDictOfVotingCountries()[getListOfVotingCountries()[rollCallCurrentVoter]] == "Pr" ? "Present" : "Present and Voting"
+            getDictOfVotingCountries()[votingCountries[rollCallCurrentVoter]] == "Pr" ? "Present" : "Present and Voting"
         );
         
-        if(getDictOfVotingCountries()[getListOfVotingCountries()[rollCallCurrentVoter]] == "Pr") {
+        if(getDictOfVotingCountries()[votingCountries[rollCallCurrentVoter]] == "Pr") {
             $("#rollCallAbstainButton").prop("disabled", false);
         } else {
             $("#rollCallAbstainButton").prop("disabled", true);
@@ -1848,14 +1914,16 @@ function goToNextRollCallVote(proceeds=true) { // It's best to not look at this 
     }
     $($(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter]).css("background-color", "powderblue");
 
+    let listOfVotingCountries = getListOfVotingCountries();
+
     //if(proceeds) $(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter].scrollIntoView({behavior: "smooth"});
 
-    $("#rollCallCountryName").text(getListOfVotingCountries()[rollCallCurrentVoter]);
+    $("#rollCallCountryName").text(listOfVotingCountries[rollCallCurrentVoter]);
     $("#rollCallVoterAttendance").text(
-        getDictOfVotingCountries()[getListOfVotingCountries()[rollCallCurrentVoter]] == "Pr" ? "Present" : "Present and Voting"
+        getDictOfVotingCountries()[listOfVotingCountries[rollCallCurrentVoter]] == "Pr" ? "Present" : "Present and Voting"
     );
 
-    if(getDictOfVotingCountries()[getListOfVotingCountries()[rollCallCurrentVoter]] == "Pr") {
+    if(getDictOfVotingCountries()[listOfVotingCountries[rollCallCurrentVoter]] == "Pr") {
         $("#rollCallAbstainButton").prop("disabled", false);
     } else {
         $("#rollCallAbstainButton").prop("disabled", true);
@@ -1974,7 +2042,7 @@ function getStateJSON() {
 
         committeeName : $("#committeeName").val() || $("#committeeName").text(),
 
-        customDelegates : customDelegates,
+        dictOfCustomDelegates : dictOfCustomDelegates,
 
         attendance: {
             // Ex. "United States" : "PV"
@@ -2154,7 +2222,7 @@ function implementStateJSON(newState) {
         }
     }
 
-    setCustomDelegates(newState.customDelegates);
+    setCustomDelegates(newState.dictOfCustomDelegates);
 
     refreshAttendanceNodes();
     implementAttendanceList(newState.attendance);
