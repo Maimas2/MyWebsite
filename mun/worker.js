@@ -742,7 +742,7 @@ document.onkeydown = function(event) {
         if(event.key == "Escape") $("#alertContainer").css("display", "none");
 
     } else if(isPopupShown) {
-        if(event.key == "Enter" && $("#impromptuTimer").css("display") == "none") {
+        if(event.key == "Enter" && $("#impromptuTimer").css("display") == "none" && $("#quickStartPopup").css("display") == "none") {
             $("#exitPopup").click();
         }
     }

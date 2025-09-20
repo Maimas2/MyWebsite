@@ -649,3 +649,16 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 #exitPopup {
     display: none;
 }
+#quickStartSplit {
+    display: flex;
+}
+#quickStartSplit > * {
+    width: 100%;
+    padding: 15px;
+}
+#presetSelect {
+    width: 90%;
+}
+#quickStartSplitLeft {
+    border-right: 1px black solid;
+}
