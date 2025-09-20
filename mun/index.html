@@ -118,21 +118,9 @@
             </div>
             <div id="attendanceList" class="outlineddiv largePopup">
                 <h3>Attendance</h3>
-                <button onmousedown="
-                    document.getElementById('attendanceListOfCountries').childNodes.forEach((el) => {
-                        if(typeof el.childNodes['3'] != 'undefined') {
-                            el.childNodes[3].click();
-                        }
-                    });
-                " id="allAbsentButton">All absent</button>
+                <button id="allAbsentButton">All absent</button>
                 <button id="allPresentButton">All present</button>
-                <button onmousedown="
-                document.getElementById('attendanceListOfCountries').childNodes.forEach((el) => {
-                    if(typeof el.childNodes['3'] != 'undefined') {
-                        el.childNodes[7].click();
-                    }
-                });
-                " id="allPrVButton">All present and voting</button>
+                <button id="allPrVButton">All present and voting</button>
                 <br><br>
                 <div id="attendanceListOfCountries">
 
@@ -343,7 +331,7 @@
         </div>
         <div id="prefabs" style="display: none !important;">
             <div id="attendanceButtonsPrefab">
-                <p style="display: inline-block;width:300px;"></p>
+                <!-- <p style="display: inline-block;width:300px;"></p> -->
                 <button onclick="firstAttendanceClick(this)">Ab</button>
                 <button onclick="secondAttendanceClick(this)">Pr</button>
                 <button onclick="thirdAttendanceClick(this)">Pr&V</button>
