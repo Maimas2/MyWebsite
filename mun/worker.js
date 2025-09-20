@@ -61,7 +61,7 @@ function getListOfVotingCountries() {
 var listOfCountriesInCommittee = []; // Only labelled as in committee, not necessarily present
 var numDelegatesInCommittee = 0;     // Length of above; should be *mostly* unused
 
-var isPopupShown = false;
+var isPopupShown = true; // Quick start always is shown on load
 
 var currentMotion = null;
 
@@ -1058,10 +1058,9 @@ function motionTypeToImportance(el) {
 
 function showQuickStart() {
     showPopup();
+    $("#popupPage > div.outlineddiv").css("display", "none");
     $("#quickStartPopup").css("display", "block");
     $("#quickStartPopup").css("height", "60%");
-    $("#quitPopup").text("No thanks");
-    $("#exitPopup").css("display", "none");
 }
 
 window.addEventListener("beforeunload", function (e) {
@@ -1165,10 +1164,6 @@ window.onload = function(_event) {
     addAttendanceNodes();
 
     document.getElementById("rightbottomarea").style.display = "none";
-
-    /*$("#motiondisplays").sortable({
-        animation: 100
-    });**/
 
     setInterval(refreshTimer, 1000);
 

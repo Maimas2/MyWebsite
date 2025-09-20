@@ -236,7 +236,7 @@ input[type=number] {
     background-color: #0006;
     z-index: 15;
 
-    display: none;
+    display: block;
 }
 #popupPage > div.outlineddiv {
     position: absolute;
@@ -246,13 +246,17 @@ input[type=number] {
     top: 30%;
     box-shadow: 2px 2px 7px #777;
     overflow: auto;
-    display: flex;
     font-size: 150%;
+}
+#popupPage > div.outlineddiv:not(#quickStartPopup) {
+    display: none;
+}
+#quickStartPopup {
+    display: block;
+    height: 60% !important;
 }
 #popupPage > div.outlineddiv:not(#editDelegateList) {
     text-align: center;
-    align-items: center;
-    display: grid;
     place-items: center;
 }
 #popupPage > div.largePopup {
@@ -641,4 +645,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 #saveLoadInput {
     display: block;
     width: 100%;
+}
+#exitPopup {
+    display: none;
 }
