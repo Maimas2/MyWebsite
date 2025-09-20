@@ -1143,15 +1143,7 @@ window.onload = function(_event) {
         });
 
         if(window.location.href.includes("clock")) {
-            $("#popupPage").css("display", "block");
-            $("#impromptuTimer").css("display", "block");
-            $("#impromptuTimer").css("position", "absolute");
-            $("#impromptuTimer").css("left", "0");
-            $("#impromptuTimer").css("top", "0");
-            $("#impromptuTimer").css("width", "100vw");
-            $("#impromptuTimer").css("height", "100vh");
-            $("#impromptuTimer").css("border-radius", "0");
-            $("#impromptuTimer").css("z-index", "13");
+            $("#setupMirroringH1").text("Setup a clock")
         }
     }
 
@@ -1765,6 +1757,16 @@ function setupMirroring(data) {
                         }));
 
                         if(window.location.href.includes("clock")) {
+                            $("#popupPage").css("display", "block");
+                            $("#impromptuTimer").css("display", "block");
+                            $("#impromptuTimer").css("position", "absolute");
+                            $("#impromptuTimer").css("left", "0");
+                            $("#impromptuTimer").css("top", "0");
+                            $("#impromptuTimer").css("width", "100vw");
+                            $("#impromptuTimer").css("height", "100vh");
+                            $("#impromptuTimer").css("border-radius", "0");
+                            $("#impromptuTimer").css("z-index", "13");
+
                             $("#impromptuTimer").css("display", "block");
                             $("#impromptuTimerLabel").css("font-size", "50vh");
                             $("#impromptuTimerLabel").text("--:--");
