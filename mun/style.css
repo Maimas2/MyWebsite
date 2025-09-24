@@ -316,9 +316,13 @@ input {
     margin: 0;
     margin-left: 20% !important;
     transition: all 150ms linear;
+    display: flex;
 }
-.countryListInner:hover {
+.countryListInner:hover:not(:has(button:hover)) { /* Shade presense node only when the partent countryListInner has the mouse and NOT a child button */
     background-color: #ddd;
+}
+.countryListInner > * {
+    width: 100%;
 }
 #innerDelegateList {
     width: 100%;
@@ -343,7 +347,6 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     text-align: left;
 }
 #attendanceListOfCountries > * {
-    margin: 20px;
     display: none;
 }
 #attendanceAlert {
@@ -665,4 +668,10 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #attendanceText {
     display: inline-block;
+}
+#isNonVotingIncluded {
+    display: none;
+}
+#numberOfVotingMembersContainer {
+    display: none;
 }
