@@ -11,7 +11,7 @@
 // - vHost       (backend)
 
 
-var basicListOfCountries = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Ivory Coast", "Croatia", "Cuba", "Cyprus", "Czechia", "North Korea", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Republic of Korea", "Republic of Moldova", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syrian Arab Republic", "Tajikistan", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Türkiye", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United Republic of Tanzania", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe", "Holy See", "Palestine");
+const basicListOfCountries = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Ivory Coast", "Croatia", "Cuba", "Cyprus", "Czechia", "North Korea", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Republic of Korea", "Republic of Moldova", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syrian Arab Republic", "Tajikistan", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Türkiye", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United Republic of Tanzania", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe", "Holy See", "Palestine");
 
 const nonVotingBasicMembers = new Array("Holy See", "Palestine");
 
@@ -19,7 +19,7 @@ const GeneralAssemblyLoadString = '{"mySalt":"","committeeName":"[No name]","cus
 
 const SecurityCouncilLoadString = '{"mySalt":"","committeeName":"[No name]","customDelegates":[],"attendance":{"China":"Ab","France":"Ab","Russia":"Ab","United Kingdom":"Ab","United States of America":"Ab"},"proposedMotions":[],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}';
 
-const G20LoadString = '{"mySalt":"","committeeName":"[No name]","customDelegates":["African Union","Europeon Union"],"attendance":{"Argentina":"Ab","Australia":"Ab","Brazil":"Ab","Canada":"Ab","China":"Ab","France":"Ab","Germany":"Ab","India":"Ab","Indonesia":"Ab","Italy":"Ab","Japan":"Ab","Mexico":"Ab","Republic of Korea":"Ab","Russia":"Ab","Saudi Arabia":"Ab","South Africa":"Ab","Türkiye":"Ab","United Kingdom":"Ab","United States of America":"Ab","African Union":"Ab","Europeon Union":"Ab"},"proposedMotions":[],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}';
+const G20LoadString = '{"mySalt":"","committeeName":"[No name]","dictOfCustomDelegates":{"African Union":{"canVote":true},"Europeon Union":{"canVote":true}},"attendance":{"Argentina":"Ab","Australia":"Ab","Brazil":"Ab","Canada":"Ab","China":"Ab","France":"Ab","Germany":"Ab","India":"Ab","Indonesia":"Ab","Italy":"Ab","Japan":"Ab","Mexico":"Ab","Republic of Korea":"Ab","Russia":"Ab","Saudi Arabia":"Ab","South Africa":"Ab","Türkiye":"Ab","United Kingdom":"Ab","United States of America":"Ab","African Union":"Ab","Europeon Union":"Ab"},"proposedMotions":[],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}';
 
 const EuropeanUnionLoadString = '{"mySalt":"","committeeName":"[No name]","customDelegates":[],"attendance":{"Austria":"Ab","Belgium":"Ab","Bulgaria":"Ab","Croatia":"Ab","Cyprus":"Ab","Czechia":"Ab","Denmark":"Ab","Estonia":"Ab","Finland":"Ab","France":"Ab","Germany":"Ab","Greece":"Ab","Hungary":"Ab","Ireland":"Ab","Italy":"Ab","Latvia":"Ab","Lithuania":"Ab","Luxembourg":"Ab","Malta":"Ab","Netherlands":"Ab","Poland":"Ab","Portugal":"Ab","Romania":"Ab","Slovakia":"Ab","Slovenia":"Ab","Spain":"Ab","Sweden":"Ab"},"proposedMotions":[],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}';
 
@@ -34,8 +34,10 @@ var dictOfCustomDelegates = {
 };
 
 function dictOfDelegates() {
-    //return Object.assign({}, dictOfBasicDelegates, dictOfCustomDelegates)
-    let t = dictOfBasicDelegates;
+    let t = {};
+    Object.keys(dictOfBasicDelegates).forEach((el) => {
+        t[el] = dictOfBasicDelegates[el];
+    });
     Object.keys(dictOfCustomDelegates).forEach((el) => {
         t[el] = dictOfCustomDelegates[el];
     });
@@ -43,7 +45,7 @@ function dictOfDelegates() {
 }
 
 function getListOfCountries() {
-    return Object.keys(dictOfDelegates()).concat(Object.keys(dictOfCustomDelegates)).sort();
+    return Object.keys(dictOfBasicDelegates).concat(Object.keys(dictOfCustomDelegates)).sort();
 }
 
 function getAttendanceOfPresentCountries() {
@@ -81,7 +83,7 @@ function getListOfPresentCountries() {
     Object.keys(d).forEach(function(el) {
         if(d[el] != "Ab") toReturn.push(el);
     });
-    return toReturn;
+    return toReturn.sort();
 }
 
 function getListOfVotingCountries() {
@@ -90,7 +92,7 @@ function getListOfVotingCountries() {
     Object.keys(d).forEach(function(el) {
         if(d[el] != "Ab") toReturn.push(el);
     });
-    return toReturn;
+    return toReturn.sort();
 }
 
 var listOfCountriesInCommittee = []; // Only labelled as in committee, not necessarily present
@@ -594,7 +596,7 @@ function parsePassedMotionJSON(details) {
     currentMotion = details;
 
     if(details["requiresDelegateList"]) {
-        $("#passedMotionCountryChooser").css("display", "block");
+        $("#passedMotionCountryChooser").css("display", "flex");
         $("#chosenCountriesContainer").css("display", "flex");
     } else {
         $("#passedMotionCountryChooser").css("display", "none");
@@ -638,6 +640,8 @@ function parsePassedMotionJSON(details) {
         $("#oneLargeTimerContainer").css("display", "none");
     }
 
+    $("#passedMotionListSearch").val("");
+
     $("#chosenCountriesForTimer").sortable({
         animation : 150,
         change    : resendMirror
@@ -664,7 +668,7 @@ function parsePassedMotionJSON(details) {
 
             toAdd.on("click", modCountryChooserClickEventFunctionResponder);
 
-            toAdd.appendTo($("#passedMotionCountryChooser"));
+            toAdd.appendTo($("#actualPassedMotionCountryChooser"));
         });
     } else {
         $("#chosenCountriesForTimer").css("display", "none");
@@ -709,31 +713,35 @@ const introducePapersJSONConfig = {
     "motionTopic":          ""
 };
 
-function doYourThing() {
-    var t = document.getElementById("delegateListSearch").value.toLowerCase();
-    getDelegatePresenseNodes().forEach((e) => {
-        if(!$(e).hasClass("countryListOne")) return;
-        if(typeof e.style != "undefined") {
-            if(e.textContent.toLowerCase().includes(t)) {
-                e.style.display = "";
-            } else {
-                e.style.display = "none";
-            }
+function getPassedMotionElements() {
+    return $("#actualPassedMotionCountryChooser").children().toArray();
+}
+
+function refreshDelegateListSearch(_e_ = null, delay = 0, getNodeFunction = getDelegatePresenseNodes, requiredClass = "countryListOne", currentSearchVal = $("#delegateListSearch").val()) { // The second parameter is vestigial. The first can be ignored. I am good at coding.
+    var t = currentSearchVal.toLowerCase();
+    getNodeFunction().forEach((ee) => { // Variable naming is my passion
+        let e = $(ee);
+        if(!e.hasClass(requiredClass)) return;
+        if(e.attr("data-can-be-shown") == false || e.attr("data-can-be-shown") == "false") return;
+        //console.log(e.text());
+        if(e.text().toLowerCase().includes(t)) {
+            e.css("display", "");
+        } else {
+            e.css("display", "none");
         }
     });
 }
 
-function refreshDelegateListSearch(_e_ = null, delay = 0) {
-    if(delay < 0.001) {
-        doYourThing();
-        return;
-    }
-    setTimeout(() => {
-        doYourThing();
-    }, delay);
-}
-
 document.getElementById("delegateListSearch").oninput = refreshDelegateListSearch;
+document.getElementById("passedMotionListSearch").oninput = function() {
+    refreshDelegateListSearch(
+        null,
+        0,
+        getPassedMotionElements,
+        "countryListOne",
+        $("#passedMotionListSearch").val()
+    );
+}
 
 var keyboardTimeout;
 
@@ -961,7 +969,7 @@ function endCurrentMotion() {
         el.remove();
     });
 
-    $("#passedMotionCountryChooser > *").remove();
+    $("#actualPassedMotionCountryChooser > *").remove();
 }
 
 function createDelegatePresenseNode(name, clicked=false) {
@@ -1011,7 +1019,7 @@ function setCurrentCountryList(newList) {
     getDelegatePresenseNodes().forEach((el) => {
         $(el).remove();
     });
-    $("#customDelegateList > div").remove();
+    $("#customDelegateList > *:not(h2)").remove();
 
     $("#normalDelegateList").append( $("#dividerLinePrefab").clone(true).attr("id", "").css("display", "block").css("margin", "5px 0 5px 25%") );
     $("#customDelegateList").append( $("#dividerLinePrefab").clone(true).attr("id", "").css("display", "block").css("margin", "5px 0 5px 25%") );
@@ -1028,7 +1036,7 @@ function setCurrentCountryList(newList) {
 }
 
 function setCustomDelegates(newCustomDelegates) {
-    if(newCustomDelegates == undefined) newCustomDelegates = [];
+    if(newCustomDelegates == undefined) newCustomDelegates = {};
     dictOfCustomDelegates = newCustomDelegates;
 }
 
@@ -1044,7 +1052,7 @@ function refreshModCurrentCountryNumberBackground() {
         $("#chosenCountriesForTimer").sortable("destroy");
         canSortChosenCountries = false;
 
-        $("#passedMotionCountryChooser > *").off("click");
+        $("#actualPassedMotionCountryChooser > *").off("click");
         $("#passedMotionCountryChooser").animate({
             "width" : 0,
             "margin-right" : 0,
@@ -1074,15 +1082,13 @@ function modCountryChooserClickEventFunctionResponder() {
             return;
         }
     }
-
-    let tthis = this;
     
     $(`<button class="outlineddiv marginizechildren countryListOne"></button>`).css("padding", "15px").css("display", "block").css("width", "100%").on("click", function() {
         if(canSortChosenCountries) {
             $("#modCaucusCountryChooser" + sanitizeForID(this.textContent)).css("display", "block").animate({
                 "padding" : "15px",
                 "margin-bottom" : "10px"
-            }, 150);
+            }, 150).attr("data-can-be-shown", true);
 
             $(this).off("click");
 
@@ -1105,10 +1111,10 @@ function modCountryChooserClickEventFunctionResponder() {
                     perDelegateCurrentPosition = i;
                     break;
                 }
-                i++
+                i++;
             }
             stopTimer();
-            refreshTimer()
+            refreshTimer();
         }
     }).append(`<p>${this.textContent}</p>`).appendTo($("#chosenCountriesForTimer"));
 
@@ -1121,6 +1127,8 @@ function modCountryChooserClickEventFunctionResponder() {
         $(this).css("display", "none");
         $(this).css("height", "");
     });
+
+    $(this).attr("data-can-be-shown", false);
 
     refreshModCountryList();
     resendMirror();
@@ -1168,7 +1176,7 @@ window.onload = function(_event) {
     }
 
     basicListOfCountries.forEach((el) => {
-        dictOfDelegates()[el] = {canVote : !nonVotingBasicMembers.includes(el)}
+        dictOfBasicDelegates[el] = {canVote : !nonVotingBasicMembers.includes(el)}
     });
 
     if(window.location.href.includes("mirror") || window.location.href.includes("clock")) { // Do mirror setup things
@@ -1374,7 +1382,7 @@ window.onload = function(_event) {
     
             hasMadeNewDelegate = true;
     
-            refreshDelegateListSearch(0);
+            refreshDelegateListSearch();
         });
 
         $("#impromptuTimerStartStop").on("click", function(_e) {
@@ -2276,10 +2284,13 @@ function implementStateJSON(newState) {
 
     setCustomDelegates(newState.dictOfCustomDelegates);
 
+    setCurrentCountryList(Object.keys(newState.attendance));
+
+    recalcDelegates();
+
     refreshAttendanceNodes();
     implementAttendanceList(newState.attendance);
 
-    setCurrentCountryList(Object.keys(newState.attendance));
     $("#allAbsentButton").click();
     recalcDelegates();
 
@@ -2400,4 +2411,9 @@ function implementStateJSON(newState) {
 
         goToNextRollCallVote(false);
     }
+
+    dictOfBasicDelegates = { };
+    basicListOfCountries.forEach((el) => {
+        dictOfBasicDelegates[el] = {canVote : !nonVotingBasicMembers.includes(el)}
+    });
 }
