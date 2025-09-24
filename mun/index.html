@@ -17,6 +17,7 @@
                 <div id="peopleedit" class="outlineddiv">
                     <div id="leftDelegateBox">
                         <p><span id="numberOfDelegates">0 Delegates</span></p>
+                        <p id="numberOfVotingMembersContainer">(<i><span id="numberOfVotingMembers">0 Voting Members</span></i>)</p>
                         <button id="editdelegatelistbutton">Edit List<span class="keyboardShortcut"> (d)</span></button>
                         <button id="takeAttendanceButton">Attendance<span class="keyboardShortcut"> (a)</span></button>
                     </div>
@@ -24,6 +25,7 @@
                     <div id="rightDelegateBox">
                         <p style="text-align: center;">Simple majority: <span id="simpleMajorityLabel">0/0</span></p>
                         <p style="text-align: center;">Two thirds: <span id="twoThirdsLabel">0/0</span></p>
+                        <p id="isNonVotingIncluded">(<i>Non-voting members included</i>)</p>
                     </div>
                 </div>
             </div>
@@ -48,7 +50,7 @@
                 <div></div>
                 <button id="saveToCloudButton">Save/Load</button>
                 <!-- <button id="loadFromCloudButton">Load from Cloud</button> -->
-                <button id="logoContainer">Notes</button>
+                <button id="logoContainer">Notes and Help</button>
                 <button id="startJCC">Join JCC</button>
                 <button id="jccInfo" style="display:none">JCC Info</button>
             </div>
@@ -237,7 +239,7 @@
                 <div style="display:inline-block;width:50%;background-color: black;height:1px !important;"></div>
                 <div id="quickStartSplit">
                     <div id="quickStartSplitLeft">
-                        <p>Load a preset</p>
+                        <h2 style="margin:0;">Load a preset</p>
                         <select id="presetSelect">
                             <option disabled selected>-- choose a preset --</option>
                             <option>General Assembly</option>
@@ -251,22 +253,15 @@
                     </div>
                     <div>
                         <h2 style="margin:0;">Or make your own</h2>
-                        <p>Choose which countries are slated to be in your committee</p>
-                        <button onclick="
-                        hidePopup(function() {
-                            isInQuickStart = true;
-                            $('#editdelegatelistbutton').click();
-                            $('#quickStartAttendance').prop('disabled', false);
-                            $('#quickStartSplitLeft').remove();
-                        })
-                        " id="quickStartDelegates">Do that</button>
-                        <br><div style="display:inline-block;width:50%;background-color: black;height:1px !important;"></div><br>
+                        <!-- <p>Choose which countries are slated to be in your committee</p> -->
+                        <button id="quickStartDelegates">Do that</button>
+                        <!-- <br><div style="display:inline-block;width:50%;background-color: black;height:1px !important;"></div><br>
                         <p>Take attendance</p>
                         <button onclick="
                         hidePopup(function() {
                             $('#takeAttendanceButton').click();
                         })
-                        " id="quickStartAttendance">Do that</button>
+                        " id="quickStartAttendance">Do that</button> -->
                     </div>
                 </div>
                 <div style="display:inline-block;width:90%;background-color: black;height:1px !important;"></div>
@@ -335,8 +330,7 @@
                 <button onclick="firstAttendanceClick(this)">Ab</button>
                 <button onclick="secondAttendanceClick(this)">Pr</button>
                 <button onclick="thirdAttendanceClick(this)">Pr&V</button>
-                <br>
-                <div style="display:inline-block;width:50%;background-color: black;height:1px !important;"></div>
+                <div style="display:block;width:50%;margin:15px;margin-left:25%;background-color: black;height:1px !important;"></div>
             </div>
             <div id="modMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="mod">
                 <div>
