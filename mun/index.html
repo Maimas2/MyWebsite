@@ -95,14 +95,20 @@
                     </div>
                 </div>
                 <div id="passedMotionCountryChooser" class="outlineddiv">
-                    
+                    <div class="searchbarContainer">
+                        <input type="text" id="passedMotionListSearch" class="searchBarInput" spellcheck="false" placeholder="Search for a country...">
+                        <button onclick="$('#passedMotionListSearch').val('');$('#passedMotionListSearch')[0].oninput();" style="padding: 2px;aspect-ratio: 1;">X</button>
+                    </div>
+                    <div id="actualPassedMotionCountryChooser">
+
+                    </div>
                 </div>
             </div>
         </div>
         <div id="popupPage">
             <div id="editDelegateList" class="outlineddiv largePopup">
-                <div id="searchbarContainer">
-                    <input type="text" id="delegateListSearch" spellcheck="false" placeholder="Search for a country...">
+                <div class="searchbarContainer">
+                    <input type="text" id="delegateListSearch" class="searchBarInput" spellcheck="false" placeholder="Search for a country...">
                     <button onclick="$('#delegateListSearch').val('');refreshDelegateListSearch();" style="padding: 2px;aspect-ratio: 1;">X</button>
                 </div>
                 <div id="delegateListSearchBottomContainer">
@@ -163,7 +169,7 @@
                     <p><span id="rollCallNumVotesNeededToWin"></span> yeas required to pass</p>
                     <p>&#8595;</p>
                 </div>
-                <div id="rollCallVoteResults" style="height:40px;line-height: 40px;vertical-align: middle;">
+                <div id="rollCallVoteResults">
                     <div id="yeaRollCallSegment"></div>
                     <div id="abstainRollCallSegment">0 Abstains</div>
                     <div id="nayRollCallSegment"></div>
