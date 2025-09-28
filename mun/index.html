@@ -11,6 +11,7 @@
     <body>
         <div id="committeeNameContainer">
             <input id="committeeName" type="text" placeholder="Committee topic/agenda..."></input>
+            <p id="topRealClock">19:24</p>
         </div>
         <div id="topbar" class="outlineddiv">
             <div id="peopleeditcontainer">
@@ -97,7 +98,7 @@
                 <div id="passedMotionCountryChooser" class="outlineddiv">
                     <div class="searchbarContainer">
                         <input type="text" id="passedMotionListSearch" class="searchBarInput" spellcheck="false" placeholder="Search for a country...">
-                        <button onclick="$('#passedMotionListSearch').val('');$('#passedMotionListSearch')[0].oninput();" style="padding: 2px;aspect-ratio: 1;">X</button>
+                        <button id="clearPassedMotionSearch" onclick="$('#passedMotionListSearch').val('');$('#passedMotionListSearch')[0].oninput();$('#passedMotionListSearch').focus();" style="padding: 2px;aspect-ratio: 1;">X</button>
                     </div>
                     <div id="actualPassedMotionCountryChooser">
 
@@ -109,7 +110,7 @@
             <div id="editDelegateList" class="outlineddiv largePopup">
                 <div class="searchbarContainer">
                     <input type="text" id="delegateListSearch" class="searchBarInput" spellcheck="false" placeholder="Search for a country...">
-                    <button onclick="$('#delegateListSearch').val('');refreshDelegateListSearch();" style="padding: 2px;aspect-ratio: 1;">X</button>
+                    <button id="clearDelegateListSearch" onclick="$('#delegateListSearch').val('');refreshDelegateListSearch();$('#delegateListSearch').focus();" style="padding: 2px;aspect-ratio: 1;">X</button>
                 </div>
                 <div id="delegateListSearchBottomContainer">
                     <div id="normalDelegateList">
@@ -125,15 +126,29 @@
                 </div>
             </div>
             <div id="attendanceList" class="outlineddiv largePopup">
-                <h3>Attendance</h3>
-                <button id="allAbsentButton">All absent</button>
-                <button id="allPresentButton">All present</button>
-                <button id="allPrVButton">All present and voting</button>
-                <br><br>
-                <div id="attendanceListOfCountries">
-
+                <h1>Attendance</h1>
+                <div id="innerAttendanceList">
+                    <div id="bigAttendance">
+                        <h2>Country</h2>
+                        <div id="attendanceBigButtonContainer">
+                            <button id="attendanceButtonAb">Ab</button>
+                            <button id="attendanceButtonPr">Pr</button>
+                            <button id="attendanceButtonPrV">Pr&V</button>
+                        </div>
+                    </div>
+                    <div class="middleLine"></div>
+                    <div id="rightAttendance">
+                        <button id="allAbsentButton">All absent</button>
+                        <button id="allPresentButton">All present</button>
+                        <button id="allPrVButton">All present and voting</button>
+                        <br><br>
+                        <div id="attendanceListOfCountries">
+    
+                        </div>
+                    </div>
                 </div>
             </div>
+            
             <div id="newModPopup" class="bottomMarginChildren outlineddiv">
                 <h3>Moderated Caucus</h3>
                 Topic: <input type="text" id="newModTopic" style="width:50%;" value="">

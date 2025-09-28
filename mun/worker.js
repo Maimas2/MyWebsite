@@ -132,7 +132,7 @@ function sanitizeForID(id) {
 }
 
 function getDelegatePresenseNodes() {
-    return $("#normalDelegateList > div").toArray().concat($("#customDelegateList > div").toArray());
+    return $("#normalDelegateList > div.countryListOne").toArray().concat($("#customDelegateList > div.countryListOne").toArray());
 }
 
 function refreshPresentDelegateList() {
@@ -611,6 +611,8 @@ function parsePassedMotionJSON(details) {
 
     $("#modPlacementP").css("display", "none");
 
+    $("#modDelegateIndexSpan").text("1");
+
     if(details["timerType"] == "one") {
         document.getElementById("oneLargeTimerContainer").style.display = "block";
         largeTimerCurrentTime = details["duration"];
@@ -628,12 +630,12 @@ function parsePassedMotionJSON(details) {
         perDelegateCurrentPosition = 0;
         
         $("#modPlacementP").css("display", "block");
-        $("#modDelegateIndexSpan").text("1")
         $("#modDelegateTotal").text(largeTimerNumDelegates.toString());
         $("#maxNumberOfAddedCountriesSpan").text(largeTimerNumDelegates);
 
         $("#yieldTimeButton").css("display", "inline");
         $("#previousSpeakerButton").css("display", "inline");
+        $("#numberOfAddedCountriesLabel").css("display", "block");
 
         canSortChosenCountries = true;
     } else if(details["timerType"] == "none") {
@@ -757,9 +759,7 @@ document.onkeydown = function(event) {
         }, 300);
     }
 
-    if(document.getElementById("delegateListSearch") == document.activeElement) {
-        refreshDelegateListSearch();
-    } else if(!isPopupShown) {
+    if(!isPopupShown) {
 
         if(event.ctrlKey) {
             if(event.key == "m") {
@@ -802,6 +802,27 @@ document.onkeydown = function(event) {
             }
         }
 
+        if(event.key == "Enter") {
+            if(document.activeElement == $("#passedMotionListSearch")[0]) {
+                var shownElement = undefined;
+                $("#actualPassedMotionCountryChooser").children("button").each(function(el) {
+                    if($(this).css("display") == "flex") {
+                        if(shownElement == undefined) {
+                            shownElement = $(this);
+                        } else {
+                            shownElement = null;
+                            return;
+                        }
+                    }
+                });
+                
+                if(shownElement != undefined && shownElement != null) {
+                    shownElement.click();
+                    $("#clearPassedMotionSearch").click();
+                }
+            }
+        }
+
         // if(event.key == "c" && event.ctrlKey) {
         //     $("body").css("background-image", "url(https://mun.alex-seltzer.com/me.png)");
         //     return false;
@@ -810,8 +831,29 @@ document.onkeydown = function(event) {
         if(event.key == "Escape") $("#alertContainer").css("display", "none");
 
     } else if(isPopupShown) {
-        if(event.key == "Enter" && $("#impromptuTimer").css("display") == "none" && $("#quickStartPopup").css("display") == "none") {
-            $("#exitPopup").click();
+        if(event.key == "Enter") {
+            if($("#editDelegateList").css("display") != "none") {
+                if(document.activeElement == $("#delegateListSearch")[0]) {
+                    var shownElement = undefined;
+                    getDelegatePresenseNodes().forEach(function(el) {
+                        if($(el).css("display") != "none") {
+                            if(shownElement == undefined) {
+                                shownElement = $(el);
+                            } else {
+                                shownElement = null;
+                                return;
+                            }
+                        }
+                    });
+                    console.log(shownElement);
+                    if(shownElement != undefined && shownElement != null) {
+                        shownElement.children(".countryListInner").click();
+                        $("#clearDelegateListSearch").click();
+                    }
+                }
+            } else if($("#impromptuTimer").css("display") == "none" && $("#quickStartPopup").css("display") == "none") {
+                $("#exitPopup").click();
+            }
         }
     }
     if(document.activeElement.nodeName != "INPUT") {
@@ -1691,6 +1733,10 @@ window.onload = function(_event) {
                 $('#quickStartAttendance').prop('disabled', false);
                 $('#quickStartSplitLeft').remove();
             });
+        });
+
+        $("button").on("click", function(_e) {
+            $(":focus").blur();
         })
     
         setInterval(function(_e) {
@@ -1800,6 +1846,11 @@ window.onload = function(_event) {
         lastSent = -1000;
         resendMirror();
     });
+
+    setInterval(function(_e) {
+        let t = new Date();
+        $("#topRealClock").text(t.getHours() + ":" + (t.getMinutes() < 10 ? "0" : "") + t.getMinutes());
+    }, 1000);
 
     $("#impromptuTimerLabel").val("5:00");
     $("#quickStartAttendance").prop("disabled", true);
