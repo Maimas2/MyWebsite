@@ -5,6 +5,7 @@ const port       = 3000;
 const bodyParser = require("body-parser");
 const useragent  = require('express-useragent');
 const ews        = require("express-ws")(app);
+const path       = require("path");
 
 var parentShutdownFunction;
 
@@ -145,10 +146,12 @@ app.get("/getcountrylist", (req, res) => {
     res.json(currentCountryList);
 }); */
 
-app.get("/me.png", (req, res) => {
+/* app.get("/me.png", (req, res) => {
     res.type("image/png");
     res.sendFile("./images/me.png", {root : __dirname});
-});
+}); */
+
+app.use("/flags", express.static(path.join(__dirname, "images/flags")));
 
 app.get("/chat", (req, res) => {
     res.sendFile("./chat.html", {root : __dirname});
