@@ -65,7 +65,7 @@
             <div id="rightbottomarea" class="bottomarea">
                 <div id="passedMotionDetails" class="outlineddiv">
                     <div>
-                        <h2 id="passedMotionName">Uh oh</h1>
+                        <h2 id="passedMotionName">Present Papers<!-- Fallback b/c that's the only one that uses it I think maybe not though --></h1>
                         <br>
                         <h1 id="passedMotionTopic">You fucked up</h2>
                         <div id="oneLargeTimerContainer">
@@ -191,7 +191,10 @@
                 </div>
                 <div id="rollCallBottomArea">
                     <div id="rollCallCurrentChoice">
-                        <h2><span id="rollCallCountryName">United States</span> (<span id="rollCallVoterAttendance">Present</span>)</h2>
+                        <div id="rollCallNameFlag">
+                            <img id="rollCallFlag" class="largeCountryFlag">
+                            <h2 id="rollCallFullName"><span id="rollCallCountryName">United States</span> (<span id="rollCallVoterAttendance">Present</span>)</h2>
+                        </div>
                         <div id="rollCallButtonContainer">
                             <button id="rollCallYeaButton">Yea</button>
                             <button id="rollCallNayButton">Nay</button>
@@ -241,6 +244,10 @@
                 <p>This website's source code is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU GPLv3 License</a>. The source code is hosted <a href="https://github.com/Maimas2/MyWebsite/tree/master/mun">here</a>.</p>
                 <br>
                 <p>This website uses <a href="https://jquery.com/">jQuery</a>; <a href="https://github.com/SortableJS/Sortable">SortableJS</a> for the sortable lists; and <a href="https://github.com/SortableJS/jquery-sortablejs">jQuery-Sortable</a> for jQuery bindings.</p>
+                <br>
+                <p>Country flags were gratefully taken from <a href="https://flagpedia.net">https://flagpedia.net</a>.</p>
+                <br>
+                <p>It is recommended to use this website on a screen that is at least 1920x1080. It may look weird on larger resolutions, but may be inoperable at much smaller ones.</p>
 
                 <hr>
 

@@ -11,7 +11,7 @@
 // - vHost       (backend)
 
 
-const basicListOfCountries = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Ivory Coast", "Croatia", "Cuba", "Cyprus", "Czechia", "North Korea", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Republic of Korea", "Republic of Moldova", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syrian Arab Republic", "Tajikistan", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Türkiye", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United Republic of Tanzania", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe", "Holy See", "Palestine");
+const basicListOfCountries = {"Afghanistan" : "af", "Albania" : "al", "Algeria" : "dz", "Andorra" : "ad", "Angola" : "ao", "Antigua and Barbuda" : "ag", "Argentina" : "ar", "Armenia" : "am", "Australia" : "au", "Austria" : "at", "Azerbaijan" : "az", "Bahamas" : "bs", "Bahrain" : "bh", "Bangladesh" : "bd", "Barbados" : "bb", "Belarus" : "by", "Belgium" : "be", "Belize" : "bz", "Benin" : "bj", "Bhutan" : "bt", "Bolivia" : "bo", "Bosnia and Herzegovina" : "ba", "Botswana" : "bw", "Brazil" : "br", "Brunei Darussalam" : "bn", "Bulgaria" : "bg", "Burkina Faso" : "bf", "Burundi" : "bi", "Cabo Verde" : "cv", "Cambodia" : "kh", "Cameroon" : "cm", "Canada" : "ca", "Central African Republic" : "cf", "Chad" : "td", "Chile" : "cl", "China" : "cn", "Colombia" : "co", "Comoros" : "km", "Congo" : "cg", "Costa Rica" : "cr", "Ivory Coast" : "ci", "Croatia" : "hr", "Cuba" : "cu", "Cyprus" : "cy", "Czechia" : "cz", "North Korea" : "kp", "Democratic Republic of the Congo" : "cd", "Denmark" : "dk", "Djibouti" : "dj", "Dominica" : "dm", "Dominican Republic" : "do", "Ecuador" : "ec", "Egypt" : "eg", "El Salvador" : "sv", "Equatorial Guinea" : "gq", "Eritrea" : 'er', "Estonia" : "ee", "Eswatini" : "sz", "Ethiopia" : "et", "Fiji" : "fj", "Finland" : "fi", "France" : "fr", "Gabon" : "ga", "Gambia" : "gm", "Georgia" : "ge", "Germany" : "de", "Ghana" : "gh", "Greece" : "gr", "Grenada" : "gd", "Guatemala" : "gt", "Guinea" : "gn", "Guinea-Bissau" : "gw", "Guyana" : "gy", "Haiti" : "ht", "Honduras" : "hn", "Hungary" : "hu", "Iceland" : "is", "India" : "in", "Indonesia" : "id", "Iran" : "ir", "Iraq" : "iq", "Ireland" : "ie", "Israel" : "il", "Italy" : "it", "Jamaica" : "jm", "Japan" : "jp", "Jordan" : "jo", "Kazakhstan" : "kz", "Kenya" : "ke", "Kiribati" : "ki", "Kuwait" : "kw", "Kyrgyzstan" : "kg", "Laos" : "la", "Latvia" : "lv", "Lebanon" : "lb", "Lesotho" : "ls", "Liberia" : "lr", "Libya" : "ly", "Liechtenstein" : "lt", "Lithuania" : "lt", "Luxembourg" : "lu", "Madagascar" : "mg", "Malawi" : "mw", "Malaysia" : "my", "Maldives" : "mv", "Mali" : "ml", "Malta" : "mt", "Marshall Islands" : "mh", "Mauritania" : "mr", "Mauritius" : "mu", "Mexico" : "mx", "Micronesia" : "fm", "Monaco" : "mc", "Mongolia" : "mn", "Montenegro" : "me", "Morocco" : "ma", "Mozambique" : "ma", "Myanmar" : "mm", "Namibia" : "na", "Nauru" : "nr", "Nepal" : "np", "Netherlands" : "nl", "New Zealand" : "nz", "Nicaragua" : "ni", "Niger" : "ne", "Nigeria" : "ng", "North Macedonia" : "mk", "Norway" : "no", "Oman" : "om", "Pakistan" : "pk", "Palau" : "pk", "Panama" : "pa", "Papua New Guinea" : "pg", "Paraguay" : "py", "Peru" : "pe", "Philippines" : "ph", "Poland" : "pl", "Portugal" : "pt", "Qatar" : "qa", "Republic of Korea" : "kr", "Republic of Moldova" : "md", "Romania" : "ro", "Russia" : "ru", "Rwanda" : "rw", "Saint Kitts and Nevis" : "kn", "Saint Lucia" : "lc", "Saint Vincent and the Grenadines" : "vc", "Samoa" : "ws", "San Marino" : "sm", "Sao Tome and Principe" : "st", "Saudi Arabia" : "sa", "Senegal" : "sn", "Serbia" : "rs", "Seychelles" : "sc", "Sierra Leone" : "sl", "Singapore" : "sg", "Slovakia" : "sk", "Slovenia" : "si", "Solomon Islands" : "sb", "Somalia" : "so", "South Africa" : "za", "South Sudan" : "ss", "Spain" : "es", "Sri Lanka" : "lk", "Sudan" : "sd", "Suriname" : "sr", "Sweden" : "se", "Switzerland" : "ch", "Syrian Arab Republic" : "sy", "Tajikistan" : "tj", "Thailand" : "th", "Timor-Leste" : "tl", "Togo" : "tg", "Tonga" : "to", "Trinidad and Tobago" : "tt", "Tunisia" : "tn", "Turkiye" : "tr", "Turkmenistan" : "tm", "Tuvalu" : "tv", "Uganda" : "ug", "Ukraine" : "ua", "United Arab Emirates" : "ae", "United Kingdom" : "gb", "United Republic of Tanzania" : "tz", "United States of America" : "us", "Uruguay" : "uy", "Uzbekistan" : "uz", "Vanuatu" : "vu", "Venezuela" : "ve", "Vietnam" : "vn", "Yemen" : "ye", "Zambia" : "zm", "Zimbabwe" : "zw", "Holy See" : "va", "Palestine" : "ps"};
 
 const nonVotingBasicMembers = new Array("Holy See", "Palestine");
 
@@ -132,7 +132,7 @@ function sanitizeForID(id) {
 }
 
 function getDelegatePresenseNodes() {
-    return $("#normalDelegateList > div.countryListOne").toArray().concat($("#customDelegateList > div.countryListOne").toArray());
+    return $("#normalDelegateList > div.delegatePresenseOuter").toArray().concat($("#customDelegateList > div.delegatePresenseOuter").toArray());
 }
 
 function refreshPresentDelegateList() {
@@ -659,12 +659,18 @@ function parsePassedMotionJSON(details) {
             var toAdd = $(`<button class="outlineddiv marginizechildren countryListOne"></button>`);
 
             toAdd.css("padding", "15px");
-            toAdd.css("display", "block");
+            toAdd.css("display", "flex");
             toAdd.css("width", "100%");
 
             toAdd.attr("id", "modCaucusCountryChooser" + sanitizeForID(val));
             toAdd.attr("data-countrynum", i++);
             toAdd.attr("data-initialheight", toAdd.height());
+
+            if(basicListOfCountries[val]) {
+                toAdd.append(
+                    $("<img>").prop("src", `/flags/${basicListOfCountries[val]}.svg`).addClass("countryFlag")
+                );
+            }
 
             toAdd.append($("<p>").text(val));
 
@@ -719,7 +725,7 @@ function getPassedMotionElements() {
     return $("#actualPassedMotionCountryChooser").children().toArray();
 }
 
-function refreshDelegateListSearch(_e_ = null, delay = 0, getNodeFunction = getDelegatePresenseNodes, requiredClass = "countryListOne", currentSearchVal = $("#delegateListSearch").val()) { // The second parameter is vestigial. The first can be ignored. I am good at coding.
+function refreshDelegateListSearch(_e_ = null, delay = 0, getNodeFunction = getDelegatePresenseNodes, requiredClass = "delegatePresenseOuter", currentSearchVal = $("#delegateListSearch").val()) { // The second parameter is vestigial. The first can be ignored. I am good at coding.
     var t = currentSearchVal.toLowerCase();
     getNodeFunction().forEach((ee) => { // Variable naming is my passion
         let e = $(ee);
@@ -1016,20 +1022,26 @@ function endCurrentMotion() {
 
 function createDelegatePresenseNode(name, clicked=false) {
     var outer = $("<div>");
-    outer.addClass("countryListOne");
+    outer.addClass("delegatePresenseOuter");
 
     var cb = $("<div>");
     cb.attr("data-isclicked", "false");
     cb.addClass("countryListInner");
 
-    var tp = $("<p>").css("display", "inline").text(  name  );
+    if(basicListOfCountries[name]) {
+        cb.append(
+            $("<img>").prop("src", `/flags/${basicListOfCountries[name]}.svg`).addClass("countryFlag")
+        );
+    }
+
+    var tp = $("<p>").css("display", "table-cell").text(  name  ).css("vertical-align", "middle").css("line-height", "45px");
     tp.append($("<i>").text(" (non-voting)").css("display", dictOfDelegates()[name].canVote ? "none" : "inline"));
     cb.append(tp);
 
     cb.css("margin", "0");
     cb.on("click", changeClickedEventResponder);
 
-    if(!basicListOfCountries.includes(name)) {
+    if(!basicListOfCountries[name]) {
         cb.append( $("<button>").text("Voting").css("display", "inline").on("click", function(_e) { // Holy spaghetti
             _e.stopPropagation();
             if($(this).text() == "Voting") {
@@ -1044,6 +1056,12 @@ function createDelegatePresenseNode(name, clicked=false) {
                 dictOfCustomDelegates[$(this).parent().clone().find("i").remove().end().find("p").text()].canVote = true;
             }
         }) );
+    }
+
+    if(basicListOfCountries[name]) {
+        cb.append( // Spacer and centerer div
+            $("<div>").css("width", "45px")
+        );
     }
 
     outer.append(cb);
@@ -1069,7 +1087,7 @@ function setCurrentCountryList(newList) {
     getListOfCountries().forEach(function(v) {
         var tempNode = createDelegatePresenseNode(v, newList.includes(v));
 
-        if(basicListOfCountries.includes(v)) {
+        if(basicListOfCountries[v]) {
             $("#normalDelegateList").append(tempNode);
         } else {
             $("#customDelegateList").append(tempNode);
@@ -1112,6 +1130,13 @@ function refreshModCurrentCountryNumberBackground() {
     }
 }
 
+function refreshModChosenCountriesIds() {
+    var index = 0;
+    $("#chosenCountriesForTimer").children().each(function(_el) {
+        $(this).children(".modIdP").text(++index);
+    });
+}
+
 function modCountryChooserClickEventFunctionResponder() {
     if($("#chosenCountriesForTimer").children().length >= largeTimerNumDelegates) {
         createAlert("Queue is already filled");
@@ -1125,9 +1150,9 @@ function modCountryChooserClickEventFunctionResponder() {
         }
     }
     
-    $(`<button class="outlineddiv marginizechildren countryListOne"></button>`).css("padding", "15px").css("display", "block").css("width", "100%").on("click", function() {
+    var toAdd = $(`<button class="outlineddiv marginizechildren countryListOne"></button>`).css("padding", "15px").css("width", "100%").on("click", function() {
         if(canSortChosenCountries) {
-            $("#modCaucusCountryChooser" + sanitizeForID(this.textContent)).css("display", "block").animate({
+            $("#modCaucusCountryChooser" + sanitizeForID($(this).children(".expandToFlexWidth").text())).css("display", "block").animate({
                 "padding" : "15px",
                 "margin-bottom" : "10px"
             }, 150).attr("data-can-be-shown", true);
@@ -1140,6 +1165,7 @@ function modCountryChooserClickEventFunctionResponder() {
                 "padding-bottom" : 0
             }, 150, () => {
                 this.remove();
+                refreshModChosenCountriesIds();
             });
 
             refreshModCountryList();
@@ -1158,7 +1184,20 @@ function modCountryChooserClickEventFunctionResponder() {
             stopTimer();
             refreshTimer();
         }
-    }).append(`<p>${this.textContent}</p>`).appendTo($("#chosenCountriesForTimer"));
+    });
+
+    if(basicListOfCountries[this.textContent]) {
+        toAdd.append(
+            $("<img>").prop("src", `/flags/${basicListOfCountries[this.textContent]}.svg`).addClass("countryFlag")
+        );
+    }
+
+    toAdd.append($("<p>").addClass("modIdP").text("Id here"));
+    toAdd.append($("<p>").text(this.textContent).addClass("expandToFlexWidth"));
+    
+    toAdd.appendTo($("#chosenCountriesForTimer"));
+
+    refreshModChosenCountriesIds();
 
     $(this).animate({
         "height" : 0,
@@ -1217,8 +1256,8 @@ window.onload = function(_event) {
         createAlert("This website is NOT meant to be used on a mobile device! It is meant to be on a large screen up at the front of the conference. But you do you, I guess.")
     }
 
-    basicListOfCountries.forEach((el) => {
-        dictOfBasicDelegates[el] = {canVote : !nonVotingBasicMembers.includes(el)}
+    Object.keys(basicListOfCountries).forEach((el) => {
+        dictOfBasicDelegates[el] = {canVote : !nonVotingBasicMembers.includes(el), isoCode : basicListOfCountries[el]}
     });
 
     if(window.location.href.includes("mirror") || window.location.href.includes("clock")) { // Do mirror setup things
@@ -1822,6 +1861,8 @@ window.onload = function(_event) {
 
         $($(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter]).css("background-color", "powderblue");
         
+        $("#rollCallFlag").prop("src", `/flags/${basicListOfCountries[votingCountries[rollCallCurrentVoter]]}.svg`);
+        
         $("#rollCallCountryName").text(votingCountries[rollCallCurrentVoter]);
         $("#rollCallVoterAttendance").text(
             getAttendanceOfVotingCountries()[votingCountries[rollCallCurrentVoter]] == "Pr" ? "Present" : "Present and Voting"
@@ -2028,6 +2069,8 @@ function goToNextRollCallVote(proceeds=true) { // It's best to not look at this 
     let listOfVotingCountries = getListOfVotingCountries();
 
     //if(proceeds) $(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter].scrollIntoView({behavior: "smooth"});
+
+    $("#rollCallFlag").prop("src", `/flags/${basicListOfCountries[listOfVotingCountries[rollCallCurrentVoter]]}.svg`);
 
     $("#rollCallCountryName").text(listOfVotingCountries[rollCallCurrentVoter]);
     $("#rollCallVoterAttendance").text(
@@ -2463,8 +2506,8 @@ function implementStateJSON(newState) {
         goToNextRollCallVote(false);
     }
 
-    dictOfBasicDelegates = { };
+    /* dictOfBasicDelegates = { };
     basicListOfCountries.forEach((el) => {
         dictOfBasicDelegates[el] = {canVote : !nonVotingBasicMembers.includes(el)}
-    });
+    }); */
 }
