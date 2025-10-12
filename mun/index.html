@@ -26,7 +26,7 @@
                     <div id="rightDelegateBox">
                         <p style="text-align: center;">Simple majority: <span id="simpleMajorityLabel">0/0</span></p>
                         <p style="text-align: center;">Two thirds: <span id="twoThirdsLabel">0/0</span></p>
-                        <p id="isNonVotingIncluded">(<i>Non-voting members included</i>)</p>
+                        <button id="isNonVotingIncluded">(<i>Non-voting members <span id="nonVotingInEx">included</span></i>)</button>
                     </div>
                 </div>
             </div>
@@ -126,24 +126,28 @@
                 </div>
             </div>
             <div id="attendanceList" class="outlineddiv largePopup">
-                <h1>Attendance</h1>
+                <h1 style="margin-bottom: 0;">Attendance</h1>
+                <!-- <button id="hideLeftAttendancePanel">Hide left panel</button> -->
                 <div id="innerAttendanceList">
-                    <div id="bigAttendance">
-                        <h2>Country</h2>
-                        <div id="attendanceBigButtonContainer">
-                            <button id="attendanceButtonAb">Ab</button>
-                            <button id="attendanceButtonPr">Pr</button>
-                            <button id="attendanceButtonPrV">Pr&V</button>
+                    <!-- <div id="bigAttendance">
+                        <div>
+                            <h2>Country</h2>
+                            <div id="attendanceBigButtonContainer">
+                                <button id="attendanceButtonAb">Ab</button>
+                                <button id="attendanceButtonPr">Pr</button>
+                                <button id="attendanceButtonPrV">Pr&V</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="middleLine"></div>
+                    </div> -->
                     <div id="rightAttendance">
-                        <button id="allAbsentButton">All absent</button>
-                        <button id="allPresentButton">All present</button>
-                        <button id="allPrVButton">All present and voting</button>
-                        <br><br>
-                        <div id="attendanceListOfCountries">
-    
+                        <div>
+                            <button id="allAbsentButton">All absent</button>
+                            <button id="allPresentButton">All present</button>
+                            <button id="allPrVButton">All present and voting</button>
+                            <br><br>
+                            <div id="attendanceListOfCountries">
+        
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -294,9 +298,9 @@
                 </div>
                 <div style="display:inline-block;width:90%;background-color: black;height:1px !important;"></div>
                 <h2>Other Pages</h2>
-                <a href="mirror">
-                    <button>Mirror a screen</button>
-                </a>
+                <!-- <a href="mirror">
+                    <button>Mirror a screen</button> Yeah I'm sure it's severly fucked enough that I'm not even going to list it
+                </a> -->
                 <br>
                 <a href="clock">
                     <button>Display a clock</button>
@@ -353,12 +357,18 @@
             </div>
         </div>
         <div id="prefabs" style="display: none !important;">
-            <div id="attendanceButtonsPrefab">
+            <div id="attendanceButtonsPrefab" class="basicAttendanceNode">
                 <!-- <p style="display: inline-block;width:300px;"></p> -->
-                <button onclick="firstAttendanceClick(this)">Ab</button>
-                <button onclick="secondAttendanceClick(this)">Pr</button>
-                <button onclick="thirdAttendanceClick(this)">Pr&V</button>
-                <div style="display:block;width:50%;margin:15px;margin-left:25%;background-color: black;height:1px !important;"></div>
+                <div>
+                    <img class="countryFlag">
+                </div>
+                <div>
+                    <button onclick="firstAttendanceClick(this)">Ab</button>
+                    <button onclick="secondAttendanceClick(this)">Pr</button>
+                    <button onclick="thirdAttendanceClick(this)">Pr&V</button>
+                    <div style="display:block;width:50%;margin:15px;margin-left:25%;background-color: black;height:1px !important;"></div>
+                </div>
+                <div></div>
             </div>
             <div id="modMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="mod">
                 <div>

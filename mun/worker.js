@@ -144,7 +144,7 @@ function refreshPresentDelegateList() {
             var isc = $(e).children().get(0).getAttribute("data-isclicked") == "true";
             if(isc) {
                 numDelegatesInCommittee++;
-                $("#attendanceNode" + sanitizeForID(e.textContent)).css("display", "block");
+                $("#attendanceNode" + sanitizeForID(e.textContent)).css("display", "flex");
 
                 listOfCountriesInCommittee.push($(e).children("div").children("p").clone().children().remove().end().text());
             } else {
@@ -154,11 +154,16 @@ function refreshPresentDelegateList() {
     });
 }
 
+var isNonVotingIncludedInDelegateCount = false;
+
 function recalcDelegates() {
     refreshPresentDelegateList();
 
     var voters = getListOfVotingCountries().length;
     var numPresent = getListOfPresentCountries().length;
+
+    $("#numberOfDelegates").text(numPresent + " Delegate" + (numPresent == 1 ? "" : "s"));
+    $("#numberOfVotingMembers").text(voters + " Voting Member" + (voters == 1 ? "" : "s"));
 
     if(voters == numPresent) {
         $("#isNonVotingIncluded").css("display", "none");
@@ -168,8 +173,12 @@ function recalcDelegates() {
         $("#numberOfVotingMembersContainer").css("display", "block");
     }
 
-    $("#numberOfDelegates").text(numPresent + " Delegate" + (numPresent == 1 ? "" : "s"));
-    $("#numberOfVotingMembers").text(voters + " Voting Member" + (voters == 1 ? "" : "s"));
+    if(isNonVotingIncludedInDelegateCount) {
+        numPresent = voters;
+        $("#nonVotingInEx").text("excluded");
+    } else {
+        $("#nonVotingInEx").text("included");
+    }
 
     if(numPresent == 0) {
         document.getElementById("simpleMajorityLabel").textContent = "0/0";
@@ -308,12 +317,19 @@ function addAttendanceNodes() {
         if(!typeof v == "string") return;
         var cont = $("#attendanceButtonsPrefab").clone(true);
 
+        if(basicListOfCountries[v]) {
+            cont.find("img").prop("src", `/flags/${basicListOfCountries[v]}.svg`);
+            cont.find("img").css("display", "block");
+        } else {
+            cont.find("img").css("display", "none");
+        }
+
         let tp = $("<p>").text(v).addClass("attendanceText");
         tp.append($("<i>").text(" (non-voting)").css("display", dictOfDelegates()[v].canVote ? "none" : "inline"));
-        cont.prepend(tp);
+        $(cont.children("div").get(1)).prepend(tp);
 
         cont.attr("id", "attendanceNode" + sanitizeForID(v));
-        cont.children("button").get(0).click();
+        cont.find("button").get(0).click();
 
         $("#attendanceListOfCountries").append(cont);
     });
@@ -329,14 +345,14 @@ function refreshAttendanceNodes() {
 function implementAttendanceList(att) {
     $("#attendanceListOfCountries > *").css("display", "none");
     listOfCountriesInCommittee.forEach(function(el) {
-        $("#attendanceNode" + sanitizeForID(el)).css("display", "block");
+        $("#attendanceNode" + sanitizeForID(el)).css("display", "flex");
     });
     Object.keys(att).forEach((country) => {
         var tan = $("#attendanceNode" + sanitizeForID(country));
         if(att[country] == "Pr") {
-            tan.children("button").get(1).click();
+            tan.find("button").get(1).click();
         } else if(att[country] == "Pr&V") {
-            tan.children("button").get(2).click();
+            tan.find("button").get(2).click();
         }
     });
 }
@@ -1497,21 +1513,21 @@ window.onload = function(_event) {
         $("#allAbsentButton").on("mousedown", function(_e) {
             Array(...document.getElementById('attendanceListOfCountries').children).forEach((el) => {
                 if($(el).css("display") != "none") {
-                    $(el).children("button")[0].click();
+                    $(el).find("button")[0].click();
                 }
             });
         });
         $("#allPresentButton").on("mousedown", function(_e) {
             Array(...document.getElementById('attendanceListOfCountries').children).forEach((el) => {
                 if($(el).css("display") != "none") {
-                    $(el).children("button")[1].click();
+                    $(el).find("button")[1].click();
                 }
             });
         });
         $("#allPrVButton").on("mousedown", function(_e) {
             Array(...document.getElementById('attendanceListOfCountries').children).forEach((el) => {
                 if($(el).css("display") != "none") {
-                    $(el).children("button")[2].click();
+                    $(el).find("button")[2].click();
                 }
             });
         });
@@ -1774,9 +1790,24 @@ window.onload = function(_event) {
             });
         });
 
+        $("#hideLeftAttendancePanel").on("click", function(_el) {
+            if($("#bigAttendance").css("display") == "none") {
+                $("#bigAttendance").css("display", "block");
+                $(this).text("Hide left panel");
+            } else {
+                $("#bigAttendance").css("display", "none");
+                $(this).text("Show left panel");
+            }
+        });
+
+        $("#isNonVotingIncluded").on("click", function(_el) {
+            isNonVotingIncludedInDelegateCount = !isNonVotingIncludedInDelegateCount;
+            recalcDelegates();
+        });
+
         $("button").on("click", function(_e) {
             $(":focus").blur();
-        })
+        });
     
         setInterval(function(_e) {
             if(document.activeElement == document.getElementById("impromptuTimerLabel")) return;
