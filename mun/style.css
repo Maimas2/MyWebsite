@@ -684,10 +684,13 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     border-right: 1px black solid;
 }
 #attendanceText {
-    display: inline-block;
+    display: flex;
 }
 #isNonVotingIncluded {
     display: none;
+}
+#isNonVotingIncluded:not(:hover) {
+    border: 1px solid transparent;
 }
 #numberOfVotingMembersContainer {
     display: none;
@@ -700,16 +703,25 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     flex-direction: row;
     overflow-y: hidden;
 }
-#innerAttendanceList > *:not(.middleLine) {
+#attendanceMiddleLine {
+    border-left: 1px solid #000;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+#innerAttendanceList > div {
     width: 100%;
     padding: 10px;
     margin: 10px;
     border: #bbb 1px solid;
     border-radius: 25px;
-    overflow-y: auto;
     align-items: start;
-    max-height: 60%;
+    max-height: 20%;
+    height: 20%;
+    overflow-y: hidden;
 }
+/* #innerAttendanceList > div > div {
+    background-color: #00ff00;
+} */
 #attendanceBigButtonContainer {
     display: flex;
     flex-direction: row;
@@ -725,19 +737,20 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 .modIdP {
     width: 0 !important;
 }
-.countryFlag {
-    width: 45px;
-    height: 45px;
+.countryFlag, .largeCountryFlag {
     display: inline;
     border-radius: 50%;
     padding: 0;
+    object-fit: cover;
+    background-position: center center;
+}
+.countryFlag {
+    width: 45px;
+    height: 45px;
 }
 .largeCountryFlag {
     width: 100px;
     height: 100px;
-    display: inline;
-    border-radius: 50%;
-    padding: 0;
 }
 .delegatePresenseOuter {
     transition: all 150ms linear;
@@ -761,4 +774,15 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     line-height: 100px;
     vertical-align: middle;
     margin: 0;
+}
+.basicAttendanceNode {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.basicAttendanceNode > * {
+    width: 33%;
+}
+.basicAttendanceNode > div > img {
+    margin: auto;
 }
