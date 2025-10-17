@@ -787,7 +787,7 @@ document.onkeydown = function(event) {
 
     if(!isPopupShown) {
 
-        if(event.ctrlKey && !isThereACurrentMotion) {
+        if(event.ctrlKey && currentMotion == null) {
             if(event.key == "m") {
                 document.getElementById("newMod").click();
                 return false;
