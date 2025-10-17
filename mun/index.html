@@ -80,14 +80,14 @@
                         </div>
                     </div>
                     <div id="chosenCountriesContainer">
-                        <p style="font-size: 70%;"><i>(Drag to reorder)</i></p>
+                        <p style="font-size: 70%;" class="hiddenOnModStart"><i>(Drag to reorder)</i></p>
                         <div class="outlineddiv" id="chosenCountriesForTimer">
                             <div class="outlineddiv">EEE</div>
                             <div class="outlineddiv">CCC</div>
                             <div class="outlineddiv">DDD</div>
                             <div class="outlineddiv">AAA</div>
                         </div>
-                        <p id="numberOfAddedCountriesLabel"><span id="numberOfAddedCountriesSpan">0</span>/<span id="maxNumberOfAddedCountriesSpan">10</span></p>
+                        <p id="numberOfAddedCountriesLabel" class="hiddenOnModStart"><span id="numberOfAddedCountriesSpan">0</span>/<span id="maxNumberOfAddedCountriesSpan">10</span></p>
                     </div>
                     <div id="jccPassPaperContainer">
                         <h2>Pass Papers</h2>
@@ -110,7 +110,7 @@
             <div id="editDelegateList" class="outlineddiv largePopup">
                 <div class="searchbarContainer">
                     <input type="text" id="delegateListSearch" class="searchBarInput" spellcheck="false" placeholder="Search for a country...">
-                    <button id="clearDelegateListSearch" onclick="$('#delegateListSearch').val('');refreshDelegateListSearch();$('#delegateListSearch').focus();" style="padding: 2px;aspect-ratio: 1;">X</button>
+                    <button id="clearDelegateListSearch" onclick="$('#delegateListSearch').val('');refreshSearch();$('#delegateListSearch').focus();" style="padding: 2px;aspect-ratio: 1;">X</button>
                 </div>
                 <div id="delegateListSearchBottomContainer">
                     <div id="normalDelegateList">
@@ -170,7 +170,7 @@
             </div>
             <div id="newUnmodPopup" class="bottomMarginChildren outlineddiv">
                 <h3>Unmoderated Caucus</h3>
-                Topic: <input type="text" id="newUnmodTopic" style="width:50%;" value="">
+                Topic: <input type="text" id="newUnmodTopic" style="width:50%;" value="" placeholder="Optional">
                 <br>
                 Duration: <input type="text" id="newUnmodPopupDuration" value="5:00" class="largeTextInput">
             </div>
@@ -241,17 +241,17 @@
                 <!-- <button id="loadFromCloudSubmit">Load from Cloud</button> -->
             </div>
             <div id="legalStuffEwww" class="bottomMarginChildren outlineddiv largePopup">
-                <h1>Help</h1>
+                <h1>Help / About / Setting</h1>
                 <br>
-                <p>I made this website for my high school's Capstone project (though I have significantly added to it afterwards). It was specifically made for use in my school's club. I intended it to be used as a tool during a conference, not to run every little bit of it.</p>
+                <p>I made this website for my high school's Capstone project (though I have <i>significantly</i> added to it afterwards). It was specifically made for use in my Model UN school's club. It is designed to reduce the workload of the dais (because I am on the dais and am lazy).</p>
                 <br>
-                <p>This website's source code is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU GPLv3 License</a>. The source code is hosted <a href="https://github.com/Maimas2/MyWebsite/tree/master/mun">here</a>.</p>
+                <p>This website's source code is open-source under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU GPLv3 License</a>. The source code is hosted <a href="https://github.com/Maimas2/MyWebsite/tree/master/mun">here</a>.</p>
                 <br>
                 <p>This website uses <a href="https://jquery.com/">jQuery</a>; <a href="https://github.com/SortableJS/Sortable">SortableJS</a> for the sortable lists; and <a href="https://github.com/SortableJS/jquery-sortablejs">jQuery-Sortable</a> for jQuery bindings.</p>
                 <br>
                 <p>Country flags were gratefully taken from <a href="https://flagpedia.net">https://flagpedia.net</a>.</p>
                 <br>
-                <p>It is recommended to use this website on a screen that is at least 1920x1080. It may look weird on larger resolutions, but may be inoperable at much smaller ones.</p>
+                <p>It is recommended to use this website on a screen that is at least 1920x1080. It may look weird at larger resolutions, but is inoperable at smaller ones.</p>
 
                 <hr>
 

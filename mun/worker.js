@@ -11,7 +11,7 @@
 // - vHost       (backend)
 
 
-const basicListOfCountries = {"Afghanistan" : "af", "Albania" : "al", "Algeria" : "dz", "Andorra" : "ad", "Angola" : "ao", "Antigua and Barbuda" : "ag", "Argentina" : "ar", "Armenia" : "am", "Australia" : "au", "Austria" : "at", "Azerbaijan" : "az", "Bahamas" : "bs", "Bahrain" : "bh", "Bangladesh" : "bd", "Barbados" : "bb", "Belarus" : "by", "Belgium" : "be", "Belize" : "bz", "Benin" : "bj", "Bhutan" : "bt", "Bolivia" : "bo", "Bosnia and Herzegovina" : "ba", "Botswana" : "bw", "Brazil" : "br", "Brunei Darussalam" : "bn", "Bulgaria" : "bg", "Burkina Faso" : "bf", "Burundi" : "bi", "Cabo Verde" : "cv", "Cambodia" : "kh", "Cameroon" : "cm", "Canada" : "ca", "Central African Republic" : "cf", "Chad" : "td", "Chile" : "cl", "China" : "cn", "Colombia" : "co", "Comoros" : "km", "Congo" : "cg", "Costa Rica" : "cr", "Ivory Coast" : "ci", "Croatia" : "hr", "Cuba" : "cu", "Cyprus" : "cy", "Czechia" : "cz", "North Korea" : "kp", "Democratic Republic of the Congo" : "cd", "Denmark" : "dk", "Djibouti" : "dj", "Dominica" : "dm", "Dominican Republic" : "do", "Ecuador" : "ec", "Egypt" : "eg", "El Salvador" : "sv", "Equatorial Guinea" : "gq", "Eritrea" : 'er', "Estonia" : "ee", "Eswatini" : "sz", "Ethiopia" : "et", "Fiji" : "fj", "Finland" : "fi", "France" : "fr", "Gabon" : "ga", "Gambia" : "gm", "Georgia" : "ge", "Germany" : "de", "Ghana" : "gh", "Greece" : "gr", "Grenada" : "gd", "Guatemala" : "gt", "Guinea" : "gn", "Guinea-Bissau" : "gw", "Guyana" : "gy", "Haiti" : "ht", "Honduras" : "hn", "Hungary" : "hu", "Iceland" : "is", "India" : "in", "Indonesia" : "id", "Iran" : "ir", "Iraq" : "iq", "Ireland" : "ie", "Israel" : "il", "Italy" : "it", "Jamaica" : "jm", "Japan" : "jp", "Jordan" : "jo", "Kazakhstan" : "kz", "Kenya" : "ke", "Kiribati" : "ki", "Kuwait" : "kw", "Kyrgyzstan" : "kg", "Laos" : "la", "Latvia" : "lv", "Lebanon" : "lb", "Lesotho" : "ls", "Liberia" : "lr", "Libya" : "ly", "Liechtenstein" : "lt", "Lithuania" : "lt", "Luxembourg" : "lu", "Madagascar" : "mg", "Malawi" : "mw", "Malaysia" : "my", "Maldives" : "mv", "Mali" : "ml", "Malta" : "mt", "Marshall Islands" : "mh", "Mauritania" : "mr", "Mauritius" : "mu", "Mexico" : "mx", "Micronesia" : "fm", "Monaco" : "mc", "Mongolia" : "mn", "Montenegro" : "me", "Morocco" : "ma", "Mozambique" : "ma", "Myanmar" : "mm", "Namibia" : "na", "Nauru" : "nr", "Nepal" : "np", "Netherlands" : "nl", "New Zealand" : "nz", "Nicaragua" : "ni", "Niger" : "ne", "Nigeria" : "ng", "North Macedonia" : "mk", "Norway" : "no", "Oman" : "om", "Pakistan" : "pk", "Palau" : "pk", "Panama" : "pa", "Papua New Guinea" : "pg", "Paraguay" : "py", "Peru" : "pe", "Philippines" : "ph", "Poland" : "pl", "Portugal" : "pt", "Qatar" : "qa", "Republic of Korea" : "kr", "Republic of Moldova" : "md", "Romania" : "ro", "Russia" : "ru", "Rwanda" : "rw", "Saint Kitts and Nevis" : "kn", "Saint Lucia" : "lc", "Saint Vincent and the Grenadines" : "vc", "Samoa" : "ws", "San Marino" : "sm", "Sao Tome and Principe" : "st", "Saudi Arabia" : "sa", "Senegal" : "sn", "Serbia" : "rs", "Seychelles" : "sc", "Sierra Leone" : "sl", "Singapore" : "sg", "Slovakia" : "sk", "Slovenia" : "si", "Solomon Islands" : "sb", "Somalia" : "so", "South Africa" : "za", "South Sudan" : "ss", "Spain" : "es", "Sri Lanka" : "lk", "Sudan" : "sd", "Suriname" : "sr", "Sweden" : "se", "Switzerland" : "ch", "Syrian Arab Republic" : "sy", "Tajikistan" : "tj", "Thailand" : "th", "Timor-Leste" : "tl", "Togo" : "tg", "Tonga" : "to", "Trinidad and Tobago" : "tt", "Tunisia" : "tn", "Turkiye" : "tr", "Turkmenistan" : "tm", "Tuvalu" : "tv", "Uganda" : "ug", "Ukraine" : "ua", "United Arab Emirates" : "ae", "United Kingdom" : "gb", "United Republic of Tanzania" : "tz", "United States of America" : "us", "Uruguay" : "uy", "Uzbekistan" : "uz", "Vanuatu" : "vu", "Venezuela" : "ve", "Vietnam" : "vn", "Yemen" : "ye", "Zambia" : "zm", "Zimbabwe" : "zw", "Holy See" : "va", "Palestine" : "ps"};
+const basicListOfCountries = {"Afghanistan" : "af", "Albania" : "al", "Algeria" : "dz", "Andorra" : "ad", "Angola" : "ao", "Antigua and Barbuda" : "ag", "Argentina" : "ar", "Armenia" : "am", "Australia" : "au", "Austria" : "at", "Azerbaijan" : "az", "Bahamas" : "bs", "Bahrain" : "bh", "Bangladesh" : "bd", "Barbados" : "bb", "Belarus" : "by", "Belgium" : "be", "Belize" : "bz", "Benin" : "bj", "Bhutan" : "bt", "Bolivia" : "bo", "Bosnia and Herzegovina" : "ba", "Botswana" : "bw", "Brazil" : "br", "Brunei Darussalam" : "bn", "Bulgaria" : "bg", "Burkina Faso" : "bf", "Burundi" : "bi", "Cabo Verde" : "cv", "Cambodia" : "kh", "Cameroon" : "cm", "Canada" : "ca", "Central African Republic" : "cf", "Chad" : "td", "Chile" : "cl", "China" : "cn", "Colombia" : "co", "Comoros" : "km", "Congo" : "cg", "Costa Rica" : "cr", "Ivory Coast" : "ci", "Croatia" : "hr", "Cuba" : "cu", "Cyprus" : "cy", "Czechia" : "cz", "North Korea" : "kp", "Democratic Republic of the Congo" : "cd", "Denmark" : "dk", "Djibouti" : "dj", "Dominica" : "dm", "Dominican Republic" : "do", "Ecuador" : "ec", "Egypt" : "eg", "El Salvador" : "sv", "Equatorial Guinea" : "gq", "Eritrea" : 'er', "Estonia" : "ee", "Eswatini" : "sz", "Ethiopia" : "et", "Fiji" : "fj", "Finland" : "fi", "France" : "fr", "Gabon" : "ga", "Gambia" : "gm", "Georgia" : "ge", "Germany" : "de", "Ghana" : "gh", "Greece" : "gr", "Grenada" : "gd", "Guatemala" : "gt", "Guinea" : "gn", "Guinea-Bissau" : "gw", "Guyana" : "gy", "Haiti" : "ht", "Honduras" : "hn", "Hungary" : "hu", "Iceland" : "is", "India" : "in", "Indonesia" : "id", "Iran" : "ir", "Iraq" : "iq", "Ireland" : "ie", "Israel" : "il", "Italy" : "it", "Jamaica" : "jm", "Japan" : "jp", "Jordan" : "jo", "Kazakhstan" : "kz", "Kenya" : "ke", "Kiribati" : "ki", "Kuwait" : "kw", "Kyrgyzstan" : "kg", "Laos" : "la", "Latvia" : "lv", "Lebanon" : "lb", "Lesotho" : "ls", "Liberia" : "lr", "Libya" : "ly", "Liechtenstein" : "lt", "Lithuania" : "lt", "Luxembourg" : "lu", "Madagascar" : "mg", "Malawi" : "mw", "Malaysia" : "my", "Maldives" : "mv", "Mali" : "ml", "Malta" : "mt", "Marshall Islands" : "mh", "Mauritania" : "mr", "Mauritius" : "mu", "Mexico" : "mx", "Micronesia" : "fm", "Monaco" : "mc", "Mongolia" : "mn", "Montenegro" : "me", "Morocco" : "ma", "Mozambique" : "mz", "Myanmar" : "mm", "Namibia" : "na", "Nauru" : "nr", "Nepal" : "np", "Netherlands" : "nl", "New Zealand" : "nz", "Nicaragua" : "ni", "Niger" : "ne", "Nigeria" : "ng", "North Macedonia" : "mk", "Norway" : "no", "Oman" : "om", "Pakistan" : "pk", "Palau" : "pk", "Panama" : "pa", "Papua New Guinea" : "pg", "Paraguay" : "py", "Peru" : "pe", "Philippines" : "ph", "Poland" : "pl", "Portugal" : "pt", "Qatar" : "qa", "Republic of Korea" : "kr", "Republic of Moldova" : "md", "Romania" : "ro", "Russia" : "ru", "Rwanda" : "rw", "Saint Kitts and Nevis" : "kn", "Saint Lucia" : "lc", "Saint Vincent and the Grenadines" : "vc", "Samoa" : "ws", "San Marino" : "sm", "Sao Tome and Principe" : "st", "Saudi Arabia" : "sa", "Senegal" : "sn", "Serbia" : "rs", "Seychelles" : "sc", "Sierra Leone" : "sl", "Singapore" : "sg", "Slovakia" : "sk", "Slovenia" : "si", "Solomon Islands" : "sb", "Somalia" : "so", "South Africa" : "za", "South Sudan" : "ss", "Spain" : "es", "Sri Lanka" : "lk", "Sudan" : "sd", "Suriname" : "sr", "Sweden" : "se", "Switzerland" : "ch", "Syrian Arab Republic" : "sy", "Tajikistan" : "tj", "Thailand" : "th", "Timor-Leste" : "tl", "Togo" : "tg", "Tonga" : "to", "Trinidad and Tobago" : "tt", "Tunisia" : "tn", "Turkiye" : "tr", "Turkmenistan" : "tm", "Tuvalu" : "tv", "Uganda" : "ug", "Ukraine" : "ua", "United Arab Emirates" : "ae", "United Kingdom" : "gb", "United Republic of Tanzania" : "tz", "United States of America" : "us", "Uruguay" : "uy", "Uzbekistan" : "uz", "Vanuatu" : "vu", "Venezuela" : "ve", "Vietnam" : "vn", "Yemen" : "ye", "Zambia" : "zm", "Zimbabwe" : "zw", "Holy See" : "va", "Palestine" : "ps"};
 
 const nonVotingBasicMembers = new Array("Holy See", "Palestine");
 
@@ -628,6 +628,7 @@ function parsePassedMotionJSON(details) {
     $("#modPlacementP").css("display", "none");
 
     $("#modDelegateIndexSpan").text("1");
+    $("#numberOfAddedCountriesSpan").text("0");
 
     if(details["timerType"] == "one") {
         document.getElementById("oneLargeTimerContainer").style.display = "block";
@@ -637,6 +638,8 @@ function parsePassedMotionJSON(details) {
         $("#yieldTimeButton").css("display", "none");
         $("#previousSpeakerButton").css("display", "none");
         $("#numberOfAddedCountriesLabel").css("display", "none");
+
+        $(".hiddenOnModStart").css("display", "none");
     } else if(details["timerType"] == "perDelegate") {
         document.getElementById("oneLargeTimerContainer").style.display = "block";
         largeTimerCurrentTime = details["delegateDuration"];
@@ -651,7 +654,8 @@ function parsePassedMotionJSON(details) {
 
         $("#yieldTimeButton").css("display", "inline");
         $("#previousSpeakerButton").css("display", "inline");
-        $("#numberOfAddedCountriesLabel").css("display", "block");
+
+        $(".hiddenOnModStart").css("display", "block");
 
         canSortChosenCountries = true;
     } else if(details["timerType"] == "none") {
@@ -741,7 +745,7 @@ function getPassedMotionElements() {
     return $("#actualPassedMotionCountryChooser").children().toArray();
 }
 
-function refreshDelegateListSearch(_e_ = null, delay = 0, getNodeFunction = getDelegatePresenseNodes, requiredClass = "delegatePresenseOuter", currentSearchVal = $("#delegateListSearch").val()) { // The second parameter is vestigial. The first can be ignored. I am good at coding.
+function refreshSearch(_e_ = null, delay = 0, getNodeFunction = getDelegatePresenseNodes, requiredClass = "delegatePresenseOuter", currentSearchVal = $("#delegateListSearch").val()) { // The second parameter is vestigial. The first can be ignored. I am good at coding.
     var t = currentSearchVal.toLowerCase();
     getNodeFunction().forEach((ee) => { // Variable naming is my passion
         let e = $(ee);
@@ -756,9 +760,9 @@ function refreshDelegateListSearch(_e_ = null, delay = 0, getNodeFunction = getD
     });
 }
 
-document.getElementById("delegateListSearch").oninput = refreshDelegateListSearch;
+document.getElementById("delegateListSearch").oninput = refreshSearch;
 document.getElementById("passedMotionListSearch").oninput = function() {
-    refreshDelegateListSearch(
+    refreshSearch(
         null,
         0,
         getPassedMotionElements,
@@ -783,7 +787,7 @@ document.onkeydown = function(event) {
 
     if(!isPopupShown) {
 
-        if(event.ctrlKey) {
+        if(event.ctrlKey && !isThereACurrentMotion) {
             if(event.key == "m") {
                 document.getElementById("newMod").click();
                 return false;
@@ -827,18 +831,17 @@ document.onkeydown = function(event) {
         if(event.key == "Enter") {
             if(document.activeElement == $("#passedMotionListSearch")[0]) {
                 var shownElement = undefined;
-                $("#actualPassedMotionCountryChooser").children("button").each(function(el) {
+                var numfound = 0;
+                $($("#actualPassedMotionCountryChooser").children("button").get().reverse()).each(function(el) {
                     if($(this).css("display") == "flex") {
-                        if(shownElement == undefined) {
-                            shownElement = $(this);
-                        } else {
-                            shownElement = null;
-                            return;
-                        }
+                        shownElement = $(this);
+                        numfound++;
                     }
                 });
                 
-                if(shownElement != undefined && shownElement != null) {
+                console.log(numfound);
+
+                if(shownElement != undefined && shownElement != null && numfound == 1) {
                     shownElement.click();
                     $("#clearPassedMotionSearch").click();
                 }
@@ -857,17 +860,14 @@ document.onkeydown = function(event) {
             if($("#editDelegateList").css("display") != "none") {
                 if(document.activeElement == $("#delegateListSearch")[0]) {
                     var shownElement = undefined;
+                    var numfound = 0;
                     getDelegatePresenseNodes().forEach(function(el) {
                         if($(el).css("display") != "none") {
-                            if(shownElement == undefined) {
-                                shownElement = $(el);
-                            } else {
-                                shownElement = null;
-                                return;
-                            }
+                            shownElement = $(el);
+                            numfound++;
                         }
                     });
-                    console.log(shownElement);
+                    console.log(numfound);
                     if(shownElement != undefined && shownElement != null) {
                         shownElement.children(".countryListInner").click();
                         $("#clearDelegateListSearch").click();
@@ -1128,6 +1128,8 @@ function refreshModCurrentCountryNumberBackground() {
         $("#chosenCountriesForTimer").sortable("destroy");
         canSortChosenCountries = false;
 
+        $(".hiddenOnModStart").css("display", "none");
+
         $("#actualPassedMotionCountryChooser > *").off("click");
         $("#passedMotionCountryChooser").animate({
             "width" : 0,
@@ -1142,7 +1144,7 @@ function refreshModCurrentCountryNumberBackground() {
             $("#passedMotionCountryChooser").css("margin-left", "");
             $("#passedMotionCountryChooser").css("padding-left", "");
             $("#passedMotionCountryChooser").css("padding-right", "");
-        })
+        });
     }
 }
 
@@ -1168,7 +1170,7 @@ function modCountryChooserClickEventFunctionResponder() {
     
     var toAdd = $(`<button class="outlineddiv marginizechildren countryListOne"></button>`).css("padding", "15px").css("width", "100%").on("click", function() {
         if(canSortChosenCountries) {
-            $("#modCaucusCountryChooser" + sanitizeForID($(this).children(".expandToFlexWidth").text())).css("display", "block").animate({
+            $("#modCaucusCountryChooser" + sanitizeForID($(this).children(".expandToFlexWidth").text())).css("display", "flex").animate({
                 "padding" : "15px",
                 "margin-bottom" : "10px"
             }, 150).attr("data-can-be-shown", true);
@@ -1190,8 +1192,8 @@ function modCountryChooserClickEventFunctionResponder() {
             largeTimerCurrentTime = largeTimerOriginalDuration;
             var i = 0;
             for(let child in $("#chosenCountriesForTimer").children().toArray()) {
-                var tt = $($("#chosenCountriesForTimer").children().toArray()[child]).children("p")[0].textContent; // Enough to make a grown man cry
-                if(tt == $(this).text()) {
+                var tt = $($("#chosenCountriesForTimer").find("p:not(.modIdP)").toArray()[child]).text(); // Enough to make a grown man cry (eh it was worse before)
+                if(tt == $(this).find(":not(.modIdP)").text()) {
                     perDelegateCurrentPosition = i;
                     break;
                 }
@@ -1202,13 +1204,14 @@ function modCountryChooserClickEventFunctionResponder() {
         }
     });
 
+    toAdd.append($("<p>").addClass("modIdP").text("Id here"));
+
     if(basicListOfCountries[this.textContent]) {
         toAdd.append(
             $("<img>").prop("src", `/flags/${basicListOfCountries[this.textContent]}.svg`).addClass("countryFlag")
         );
     }
 
-    toAdd.append($("<p>").addClass("modIdP").text("Id here"));
     toAdd.append($("<p>").text(this.textContent).addClass("expandToFlexWidth"));
     
     toAdd.appendTo($("#chosenCountriesForTimer"));
@@ -1479,7 +1482,7 @@ window.onload = function(_event) {
     
             hasMadeNewDelegate = true;
     
-            refreshDelegateListSearch();
+            refreshSearch();
         });
 
         $("#impromptuTimerStartStop").on("click", function(_e) {
@@ -1707,7 +1710,7 @@ window.onload = function(_event) {
             $("#editDelegateList").css("height", "60%");
             $("#delegateListSearch").focus();
             document.getElementById("delegateListSearch").value = "";
-            refreshDelegateListSearch();
+            refreshSearch();
             document.getElementById("quitPopup").style.display = "none";
         };
         
