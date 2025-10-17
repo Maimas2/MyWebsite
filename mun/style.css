@@ -615,7 +615,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 #backgroundLogoContainer {
     position: absolute;
     left: 10%;
-    top: calc(50vh - 40vw);
+    top: calc(50vh - 30vw);
     width: 80%;
     max-width: 80vw;
     z-index: -10;
@@ -743,6 +743,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     padding: 0;
     object-fit: cover;
     background-position: center center;
+    margin-left: 10px; /* Don't worry about it */
 }
 .countryFlag {
     width: 45px;
