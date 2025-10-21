@@ -202,7 +202,7 @@ input[type=number] {
 }
 #newmotionsinnerinner > * {
     display: inline;
-    min-width: calc(33% - 10px);
+    min-width: calc(30% - 10px);
     justify-content: start;
     margin-bottom: 5px;
     vertical-align: middle;

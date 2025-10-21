@@ -665,8 +665,7 @@ function parsePassedMotionJSON(details) {
     $("#passedMotionListSearch").val("");
 
     $("#chosenCountriesForTimer").sortable({
-        animation : 150,
-        change    : resendMirror
+        animation : 150
     });
 
     if(details["requiresDelegateList"]) {
@@ -734,6 +733,14 @@ function parsePassedMotionJSON(details) {
 }
 
 const introducePapersJSONConfig = {
+    "motionType":           "presentPapers",
+    //"fancyMotionTitle":     "Introduce Papers",
+    "requiresDelegateList":  false,
+    "timerType":            "none",
+    "motionTopic":          ""
+};
+
+const votingProcedureJSONConfig = {
     "motionType":           "presentPapers",
     //"fancyMotionTitle":     "Introduce Papers",
     "requiresDelegateList":  false,
@@ -1202,6 +1209,10 @@ function modCountryChooserClickEventFunctionResponder() {
             stopTimer();
             refreshTimer();
         }
+    }).on("onmousedown", function(_event, _ui) {
+        refreshModChosenCountriesIds();
+    }).on("onmouseup", function(_event, _ui) {
+        refreshModChosenCountriesIds();
     });
 
     toAdd.append($("<p>").addClass("modIdP").text("Id here"));
