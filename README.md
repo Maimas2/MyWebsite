@@ -1,4 +1,4 @@
-I messed up the github config and I could care less to fix it.
+I messed up the github config, and I plan to fix it at some point in the future.
 
 All of my original creations are licensed under the GNU General Public License v3, unless I say otherwise somewhere.
 
