@@ -7,3 +7,4 @@ writings writings
 usgovt usgovt
 stuff school
 mun-help mun-help
+chess chess
