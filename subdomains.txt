@@ -1,5 +1,4 @@
 mun mun
-scibowl scibowlonline
 sbest scibowltopics
 vote vote
 uscode uscodereader

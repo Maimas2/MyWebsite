@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 
 const app = express();
 const ews = require("express-ws")(app);
-const port = process.env.port || 3000;
+var port = 3010;
 
 var listOfSubdomainFiles = []
 
@@ -30,11 +30,12 @@ for(var i = 0; i < l.length; i++) {
         listOfSubdomainFiles.push(tf);
         tf.startUpFunction();
         var tapp = tf.app;
-        app.use(vhost(b.split(" ")[0] + ".localhost", tapp));
-        app.use(vhost(b.split(" ")[0] + ".alex-seltzer.com", tapp));
+	port += 1;
+        tapp.listen(port);
+	console.log(`${b} is listening on port ${port}`);
     } catch(e) {
         console.warn(`Could not find subdomain ${b.split(" ")[0]}, skipping...`);
-        //console.warn(e);
+        console.warn(e);
     }
 }
 
@@ -56,8 +57,8 @@ app.use(function(req, res, next) {
 });
 
 
-app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+app.listen(3000, () => {
+    console.log(`Listening on port 3000`);
 });
 
 function receivedKillSignal() {
