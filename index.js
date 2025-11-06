@@ -30,9 +30,9 @@ for(var i = 0; i < l.length; i++) {
         listOfSubdomainFiles.push(tf);
         tf.startUpFunction();
         var tapp = tf.app;
-	port += 1;
+        port += 1;
         tapp.listen(port);
-	console.log(`${b} is listening on port ${port}`);
+        console.log(`${b} is listening on port ${port}`);
     } catch(e) {
         console.warn(`Could not find subdomain ${b.split(" ")[0]}, skipping...`);
         console.warn(e);

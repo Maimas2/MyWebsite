@@ -1,5 +1,6 @@
 const express    = require('express');
 const bodyParser = require("body-parser");
+const fs         = require("fs");
 
 const app = express();
 
@@ -24,7 +25,11 @@ app.get("/ComputerModernSerif.ttf", (req, res) => {
     res.sendFile("./fonts/cmunrm.ttf", {root: __dirname});
 });
 
-app.use(express.static("static"));
+fs.readdirSync("writings/static").forEach((file) => {
+    app.get(`/static/${file}`, (req, res) => {
+        res.sendFile(`static/${file}`, {root: __dirname});
+    });
+});
 
 module.exports.app = app;
 
