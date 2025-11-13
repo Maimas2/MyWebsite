@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Color Chooser</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="icon" type="image/png" href="/favicon.png"/>
+        <script src="https://mun.alex-seltzer.com/lib/jquery.js"></script>
+        <script src="http://mun.localhost:3010/lib/jquery.js"></script>
+        <script src="iro.min.js"></script> 
+        <script src="/lib/Sortable.js"></script>
+        <script src="/lib/jquery-sortable.js"></script>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+        <div>
+            <h1 style="display: inline-block;margin-right: 30px;">Colors</h1>
+            <button onclick="createNew()">New Color</button>
+            <button id="hideP" onclick="$('#hideP, #previewColorContainer').css('display', 'none');$('#showP').css('display', '');">Hide Preview</button>
+            <button id="showP" onclick="$('#showP').css('display', 'none');$('#hideP, #previewColorContainer').css('display', '');" style="display:none;">Show Preview</button>
+            <p style="display: inline;margin-left: 20px;">Made with jQuery-sortable and iro.js under the MPLv2</p>
+        </div>
+        <div id="previewColorContainer">
+
+        </div>
+        <div id="colorContainerContainer">
+            
+        </div>
+    </body>
+    <script src="/vote.js"></script>
+</html>
