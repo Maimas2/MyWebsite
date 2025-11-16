@@ -2,6 +2,9 @@
 
 var idCount = 0;
 
+const cmykRegex = /cmyk\(\d{1,3}(\.\d)?\%, \d{1,3}(\.\d)?\%, \d{1,3}(\.\d)?\%, \d{1,3}(\.\d)?\%\)/;
+const rgbHexRegex = /^\#((\d|[a,f]){3})((\d|[a,f]){3})?$/;
+
 function rgbToCmyk(r, g, b) {
     let c = 1 - r;
     let m = 1 - g;
@@ -9,14 +12,18 @@ function rgbToCmyk(r, g, b) {
 
     let k = Math.min(c, m, y);
 
-    const len = 3;
+    c = (c - k) / (1 - k);
+    m = (m - k) / (1 - k);
+    y = (y - k) / (1 - k);
+
+    const len = 1;
 
     if(k == 1) return "0, 0, 0, 1"
 
-    else return `${c.toFixed(len)}, ${m.toFixed(len)}, ${y.toFixed(len)}, ${k.toFixed(len)}`;
+    else return `cmyk(${(c*100).toFixed(len)}%, ${(m*100).toFixed(len)}%, ${(y*100).toFixed(len)}%, ${(k*100).toFixed(len)}%)`;
 }
 
-function createNew() {
+function createNew(initialColor = "#f00") {
     let tidc = idCount;
 
     var toAppend = $("<div>").addClass(`colorContainer cc${idCount}`).attr("data-num", idCount);
@@ -30,12 +37,14 @@ function createNew() {
             $(`#controls${tidc}`).css("display", "none");
             $(this).attr("data-isshown", "false");
             $(this).parent().css("width", "75px");
-            $(this).parent().css("height", "100%");
+            $(this).parent().css("height", "650");
+            $(this).css("height", "650");
         } else {
             $(`#controls${tidc}`).css("display", "");
             $(this).attr("data-isshown", "true");
             $(this).parent().css("width", "");
             $(this).parent().css("height", "");
+            $(this).css("height", "");
         }
     }) );
 
@@ -58,41 +67,47 @@ function createNew() {
 
     let tdiv = $("<div>");
 
-    tdiv.append( $("<input>").prop("type", "text").addClass("nonPreview").prop("id", `rlabel${idCount}`).text("gh4i").on("change", function(_e) {
+    tdiv.append( $("<input>").prop("type", "text").addClass("rlabel").prop("id", `rlabel${idCount}`).text("gh4i").on("change", function(_e) {
         if(!isNaN($(this).val())) colorPicker.color.red = $(this).val();
         else $(this).val(colorPicker.color.red);
     }) );
-    tdiv.append( $("<input>").prop("type", "text").addClass("nonPreview").prop("id", `glabel${idCount}`).text("gh4i").on("change", function(_e) {
+    tdiv.append( $("<input>").prop("type", "text").addClass("glabel").prop("id", `glabel${idCount}`).text("gh4i").on("change", function(_e) {
         if(!isNaN($(this).val())) colorPicker.color.green = $(this).val();
         else $(this).val(colorPicker.color.green);
     }) );
-    tdiv.append( $("<input>").prop("type", "text").addClass("nonPreview").prop("id", `blabel${idCount}`).text("gh4i").on("change", function(_e) {
+    tdiv.append( $("<input>").prop("type", "text").addClass("blabel").prop("id", `blabel${idCount}`).text("gh4i").on("change", function(_e) {
         if(!isNaN($(this).val())) colorPicker.color.blue = $(this).val();
         else $(this).val(colorPicker.color.blue);
     }) );
 
     controls.append(tdiv);
     
-    controls.append( $("<p>").css("display", "inline").css("margin", "5px").prop("type", "text").addClass("nonPreview").prop("id", `cmyklabel${idCount}`).text("gh4i") );
+    controls.append( $("<p>").css("display", "inline").css("margin", "5px").prop("type", "text").addClass("nonPreview").prop("id", `cmyklabel${idCount}`).text("gh4i").addClass("cmyklabel") );
 
     controls.append($("<br>"));
 
     controls.append(
-        $("<button>").on("click", function() {
-            $(`.cc${$(this).parent().attr("data-num")}`).remove();
-            $(`.cbox${$(this).parent().attr("data-num")}`).remove()
+        $("<button>").addClass("removeButton").on("click", function() {
+            $(`.cc${$(this).parent().parent().attr("data-num")}`).remove();
+            $(`.cbox${$(this).parent().parent().attr("data-num")}`).remove();
         }).text("Remove").css("margin-bottom", "5px")
     );
 
 
     let colorPicker = new iro.ColorPicker(`#picker${idCount}`, {
-        color: "#f00",
+        color: initialColor,
         layoutDirection: "vertical",
         padding: 0,
         width: 300,
         layout: [
             {
                 component: iro.ui.Wheel
+            },
+            {
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: "value"
+                }
             },
             {
                 component: iro.ui.Slider,
@@ -135,5 +150,43 @@ $("#colorContainerContainer").sortable({
     handle: ".colorBox"
 });
 
-createNew();
-createNew();
+$("#copyRGB").on("click", function() {
+    var toReturn = "";
+    $(".cmyklabel").each(function(_e) {
+        if(toReturn != "") toReturn += " ";
+        let r = Number($(".rlabel").get(_e).value);
+        let g = Number($(".glabel").get(_e).value);
+        let b = Number($(".blabel").get(_e).value);
+        console.log(b<16)
+        toReturn += `#${(r < 16 ? "0" : "") + r.toString(16)}${(g < 16 ? "0" : "") + g.toString(16)}${(b < 16 ? "0" : "") + b.toString(16)}`;
+    });
+    if(confirm("Ok to copy the following string?\n" + toReturn)) navigator.clipboard.writeText(toReturn);
+});
+$("#copyCMYK").on("click", function() {
+    var toReturn = "";
+    $(".cmyklabel").each(function(_e) {
+        if(toReturn != "") toReturn += "\n";
+        toReturn += $(this).text();
+    });
+    if(confirm("Ok to copy the following string?\n" + toReturn)) navigator.clipboard.writeText(toReturn);
+});
+
+$("#importRGB").on("click", function() {
+    var raw = prompt("Enter your RGB values. Note that this will replace ALL colors currently configured.");
+    console.log(raw);
+    if(raw != null) {
+        var split = raw.split(" ");
+
+        $(".removeButton").click();
+
+        for(l in split) {
+            console.log(split[l])
+            if(rgbHexRegex.test(split[l])) {
+                createNew(split[l]);
+            }
+        }
+    }
+});
+
+createNew("#00f");
+createNew("#ff0");
