@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const useragent  = require('express-useragent');
 const ews        = require("express-ws")(app);
 const path       = require("path");
+const os         = require("os");
 
 var parentShutdownFunction;
 
@@ -180,6 +181,8 @@ app.post("/adminaccesspoint", jsonParse, (req, res) => {
     } else if(req.body.code == adminPasswords.shutDown) {
 		res.send("Shutting down");
         parentShutdownFunction();
+    } else if(req.body.code == adminPasswords.gitPull) {
+        os.system("git pull");
     } else {
         res.send("Invalid");
     }
