@@ -183,6 +183,7 @@ app.post("/adminaccesspoint", jsonParse, (req, res) => {
         parentShutdownFunction();
     } else if(req.body.code == adminPasswords.gitPull) {
         os.system("git pull");
+        res.send("Pulling / pulled.");
     } else {
         res.send("Invalid");
     }
