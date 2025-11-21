@@ -1351,7 +1351,7 @@ window.onload = function(_event) {
         }
     }
 
-    wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:3000/" : "wss://" + window.location.host + "/";
+    wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:3000/" : "wss://" + window.location.host + "/rss";
 
     $("#committeeName").val("");
     $("#committeeName").text("[No name]");
