@@ -287,7 +287,7 @@ app.post("/jccLogin", (req, res) => {
     });
 })
 
-app.ws('/', function(ws, req) {   
+app.ws('/rss', function(ws, req) {   
 
     ws.on("message", (message) => { // No error codes or any of that shit here, just discard invalid inputs
         //console.log(message);
