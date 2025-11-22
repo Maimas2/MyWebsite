@@ -210,6 +210,7 @@ app.post("/createJCC", jsonParse, (req, res) => {
         return;
     }
 
+    console.log(listOfJCCs[data.name]);
     if(listOfJCCs[data.name] != undefined) {
         
         res.status(400).send({
@@ -286,6 +287,10 @@ app.post("/jccLogin", (req, res) => {
         salt : listOfJCCs[data.name].salt
     });
 })
+
+app.get("/rss", (req, res) => {
+	res.send("No");
+});
 
 app.ws('/rss', function(ws, req) {   
 
