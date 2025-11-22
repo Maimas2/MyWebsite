@@ -210,7 +210,7 @@ app.post("/createJCC", jsonParse, (req, res) => {
         return;
     }
 
-    console.log(listOfJCCs[data.name]);
+    //console.log(listOfJCCs[data.name]);
     if(listOfJCCs[data.name] != undefined) {
         
         res.status(400).send({
@@ -418,8 +418,8 @@ module.exports.app = app;
 function sendWsHeartbeat() {
     Object.keys(listOfJCCs).forEach((jccKey) => {
         let jcc = listOfJCCs[jccKey];
-        console.log(jccKey);
-        console.log(jcc.bigScreenConnections);
+        //console.log(jccKey);
+        //console.log(jcc.bigScreenConnections);
         jcc.chatConnections.forEach(function(conn) {
             conn.send(JSON.stringify({type : "heartbeat"}));
         });
