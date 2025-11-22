@@ -1351,7 +1351,7 @@ window.onload = function(_event) {
         }
     }
 
-    wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:3000/" : "wss://" + window.location.host + "/rss";
+    wsUrl = window.location.toString().includes("localhost") ? "ws://localhost:3011/rss" : "wss://" + window.location.host + "/rss";
 
     $("#committeeName").val("");
     $("#committeeName").text("[No name]");
@@ -2072,9 +2072,9 @@ function setupJccData(data) {
         $("#jccInfo").css("display", "inline-block");
     });
     ws.addEventListener("message", function(m) {
-        console.log(m.data);
-        //createAlert("Message: " + JSON.parse(m.data).messageBody);
-        if(JSON.parse(m.data).type == "returnSalt" && JSON.parse(m.data).salt) {
+        if(JSON.parse(m.data).type == "heartbeat") {
+            ws.send(JSON.stringify({type : "heartbeat"}));
+        } else if(JSON.parse(m.data).type == "returnSalt" && JSON.parse(m.data).salt) {
             mySalt = JSON.parse(m.data).salt;
             resendMirror();
         } else if(JSON.parse(m.data).type == "requestMirrors") {
