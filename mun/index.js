@@ -415,6 +415,23 @@ app.post("/getsavedata", jsonParse, (req, res) => {
 
 module.exports.app = app;
 
+function sendWsHeartbeat() {
+    Object.keys(listOfJCCs).forEach((jccKey) => {
+        let jcc = listOfJCCs[jccKey];
+        console.log(jccKey);
+        console.log(jcc.bigScreenConnections);
+        jcc.chatConnections.forEach(function(conn) {
+            conn.send(JSON.stringify({type : "heartbeat"}));
+        });
+        jcc.bigScreenConnections.forEach(function(bs) {
+            bs.ws.send(JSON.stringify({type : "heartbeat"}));
+        });
+        jcc.mirrors.forEach(function(conn) {
+            conn.send(JSON.stringify({type : "heartbeat"}));
+        });
+    })
+}
+
 module.exports.startUpFunction = function() {
     if(fs.existsSync("./saves/mun_save_data.txt")) {
         var d = fs.readFileSync("./saves/mun_save_data.txt", "utf-8");
@@ -428,6 +445,8 @@ module.exports.startUpFunction = function() {
     } else {
         console.warn("Could not find MUN PW Log!!!");
     }
+
+    setInterval(sendWsHeartbeat, 5000);
 }
 
 module.exports.shutDownFunction = function() {
