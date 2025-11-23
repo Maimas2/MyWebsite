@@ -8,3 +8,4 @@ stuff school
 mun-help mun-help
 chess chess
 colors colors
+rssmaker rssmaker
