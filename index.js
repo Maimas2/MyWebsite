@@ -47,6 +47,10 @@ app.get("/", (req, res) => {
     res.sendFile("./index.html", {root: __dirname});
 });
 
+app.get("/feed.xml", (req, res) => {
+    res.sendFile("./feed.xml", {root: __dirname});
+});
+
 app.get("/lib/jquery.js", (req, res) => {
     res.type(".js");
     res.sendFile("./mun/lib/jquery-3.7.1.min.js", {root: __dirname});
