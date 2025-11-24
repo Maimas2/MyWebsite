@@ -41,7 +41,11 @@ for(var i = 0; i < l.length; i++) {
 
 app.get("/mun", (req, res) => {
     res.redirect("https://mun.alex-seltzer.com");
-})
+});
+
+app.get("/annoyinglist", (req, res) => {
+    res.send("This is an annoying message");
+});
 
 app.get("/", (req, res) => {
     res.sendFile("./index.html", {root: __dirname});
