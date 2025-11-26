@@ -253,6 +253,8 @@ function resortMotions() {
     resendMirror();
 }
 
+var currentMotionId = 0;
+
 function appendMotion(m) {
     if($("#firstMotionPrompt").length) $("#firstMotionPrompt").css("display", "none");
 
@@ -270,6 +272,7 @@ function appendMotion(m) {
 
     m.attr("id", "");
     m.attr("data-rngid", Math.floor(Math.random()*10000).toString()); // Random id to add to keep track of motions that otherwise are identical, esp. for saving/restoring state
+    m.attr("data-motionid", currentMotionId++);
 
     m.appendTo("#motiondisplays");
 
@@ -556,7 +559,7 @@ function constructJSON(parentEl) {
 
     if(ty == "mod") {
         building["motionType"] = "mod";
-        //building["fancyMotionTitle"] = "Moderated Caucus";
+        building["fancyMotionTitle"] = "Moderated Caucus";
 
         building["requiresDelegateList"] = true;
         building["timerType"] = "perDelegate";
@@ -569,7 +572,7 @@ function constructJSON(parentEl) {
         inputs[0]
     } else if(ty == "unmod") {
         building["motionType"] = "unmod";
-        //building["fancyMotionTitle"] = "Unmoderated Caucus";
+        building["fancyMotionTitle"] = "Unmoderated Caucus";
 
         building["requiresDelegateList"] = false;
         building["timerType"] = "one";
@@ -579,7 +582,7 @@ function constructJSON(parentEl) {
         building["duration"] = stringToDuration(inputs[1][propertyToGet]);
     } else if(ty == "speakersList") {
         building["motionType"] = "speakersList";
-        //building["fancyMotionTitle"] = "Speakers List";
+        building["fancyMotionTitle"] = "Speakers List";
 
         building["motionTopic"] = "";
 
@@ -591,7 +594,7 @@ function constructJSON(parentEl) {
         building["delegateDuration"] = stringToDuration(inputs[1][propertyToGet]);
     } else if(ty == "roundRobin") {
         building["motionType"] = "roundRobin";
-        //building["fancyMotionTitle"] = "Round Robin";
+        building["fancyMotionTitle"] = "Round Robin";
 
         building["requiresDelegateList"] = false;
         building["timerType"] = "perDelegate";
@@ -734,7 +737,7 @@ function parsePassedMotionJSON(details) {
 
 const introducePapersJSONConfig = {
     "motionType":           "presentPapers",
-    //"fancyMotionTitle":     "Introduce Papers",
+    "fancyMotionTitle":     "Introduce Papers",
     "requiresDelegateList":  false,
     "timerType":            "none",
     "motionTopic":          ""
@@ -742,7 +745,7 @@ const introducePapersJSONConfig = {
 
 const votingProcedureJSONConfig = {
     "motionType":           "presentPapers",
-    //"fancyMotionTitle":     "Introduce Papers",
+    "fancyMotionTitle":     "Voting Procedure",
     "requiresDelegateList":  false,
     "timerType":            "none",
     "motionTopic":          ""
@@ -1247,12 +1250,13 @@ function modCountryChooserClickEventFunctionResponder() {
 
 function motionTypeToImportance(el) {
     var n = el.getAttribute("data-motiontype");
-    if(n == "presentPapers") return 100;
-    if(n == "setAgenda")     return 70;
-    if(n == "speakersList")  return 50 + Number( el.getElementsByTagName("input")[0].value ) / 1000;
-    if(n == "unmod")         return 40 + stringToDuration( el.getElementsByTagName("input")[1].value ) / 1000;
-    if(n == "roundRobin")    return 20 + stringToDuration( el.getElementsByTagName("input")[1].value ) / 1000;
-    if(n == "mod")           return 0 + stringToDuration( el.getElementsByTagName("input")[1].value ) / 1000;
+    let ell = $(el);
+    if(n == "presentPapers") return 100 - Number( ell.attr("data-motionid") );
+    if(n == "setAgenda")     return 70 - Number( ell.attr("data-motionid") );
+    if(n == "speakersList")  return 50 + Number( el.getElementsByTagName("input")[0].value ) / 1000 - Number( ell.attr("data-motionid") );
+    if(n == "unmod")         return 40 + stringToDuration( el.getElementsByTagName("input")[1].value ) / 1000 - Number( ell.attr("data-motionid") );
+    if(n == "roundRobin")    return 20 + stringToDuration( el.getElementsByTagName("input")[1].value ) / 1000 - Number( ell.attr("data-motionid") );
+    if(n == "mod")           return 0 + stringToDuration( el.getElementsByTagName("input")[1].value ) / 1000 - Number( ell.attr("data-motionid") );
     return -100000; // :)
 }
 
@@ -1288,6 +1292,10 @@ window.onload = function(_event) {
 
     Object.keys(basicListOfCountries).forEach((el) => {
         dictOfBasicDelegates[el] = {canVote : !nonVotingBasicMembers.includes(el), isoCode : basicListOfCountries[el]}
+    });
+
+    $("#popupPage").children("div").each(function(_el) {
+        if($(this).attr("id") != "exitButtons" && $(this).attr("id") != "quickStartPopup") $(this).css("display", "none");
     });
 
     if(window.location.href.includes("mirror") || window.location.href.includes("clock")) { // Do mirror setup things
@@ -1994,6 +2002,7 @@ function setupMirroring(data) {
         }));
     });
     ws.addEventListener("message", function(m) {
+        //console.log(m.data);
         if(m.data == "Connected") {
             ws.send(JSON.stringify({
                 name       : jccData.name,
@@ -2003,6 +2012,8 @@ function setupMirroring(data) {
             console.log("Requesting mirrors...");
 
             $("#mirrorSecondStep").css("display", "block");
+        } else if(JSON.parse(m.data).type == "heartbeat") {
+            ws.send({type : "heartbeat"});
         } else if(!hasChoosenMirrorable) {
             var d = JSON.parse(m.data).state;
             if(!seenStates[d.mySalt]) {
@@ -2043,6 +2054,7 @@ function setupMirroring(data) {
             seenStates[d.mySalt] = d;
         } else {
             if(JSON.parse(m.data).state.mySalt == chosenMirrorableSalt) {
+                console.log(JSON.parse(m.data).state);
                 implementStateJSON(JSON.parse(m.data).state);
             }
         }

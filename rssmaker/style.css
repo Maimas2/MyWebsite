@@ -27,4 +27,5 @@ body > *, document > *:not(body) {
 a > img {
     display: inline-block;
     margin: 10px;
+    max-width: 90%;
 }
