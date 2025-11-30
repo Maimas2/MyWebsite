@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="https://mun.alex-seltzer.com/lib/jquery.js"></script>
+        <script src="http://mun.localhost:3010/lib/jquery.js"></script>
+    </head>
+    <body oncontextmenu="return false;">
+        <div id="allHolder">
+            <div id="upperHolder">
+                <input type="text" class="outlineddiv">
+                <input type="text" class="outlineddiv">
+            </div>
+            <div id="bottomHolder">
+                <div id="leftScore" class="scoreHolder">
+                    <p>0</p>
+                </div>
+                <div id="leftButtonsContainer" class="buttonHolderContainer">
+                    <div id="leftButtons" class="buttonHolder">
+                        <div id="tempDuplicate">
+                            <p>Q.1</p>
+                            <button data-points="-4" data-bg="#f99" class="scoreButton">-4</button>
+                            <button data-points="4" data-bg="#9f9" class="scoreButton">+4</button>
+                            <button data-points="10" data-bg="powderblue" class="scoreButton">+10</button>
+                            <p>0</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="rightButtonsContainer" class="buttonHolderContainer">
+                    <div id="rightButtons" class="buttonHolder">
+                        <div id="tempDuplicate">
+                            <p>Q.1</p>
+                            <button data-points="-4" data-bg="#f99" class="scoreButton">-4</button>
+                            <button data-points="4" data-bg="#9f9" class="scoreButton">+4</button>
+                            <button data-points="10" data-bg="powderblue" class="scoreButton">+10</button>
+                            <p>0</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="rightScore" class="scoreHolder">
+                    <p>0</p>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="/scibowl.js"></script>
+</html>
