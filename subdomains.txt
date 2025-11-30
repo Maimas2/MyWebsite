@@ -9,3 +9,4 @@ mun-help mun-help
 chess chess
 colors colors
 rssmaker rssmaker
+scibowl scibowl

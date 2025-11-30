@@ -1,0 +1,107 @@
+@font-face {
+    font-family: ComputerModern;
+    src: url(/ComputerModernSerif.ttf);
+}
+* {
+    font-family: ComputerModern;
+    text-align: center;
+    box-sizing: border-box;
+}
+html > * {
+    margin: auto;
+}
+.outlineddiv {
+    border-radius: 20px;
+    /*box-shadow: 2px 2px 7px #DDDDDD;**/
+    border: 1px #888888 solid;
+    background-color: white;
+    user-select: none;
+}
+button {
+    background-color: white;
+    border: 1px #888 solid;
+    border-radius: 10px;
+    transition: linear 0.15s;
+}
+button:hover:not(:disabled) {
+    border-radius: 3px;
+    background-color: #eee;
+}
+button:active:not(:disabled) {
+    background-color: #ccc;
+}
+button:disabled {
+    background-color: #aaa;
+    color: black;
+}
+#allHolder {
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    overflow: hidden;
+}
+#upperHolder {
+    display: flex;
+    width: 100%;
+}
+#upperHolder > input {
+    width: 100%;
+    margin: 15px;
+    padding: 3px;
+    margin-bottom: 0;
+    font-size: 24pt;
+}
+#bottomHolder {
+    display: flex;
+    height: 100%;
+}
+#bottomHolder > * {
+    height: 95%;
+    max-height: 95%;
+    border: 1px solid #888;
+    padding: 10px;
+    margin: 15px;
+    border-radius: 25px;
+    overflow-y: scroll;
+}
+.scoreHolder {
+    width: 20%;
+    font-size: 72pt;
+    align-items: center;
+    display: flex;
+}
+.scoreHolder > p {
+    width: 100%;
+    text-align: center;
+}
+.buttonHolderContainer {
+    width: 30%;
+}
+.buttonHolder {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+.buttonHolder > * {
+    display: flex;
+    width: 100%;
+    height: calc(100% / 26);
+    padding: 0;
+}
+.buttonHolder > * > * {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    padding: 3px;
+    flex-grow: 0;
+    margin: 0;
+    vertical-align: middle;
+    margin: auto;
+}
+.buttonHolder > * > p {
+    padding-top: 7px;
+}
