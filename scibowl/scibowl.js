@@ -22,10 +22,14 @@ $(".scoreButton").mousedown(function(e) {
             $(this).css("background-color", $(this).attr("data-bg"));
         }
     } else {
-        if($(this).prop("disabled")) {
-            $(this).prop("disabled", false);
+        if($(this).attr("data-disabled") == "true") {
+            $(this).attr("data-disabled", false);
+            $(this).css("background-color", "");
+            $(this).removeClass("hideHover");
         } else {
-            $(this).prop("disabled", true);
+            $(this).attr("data-disabled", true);
+            $(this).css("background-color", "#777");
+            $(this).addClass("hideHover");
         }
         e.preventDefault();
         return false;
@@ -34,9 +38,32 @@ $(".scoreButton").mousedown(function(e) {
 });
 
 $(document).ready(function() {
-    $(document).bind("contextmenu", function(e) {
-        return false;
-    });
+    $("#shareGame").on("click", function() {
+        
+        var d = {
+            name     : prompt("Name"),
+            password : prompt("Password")
+        };
+        if(d.name == null)
+        hidePopup();
+        $("#startJCC").css("display", "none");
+        $.ajax({
+            type    : "POST",
+            url     : "/createJCC",
+            contentType: 'application/json',
+            success : function(returned) {
+                console.log(returned);
+
+                setupJccData(returned);
+            },
+            error   : function(returned) {
+                console.error(JSON.parse(returned.responseText));
+                createAlert(JSON.parse(returned.responseText).message);
+                $("#startJCC").css("display", "inline-block");
+            },
+            data    : JSON.stringify(d)
+        });
+    })
 });
 
 
@@ -69,4 +96,15 @@ function updateScores() {
     }
     $($("#leftScore").children("p").get(0)).text(lscore);
     $($("#rightScore").children("p").get(0)).text(rscore);
+
+    if(lscore > rscore) {
+        $("#leftScore").css("background-color", "rgb(100, 255, 100)");
+    } else {
+        $("#leftScore").css("background-color", "");
+    }
+    if(lscore < rscore) {
+        $("#rightScore").css("background-color", "rgb(100, 255, 100)");
+    } else {
+        $("#rightScore").css("background-color", "");
+    }
 }
