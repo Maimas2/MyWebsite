@@ -1,5 +1,4 @@
 const express    = require("express");
-const vhost      = require("vhost");
 const fs         = require("fs");
 const bodyParser = require("body-parser");
 
@@ -23,7 +22,7 @@ var sdl = fs.readFileSync("./subdomains.txt", "utf8")
 var l = sdl.split("\n");
 
 for(var i = 0; i < l.length; i++) {
-    let b = l[i];
+    let b = l[i].split("#")[0].trim();
     if(b.trim() == "") continue;
     try {
         var tf = require(`./${b.split(" ")[1]}/index`);
@@ -63,7 +62,6 @@ app.get("/lib/jquery.js", (req, res) => {
 app.use(function(req, res, next) {
     res.send("404 couldn't find that page :(");
 });
-
 
 app.listen(3000, () => {
     console.log(`Listening on port 3000`);

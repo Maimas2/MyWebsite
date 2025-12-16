@@ -48,6 +48,7 @@ button:disabled {
 #upperHolder {
     display: flex;
     width: 100%;
+    height: 75px;
 }
 #upperHolder > *:not(button) {
     width: 100%;
@@ -56,7 +57,14 @@ button:disabled {
     margin: 15px;
     padding: 3px;
     margin-bottom: 0;
+}
+#upperHolder > *:not(button) {
     font-size: 24pt;
+}
+#upperHolder > button {
+    font-size: 16pt;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 #bottomHolder {
     display: flex;
@@ -64,7 +72,7 @@ button:disabled {
 }
 #bottomHolder > * {
     height: 95%;
-    max-height: 95%;
+    max-height: calc(100vh - 105px);
     border: 1px solid #888;
     padding: 10px;
     margin: 15px;
@@ -86,13 +94,11 @@ button:disabled {
 }
 .buttonHolder {
     width: 100%;
-    height: 100%;
     overflow-y: scroll;
 }
 .buttonHolder > * {
     display: flex;
     width: 100%;
-    height: calc(100% / 26);
     padding: 0;
 }
 .buttonHolder > * > * {
@@ -107,4 +113,38 @@ button:disabled {
 }
 .buttonHolder > * > p {
     padding-top: 7px;
+}
+#settingsPopup {
+    display: block;
+    position: absolute;
+    left: 15%;
+    top: 15%;
+    width: 70%;
+    height: 70%;
+    overflow-y: scroll;
+    zoom: 1.1;
+    padding: 15px;
+}
+#blackout {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #0007;
+}
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+    padding: 3px;
+    border-radius: 5px;
+}
+.addButton, .subtractButton {
+    width: 25px;
+}
+#hidden {
+    display: none !important;
 }
