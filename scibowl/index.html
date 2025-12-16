@@ -8,9 +8,26 @@
     </head>
     <body oncontextmenu="return false;">
         <div id="allHolder">
+            <div id="hidden">
+                <div id="tempDuplicate">
+                    <p>Q.1</p>
+                    <button data-pointid="0" data-bg="#f99" class="scoreButton penaltyButton">-4</button>
+                    <button data-pointid="1" data-bg="#9f9" class="scoreButton tossupButton">+4</button>
+                    <button data-pointid="2" data-bg="powderblue" class="scoreButton bonusButton">+10</button>
+                    <p>0</p>
+                </div>
+                <div id="tempDuplicateRight">
+                    <p>0</p>
+                    <button data-pointid="0" data-bg="#f99" class="scoreButton penaltyButton">-4</button>
+                    <button data-pointid="1" data-bg="#9f9" class="scoreButton tossupButton">+4</button>
+                    <button data-pointid="2" data-bg="powderblue" class="scoreButton bonusButton">+10</button>
+                    <p>Q.1</p>
+                </div>
+            </div>
             <div id="upperHolder">
                 <input type="text" class="outlineddiv">
                 <!-- <button id="shareGame" class="outlineddiv">Broadcast</button> -->
+                <button id="resetAll" class="outlineddiv">Reset</button>
                 <input type="text" class="outlineddiv">
             </div>
             <div id="bottomHolder">
@@ -19,30 +36,72 @@
                 </div>
                 <div id="leftButtonsContainer" class="buttonHolderContainer">
                     <div id="leftButtons" class="buttonHolder">
-                        <div id="tempDuplicate">
-                            <p>Q.1</p>
-                            <button data-points="-4" data-bg="#f99" class="scoreButton">-4</button>
-                            <button data-points="4" data-bg="#9f9" class="scoreButton">+4</button>
-                            <button data-points="10" data-bg="powderblue" class="scoreButton">+10</button>
-                            <p>0</p>
-                        </div>
                     </div>
                 </div>
                 <div id="rightButtonsContainer" class="buttonHolderContainer">
                     <div id="rightButtons" class="buttonHolder">
-                        <div id="tempDuplicate">
-                            <p>Q.1</p>
-                            <button data-points="-4" data-bg="#f99" class="scoreButton">-4</button>
-                            <button data-points="4" data-bg="#9f9" class="scoreButton">+4</button>
-                            <button data-points="10" data-bg="powderblue" class="scoreButton">+10</button>
-                            <p>0</p>
-                        </div>
+                        
                     </div>
                 </div>
                 <div id="rightScore" class="scoreHolder">
                     <p>0</p>
                 </div>
             </div>
+        </div>
+        <div id="blackout"></div>
+        <div id="settingsPopup" class="outlineddiv">
+            <h1>Science Bowl</h1>
+
+            <noscript><h2>This site required Javascript to function. Sorry.</h2></noscript>
+
+            <p style="margin: 0;">Presets:</p>
+            <button id="scibowlPreset">Science Bowl</button>
+            <button id="oceanbowlPreset">Ocean Bowl</button>
+
+            <br>
+            <br>
+
+            <p>Number of Questions (1 through 100)</p>
+
+            <button class="subtractButton">-</button>
+            <input type="number" min="1" max="100" class="outlineddiv", value="26" id="numquestions">
+            <button class="addButton">+</button>
+
+            <br>
+
+            <p>Penalty (-100 through 0)</p>
+
+            <button class="subtractButton">-</button>
+            <input type="number" min="-100" max="0" class="outlineddiv", value="-4" id="penaltyvalue">
+            <button class="addButton">+</button>
+
+            <br>
+
+            <p>Toss-up value (0 through 100)</p>
+
+            <button class="subtractButton">-</button>
+            <input type="number" min="0" max="100" class="outlineddiv", value="4" id="tossupvalue">
+            <button class="addButton">+</button>
+
+            <br>
+
+            <p>Bonus value (0 through 100)</p>
+
+            <button class="subtractButton">-</button>
+            <input type="number" min="0" max="100" class="outlineddiv", value="10" id="bonusvalue">
+            <button class="addButton">+</button>
+
+            <br>
+            <br>
+
+            <input type="checkbox" id="penaltySide" checked>
+            <label for="penaltySide">Penalties give to the opponents, instead of subtracting from the home team</label>
+
+            <br>
+            <br>
+            <br>
+
+            <button id="submit" onclick="setup()">Go</button>
         </div>
     </body>
     <script src="/scibowl.js"></script>
