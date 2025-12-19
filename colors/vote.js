@@ -3,7 +3,7 @@
 var idCount = 0;
 
 const cmykRegex = /cmyk\(\d{1,3}(\.\d)?\%, \d{1,3}(\.\d)?\%, \d{1,3}(\.\d)?\%, \d{1,3}(\.\d)?\%\)/;
-const rgbHexRegex = /^\#((\d|[a,f]){3})((\d|[a,f]){3})?$/;
+const rgbHexRegex = /^\#((\d|[a-f]){3})((\d|[a-f]){3})?$/;
 
 function rgbToCmyk(r, g, b) {
     let c = 1 - r;
