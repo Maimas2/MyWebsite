@@ -18,7 +18,7 @@ function rgbToCmyk(r, g, b) {
 
     const len = 1;
 
-    if(k == 1) return "0, 0, 0, 1"
+    if(k == 1) return "cmyk(0%, 0%, 0%, 100%)"
 
     else return `cmyk(${(c*100).toFixed(len)}%, ${(m*100).toFixed(len)}%, ${(y*100).toFixed(len)}%, ${(k*100).toFixed(len)}%)`;
 }
