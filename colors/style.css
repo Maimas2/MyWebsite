@@ -9,13 +9,21 @@
 html > * {
     margin: auto;
 }
-.outlineddiv, input {
+.outlineddiv, input, button {
     border-radius: 20px;
     /*box-shadow: 2px 2px 7px #DDDDDD;**/
     border: 1px #888888 solid;
     background-color: white;
     user-select: none;
     padding: 3px;
+}
+button {
+    border-radius: 7px;
+    transition: 150ms background-color, border-radius;
+}
+button:hover {
+    border-radius: 3px;
+    background-color: #ddd;
 }
 .colorContainer {
     display: inline-block;

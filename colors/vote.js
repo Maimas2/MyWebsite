@@ -2,7 +2,7 @@
 
 var idCount = 0;
 
-const cmykRegex = /cmyk\(\d{1,3}(\.\d)?\%, \d{1,3}(\.\d)?\%, \d{1,3}(\.\d)?\%, \d{1,3}(\.\d)?\%\)/;
+const cmykRegex = /cmyk\(\d{1,3}(\.\d)?\%, *\d{1,3}(\.\d)?\%, *\d{1,3}(\.\d)?\%, *\d{1,3}(\.\d)?\%\)/;
 const rgbHexRegex = /^\#((\d|[a-f]){3})((\d|[a-f]){3})?$/;
 
 function rgbToCmyk(r, g, b) {
@@ -21,6 +21,11 @@ function rgbToCmyk(r, g, b) {
     if(k == 1) return "0, 0, 0, 1"
 
     else return `cmyk(${(c*100).toFixed(len)}%, ${(m*100).toFixed(len)}%, ${(y*100).toFixed(len)}%, ${(k*100).toFixed(len)}%)`;
+}
+
+function cmykToRgb(c, m, y, k) {
+    let tArray = [Math.round(255*(1 - c)*(1 - k)), Math.round(255*(1 - m)*(1 - k)), Math.round(255*(1 - y)*(1 - k))];
+    return `#${(tArray[0] < 16 ? "0" : "") + tArray[0].toString(16)}${(tArray[1] < 16 ? "0" : "") + tArray[1].toString(16)}${(tArray[2] < 16 ? "0" : "") + tArray[2].toString(16)}`
 }
 
 function createNew(initialColor = "#f00") {
@@ -183,6 +188,29 @@ $("#importRGB").on("click", function() {
             console.log(split[l])
             if(rgbHexRegex.test(split[l])) {
                 createNew(split[l]);
+            }
+        }
+    }
+});
+
+$("#importCMYK").on("click", function() {
+    var raw = prompt("Enter your CMYK values. Note that this will replace ALL colors currently configured.");
+    console.log(raw);
+    if(raw != null) {
+        var split = raw.split(")");
+        console.log(split);
+
+        $(".removeButton").click();
+
+        for(l in split) {
+            if(cmykRegex.test(split[l] + ")")) {
+                var split2 = split[l].split(",");
+                let tArray = [];
+                split2.forEach((e) => {
+                    tArray.push(Number(e.replaceAll("cmyk(", "").replaceAll("%", "").trim())/100);
+                });
+                console.log(cmykToRgb(tArray[0], tArray[1], tArray[2], tArray[3]));
+                createNew(cmykToRgb(tArray[0], tArray[1], tArray[2], tArray[3]));
             }
         }
     }
