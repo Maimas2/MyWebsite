@@ -107,10 +107,15 @@ app.post("/appendtoannoyinglist", (req, res) => {
 app.get("/annoyme", (req, res) => {
     var u = useragentToString(req.useragent, req);
     if(blockedIps.includes(u)) {
-        res.sendFile("./annoyme-refusal.html", {root: __dirname});
+        //res.sendFile("./annoyme-refusal.html", {root: __dirname});
+        res.redirect("/annoyme-refusal");
     } else {
         res.sendFile("./annoyme.html", {root: __dirname});
     }
+});
+
+app.get("/annoyme-refusal", (req, res) => {
+    res.sendFile("./annoyme-refusal.html", {root: __dirname});
 });
 
 app.get("/", (req, res) => {
