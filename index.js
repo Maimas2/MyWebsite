@@ -70,7 +70,7 @@ var listsToSend = [];
 var blockedIps = [];
 
 function useragentToString(ua, req) { // Custom function to id a device based on certain immutable characteristics
-    return `${ua.os} ${ua.browser} ${ua.isMobile} ${ua} ${req.headers["x-forwarded-for"]}`
+    return `${ua.os} ${ua.browser} ${ua.isMobile} ${req.headers["x-forwarded-for"]}`
 }
 
 if(fs.existsSync("./saves/blocked_ips.txt")) {
