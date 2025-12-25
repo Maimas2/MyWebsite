@@ -163,7 +163,7 @@ $("#scibowlPreset").on("click", function() {
 
 
 $("#oceanbowlPreset").on("click", function() {
-    $("#numquestions").val(26);
+    $("#numquestions").val(20);
     $("#penaltyvalue").val(-4);
     $("#tossupvalue").val(4);
     $("#bonusvalue").val(6);
