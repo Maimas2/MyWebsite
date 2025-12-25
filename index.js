@@ -9,7 +9,7 @@ var port = 3010;
 var listOfSubdomainFiles = []
 
 var namesFile = require("./names");
-const { UserAgent } = require("express-useragent");
+var useragent = require("express-useragent");
 app.use(namesFile.app);
 
 var textParse = bodyParser.text();
@@ -17,6 +17,8 @@ app.use(textParse);
 
 var jsonParse = bodyParser.json();
 app.use(jsonParse);
+
+app.use(useragent.express());
 
 process.on("SIGTERM", receivedKillSignal);
 process.on("SIGINT",  receivedKillSignal);
@@ -67,6 +69,16 @@ var listsToSend = [];
 
 var blockedIps = [];
 
+function useragentToString(ua, req) { // Custom function to id a device based on certain immutable characteristics
+    return `${ua.os} ${ua.browser} ${ua.isMobile} ${ua} ${req.headers["x-forwarded-for"]}`
+}
+
+if(fs.existsSync("./saves/blocked_ips.txt")) {
+    var d = fs.readFileSync("./saves/blocked_ips.txt", "utf-8");
+
+    blockedIps = d.split("\n");
+}
+
 app.get("/annoyinglist", (req, res) => {
     if(req.url.includes(listpw) && req.url.includes("&all") && listpw != null) {
         res.send(`[${listsToSend.join(", ")}]`);
@@ -82,15 +94,23 @@ app.get("/annoyinglist", (req, res) => {
 });
 
 app.post("/appendtoannoyinglist", (req, res) => {
-    console.log(req.body.data);
-    listsToSend.unshift(req.body.data);
-    res.send("Appended.");
+    var u = useragentToString(req.useragent, req);
+    if(blockedIps.includes(u)) {
+        res.send("This device is blocked.");
+    } else {
+        listsToSend.unshift(req.body.data);
+        blockedIps.push(u);
+        res.send("Appended.");
+    }
 });
 
 app.get("/annoyme", (req, res) => {
-    console.log(req.headers);
-    console.log(req.headers["x-forwarded-for"]);
-    res.sendFile("./annoyme-refusal.html", {root: __dirname});
+    var u = useragentToString(req.useragent, req);
+    if(blockedIps.includes(u)) {
+        res.sendFile("./annoyme-refusal.html", {root: __dirname});
+    } else {
+        res.sendFile("./annoyme.html", {root: __dirname});
+    }
 });
 
 app.get("/", (req, res) => {
@@ -123,6 +143,11 @@ function receivedKillSignal() {
             f.shutDownFunction();
         }
     }
+
+    let d = blockedIps.join("\n");
+    fs.writeFileSync("./saves/blocked_ips.txt", d, "utf-8", (error) => {
+        if(error) console.log(error);
+    });
 
     process.exit(0);
 }
