@@ -9,6 +9,7 @@ var port = 3010;
 var listOfSubdomainFiles = []
 
 var namesFile = require("./names");
+const { UserAgent } = require("express-useragent");
 app.use(namesFile.app);
 
 var textParse = bodyParser.text();
@@ -64,6 +65,8 @@ app.get("/jquery.js", (req, res) => {
 
 var listsToSend = [];
 
+var blockedIps = [];
+
 app.get("/annoyinglist", (req, res) => {
     if(req.url.includes(listpw) && req.url.includes("&all") && listpw != null) {
         res.send(`[${listsToSend.join(", ")}]`);
@@ -85,7 +88,9 @@ app.post("/appendtoannoyinglist", (req, res) => {
 });
 
 app.get("/annoyme", (req, res) => {
-    res.sendFile("./annoyme.html", {root: __dirname});
+    console.log(req.headers);
+    console.log(req.headers["x-forwarded-for"]);
+    res.sendFile("./annoyme-refusal.html", {root: __dirname});
 });
 
 app.get("/", (req, res) => {
