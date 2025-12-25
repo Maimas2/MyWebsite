@@ -37,37 +37,10 @@
     <body>
         <h1>Annoy Me</h1>
         <p>Here, you may upload one (1) string up to five hundred and twelve (512) characters long to the server, which will be sent as a push notification directly to my mobile phone.</p>
-        <p><b>However,</b> once you send a string, your device is IP banned from sending any more.</p>
-        <p>Note that my server will save your IP address when sending a string, but it will not be connected to your message.</p>
+        <p><b>However,</b> once you send a string, your device is banned from sending any more.</p>
+        <p>Note that my server will save your user-agent when sending a string, but it will not be connected to the message that you send.</p>
         <br>
         <br>
-        <h2>Text to send</h2>
-        <input id="theText" type="text" maxlength="512">
-        <br>
-        <button id="sendIt">Send it</button>
+        <p><b>You have already sent me a string from this device.</b></p>
     </body>
-    <script>
-        $("#sendIt").on("click", function() {
-            var theText = $("#theText").val();
-            if(theText.length > 512) {
-                alert("String is too long.");
-                return;
-            }
-            var toSend = JSON.stringify({data: theText});
-            $.ajax({
-                type    : "POST",
-                url     : "/appendtoannoyinglist",
-                contentType: 'application/json',
-                success : function(returned) {
-                    alert(returned);
-                    window.location.reload();
-                },
-                error   : function(returned) {
-                    alert(returned);
-                    console.log(returned);
-                },
-                data    : toSend
-            });
-        });
-    </script>
 </html>
