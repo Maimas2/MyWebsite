@@ -14,6 +14,9 @@ app.use(namesFile.app);
 var textParse = bodyParser.text();
 app.use(textParse);
 
+var jsonParse = bodyParser.json();
+app.use(jsonParse);
+
 process.on("SIGTERM", receivedKillSignal);
 process.on("SIGINT",  receivedKillSignal);
 
@@ -38,12 +41,51 @@ for(var i = 0; i < l.length; i++) {
     }
 }
 
+var listpw = null;
+
+if(fs.existsSync("./listpw.txt")) {
+    var d = fs.readFileSync("./listpw.txt", "utf-8");
+    listpw = d.replaceAll("\n", "");
+} else {
+    console.warn("Could not find listpw.txt!!!");
+}
+
 app.get("/mun", (req, res) => {
     res.redirect("https://mun.alex-seltzer.com");
 });
 
+app.get("/cmu.ttf", (req, res) => {
+    res.sendFile("./mun/fonts/cmunrm.ttf", {root: __dirname})
+});
+
+app.get("/jquery.js", (req, res) => {
+    res.sendFile("./mun/lib/jquery-3.7.1.min.js", {root: __dirname});
+});
+
+var listsToSend = [];
+
 app.get("/annoyinglist", (req, res) => {
-    res.send("This is an annoying message");
+    if(req.url.includes(listpw) && req.url.includes("&all") && listpw != null) {
+        res.send(`[${listsToSend.join(", ")}]`);
+    } else if(req.url.includes(listpw) && listpw != null) {
+        if(listsToSend.length) {
+            res.send(listsToSend.pop());
+        } else {
+            res.send("");
+        }
+    } else {
+        res.send("Invalid identification")
+    }
+});
+
+app.post("/appendtoannoyinglist", (req, res) => {
+    console.log(req.body.data);
+    listsToSend.unshift(req.body.data);
+    res.send("Appended.");
+});
+
+app.get("/annoyme", (req, res) => {
+    res.sendFile("./annoyme.html", {root: __dirname});
 });
 
 app.get("/", (req, res) => {

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            @font-face {
+                font-family: cmu;
+                src: url(/cmu.ttf);
+            }
+            * {
+                font-family: cmu;
+            }
+            body {
+                background-color: powderblue;
+                text-align: center;
+            }
+            #theText {
+                width: min(500px, 90vw);
+                height: 200px;
+                text-align: center;
+                font-size: large;
+                border-radius: 20px;
+                border: black 1px solid;
+                background-color: #fff6;
+                margin: 5px;
+            }
+            button {
+                text-align: center;
+                font-size: large;
+                border-radius: 10px;
+                border: black 1px solid;
+                margin: 5px;
+                padding: 8px;
+            }
+        </style>
+        <script src="/jquery.js"></script>
+    </head>
+    <body>
+        <h1>Annoy Me</h1>
+        <p>Here, you may upload one (1) string up to five hundred and twelve (512) characters long to the server, which will be sent as a push notification directly to my mobile phone.</p>
+        <p><b>However,</b> once you send a string, your device is IP banned from sending any more.</p>
+        <p>Note that my server will save your IP address when sending a string, but it will not be connected to your message.</p>
+        <br>
+        <br>
+        <h2>Text to send</h2>
+        <input id="theText" type="text" maxlength="512">
+        <br>
+        <button id="sendIt">Send it</button>
+    </body>
+    <script>
+        $("#sendIt").on("click", function() {
+            var toSend = JSON.stringify({data: "%5yvbjrb"});
+            $.ajax({
+                type    : "POST",
+                url     : "/appendtoannoyinglist",
+                contentType: 'application/json',
+                success : function(returned) {
+                    alert(returned);
+                },
+                error   : function(returned) {
+                    alert(returned);
+                    console.log(returned);
+                },
+                data    : toSend
+            });
+        });
+    </script>
+</html>
