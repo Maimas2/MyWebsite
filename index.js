@@ -68,15 +68,22 @@ app.get("/jquery.js", (req, res) => {
 var listsToSend = [];
 
 var blockedIps = [];
+var messagesSent = []; // NOT kept in sync with the above array
 
 function useragentToString(ua, req) { // Custom function to id a device based on certain immutable characteristics
-    return `${ua.os} ${ua.browser} ${ua.isMobile} ${req.headers["x-forwarded-for"]}`
+    return `${ua.os} ${ua.browser} ${ua.isMobile ? "isMobile" : "isNotMobile"} ${req.headers["x-forwarded-for"]}`
 }
 
 if(fs.existsSync("./saves/blocked_ips.txt")) {
     var d = fs.readFileSync("./saves/blocked_ips.txt", "utf-8");
 
     blockedIps = d.split("\n");
+}
+
+if(fs.existsSync("./saves/messages_sent.txt")) {
+    var d = fs.readFileSync("./saves/messages_sent.txt", "utf-8");
+
+    messagesSent = d.split("\n");
 }
 
 app.get("/annoyinglist", (req, res) => {
@@ -93,13 +100,26 @@ app.get("/annoyinglist", (req, res) => {
     }
 });
 
+app.get("/messagessent", (req, res) => {
+    if(req.url.includes(listpw) && listpw != null) {
+        res.send(`[${messagesSent.join("\n")}]`);
+    } else {
+        res.send("Invalid identification");
+    }
+});
+
 app.post("/appendtoannoyinglist", (req, res) => {
     var u = useragentToString(req.useragent, req);
     if(blockedIps.includes(u)) {
         res.send("This device is blocked.");
     } else {
+        if(req.body.data.length > 512) {
+            res.send("Message too long.");
+            return;
+        }
         listsToSend.unshift(req.body.data);
         blockedIps.push(u);
+        messagesSent.push(req.body.data);
         res.send("Appended.");
     }
 });
@@ -151,6 +171,11 @@ function receivedKillSignal() {
 
     let d = blockedIps.join("\n");
     fs.writeFileSync("./saves/blocked_ips.txt", d, "utf-8", (error) => {
+        if(error) console.log(error);
+    });
+
+    let dd = messagesSent.join("\n");
+    fs.writeFileSync("./saves/messages_sent.txt", dd, "utf-8", (error) => {
         if(error) console.log(error);
     });
 
