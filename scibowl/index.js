@@ -52,6 +52,10 @@ app.get("/ComputerModernSerif.ttf", (req, res) => {
     res.sendFile("./fonts/cmunrm.ttf", {root: __dirname});
 });
 
+app.get("/favicon.png", (req, res) => {
+    res.sendFile("./favicon.png", {root: __dirname});
+});
+
 app.post("/createRoom", bodyParser, (req, res) => {
     if(typeof req.body == "undefined") {
         res.status(400).send({

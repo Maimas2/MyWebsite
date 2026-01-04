@@ -6,10 +6,13 @@
     font-family: ComputerModern;
     text-align: center;
     box-sizing: border-box;
-    transition: all 150ms;
+    transition: background-color 150ms;
 }
 html > * {
     margin: auto;
+}
+body {
+    background-color: color-mix(in srgb, white, powderblue);
 }
 .outlineddiv {
     border-radius: 20px;
@@ -24,7 +27,7 @@ button {
     border-radius: 10px;
     transition: linear 0.15s;
 }
-button:hover:not(.hideHover) {
+button:hover:not(.hideHover):not(:disabled) {
     border-radius: 3px;
     background-color: #eee;
 }
@@ -69,6 +72,8 @@ button:disabled {
 #bottomHolder {
     display: flex;
     height: 100%;
+    align-items: stretch;
+    flex-grow: 1;
 }
 #bottomHolder > * {
     height: 95%;
@@ -84,6 +89,7 @@ button:disabled {
     font-size: 72pt;
     align-items: center;
     display: flex;
+    background-color: white;
 }
 .scoreHolder > p {
     width: 100%;
@@ -91,10 +97,11 @@ button:disabled {
 }
 .buttonHolderContainer {
     width: 30%;
+    background-color: white;
 }
 .buttonHolder {
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: visible;
 }
 .buttonHolder > * {
     display: flex;
@@ -147,4 +154,31 @@ input[type="number"] {
 }
 #hidden {
     display: none !important;
+}
+.verticalDivider {
+    height: 1px !important;
+    background-color: #bbb;
+    width: 96%;
+    margin-left: 2%;
+}
+#horizontalDivider {
+    width: 2px !important;
+    background-color: #bbb;
+    margin-top: 10px;
+    
+    position: absolute;
+}
+.smallScore {
+    border-radius: 4px;
+    margin: 4px;
+}
+#buttonsContainer {
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    overflow-y: scroll;
+    flex-grow: 1;
+}
+p {
+    box-sizing: content-box;
 }
