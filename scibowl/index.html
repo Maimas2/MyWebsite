@@ -3,21 +3,22 @@
     <head>
         <title></title>
         <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="icon" href="/favicon.png">
         <script src="https://mun.alex-seltzer.com/lib/jquery.js"></script>
         <script src="http://mun.localhost:3010/lib/jquery.js"></script>
     </head>
     <body oncontextmenu="return false;">
         <div id="allHolder">
             <div id="hidden">
-                <div id="tempDuplicate">
+                <div id="tempDuplicate" class="rowHolder">
                     <p>Q.1</p>
                     <button data-pointid="0" data-bg="#f99" class="scoreButton penaltyButton">-4</button>
                     <button data-pointid="1" data-bg="#9f9" class="scoreButton tossupButton">+4</button>
                     <button data-pointid="2" data-bg="powderblue" class="scoreButton bonusButton">+10</button>
-                    <p>0</p>
+                    <p class="smallScore">0</p>
                 </div>
-                <div id="tempDuplicateRight">
-                    <p>0</p>
+                <div id="tempDuplicateRight" class="rowHolder">
+                    <p class="smallScore">0</p>
                     <button data-pointid="0" data-bg="#f99" class="scoreButton penaltyButton">-4</button>
                     <button data-pointid="1" data-bg="#9f9" class="scoreButton tossupButton">+4</button>
                     <button data-pointid="2" data-bg="powderblue" class="scoreButton bonusButton">+10</button>
@@ -34,11 +35,11 @@
                 <div id="leftScore" class="scoreHolder">
                     <p>0</p>
                 </div>
-                <div id="leftButtonsContainer" class="buttonHolderContainer">
+                <div id="buttonsContainer" class="buttonHolderContainer">
                     <div id="leftButtons" class="buttonHolder">
+
                     </div>
-                </div>
-                <div id="rightButtonsContainer" class="buttonHolderContainer">
+                    
                     <div id="rightButtons" class="buttonHolder">
                         
                     </div>

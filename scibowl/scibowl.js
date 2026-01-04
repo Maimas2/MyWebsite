@@ -2,7 +2,7 @@ var scores = [-4, 4, 10];
 var numQuestions = 26;
 var penaltiesGoToOpposite = true;
 
-$(document).ready(function() {
+$(document).ready(function() { // Soooon......
     $("#shareGame").on("click", function() {
         
         var d = {
@@ -37,8 +37,29 @@ function updateScores() {
     let tRightArray = $("#rightButtons").children().toArray();
     let lscore = 0;
     let rscore = 0;
-    for(let i = 0; i < numQuestions; i++) {
+
+    let latestClicked = 0;
+
+    for(let ii = 0; ii < numQuestions; ii++) {
+        let i = ii*2;
         $(tLeftArray[i]).children("button").each(function() {
+            if($(this).attr("data-clicked") == "true") {
+                latestClicked = ii;
+            }
+        });
+        $(tRightArray[i]).children("button").each(function() {
+            if($(this).attr("data-clicked") == "true") {
+                latestClicked = ii;
+            }
+        });
+    }
+
+    for(let ii = 0; ii < numQuestions; ii++) {
+        let i = ii*2;
+        let clickedArray = [];
+
+        $(tLeftArray[i]).children("button").each(function() {
+            clickedArray.push($(this).attr("data-clicked") == "true");
             if($(this).attr("data-clicked") == "true") {
                 if(scores[Number($(this).attr("data-pointid"))] > 0 || !$("#penaltySide").prop("checked")) {
                     lscore += scores[Number($(this).attr("data-pointid"))];
@@ -48,6 +69,7 @@ function updateScores() {
             }
         });
         $(tRightArray[i]).children("button").each(function() {
+            clickedArray.push($(this).attr("data-clicked") == "true");
             if($(this).attr("data-clicked") == "true") {
                 if(scores[Number($(this).attr("data-pointid"))] > 0 || !$("#penaltySide").prop("checked")) {
                     rscore += scores[Number($(this).attr("data-pointid"))];
@@ -56,8 +78,37 @@ function updateScores() {
                 }
             }
         });
+
+        $(tLeftArray[i]).children("button").each(function(i) {
+            if(i == 0) {
+                $(this).attr("disabled", clickedArray[1] || clickedArray[2]);
+            }
+            if(i == 1 || i == 2) {
+                $(this).attr("disabled", clickedArray[4] || clickedArray[5] || clickedArray[0]);
+            }
+        });
+        $(tRightArray[i]).children("button").each(function(i) {
+            if(i == 0) {
+                $(this).attr("disabled", clickedArray[4] || clickedArray[5]);
+            }
+            if(i == 1 || i == 2) {
+                $(this).attr("disabled", clickedArray[1] || clickedArray[2] || clickedArray[3]);
+            }
+        });
+
         $($(tLeftArray[i]).children("p").get(1)).text(lscore);
         $($(tRightArray[i]).children("p").get(0)).text(rscore);
+
+        if(lscore > rscore && ii <= latestClicked) {
+            $($(tLeftArray[i]).children("p").get(1)).css("background-color", "rgb(100, 255, 100)");
+        } else {
+            $($(tLeftArray[i]).children("p").get(1)).css("background-color", "");
+        }
+        if(lscore < rscore && ii <= latestClicked) {
+            $($(tRightArray[i]).children("p").get(0)).css("background-color", "rgb(100, 255, 100)");
+        } else {
+            $($(tRightArray[i]).children("p").get(0)).css("background-color", "");
+        }
     }
     $($("#leftScore").children("p").get(0)).text(lscore);
     $($("#rightScore").children("p").get(0)).text(rscore);
@@ -97,7 +148,10 @@ function setup() {
         tt.children("button")[1].textContent = "+" + scores[1];
         tt.children("button")[2].textContent = "+" + scores[2];
 
+        tt.css("border-right", "1px solid #aaa");
+
         $("#leftButtons").append(tt);
+        if(i != numQuestions-1) $("#leftButtons").append($("<div>").addClass("verticalDivider"));
     }
     for(let i = 0; i < numQuestions; i++) {
         let tt = tr.clone();
@@ -109,6 +163,7 @@ function setup() {
         tt.children("button")[2].textContent = "+" + scores[2];
 
         $("#rightButtons").append(tt);
+        if(i != numQuestions-1) $("#rightButtons").append($("<div>").addClass("verticalDivider"));
     }
 
     $(".scoreButton").mousedown(function(e) {
@@ -119,17 +174,27 @@ function setup() {
             } else {
                 $(this).attr("data-clicked", "true");
                 $(this).css("background-color", $(this).attr("data-bg"));
+                if($(this).attr("data-pointid") == 2) {
+                    if($(this).prev().attr("data-clicked") != "true") {
+                        let e = new MouseEvent("mousedown");
+                        $(this).prev().get(0).dispatchEvent(e);
+                    }
+                }
             }
         } else if(e.button == 2) {
+            $(this).attr("data-clicked", "false");
             if($(this).attr("data-disabled") == "true") {
                 $(this).attr("data-disabled", false);
+                $(this).attr("disabled", false);
                 $(this).css("background-color", "");
                 $(this).removeClass("hideHover");
             } else {
                 $(this).attr("data-disabled", true);
-                $(this).css("background-color", "#777");
+                $(this).attr("disabled", true);
+                $(this).css("background-color", "#aaa");
                 $(this).addClass("hideHover");
             }
+            updateScores();
             e.preventDefault();
             return false;
         }
