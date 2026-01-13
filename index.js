@@ -31,6 +31,10 @@ for(var i = 0; i < l.length; i++) {
     let b = l[i].split("#")[0].trim();
     if(b.trim() == "") continue;
     try {
+        if(process.argv.length > 2 && b.split(" ")[1] != process.argv[2]) {
+            port += 1;
+            continue;
+        }
         var tf = require(`./${b.split(" ")[1]}/index`);
         listOfSubdomainFiles.push(tf);
         tf.startUpFunction();
