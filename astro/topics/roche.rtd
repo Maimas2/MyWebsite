@@ -1,0 +1,14 @@
+PageType:Equation
+PageDisplayTitle:Roche Limit
+Categories:Gravity,SolarSystem,Planets
+MainEquation:d\approx 2.44\;R\;\sqrt[3]{\frac{\rho_M}{\rho_m}}
+
+The __b__Roche Limit__ gives the closest distance that a satellite can approach a large body before being torn apart by tidal forces. Note that the 2.44 is an approximation and the real number cannot be expressed algebraically.
+
+__h2__Variables__
+
+__list__
+\( d \): the closest distance that a satellite can approach (kilometers)__
+\( R \): the radius of the large body (kilometers)==footnote==This unit can be any unit of length, as long as it is the same as the unit for the final distance.==__
+\( \rho_M, \rho_m \): the densities of the larger and smaller bodies, respectively (\(\text{kg} / \text{m}^3\))
+__tsil__

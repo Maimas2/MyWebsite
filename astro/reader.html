@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="/jquery.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        <link rel="icon" type="image/png" href="/favicon.png">
+        <link rel="stylesheet" type="text/css" href="/reader.css">
+    </head>
+    <body>
+        <!-- I'm so good at coding -->
+        <p id="rawDataText" style="display: none !important;">
+            <!-- REPLACE ME SERVER -->
+        </p>
+        <div id="header">
+            <h3 id="parentLink"><a href="/topics/">Home</a></h3>
+            <div id="searchBar">
+                <input id="searchBarInput" type="text" maxlength="100">
+                <div id="results">
+                    <a id="result0" class="resultClass">
+                        <p id="resultTitle0"></p>
+                        <p id="resultEq0"></p>
+                    </a>
+                    <a id="result1" class="resultClass">
+                        <p id="resultTitle1"></p>
+                        <p id="resultEq1"></p>
+                    </a>
+                    <a id="result2" class="resultClass">
+                        <p id="resultTitle2"></p>
+                        <p id="resultEq2"></p>
+                    </a>
+                    <a id="result3" class="resultClass">
+                        <p id="resultTitle3"></p>
+                        <p id="resultEq3"></p>
+                    </a>
+                    <a id="result4" class="resultClass">
+                        <p id="resultTitle4"></p>
+                        <p id="resultEq4"></p>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="reading">
+            <!-- <h3 id="parentLink"><a href="/topics/">Home</a></h3> -->
+            <h1 id="pageTitleLabel"></h1>
+            <h2 id="bigEquation"></h2>
+            <a id="randomEquationLink">
+                <h2 id="randomEquationHeader"></h2>
+                <h2 id="randomEquation"></h2>
+            </a>
+            <p id="textcontain"></p>
+        </div>
+        <div id="prefabs" style="display: none !important;">
+            <a id="imagePrefab" class="floatRightImage" target="_blank">
+                <img>
+                <p></p> <!-- Image caption -->
+                <p style="font-size: 75%;"></p> <!-- Image license -->
+            </a>
+            <div id="collapsePrefab" class="outlineddiv" style="background-color: powderblue;padding:10px;">
+                <h3 style="display:inline;">▶</h3>
+                <div style="margin-top: 20px;"></div>
+            </div>
+        </div>
+        <div id="imageZoomInPopup" onclick="hideImageZoom()">
+            <div id="innerImageZoom" class="outlineddiv">
+                <h2 id="imageZoomCaption">Nuh uh</h2>
+                <img src="" id="imageZoomImage">
+                <p id="imageZoomLicense"></p>
+            </div>
+        </div>
+        <div id="loadingOverlay">
+            <div>
+                <h3>  Loading....</h3>
+                <img id="loadingSpinner" src="/images/loading.png">
+            </div>
+        </div>
+    </body>
+    <script src="/reader.js"></script>
+</html>

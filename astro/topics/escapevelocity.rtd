@@ -1,0 +1,14 @@
+PageType:Equation
+PageDisplayTitle:Escape Velocity
+Categories:Planet,Gravity
+MainEquation:v_e=\sqrt{\frac{2GM}{r}}
+
+The __b__escape velocity__ is the minimum speed required to completely escape a body's gravitational field.
+
+__h2__Variables__
+
+__list__
+\( v_e \): the minimum speed (meters / second)__
+\( G \): the ==link e==Gravitational Constant==https://en.wikipedia.org/wiki/Gravitational_constant==, which is \( 6.67 \times 10^{-11} \; \text{m}^3 \cdot \text{kg}^{-1} \cdot \text{s}^{-2} \)__
+\( M \): mass of the large body (kilograms)__
+\( r \): distance between the object and the center of the large body (meters)__tsil__

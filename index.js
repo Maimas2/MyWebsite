@@ -45,6 +45,7 @@ for(var i = 0; i < l.length; i++) {
     } catch(e) {
         console.warn(`Could not find subdomain ${b.split(" ")[0]}, skipping...`);
         console.warn(e);
+        port += 1;
     }
 }
 

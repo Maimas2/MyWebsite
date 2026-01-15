@@ -1,0 +1,16 @@
+PageType:Equation
+PageDisplayTitle:Gyroradius
+Categories:Particle,Electric,Magnetic
+MainEquation:r=\frac{mv}{qB}
+
+The __b__gyroradius__ is the radius of the helical or circular orbit of a charged particle in a uniform magnetic field (and no electric field), moving due to the __nlink__Lorentz Force Law__lorentzlaw__. The variables are all scalar.
+
+__h2__Variables__
+
+__list__
+\( r \): radius of the orbit (meters)__
+\( m \): the mass of the particle (Kilograms)__
+\( v \): the speed of the particle (meters / second)__
+\( q \): the charge of the particle (Coulombs)__
+\( B \): the strength of the surrounding magnetic field (Teslas)
+__tsil__
