@@ -1,0 +1,14 @@
+PageType:Equation
+PageDisplayTitle:Coriolis Force
+Categories:Planet,Ficticious
+MainEquation:\vec{F}=2\left(\vec{v}\times\vec{\omega}\right)
+
+The __b__Coriolis force__ is a ficticious force arising from the differences in frames of reference on a rotating body's surface and off of it. On Earth, it deflects objects to the right in the Northern Hemisphere, and to the left in the Southern Hemisphere. That is a cross product in the parentheses.
+
+__h2__Variables__
+
+__list__
+\( \vec{F} \): force of the Coriolis (Newtons)__
+\( \vec{v} \): the speed of the object (meters / second)__
+\( \vec{\omega} \): angular velocity of the large body. For Earth, this points up out of the North Pole (\(\text{rad}/\text{s}\))__
+tsil__

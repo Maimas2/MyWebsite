@@ -1,0 +1,16 @@
+PageType:Equation
+PageDisplayTitle:Equation of Hydrostatic Equilibrium
+Categories:Planet,Star
+MainEquation:\text{d}P=-\rho(r)\frac{GM}{r^2}\;\text{d}r
+
+The __b__Equation of Hydrostatic Equilibrium__ outlines the relationship between pressure on a block of matter in a large, spherically-symetric, and gravitationally-rounded object and the density of the matter around it. It can be relatively easily integrated to find the pressure at any point within the body.
+
+__h2__Variables__
+
+__list__
+\( P \): the pressure exerted on the block of matter (Pascals)__
+\( \rho(r) \): the density of the mass at a given distance from the center (\( \text{kg} / \text{m}^3 \))__
+\( G \): the ==link e==Gravitational Constant==https://en.wikipedia.org/wiki/Gravitational_constant==, which is \( 6.67 \times 10^{-11} \; \text{m}^3 \cdot \text{kg}^{-1} \cdot \text{s}^{-2} \)__
+\( M \): the masses of the body (kilograms)__
+\( r \): the distance from the center of the object (meters)
+__tsil__

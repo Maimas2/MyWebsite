@@ -12,3 +12,4 @@ rssmaker rssmaker
 scibowl scibowl
 500 500
 edu learning
+astro astro

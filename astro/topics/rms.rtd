@@ -1,0 +1,15 @@
+PageType:Equation
+PageDisplayTitle:Root Mean Square Speed
+Categories:Gas,Temperature
+MainEquation:v_{rms}=\sqrt{\frac{3kT}{m}}
+
+The __b__Root Mean Square Speed__ of a gas is one (of several) typical or expected speeds for any individual gas particle.
+
+__h2__Variables__
+
+__list__
+\( v_{rms} \): root mean square speed (meter per second)__
+\( k \): ==link e==Boltzmann's Constant==https://en.wikipedia.org/wiki/Boltzmann_constant==, which is \( 1.38 \times 10^{-23} \; \text{J} / \text{K} \)__
+\( T \): temperature of the gas (Kelvin)__
+\( m \): mass of an individual gas particle (kilograms)
+__tsil__

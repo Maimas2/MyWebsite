@@ -1,0 +1,16 @@
+PageType:Equation
+PageDisplayTitle:Equilibrium Planetary Temperature (aka. Subsolar Temperature)
+Categories:Planets,Temperature
+MainEquation:T_{ss}=T_\odot \cdot \sqrt[4]{1-A} \cdot \sqrt{\frac{R_\odot}{d}}
+
+The __b__Equlibrium Planetary Temperature__ is the predicted temperature of a planet at a given distance from its star with a given albedo. The term "Subsolar Temperature" generally refers to a the case of a blackbody, in which the albedo is zero.
+
+__h2__Variables__
+
+__list__
+\( T_{ss} \): equilibrium planetary temperature (Kelvin)__
+\( T_\odot \): surface temperature of the star (Kelvin)__
+\( A \): albedo of planet (dimensionless on interval \([0,1]\))__
+\( R_\odot \): radius of the star (kilometers)__
+\( d \): distance between star and planet (kilometers)
+__tsil__

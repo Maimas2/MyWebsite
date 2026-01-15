@@ -1,0 +1,15 @@
+PageType:Equation
+PageDisplayTitle:Newton's Law of Universal Gravitation
+Categories:Newton,Gravity,SolarSystem
+MainEquation:F=G\frac{m_1m_2}{r^2}
+
+__b__Newton's Law of Universal Gravitation__ describes the attractive force exerted by an object on another object, based on their masses and distance. The force exerted is proportional to each mass, and inversely proportional to the square of the distance.
+
+__h2__Variables__
+
+__list__
+\( F \): the force exerted (Newtons)__
+\( G \): the ==link e==Gravitational Constant==https://en.wikipedia.org/wiki/Gravitational_constant==, which is \( 6.67 \times 10^{-11} \; \text{m}^3 \cdot \text{kg}^{-1} \cdot \text{s}^{-2} \)__
+\( m_1, m_2 \): the masses of the two objects (kilograms)__
+\( r \): the distance between the two masses (meters)
+__tsil__

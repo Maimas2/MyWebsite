@@ -1,0 +1,17 @@
+PageType:Equation
+PageDisplayTitle:Kepler's Third Law of Planetary Motion
+Categories:Newton,Kepler,Gravity,SolarSystem
+MainEquation:P^2 = \frac{4\pi^2a^3}{GM}
+
+__b__Kepler's Third Law of Planetary Motion__ relates a satellite's orbit time to its distance. Many formulations of the Law only show proportionality, as in \(P^2 \propto a^3\); Newton derived the precise equation above.
+__newl__
+One can sometimes drastically simplify a problem by changing the units. For example, one may represent the orbital period in Earth years and the distance in Astronomical Units, because that configuration already yields a solution. The equation then becomes much more tractable: \(P^2 = a^3\).
+
+__h2__Variables__
+
+__list__
+\( P \): orbital period (seconds)__
+\( a \): average distance (seconds)__
+\( G \): the ==link e==Gravitational Constant==https://en.wikipedia.org/wiki/Gravitational_constant==, which is \( 6.67 \times 10^{-11} \; \text{m}^3 \cdot \text{kg}^{-1} \cdot \text{s}^{-2} \)__
+\( M \): the sum of masses of the two objects (kilograms)
+__tsil__
