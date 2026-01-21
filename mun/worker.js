@@ -11,7 +11,7 @@
 // - vHost       (backend)
 
 
-const basicListOfCountries = {"Afghanistan" : "af", "Albania" : "al", "Algeria" : "dz", "Andorra" : "ad", "Angola" : "ao", "Antigua and Barbuda" : "ag", "Argentina" : "ar", "Armenia" : "am", "Australia" : "au", "Austria" : "at", "Azerbaijan" : "az", "Bahamas" : "bs", "Bahrain" : "bh", "Bangladesh" : "bd", "Barbados" : "bb", "Belarus" : "by", "Belgium" : "be", "Belize" : "bz", "Benin" : "bj", "Bhutan" : "bt", "Bolivia" : "bo", "Bosnia and Herzegovina" : "ba", "Botswana" : "bw", "Brazil" : "br", "Brunei Darussalam" : "bn", "Bulgaria" : "bg", "Burkina Faso" : "bf", "Burundi" : "bi", "Cabo Verde" : "cv", "Cambodia" : "kh", "Cameroon" : "cm", "Canada" : "ca", "Central African Republic" : "cf", "Chad" : "td", "Chile" : "cl", "China" : "cn", "Colombia" : "co", "Comoros" : "km", "Congo" : "cg", "Costa Rica" : "cr", "Ivory Coast" : "ci", "Croatia" : "hr", "Cuba" : "cu", "Cyprus" : "cy", "Czechia" : "cz", "North Korea" : "kp", "Democratic Republic of the Congo" : "cd", "Denmark" : "dk", "Djibouti" : "dj", "Dominica" : "dm", "Dominican Republic" : "do", "Ecuador" : "ec", "Egypt" : "eg", "El Salvador" : "sv", "Equatorial Guinea" : "gq", "Eritrea" : 'er', "Estonia" : "ee", "Eswatini" : "sz", "Ethiopia" : "et", "Fiji" : "fj", "Finland" : "fi", "France" : "fr", "Gabon" : "ga", "Gambia" : "gm", "Georgia" : "ge", "Germany" : "de", "Ghana" : "gh", "Greece" : "gr", "Grenada" : "gd", "Guatemala" : "gt", "Guinea" : "gn", "Guinea-Bissau" : "gw", "Guyana" : "gy", "Haiti" : "ht", "Honduras" : "hn", "Hungary" : "hu", "Iceland" : "is", "India" : "in", "Indonesia" : "id", "Iran" : "ir", "Iraq" : "iq", "Ireland" : "ie", "Israel" : "il", "Italy" : "it", "Jamaica" : "jm", "Japan" : "jp", "Jordan" : "jo", "Kazakhstan" : "kz", "Kenya" : "ke", "Kiribati" : "ki", "Kuwait" : "kw", "Kyrgyzstan" : "kg", "Laos" : "la", "Latvia" : "lv", "Lebanon" : "lb", "Lesotho" : "ls", "Liberia" : "lr", "Libya" : "ly", "Liechtenstein" : "lt", "Lithuania" : "lt", "Luxembourg" : "lu", "Madagascar" : "mg", "Malawi" : "mw", "Malaysia" : "my", "Maldives" : "mv", "Mali" : "ml", "Malta" : "mt", "Marshall Islands" : "mh", "Mauritania" : "mr", "Mauritius" : "mu", "Mexico" : "mx", "Micronesia" : "fm", "Monaco" : "mc", "Mongolia" : "mn", "Montenegro" : "me", "Morocco" : "ma", "Mozambique" : "mz", "Myanmar" : "mm", "Namibia" : "na", "Nauru" : "nr", "Nepal" : "np", "Netherlands" : "nl", "New Zealand" : "nz", "Nicaragua" : "ni", "Niger" : "ne", "Nigeria" : "ng", "North Macedonia" : "mk", "Norway" : "no", "Oman" : "om", "Pakistan" : "pk", "Palau" : "pk", "Panama" : "pa", "Papua New Guinea" : "pg", "Paraguay" : "py", "Peru" : "pe", "Philippines" : "ph", "Poland" : "pl", "Portugal" : "pt", "Qatar" : "qa", "Republic of Korea" : "kr", "Republic of Moldova" : "md", "Romania" : "ro", "Russia" : "ru", "Rwanda" : "rw", "Saint Kitts and Nevis" : "kn", "Saint Lucia" : "lc", "Saint Vincent and the Grenadines" : "vc", "Samoa" : "ws", "San Marino" : "sm", "Sao Tome and Principe" : "st", "Saudi Arabia" : "sa", "Senegal" : "sn", "Serbia" : "rs", "Seychelles" : "sc", "Sierra Leone" : "sl", "Singapore" : "sg", "Slovakia" : "sk", "Slovenia" : "si", "Solomon Islands" : "sb", "Somalia" : "so", "South Africa" : "za", "South Sudan" : "ss", "Spain" : "es", "Sri Lanka" : "lk", "Sudan" : "sd", "Suriname" : "sr", "Sweden" : "se", "Switzerland" : "ch", "Syrian Arab Republic" : "sy", "Tajikistan" : "tj", "Thailand" : "th", "Timor-Leste" : "tl", "Togo" : "tg", "Tonga" : "to", "Trinidad and Tobago" : "tt", "Tunisia" : "tn", "Turkiye" : "tr", "Turkmenistan" : "tm", "Tuvalu" : "tv", "Uganda" : "ug", "Ukraine" : "ua", "United Arab Emirates" : "ae", "United Kingdom" : "gb", "United Republic of Tanzania" : "tz", "United States of America" : "us", "Uruguay" : "uy", "Uzbekistan" : "uz", "Vanuatu" : "vu", "Venezuela" : "ve", "Vietnam" : "vn", "Yemen" : "ye", "Zambia" : "zm", "Zimbabwe" : "zw", "Holy See" : "va", "Palestine" : "ps"};
+const basicListOfCountries = {"Afghanistan" : "af", "Albania" : "al", "Algeria" : "dz", "Andorra" : "ad", "Angola" : "ao", "Antigua and Barbuda" : "ag", "Argentina" : "ar", "Armenia" : "am", "Australia" : "au", "Austria" : "at", "Azerbaijan" : "az", "Bahamas" : "bs", "Bahrain" : "bh", "Bangladesh" : "bd", "Barbados" : "bb", "Belarus" : "by", "Belgium" : "be", "Belize" : "bz", "Benin" : "bj", "Bhutan" : "bt", "Bolivia" : "bo", "Bosnia and Herzegovina" : "ba", "Botswana" : "bw", "Brazil" : "br", "Brunei Darussalam" : "bn", "Bulgaria" : "bg", "Burkina Faso" : "bf", "Burundi" : "bi", "Cabo Verde" : "cv", "Cambodia" : "kh", "Cameroon" : "cm", "Canada" : "ca", "Central African Republic" : "cf", "Chad" : "td", "Chile" : "cl", "China" : "cn", "Colombia" : "co", "Comoros" : "km", "Congo" : "cg", "Costa Rica" : "cr", "Ivory Coast" : "ci", "Croatia" : "hr", "Cuba" : "cu", "Cyprus" : "cy", "Czechia" : "cz", "North Korea" : "kp", "Democratic Republic of the Congo" : "cd", "Denmark" : "dk", "Djibouti" : "dj", "Dominica" : "dm", "Dominican Republic" : "do", "Ecuador" : "ec", "Egypt" : "eg", "El Salvador" : "sv", "Equatorial Guinea" : "gq", "Eritrea" : 'er', "Estonia" : "ee", "Eswatini" : "sz", "Ethiopia" : "et", "Fiji" : "fj", "Finland" : "fi", "France" : "fr", "Gabon" : "ga", "Gambia" : "gm", "Georgia" : "ge", "Germany" : "de", "Ghana" : "gh", "Greece" : "gr", "Grenada" : "gd", "Guatemala" : "gt", "Guinea" : "gn", "Guinea-Bissau" : "gw", "Guyana" : "gy", "Haiti" : "ht", "Honduras" : "hn", "Hungary" : "hu", "Iceland" : "is", "India" : "in", "Indonesia" : "id", "Iran" : "ir", "Iraq" : "iq", "Ireland" : "ie", "Israel" : "il", "Italy" : "it", "Jamaica" : "jm", "Japan" : "jp", "Jordan" : "jo", "Kazakhstan" : "kz", "Kenya" : "ke", "Kiribati" : "ki", "Kuwait" : "kw", "Kyrgyzstan" : "kg", "Laos" : "la", "Latvia" : "lv", "Lebanon" : "lb", "Lesotho" : "ls", "Liberia" : "lr", "Libya" : "ly", "Liechtenstein" : "lt", "Lithuania" : "lt", "Luxembourg" : "lu", "Madagascar" : "mg", "Malawi" : "mw", "Malaysia" : "my", "Maldives" : "mv", "Mali" : "ml", "Malta" : "mt", "Marshall Islands" : "mh", "Mauritania" : "mr", "Mauritius" : "mu", "Mexico" : "mx", "Micronesia" : "fm", "Monaco" : "mc", "Mongolia" : "mn", "Montenegro" : "me", "Morocco" : "ma", "Mozambique" : "mz", "Myanmar" : "mm", "Namibia" : "na", "Nauru" : "nr", "Nepal" : "np", "Netherlands" : "nl", "New Zealand" : "nz", "Nicaragua" : "ni", "Niger" : "ne", "Nigeria" : "ng", "North Macedonia" : "mk", "Norway" : "no", "Oman" : "om", "Pakistan" : "pk", "Palau" : "pk", "Panama" : "pa", "Papua New Guinea" : "pg", "Paraguay" : "py", "Peru" : "pe", "Philippines" : "ph", "Poland" : "pl", "Portugal" : "pt", "Qatar" : "qa", "Republic of Korea" : "kr", "Republic of Moldova" : "md", "Romania" : "ro", "Russia" : "ru", "Rwanda" : "rw", "Saint Kitts and Nevis" : "kn", "Saint Lucia" : "lc", "Saint Vincent and the Grenadines" : "vc", "Samoa" : "ws", "San Marino" : "sm", "Sao Tome and Principe" : "st", "Saudi Arabia" : "sa", "Senegal" : "sn", "Serbia" : "rs", "Seychelles" : "sc", "Sierra Leone" : "sl", "Singapore" : "sg", "Slovakia" : "sk", "Slovenia" : "si", "Solomon Islands" : "sb", "Somalia" : "so", "South Africa" : "za", "South Sudan" : "ss", "Spain" : "es", "Sri Lanka" : "lk", "Sudan" : "sd", "Suriname" : "sr", "Sweden" : "se", "Switzerland" : "ch", "Syrian Arab Republic" : "sy", "Tajikistan" : "tj", "Thailand" : "th", "Timor-Leste" : "tl", "Togo" : "tg", "Tonga" : "to", "Trinidad and Tobago" : "tt", "Tunisia" : "tn", "Turkiye" : "tr", "Turkmenistan" : "tm", "Tuvalu" : "tv", "Uganda" : "ug", "Ukraine" : "ua", "United Arab Emirates" : "ae", "United Kingdom" : "gb", "United Republic of Tanzania" : "tz", "United States of America" : "us", "Uruguay" : "uy", "Uzbekistan" : "uz", "Vanuatu" : "vu", "Venezuela" : "ve", "Vietnam" : "vn", "Yemen" : "ye", "Zambia" : "zm", "Zimbabwe" : "zw", "Holy See" : "va", "Palestine" : "ps", "African Union" : "AfricanUnion", "European Union" : "EuropeonUnion"};
 
 const nonVotingBasicMembers = new Array("Holy See", "Palestine");
 
@@ -19,7 +19,7 @@ const GeneralAssemblyLoadString = '{"mySalt":"","committeeName":"[No name]","cus
 
 const SecurityCouncilLoadString = '{"mySalt":"","committeeName":"[No name]","customDelegates":[],"attendance":{"China":"Ab","France":"Ab","Russia":"Ab","United Kingdom":"Ab","United States of America":"Ab"},"proposedMotions":[],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}';
 
-const G20LoadString = '{"mySalt":"","committeeName":"[No name]","dictOfCustomDelegates":{"African Union":{"canVote":true},"Europeon Union":{"canVote":true}},"attendance":{"Argentina":"Ab","Australia":"Ab","Brazil":"Ab","Canada":"Ab","China":"Ab","France":"Ab","Germany":"Ab","India":"Ab","Indonesia":"Ab","Italy":"Ab","Japan":"Ab","Mexico":"Ab","Republic of Korea":"Ab","Russia":"Ab","Saudi Arabia":"Ab","South Africa":"Ab","Türkiye":"Ab","United Kingdom":"Ab","United States of America":"Ab","African Union":"Ab","Europeon Union":"Ab"},"proposedMotions":[],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}';
+const G20LoadString = '{"mySalt":"","committeeName":"[No name]","dictOfCustomDelegates":{"African Union":{"canVote":true},"European Union":{"canVote":true}},"attendance":{"Argentina":"Ab","Australia":"Ab","Brazil":"Ab","Canada":"Ab","China":"Ab","France":"Ab","Germany":"Ab","India":"Ab","Indonesia":"Ab","Italy":"Ab","Japan":"Ab","Mexico":"Ab","Republic of Korea":"Ab","Russia":"Ab","Saudi Arabia":"Ab","South Africa":"Ab","Türkiye":"Ab","United Kingdom":"Ab","United States of America":"Ab","African Union":"Ab","European Union":"Ab"},"proposedMotions":[],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}';
 
 const EuropeanUnionLoadString = '{"mySalt":"","committeeName":"[No name]","customDelegates":[],"attendance":{"Austria":"Ab","Belgium":"Ab","Bulgaria":"Ab","Croatia":"Ab","Cyprus":"Ab","Czechia":"Ab","Denmark":"Ab","Estonia":"Ab","Finland":"Ab","France":"Ab","Germany":"Ab","Greece":"Ab","Hungary":"Ab","Ireland":"Ab","Italy":"Ab","Latvia":"Ab","Lithuania":"Ab","Luxembourg":"Ab","Malta":"Ab","Netherlands":"Ab","Poland":"Ab","Portugal":"Ab","Romania":"Ab","Slovakia":"Ab","Slovenia":"Ab","Spain":"Ab","Sweden":"Ab"},"proposedMotions":[],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}';
 
@@ -32,6 +32,14 @@ var dictOfBasicDelegates = {
 var dictOfCustomDelegates = {
 
 };
+
+function isBasicMember(str) {
+    return String(basicListOfCountries[str]).length == 2;
+}
+
+function hasBasicFlag(str) {
+    return String(basicListOfCountries[str]).length > 0;
+}
 
 function dictOfDelegates() {
     let t = {};
@@ -211,13 +219,17 @@ function recalcDelegates() {
     }
 }
 
-function showPopup() {
+function showPopup(elToShow = "", displayAttr = "block") {
     if(!isPopupShown) {
         document.getElementById("popupPage").childNodes.forEach(function(element) {
             if(typeof element.style != "undefined") {
                 element.style.display = "none";
             }
         });
+
+        if(elToShow) {
+            $(elToShow).css("display", displayAttr);
+        }
 
         $("#popupPage").css("opacity", "0");
         $("#popupPage").css("display", "block");
@@ -320,11 +332,12 @@ function addAttendanceNodes() {
         if(!typeof v == "string") return;
         var cont = $("#attendanceButtonsPrefab").clone(true);
 
-        if(basicListOfCountries[v]) {
+        if(hasBasicFlag(v)) {
             cont.find("img").prop("src", `/flags/${basicListOfCountries[v]}.svg`);
             cont.find("img").css("display", "block");
         } else {
-            cont.find("img").css("display", "none");
+            cont.find("img").prop("src", `/favicon.png`);
+            cont.find("img").css("display", "block");
         }
 
         let tp = $("<p>").text(v).addClass("attendanceText");
@@ -386,7 +399,7 @@ function hidePopup(nextFunction = null) {
                 return
             }
             if(stringToDuration($("#newModPopupDelegateDuration").val()) <= 0) {
-                createAlert("Duration can't be zero");
+                createAlert("Delegate duration can't be zero");
                 return;
             }
             if(Math.floor( stringToDuration($("#newModPopupDuration").val()) / stringToDuration($("#newModPopupDelegateDuration").val()) ) > getListOfPresentCountries().length) {
@@ -426,8 +439,17 @@ function hidePopup(nextFunction = null) {
             }
             if(stringToDuration($("#roundRobinDelegateDuration").val()) <= 0)
             createAlert("Duration can't be zero");
-        } else if($("#attendanceList").css("style") != "none") {
+        } else if($("#attendanceList").css("display") != "none") {
             recalcDelegates();
+        } else if($("#customMotionPopup").css("display") != "none") {
+            if(isTimeInvalid($("#customMotionDuration").val())) {
+                createAlert("Invalid duration");
+                return;
+            }
+            if(stringToDuration($("#customMotionDuration").val()) <= 0) {
+                createAlert("Duration can't be zero");
+                return;
+            }
         }
 
         if(document.getElementById("editDelegateList").style.display != "none") {
@@ -472,6 +494,13 @@ function hidePopup(nextFunction = null) {
             var inputList = toAdd.find("input");
             inputList[0].value = $("#roundRobinTopic").val();
             inputList[1].value = $("#roundRobinDelegateDuration").val();
+
+            appendMotion(toAdd);
+        } else if($("#customMotionPopup").css("display") != "none") {
+            var toAdd = $("#customMotionPrefab").clone(true);
+            var inputList = toAdd.find("input");
+            inputList[0].value = $("#customMotionName").val();
+            inputList[1].value = $("#customMotionDuration").val();
 
             appendMotion(toAdd);
         }
@@ -555,7 +584,11 @@ function constructJSON(parentEl) {
     var propertyToGet = "value";
     if(isMirroring) propertyToGet = "textContent";
 
-    building["fancyMotionTitle"] = parentEl.getElementsByTagName("h1")[0].textContent;
+    if(parentEl.getElementsByTagName("h1").length) {
+        building["fancyMotionTitle"] = parentEl.getElementsByTagName("h1")[0].textContent;
+    } else if(parentEl.getElementsByTagName("input").length) { // Only used for custom motions
+        building["fancyMotionTitle"] = parentEl.getElementsByTagName("input")[0].value;
+    }
 
     if(ty == "mod") {
         building["motionType"] = "mod";
@@ -603,7 +636,19 @@ function constructJSON(parentEl) {
         building["duration"] = getListOfPresentCountries().length * stringToDuration(inputs[1][propertyToGet]);
         building["delegateDuration"] = stringToDuration(inputs[1][propertyToGet]);
         building["motionTopic"] = inputs[0][propertyToGet];
+    } else if(ty == "custom") {
+        var inputs = parentEl.getElementsByTagName(elementNameToGet);
+
+        building["motionType"] = "custom";
+        building["fancyMotionTitle"] = inputs[0].value;
+
+        building["requiresDelegateList"] = false;
+        building["timerType"] = "one";
+
+        building["motionTopic"] = "";
+        building["duration"] = stringToDuration(inputs[1][propertyToGet]);
     }
+
     return building;
 }
 
@@ -668,7 +713,22 @@ function parsePassedMotionJSON(details) {
     $("#passedMotionListSearch").val("");
 
     $("#chosenCountriesForTimer").sortable({
-        animation : 150
+        animation : 150,
+        onStart : function(evt) {
+            stopTimer();
+        },
+        onEnd : function(evt) {
+            refreshModChosenCountriesIds();
+            if(evt.oldIndex == perDelegateCurrentPosition) {
+                perDelegateCurrentPosition = evt.newIndex;
+            } else if(evt.oldIndex > perDelegateCurrentPosition && evt.newIndex <= perDelegateCurrentPosition) {
+                perDelegateCurrentPosition++;
+            } else if(evt.oldIndex < perDelegateCurrentPosition && evt.newIndex >= perDelegateCurrentPosition) {
+                perDelegateCurrentPosition--;
+            }
+            stopTimer();
+            //refreshModCurrentCountryNumberBackground();
+        }
     });
 
     if(details["requiresDelegateList"]) {
@@ -688,9 +748,13 @@ function parsePassedMotionJSON(details) {
             toAdd.attr("data-countrynum", i++);
             toAdd.attr("data-initialheight", toAdd.height());
 
-            if(basicListOfCountries[val]) {
+            if(hasBasicFlag(val)) {
                 toAdd.append(
                     $("<img>").prop("src", `/flags/${basicListOfCountries[val]}.svg`).addClass("countryFlag")
+                );
+            } else {
+                toAdd.append(
+                    $("<img>").prop("src", `/favicon.png`).addClass("countryFlag")
                 );
             }
 
@@ -797,7 +861,7 @@ document.onkeydown = function(event) {
 
     if(!isPopupShown) {
 
-        if(event.ctrlKey && currentMotion == null) {
+        if(event.ctrlKey && currentMotion == null && document.activeElement.nodeName != "INPUT") {
             if(event.key == "m") {
                 document.getElementById("newMod").click();
                 return false;
@@ -855,13 +919,10 @@ document.onkeydown = function(event) {
                     shownElement.click();
                     $("#clearPassedMotionSearch").click();
                 }
+            } else if(document.activeElement == $("#oneLargeTimer")[0]) {
+                $("#oneLargeTimer").blur();
             }
         }
-
-        // if(event.key == "c" && event.ctrlKey) {
-        //     $("body").css("background-image", "url(https://mun.alex-seltzer.com/me.png)");
-        //     return false;
-        // }
 
         if(event.key == "Escape") $("#alertContainer").css("display", "none");
 
@@ -869,19 +930,17 @@ document.onkeydown = function(event) {
         if(event.key == "Enter") {
             if($("#editDelegateList").css("display") != "none") {
                 if(document.activeElement == $("#delegateListSearch")[0]) {
-                    var shownElement = undefined;
-                    var numfound = 0;
-                    getDelegatePresenseNodes().forEach(function(el) {
+                    getDelegatePresenseNodes().some(function(el) {
                         if($(el).css("display") != "none") {
-                            shownElement = $(el);
-                            numfound++;
+                            $(el).children(".countryListInner").click();
+                            $("#clearDelegateListSearch").click();
+                            return true;
                         }
+                        return false;
                     });
-                    console.log(numfound);
-                    if(shownElement != undefined && shownElement != null) {
-                        shownElement.children(".countryListInner").click();
-                        $("#clearDelegateListSearch").click();
-                    }
+                } else if(document.activeElement == $("#newDelegateInput")[0]) {
+                    $("#newDelegateSubmit").click();
+                    $("#newDelegateInput").focus();
                 }
             } else if($("#impromptuTimer").css("display") == "none" && $("#quickStartPopup").css("display") == "none") {
                 $("#exitPopup").click();
@@ -1008,10 +1067,12 @@ function refreshTimer(e=true) {
             resendMirror();
         }
     }
-    document.getElementById("oneLargeTimer").textContent = timeToString(largeTimerCurrentTime);
 
-    $("#chosenCountriesForTimer").children().css("background-color", "");
-    if(!canSortChosenCountries) $($("#chosenCountriesForTimer").children()[perDelegateCurrentPosition]).css("background-color", "powderblue");
+    if(document.activeElement != $("#oneLargeTimer")[0]) $("#oneLargeTimer").val(timeToString(largeTimerCurrentTime));
+
+    //$("#chosenCountriesForTimer").children().css("background-color", "");
+    //if(!canSortChosenCountries) 
+    //$($("#chosenCountriesForTimer").children()[perDelegateCurrentPosition]).css("background-color", "powderblue");
 
     $("#modDelegateIndexSpan").text(perDelegateCurrentPosition+1);
 }
@@ -1021,7 +1082,9 @@ function endCurrentMotion() {
 
     $("#rightbottomarea").animate({
         opacity: 0
-    }, 150, function(_e) {
+    }, 150);
+
+    setTimeout(function(_e) {
         $("#rightbottomarea").css("display", "none");
         $("#rightbottomarea").css("opacity", "1");
 
@@ -1032,7 +1095,7 @@ function endCurrentMotion() {
         }, 150, function(_e) {
             resendMirror();
         });
-    });
+    }, 250);
 
     $("#exitCurrentMotion").css("display", "none");
     $("#newmotions").css("display", "block");
@@ -1054,40 +1117,47 @@ function createDelegatePresenseNode(name, clicked=false) {
     cb.attr("data-isclicked", "false");
     cb.addClass("countryListInner");
 
-    if(basicListOfCountries[name]) {
+    if(hasBasicFlag(name)) {
         cb.append(
             $("<img>").prop("src", `/flags/${basicListOfCountries[name]}.svg`).addClass("countryFlag")
         );
+    } else {
+        cb.append(
+            $("<img>").prop("src", `/favicon.png`).addClass("countryFlag")
+        );
     }
 
-    var tp = $("<p>").css("display", "table-cell").text(  name  ).css("vertical-align", "middle").css("line-height", "45px");
+    var tp = $("<p>").css("display", "table-cell").text(  name  ).css("vertical-align", "middle").css("line-height", "45px").width("100%").addClass("presenseP");
     tp.append($("<i>").text(" (non-voting)").css("display", dictOfDelegates()[name].canVote ? "none" : "inline"));
     cb.append(tp);
 
     cb.css("margin", "0");
     cb.on("click", changeClickedEventResponder);
 
-    if(!basicListOfCountries[name]) {
-        cb.append( $("<button>").text("Voting").css("display", "inline").on("click", function(_e) { // Holy spaghetti
+    //if(!basicListOfCountries[name]) {
+    if(true) {
+        cb.append( $("<button>").text("Voting").css("display", "inline").addClass("presenceButton").on("click", function(_e) { // Holy spaghetti
             _e.stopPropagation();
             if($(this).text() == "Voting") {
                 $(this).text("Non-Voting");
                 $(this).parent().find("i").css("display", "inline");
                 
-                dictOfCustomDelegates[$(this).parent().clone().find("i").remove().end().find("p").text()].canVote = false;
+                if(isBasicMember(name)) {
+                    dictOfBasicDelegates[$(this).parent().clone().find("i").remove().end().find("p").text()].canVote = false;
+                } else {
+                    dictOfCustomDelegates[$(this).parent().clone().find("i").remove().end().find("p").text()].canVote = false;
+                }
             } else if($(this).text() == "Non-Voting") {
                 $(this).text("Voting");
                 $(this).parent().find("i").css("display", "none");
 
-                dictOfCustomDelegates[$(this).parent().clone().find("i").remove().end().find("p").text()].canVote = true;
+                if(isBasicMember(name)) {
+                    dictOfBasicDelegates[$(this).parent().clone().find("i").remove().end().find("p").text()].canVote = true;
+                } else {
+                    dictOfCustomDelegates[$(this).parent().clone().find("i").remove().end().find("p").text()].canVote = true;
+                }
             }
         }) );
-    }
-
-    if(basicListOfCountries[name]) {
-        cb.append( // Spacer and centerer div
-            $("<div>").css("width", "45px")
-        );
     }
 
     outer.append(cb);
@@ -1101,7 +1171,7 @@ function createDelegatePresenseNode(name, clicked=false) {
     return outer;
 }
 
-function setCurrentCountryList(newList) {
+function setCurrentCountryList(newList, isFirstTime = false) {
     getDelegatePresenseNodes().forEach((el) => {
         $(el).remove();
     });
@@ -1113,10 +1183,10 @@ function setCurrentCountryList(newList) {
     getListOfCountries().forEach(function(v) {
         var tempNode = createDelegatePresenseNode(v, newList.includes(v));
 
-        if(basicListOfCountries[v]) {
+        if(isBasicMember(v)) {
             $("#normalDelegateList").append(tempNode);
         } else {
-            $("#customDelegateList").append(tempNode);
+            if(!isFirstTime) $("#customDelegateList").append(tempNode);
         }
     });
 }
@@ -1135,33 +1205,33 @@ function refreshModCurrentCountryNumberBackground() {
         $("#chosenCountriesForTimer").children().css("background-color", "");
         $($("#chosenCountriesForTimer").children()[perDelegateCurrentPosition]).css("background-color", "powderblue");
 
-        $("#chosenCountriesForTimer").sortable("destroy");
-        canSortChosenCountries = false;
+        //$("#chosenCountriesForTimer").sortable("destroy");
+        //canSortChosenCountries = false;
 
-        $(".hiddenOnModStart").css("display", "none");
+        //$(".hiddenOnModStart").css("display", "none");
 
-        $("#actualPassedMotionCountryChooser > *").off("click");
-        $("#passedMotionCountryChooser").animate({
-            "width" : 0,
-            "margin-right" : 0,
-            "margin-left" : 0,
-            "padding-right" : 0,
-            "padding-left" : 0,
-        }, 150, () => {
-            $("#passedMotionCountryChooser").css("display", "none");
-            $("#passedMotionCountryChooser").css("width", "");
-            $("#passedMotionCountryChooser").css("margin-right", "");
-            $("#passedMotionCountryChooser").css("margin-left", "");
-            $("#passedMotionCountryChooser").css("padding-left", "");
-            $("#passedMotionCountryChooser").css("padding-right", "");
-        });
+        // $("#actualPassedMotionCountryChooser > *").off("click");
+        // $("#passedMotionCountryChooser").animate({
+        //     "width" : 0,
+        //     "margin-right" : 0,
+        //     "margin-left" : 0,
+        //     "padding-right" : 0,
+        //     "padding-left" : 0,
+        // }, 150, () => {
+        //     $("#passedMotionCountryChooser").css("display", "none");
+        //     $("#passedMotionCountryChooser").css("width", "");
+        //     $("#passedMotionCountryChooser").css("margin-right", "");
+        //     $("#passedMotionCountryChooser").css("margin-left", "");
+        //     $("#passedMotionCountryChooser").css("padding-left", "");
+        //     $("#passedMotionCountryChooser").css("padding-right", "");
+        // });
     }
 }
 
 function refreshModChosenCountriesIds() {
     var index = 0;
     $("#chosenCountriesForTimer").children().each(function(_el) {
-        $(this).children(".modIdP").text(++index);
+        $(this).children("p.modIdP").text(++index);
     });
 }
 
@@ -1179,7 +1249,7 @@ function modCountryChooserClickEventFunctionResponder() {
     }
     
     var toAdd = $(`<button class="outlineddiv marginizechildren countryListOne"></button>`).css("padding", "15px").css("width", "100%").on("click", function() {
-        if(canSortChosenCountries) {
+        if(canSortChosenCountries && false) {
             $("#modCaucusCountryChooser" + sanitizeForID($(this).children(".expandToFlexWidth").text())).css("display", "flex").animate({
                 "padding" : "15px",
                 "margin-bottom" : "10px"
@@ -1201,9 +1271,11 @@ function modCountryChooserClickEventFunctionResponder() {
         } else {
             largeTimerCurrentTime = largeTimerOriginalDuration;
             var i = 0;
+
             for(let child in $("#chosenCountriesForTimer").children().toArray()) {
-                var tt = $($("#chosenCountriesForTimer").find("p:not(.modIdP)").toArray()[child]).text(); // Enough to make a grown man cry (eh it was worse before)
-                if(tt == $(this).find(":not(.modIdP)").text()) {
+                var tt = $($("#chosenCountriesForTimer").find("p:not(.modIdP):not(button)").toArray()[child]).text(); // Enough to make a grown man cry (eh it was worse before)
+                
+                if(tt == $(this).find(":not(.modIdP):not(button)").text()) {
                     perDelegateCurrentPosition = i;
                     break;
                 }
@@ -1211,22 +1283,60 @@ function modCountryChooserClickEventFunctionResponder() {
             }
             stopTimer();
             refreshTimer();
+            refreshModCurrentCountryNumberBackground();
         }
-    }).on("onmousedown", function(_event, _ui) {
-        refreshModChosenCountriesIds();
-    }).on("onmouseup", function(_event, _ui) {
-        refreshModChosenCountriesIds();
     });
 
     toAdd.append($("<p>").addClass("modIdP").text("Id here"));
 
-    if(basicListOfCountries[this.textContent]) {
+    if(hasBasicFlag(this.textContent)) {
         toAdd.append(
             $("<img>").prop("src", `/flags/${basicListOfCountries[this.textContent]}.svg`).addClass("countryFlag")
+        );
+    } else {
+        toAdd.append(
+            $("<img>").prop("src", `/favicon.png`).addClass("countryFlag")
         );
     }
 
     toAdd.append($("<p>").text(this.textContent).addClass("expandToFlexWidth"));
+    
+    toAdd.append($("<button>").text("X").addClass("modIdButton").on("click", function(_e) {
+        $("#modCaucusCountryChooser" + sanitizeForID($(this).parent().children(".expandToFlexWidth").text())).css("display", "flex").animate({
+            "padding" : "15px",
+            "margin-bottom" : "10px"
+        }, 150).attr("data-can-be-shown", true);
+
+        $(this).parent().off("click");
+        $(this).off("click");
+
+        $(this).parent().animate({
+            "height" : 0,
+            "padding-top" : 0,
+            "padding-bottom" : 0
+        }, 150, () => {
+            $(this).parent().remove();
+            refreshModChosenCountriesIds();
+            refreshModCurrentCountryNumberBackground();
+        });
+
+        let tId = 0; // Index of element being deleted
+        for(let child in $("#chosenCountriesForTimer").children().toArray()) {
+            var tt = $($("#chosenCountriesForTimer").find("p:not(.modIdP):not(button)").toArray()[child]).text(); // Enough to make a grown man cry (eh it was worse before)
+            
+            if(tt == $(this).parent().find(":not(.modIdP):not(button)").text()) {
+                break;
+            }
+            tId++;
+        }
+
+        if(perDelegateCurrentPosition > tId) {
+            perDelegateCurrentPosition--;
+        }
+
+        refreshModCountryList();
+        resendMirror();
+    }));
     
     toAdd.appendTo($("#chosenCountriesForTimer"));
 
@@ -1261,10 +1371,7 @@ function motionTypeToImportance(el) {
 }
 
 function showQuickStart() {
-    showPopup();
-    $("#popupPage > div.outlineddiv").css("display", "none");
-    $("#quickStartPopup").css("display", "block");
-    $("#quickStartPopup").css("height", "60%");
+    showPopup("#quickStartPopup");
 }
 
 window.addEventListener("beforeunload", function (e) {
@@ -1402,7 +1509,8 @@ window.onload = function(_event) {
         });
     
         $("#yieldTimeButton").on("click", function(_e) {
-            if(!isTimerHalted && !canSortChosenCountries && perDelegateCurrentPosition <= largeTimerNumDelegates-1) {
+            //if(!isTimerHalted && !canSortChosenCountries && perDelegateCurrentPosition <= largeTimerNumDelegates-1) {
+            if(!isTimerHalted && canSortChosenCountries && perDelegateCurrentPosition <= largeTimerNumDelegates-1) {
                 moveToNextDelegate();
             }
         });
@@ -1412,8 +1520,7 @@ window.onload = function(_event) {
                 createAlert("You must be connected to the internet");
                 return;
             }
-            showPopup();
-            $("#saveToTheCloudPopup").css("display", "block");
+            showPopup("#saveToTheCloudPopup");
             $("#exitPopup").css("display", "none");
             $("#saveToCloudName").val("");
             $("#saveLoadInput").val("");
@@ -1449,8 +1556,7 @@ window.onload = function(_event) {
                 createAlert("You must be connected to the internet");
                 return;
             }
-            showPopup();
-            $("#loadFromTheCloudPopup").css("display", "block");
+            showPopup("#loadFromTheCloudPopup");
             $("#exitPopup").css("display", "none");
             $("#loadFromCloudName").val("");
         });
@@ -1483,14 +1589,18 @@ window.onload = function(_event) {
     
         $("#logoContainer").on("click", function(_e) {
             if(isPopupShown) return;
-            showPopup();
-            $("#legalStuffEwww").css("display", "block").css("height", "60%");
+            showPopup("#legalStuffEwww");
             $("#quitPopup").text("Close");
             $("#exitPopup").css("display", "none");
         });
     
         $("#newDelegateSubmit").on("click", function(_e) {
             if($("#newDelegateInput").val() == "") return;
+
+            if(dictOfCustomDelegates[$("#newDelegateInput").val()]) {
+                createAlert("That custom delegate already exists!");
+                return;
+            }
     
             //customDelegates.push($("#newDelegateInput").val());
             dictOfCustomDelegates[$("#newDelegateInput").val()] = {canVote : true};
@@ -1531,6 +1641,17 @@ window.onload = function(_event) {
 
             resendMirror();
         });
+
+        $("#oneLargeTimer").on("focus", function(_e) {
+            stopTimer();
+        });
+        $("#oneLargeTimer").on("blur", function(_e) {
+            if(isTimeInvalid($("#oneLargeTimer").val()) || (currentMotion.type == "mod" && stringToDuration($("#oneLargeTimer").val()) > largeTimerOriginalDuration)) {
+                $("#oneLargeTimer").val(durationToString(largeTimerOriginalDuration));
+            }
+            largeTimerCurrentTime = stringToDuration($("#oneLargeTimer").val());
+            refreshTimer();
+        });
         
         $("#allAbsentButton").on("mousedown", function(_e) {
             Array(...document.getElementById('attendanceListOfCountries').children).forEach((el) => {
@@ -1555,12 +1676,10 @@ window.onload = function(_event) {
         });
     
         $("#startJCC").on("click", function(_e) {
-            showPopup();
-            $("#joinJccPopup").css("display", "block");
+            showPopup("#joinJccPopup");
         });
         $("#jccInfo").on("click", function(_e) {
-            showPopup();
-            $("#jccInfoPopup").css("display", "block");
+            showPopup("#jccInfoPopup");
         });
         $("#newJCC").on("click", function(_e) {
             if($("#newJccName").val() == "") {
@@ -1656,13 +1775,12 @@ window.onload = function(_event) {
                 });
                 return;
             }
-            showPopup();
-            document.getElementById("newModPopup").style.display = "block";
-            document.getElementById("newModTopic").value = "";
-            document.getElementById("newModPopupDuration").value = "5:00";
-            document.getElementById("newModPopupDelegateDuration").value = "1:00";
+            showPopup("#newModPopup");
+            $("#newModTopic").val("");
+            $("#newModPopupDuration").val("5:00");
+            $("#newModPopupDelegateDuration").val("1:00");
         
-            document.getElementById("newModTopic").focus()
+            $("#newModTopic").focus()
         });
         
         document.getElementById("newSpeakersList").onclick = function(_event) {
@@ -1678,21 +1796,19 @@ window.onload = function(_event) {
                 });
                 return;
             }
-            showPopup();
-            document.getElementById("speakersListPopup").style.display = "block";
-            document.getElementById("speakersListNumDelegates").value = "10";
-            document.getElementById("speakersListPopupDelegateDuration").value = "1:00";
+            showPopup("#speakersListPopup");
+            $("#speakersListNumDelegates").val("10");
+            $("#speakersListPopupDelegateDuration").val("1:00");
         
-            document.getElementById("speakersListNumDelegates").focus()
+            $("#speakersListNumDelegates").focus()
         }
         
         document.getElementById("newUnmod").onclick = function(_event) {
-            showPopup();
-            document.getElementById("newUnmodPopup").style.display = "block";
-            document.getElementById("newUnmodTopic").value = "";
-            document.getElementById("newUnmodPopupDuration").value = "5:00";
+            showPopup("#newUnmodPopup");
+            $("#newUnmodTopic").val("");
+            $("#newUnmodPopupDuration").val("5:00");
         
-            document.getElementById("newUnmodTopic").focus()
+            $("#newUnmodTopic").focus()
         }
     
         $("#newIntroduce").on("click", function(_e) {
@@ -1715,22 +1831,27 @@ window.onload = function(_event) {
                 });
                 return;
             }
-            showPopup();
-            document.getElementById("roundRobinPopup").style.display = "block";
-            document.getElementById("roundRobinTopic").value = "";
-            $("#roundRobinDelegateDuration").val("0:15")
+            showPopup("#roundRobinPopup");
+            $("roundRobinTopic").val("");
+            $("#roundRobinDelegateDuration").val("0:15");
         
-            document.getElementById("roundRobinTopic").focus()
+            $("roundRobinTopic").focus();
         }
+
+        $("#newCustom").on("click", function(_event) {
+            showPopup("#customMotionPopup");
+            $("#customMotionName").val("");
+            $("#customMotionDuration").val("2:00");
+        
+            $("#customMotionName").focus()
+        });
         
         document.getElementById("editdelegatelistbutton").onclick = function(_event) {
-            showPopup();
-            document.getElementById("editDelegateList").style.display = "flex";
-            $("#editDelegateList").css("height", "60%");
+            showPopup("#editDelegateList", "flex");
             $("#delegateListSearch").focus();
-            document.getElementById("delegateListSearch").value = "";
+            $("delegateListSearch").val("");
             refreshSearch();
-            document.getElementById("quitPopup").style.display = "none";
+            $("#quitPopup").css("display", "none");
         };
         
         document.getElementById("exitPopup").onclick = function(_event) {
@@ -1747,10 +1868,8 @@ window.onload = function(_event) {
                 return;
             }
             if(!isPopupShown) {
-                showPopup();
-                document.getElementById("attendanceList").style.display = "block";
-                $("#attendanceList").css("height", "60%");
-                document.getElementById("quitPopup").style.display = "none";
+                showPopup("#attendanceList");
+                $("#quitPopup").css("display", "none");
             }
         };
 
@@ -1827,6 +1946,16 @@ window.onload = function(_event) {
             recalcDelegates();
         });
 
+        $("#popupPage").on("click", function(_e) {
+            if(isPopupShown && _e.target == this) {
+                if($("#quitPopup").css("display") != "none") {
+                    $("#quitPopup").click();
+                } else if($("#exitPopup").css("display") != "none") {
+                    $("#exitPopup").click();
+                }
+            }
+        });
+
         $("button").on("click", function(_e) {
             $(":focus").blur();
         });
@@ -1852,8 +1981,7 @@ window.onload = function(_event) {
 
     $("#impromptuTimerButton").on("click", function(_e) {
         if(isPopupShown) return;
-        showPopup();
-        $("#impromptuTimer").css("display", "block").css("height", "60%");
+        showPopup("#impromptuTimer");
         $("#exitPopup").css("display", "none");
         $("#quitPopup").text("Close");
 
@@ -1898,8 +2026,7 @@ window.onload = function(_event) {
             )
         });
 
-        showPopup();
-        $("#rollCallVotePopup").css("display", "block");
+        showPopup("#rollCallVotePopup");
         $("#quitPopup").text("Close");
         $("#exitPopup").css("display", "none");
 
@@ -1914,7 +2041,11 @@ window.onload = function(_event) {
 
         $($(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter]).css("background-color", "powderblue");
         
-        $("#rollCallFlag").prop("src", `/flags/${basicListOfCountries[votingCountries[rollCallCurrentVoter]]}.svg`);
+        if(hasBasicFlag(votingCountries[rollCallCurrentVoter])) {
+            $("#rollCallFlag").prop("src", `/flags/${basicListOfCountries[votingCountries[rollCallCurrentVoter]]}.svg`);
+        } else {
+            $("#rollCallFlag").prop("src", `/favicon.png`);
+        }
         
         $("#rollCallCountryName").text(votingCountries[rollCallCurrentVoter]);
         $("#rollCallVoterAttendance").text(
@@ -1949,14 +2080,13 @@ window.onload = function(_event) {
     $("#impromptuTimerLabel").val("5:00");
     $("#quickStartAttendance").prop("disabled", true);
 
-    setCurrentCountryList([]);
+    setCurrentCountryList([], true);
     recalcDelegates();
 
     if(!isMirroring) {
         showQuickStart();
     } else {
-        showPopup();
-        $("#mirrorSetupPopup").css("display", "block");
+        showPopup("#mirrorSetupPopup");
     }
 }
 
@@ -2127,7 +2257,11 @@ function goToNextRollCallVote(proceeds=true) { // It's best to not look at this 
 
     //if(proceeds) $(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter].scrollIntoView({behavior: "smooth"});
 
-    $("#rollCallFlag").prop("src", `/flags/${basicListOfCountries[listOfVotingCountries[rollCallCurrentVoter]]}.svg`);
+    if(hasBasicFlag(listOfVotingCountries[rollCallCurrentVoter])) {
+        $("#rollCallFlag").prop("src", `/flags/${basicListOfCountries[listOfVotingCountries[rollCallCurrentVoter]]}.svg`);
+    } else {
+        $("#rollCallFlag").prop("src", `/favicon.png`);
+    }
 
     $("#rollCallCountryName").text(listOfVotingCountries[rollCallCurrentVoter]);
     $("#rollCallVoterAttendance").text(
