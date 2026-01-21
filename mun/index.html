@@ -3,14 +3,14 @@
     <head>
         <link rel="stylesheet" href="/style.css">
         <link rel="icon" type="image/png" href="/favicon.png"/>
-        <title>Waterford Model UN</title>
+        <title>Model UN</title>
         <script src="/lib/Sortable.js"></script>
         <script src="/lib/jquery.js"></script>
         <script src="/lib/jquery-sortable.js"></script>
     </head>
     <body>
         <div id="committeeNameContainer">
-            <input id="committeeName" type="text" placeholder="Committee topic/agenda..."></input>
+            <input autocomplete="off" id="committeeName" type="text" placeholder="Committee topic/agenda..."></input>
             <p id="topRealClock">19:24</p>
         </div>
         <div id="topbar" class="outlineddiv">
@@ -40,6 +40,7 @@
                         <button id="newUnmod" class="outlineddiv">Unmoderated Caucus<span class="keyboardShortcut"> (u)</span></button>
                         <button id="newRoundRobin" class="outlineddiv">Round Robin<span class="keyboardShortcut"> (r)</span></button>
                         <button id="newIntroduce" class="outlineddiv">Introduce Papers<span class="keyboardShortcut"> (i)</span></button>
+                        <button id="newCustom" class="outlineddiv">Custom Motion<span class="keyboardShortcut"> (c)</span></button>
                         <!-- <button id="newVotingProcedure" class="outlineddiv">Enter Voting Procedure</button> -->
                     </div>
                 <!-- </div> -->
@@ -66,11 +67,11 @@
             <div id="rightbottomarea" class="bottomarea">
                 <div id="passedMotionDetails" class="outlineddiv">
                     <div>
-                        <h2 id="passedMotionName">Present Papers<!-- Fallback b/c that's the only one that uses it I think maybe not though --></h1>
+                        <h1 id="passedMotionName">Present Papers<!-- Fallback b/c that's the only one that uses it I think maybe not though --></h1>
                         <br>
-                        <h1 id="passedMotionTopic">You fucked up</h2>
+                        <h2 id="passedMotionTopic">You fucked up</h2>
                         <div id="oneLargeTimerContainer">
-                            <p id="oneLargeTimer">0:00</p>
+                            <input autocomplete="off" type="text" maxlength="7" id="oneLargeTimer" val="0:00"></input>
                             <p id="modPlacementP"><span id="modDelegateIndexSpan">1</span>/<span id="modDelegateTotal">5</span></p><br><br>
                             <div id="timerControlsContainer">
                                 <button id="toggleMotionButton" onclick="toggleTimer()">Start</button>
@@ -92,13 +93,13 @@
                     </div>
                     <div id="jccPassPaperContainer">
                         <h2>Pass Papers</h2>
-                        <input id="passedPaperNameInput" type="text">
+                        <input autocomplete="off" id="passedPaperNameInput" type="text">
                         <button id="passedPaperButton">Pass</button>
                     </div>
                 </div>
                 <div id="passedMotionCountryChooser" class="outlineddiv">
                     <div class="searchbarContainer">
-                        <input type="text" id="passedMotionListSearch" class="searchBarInput" spellcheck="false" placeholder="Search for a country...">
+                        <input autocomplete="off" type="text" id="passedMotionListSearch" class="searchBarInput" spellcheck="false" placeholder="Search for a country...">
                         <button id="clearPassedMotionSearch" onclick="$('#passedMotionListSearch').val('');$('#passedMotionListSearch')[0].oninput();$('#passedMotionListSearch').focus();" style="padding: 2px;aspect-ratio: 1;">X</button>
                     </div>
                     <div id="actualPassedMotionCountryChooser">
@@ -110,19 +111,19 @@
         <div id="popupPage">
             <div id="editDelegateList" class="outlineddiv largePopup">
                 <div class="searchbarContainer">
-                    <input type="text" id="delegateListSearch" class="searchBarInput" spellcheck="false" placeholder="Search for a country...">
+                    <input autocomplete="off" type="text" id="delegateListSearch" class="searchBarInput" spellcheck="false" placeholder="Search for a country...">
                     <button id="clearDelegateListSearch" onclick="$('#delegateListSearch').val('');refreshSearch();$('#delegateListSearch').focus();" style="padding: 2px;aspect-ratio: 1;">X</button>
                 </div>
                 <div id="delegateListSearchBottomContainer">
-                    <div id="normalDelegateList">
-                        <h2 style="text-align: center;">Normal UN Delegates</h2>
-                    </div>
                     <div id="customDelegateList">
                         <h2 style="text-align: center;">Custom UN Delegates</h2>
                     </div>
-                    <div id="newDelegate" style="display: flex;width:100%;">
-                        <input type="text" id="newDelegateInput" maxlength="100" placeholder="New delegate name..." style="width:80%;margin:10px;">
-                        <button id="newDelegateSubmit" style="width:20%;margin:10px;">New Delegate</button>
+                    <div id="newDelegate" style="display: flex;width:60%;margin-left: 20%;">
+                        <input autocomplete="off" type="text" id="newDelegateInput" maxlength="100" placeholder="New delegate name..." style="width:80%;margin:10px 0 10px 10px;">
+                        <button id="newDelegateSubmit" style="width:20%;margin:10px 10px 10px 0;">New</button>
+                    </div>
+                    <div id="normalDelegateList">
+                        <h2 style="text-align: center;">Normal UN Delegates</h2>
                     </div>
                 </div>
             </div>
@@ -154,32 +155,50 @@
                 </div>
             </div>
             <div id="newModPopup" class="bottomMarginChildren outlineddiv">
-                <h3>Moderated Caucus</h3>
-                Topic: <input type="text" id="newModTopic" style="width:50%;" value="">
+                <h2>Moderated Caucus</h2>
+                <h3>Topic</h3>
+                <input autocomplete="off" type="text" id="newModTopic" style="width:50%;" value="" >
                 <br>
-                Total duration: <input type="text" id="newModPopupDuration" value="5:00" class="largeTextInput">
+                <h3>Total duration</h3>
+                <input autocomplete="off" type="text" id="newModPopupDuration" value="5:00" class="largeTextInput">
                 <br>
-                Delegate speaking time: <input type="text" id="newModPopupDelegateDuration" value="1:00" class="largeTextInput">
+                <h3>Delegate speaking time</h3>
+                <input autocomplete="off" type="text" id="newModPopupDelegateDuration" value="1:00" class="largeTextInput">
             </div>
             <div id="speakersListPopup" class="bottomMarginChildren outlineddiv">
-                <h3>Open the Speakers List</h3>
+                <h2>Open the Speakers List</h2>
                 <br>
-                Number of Speakers: <input type="text" id="speakersListNumDelegates" value="10" class="largeTextInput">
+                <h3>Number of Speakers</h3>
+                <input autocomplete="off" type="text" id="speakersListNumDelegates" value="10" class="largeTextInput">
                 <br>
-                Delegate speaking time: <input type="text" id="speakersListPopupDelegateDuration" value="1:00" class="largeTextInput">
+                <h3>Delegate speaking time</h3>
+                <input autocomplete="off" type="text" id="speakersListPopupDelegateDuration" value="1:00" class="largeTextInput">
             </div>
             <div id="newUnmodPopup" class="bottomMarginChildren outlineddiv">
-                <h3>Unmoderated Caucus</h3>
-                Topic: <input type="text" id="newUnmodTopic" style="width:50%;" value="" placeholder="Optional">
+                <h2>Unmoderated Caucus</h2>
+                <h3>Topic</h3>
+                <input autocomplete="off" type="text" id="newUnmodTopic" style="width:50%;" value="" placeholder="Optional">
                 <br>
-                Duration: <input type="text" id="newUnmodPopupDuration" value="5:00" class="largeTextInput">
+                <h3>Duration</h3>
+                <input autocomplete="off" type="text" id="newUnmodPopupDuration" value="5:00" class="largeTextInput">
             </div>
             <div id="roundRobinPopup" class="bottomMarginChildren outlineddiv">
-                <h3>Round Robin</h3>
+                <h2>Round Robin</h2>
                 <br>
-                Topic: <input type="text" id="roundRobinTopic" value="" class="largeTextInput" style="width: 60%; text-align: left !important;">
+                <h3>Topic</h3>
+                <input autocomplete="off" type="text" id="roundRobinTopic" value="" class="largeTextInput" style="width: 60%; text-align: left !important;">
                 <br>
-                Delegate speaking time: <input type="text" id="roundRobinDelegateDuration" value="0:20" class="largeTextInput">
+                <h3>Delegate speaking time</h3>
+                <input autocomplete="off" type="text" id="roundRobinDelegateDuration" value="0:20" class="largeTextInput">
+            </div>
+            <div id="customMotionPopup" class="bottomMarginChildren outlineddiv">
+                <h2>Custom Motion</h2>
+                <br>
+                <h3>Motion Name</h3>
+                <input autocomplete="off" type="text" id="customMotionName" value="" class="largeTextInput" style="width: 60%; text-align: left !important;">
+                <br>
+                <h3>Duration</h3>
+                <input autocomplete="off" type="text" id="customMotionDuration" value="2:00" class="largeTextInput">
             </div>
             <div id="rollCallVotePopup" class="bottomMarginChildren outlineddiv largePopup">
                 <div>
@@ -213,7 +232,7 @@
             <div id="saveToTheCloudPopup" class="bottomMarginChildren outlineddiv largePopup">
                 <h1>Save/Load State</h1>
                 <br>
-                ID: <input type="text" id="saveToCloudName" maxlength="64" style="width: 50% !important;text-align: left;">
+                ID: <input autocomplete="off" type="text" id="saveToCloudName" maxlength="64" style="width: 50% !important;text-align: left;">
                 <br>
                 <button id="saveToCloudSubmit">Save to Cloud</button>
                 <button id="loadFromCloudSubmit">Load from Cloud</button>
@@ -231,19 +250,19 @@
                 }
                 ">Load save string</button>
                 <br>
-                <input id="saveLoadInput" type="text" placeholder="Copy and paste the save string here...">
+                <input autocomplete="off" id="saveLoadInput" type="text" placeholder="Copy and paste the save string here...">
             </div>
             <div id="loadFromTheCloudPopup" class="bottomMarginChildren outlineddiv">
                 <h1>Load State From Cloud</h1>
                 <br>
-                ID: <input type="text" id="loadFromCloudName" maxlength="64" style="width: 50% !important;text-align: left;">
+                ID: <input autocomplete="off" type="text" id="loadFromCloudName" maxlength="64" style="width: 50% !important;text-align: left;">
                 <br>
                 <!-- <button id="loadFromCloudSubmit">Load from Cloud</button> -->
             </div>
             <div id="legalStuffEwww" class="bottomMarginChildren outlineddiv largePopup">
                 <h1>Help / About / Setting</h1>
                 <br>
-                <p>I made this website for my high school's Capstone project (though I have <i>significantly</i> added to it afterwards). It was specifically made for use in my school's Model UN club, where I am on the dais.</p>
+                <p>I made this website for my high school's Capstone project (though I have <i>significantly</i> added to it afterwards). It was specifically made for use in my school's Model UN club, where I am on the dais. I intend for it to <i>supplement</i> the traditional in-person conference, not <i>supplant</i> it.</p>
                 <br>
                 <p>This website's source code is open-source under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU GPLv3 License</a>. The source code is hosted <a href="https://github.com/Maimas2/MyWebsite/tree/master/mun">here</a>.</p>
                 <br>
@@ -251,7 +270,7 @@
                 <br>
                 <p>Country flags were gratefully taken from <a href="https://flagpedia.net">https://flagpedia.net</a>.</p>
                 <br>
-                <p>It is recommended to use this website on a screen that is at least 1920x1080. It may look weird at larger resolutions, but is inoperable at smaller ones.</p>
+                <p>It is recommended to use this website on a screen that is at least 1920x1080. It may look weird at larger resolutions, but also may be inoperable at smaller ones.</p>
 
                 <hr>
 
@@ -260,7 +279,7 @@
             </div>
             <div id="impromptuTimer" class="bottomMarginChildren outlineddiv largePopup">
                 <h1 id="impromptuStaticLabel">Timer</h1>
-                <input type="text" value="1:00" id="impromptuTimerLabel"></input>
+                <input autocomplete="off" type="text" value="1:00" id="impromptuTimerLabel"></input>
                 <div id="impromptuTimerControls">
                     <button id="impromptuTimerStartStop">Start</button>
                     <button id="impromptuTimerReset">Reset</button>
@@ -272,7 +291,7 @@
                 <div id="quickStartSplit">
                     <div id="quickStartSplitLeft">
                         <h2 style="margin:0;">Load a preset</p>
-                        <select id="presetSelect">
+                        <select id="presetSelect" autocomplete="off" onchange="$('#loadPreset').attr('disabled', false);">
                             <option disabled selected>-- choose a preset --</option>
                             <option>General Assembly</option>
                             <option>Security Council</option>
@@ -281,7 +300,7 @@
                             <option>ASEAN</option>
                         </select>
                         <br>
-                        <button id="loadPreset">Load</button>
+                        <button id="loadPreset" disabled="true" autocomplete="off">Load</button>
                     </div>
                     <div>
                         <h2 style="margin:0;">Or make your own</h2>
@@ -316,9 +335,9 @@
             <div id="joinJccPopup" class="bottomMarginChildren outlineddiv">
                 <h1>Join a Joint Crisis Committee</h1>
                 <br>
-                Name: <input type="text" id="newJccName">
+                Name: <input autocomplete="off" type="text" id="newJccName">
                 <br>
-                Password: <input type="text" id="newJccPassword">
+                Password: <input autocomplete="off" type="text" id="newJccPassword">
                 <br>
                 <button id="newJCC">New JCC</button>
                 <button id="joinJCC">Join existing JCC</button>
@@ -326,16 +345,16 @@
             <div id="jccInfoPopup" class="bottomMarginChildren outlineddiv largePopup">
                 <h1>JCC Name: <span id="jccNameSpan"></span></h1>
                 <br>
-                <input type="text" id="jccSendMessageInput">
+                <input autocomplete="off" type="text" id="jccSendMessageInput">
                 <button id="jccSendMessageButton">Send</button>
             </div>
             <div id="mirrorSetupPopup" class="bottomMarginChildren outlineddiv largePopup">
                 <div id="mirrorFirstStep">
                     <h1 id="setupMirroringH1">Setup Screen Mirroring</h1>
                     <br>
-                    Name: <input type="text" id="mirroringName">
+                    Name: <input autocomplete="off" type="text" id="mirroringName">
                     <br>
-                    Password: <input type="text" id="mirroringPassword">
+                    Password: <input autocomplete="off" type="text" id="mirroringPassword">
                     <br>
                     <button id="startMirroringButton">Join</button>
                 </div>
@@ -380,11 +399,11 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    <b>Topic:</b> <input style="text-align: left; width:70%;" type="text" value="">
+                    <b>Topic:</b> <input autocomplete="off" style="text-align: left; width:70%;" type="text" value="">
                     <br>
-                    <b>Total duration:</b> <input type="text" value="5:00" class="largeTextInput">
+                    <b>Total duration:</b> <input autocomplete="off" type="text" value="5:00" class="largeTextInput">
                     <br>
-                    <b>Delegate speaking time:</b> <input type="text" value="1:00" class="largeTextInput">
+                    <b>Delegate speaking time:</b> <input autocomplete="off" type="text" value="1:00" class="largeTextInput">
                 </div>
             </div>
             <div id="speakersListMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="speakersList">
@@ -397,9 +416,9 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    <b>Number of Speakers:</b> <input type="text" value="10" class="largeTextInput">
+                    <b>Number of Speakers:</b> <input autocomplete="off" type="text" value="10" class="largeTextInput">
                     <br>
-                    <b>Delegate speaking time:</b> <input type="text" value="1:00" class="largeTextInput">
+                    <b>Delegate speaking time:</b> <input autocomplete="off" type="text" value="1:00" class="largeTextInput">
                 </div>
             </div>
             <div id="unmodMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="unmod">
@@ -412,9 +431,9 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    <b>Topic:</b> <input style="text-align: left; width: 70%;" type="text" value="">
+                    <b>Topic:</b> <input autocomplete="off" style="text-align: left; width: 70%;" type="text" value="">
                     <br>
-                    <b>Duration:</b> <input type="text" value="5:00" class="largeTextInput">
+                    <b>Duration:</b> <input autocomplete="off" type="text" value="5:00" class="largeTextInput">
                 </div>
             </div>
             <div id="roundRobinMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="roundRobin">
@@ -427,9 +446,9 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    <b>Topic:</b> <input type="text" value="" class="largeTextInput" style="width: 70%; text-align: left !important;">
+                    <b>Topic:</b> <input autocomplete="off" type="text" value="" class="largeTextInput" style="width: 70%; text-align: left !important;">
                     <br>
-                    <b>Delegate speaking time:</b> <input type="text" value="0:15" class="largeTextInput">
+                    <b>Delegate speaking time:</b> <input autocomplete="off" type="text" value="0:15" class="largeTextInput">
                 </div>
             </div>
             <div id="presentPapersMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="presentPapers">
@@ -445,6 +464,19 @@
                     
                 </div>
             </div>
+            <div id="customMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="custom">
+                <div>
+                    <input class="customMotionNameInput" autocomplete="off" type="text" style="display:inline;width:90%;" val="Custom Motion"></input>
+                    <div>
+                        <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
+                        <button onclick="killMotionDisplay(this);" style="margin-right: 20px;">Motion Failed</button>
+                    </div>
+                </div>
+                <div class="middleLine"></div>
+                <div class="zoomInALittle">
+                    <b>Duration:</b> <input autocomplete="off" type="text" value="5:00" class="largeTextInput">
+                </div>
+            </div>
             <div id="dividerLinePrefab" style="display:inline-block;width:50%;background-color: black;height:1px !important;"></div>
         </div>
         <div id="alertContainer" class="outlineddiv" onclick="clearInterval(hidingAlertInterval);$(this).animate({opacity: 0}, 150);hidingAlertInterval=setInterval(((_e) => {this.style.display = 'none';clearInterval(hidingAlertInterval);}), 150)">
@@ -456,7 +488,7 @@
                 Do that
             </button>
         </div>
-        <div id="floatBottomRight">
+        <div id="floatBottomRight"> <!-- lol it's the bottom left now -->
             <button id="commenceRollCall" class="outlineddiv">
                 Roll Call Vote<span class="keyboardShortcut"> (v)</span>
             </button>
