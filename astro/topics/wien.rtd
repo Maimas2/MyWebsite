@@ -1,0 +1,14 @@
+PageType:Equation
+PageDisplayTitle:Wien's Law
+Categories:Light,Energy,Blackbody,Spectrum
+MainEquation:\lambda_\text{max}=\frac{k}{T}
+
+__b__Wien's Law__ (also sometimes called "Wien's Approximation") is a simplification of __nlink__Planck's Law__Planck's Law of Blackbody Radiation__ that gives the peak emission wavelength for a given temperature blackbody.
+
+__h2__Variables__
+
+__list__
+\( \lambda_\text{max} \): blackbody's peak emitted wavelength (meters)__
+\( k \): Wien's constant of proportionality, equal to \(2898 \; \mu \text{m} \cdot \text{K} \)__
+\( T \): given temperature (Kelvin)
+__tsil__
