@@ -1,0 +1,16 @@
+PageType:Equation
+PageDisplayTitle:Planck's Law of Blackbody Radiation
+Categories:Light,Energy,Blackbody,Spectrum
+MainEquation:u_\nu (\nu,T) = \frac{8\pi h \nu^3}{\left(c^3\right)\left(\exp\left(\frac{h\nu}{kT}\right)-1\right)}
+
+__b__Planck's Law__ gives the energy density of a given frequency of electromagnetic radiation in a blackbody of a given temperature. It is very useful in identifying faraway objects' temperatures based solely off their spectra.
+
+__h2__Variables__
+
+__list__
+\( ν \): given frequency (Hertz)__
+\( T \): given temperature (Kelvin)__
+\( h \): the ==link e==Planck Constant==https://en.wikipedia.org/wiki/Planck_constant==, equal to \(6.626 \times 10^{-34} \: \text{J} \cdot \text{s} \) (meters)__
+\( c \): speed of light, equal to \(3 \times 10^8 \: \text{m/s} \)__
+\( k \): ==link e==Boltzmann's Constant==https://en.wikipedia.org/wiki/Boltzmann_constant==, which is \( 1.38 \times 10^{-23} \; \text{J} / \text{K} \)
+__tsil__

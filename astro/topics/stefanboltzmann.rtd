@@ -1,0 +1,14 @@
+PageType:Equation
+PageDisplayTitle:Stefan-Boltzmann Law
+Categories:Radiation,Blackbody
+MainEquation:M_e=\sigma T^4
+
+The __b__Stefan-Boltzmann Law__ provides the proportionality between temperature and energy emitted by a blackbody. Energy emitted is proportional to temperature to the fourth power.
+
+__h2__Variables__
+
+__list__
+\( M_e \): radiant exitence, energy per time per area (\(W / m^2\))__
+\( \sigma \): the ==link e==Stefan-Boltzmann Constant==https://en.wikipedia.org/wiki/Stefan%E2%80%93Boltzmann_law==, which is \( 5.670 \times 10^{-8} \; W \cdot \text{m}^{-2} \cdot \text{K}^{-4} \)__
+\( T \): blackbody temperature (Kelvins)
+__tsil__

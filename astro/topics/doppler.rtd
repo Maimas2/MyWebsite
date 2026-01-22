@@ -1,0 +1,15 @@
+PageType:Equation
+PageDisplayTitle:Doppler Effect
+Categories:Light,Waves
+MainEquation:\frac{\Delta\lambda}{\lambda_0}=\frac{\lambda - \lambda_0}{\lambda_0}=\frac{v}{c}
+
+The __b__Doppler Effect__ is when a light wave__footnote__Note that the Dopper Effect is applicable to other types of waves (eg. sound waves); the only required change is to use a different max speed in place of \(c\).__ is either stretched or compressed by difference in speed between the emitter and receiver. The equation above gives the relationship between initial and observed wavelength.
+
+__h2__Variables__
+
+__list__
+\( \Delta\lambda \): difference in wavelength between initial emission and observation (meters)__
+\( \lambda_0 \): original wavelength of wave when initially emitted (meters)__
+\( v \): difference in speed between emitter and observer (meters)__
+\( c \): speed of light, equal to \(3 \times 10^8 \: \text{m/s} \)
+__tsil__

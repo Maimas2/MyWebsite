@@ -1,0 +1,13 @@
+PageType:Equation
+PageDisplayTitle:Snell's law
+Categories:Light,Optics
+MainEquation:n_1 \sin\theta_1 = n_2\sin\theta_2
+
+__b__Snell's Law__ describes how the angle of light changes when medium changes with respect to the normal angle of incidence. It depends on both materials indices of refraction.
+
+__h2__Variables__
+
+__list__
+\( n_1, n_2 \): the refractive indices of the initial and final material, respectively (dimensionless)__
+\( \theta_1, \theta_2 \): initial and final angle of incidence, respectively (dimensionless)
+__tsil__
