@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<document>
+<html>
     <head>
         <title>Voter? I hardly know 'er!</title>
         <link rel="stylesheet" type="text/css" href="admin.css">
@@ -17,19 +17,22 @@
                 <h1 id="yeas"></h1>
                 <h1 id="nays"></h1>
                 <button id="setNewMotion">New Vote</button>
+                <button id="swapView">Swap View</button>
             </div>
             <div id="bottomBar" class="outlineddiv">
                 <!-- <p id="votesText"></p> -->
             </div>
+            <canvas id="mainCanvas"></canvas>
         </div>
         <div id="login">
             <div id="loginContainer">
                 <h1>Admin Login</h1>
-                <label for="pwLabel">Password  </label>
-                <input id="pwLabel" type="password" data-bwignore="true">
+                <label for="voteNameInput">Vote name</label>
+                <input id="voteNameInput" type="text" data-bwignore="true">
                 <br>
                 <br>
                 <button id="loginButton">Login</button>
+                <button id="createVoteButton">New Vote</button>
             </div>
         </div>
     </body>

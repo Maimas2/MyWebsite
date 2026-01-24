@@ -1,21 +1,19 @@
-var names = ["Aaron", "Alex C", "Alex S", "Drew", "JT", "Karl", "Oliver", "Patrick", "Will", "Xavier"];
-
 var selected = null;
 var currentName = null;
 
-names.forEach(name => {
-    $("#nameselect").append(
-        $("<option>").val(name).text(name)
-    )
-});
+var currentVoteName = "";
+
+var ws = null;
 
 function doLoginThing(name) {
     var ename = name;
     currentName = name;
     $("#loginButton").prop("disabled", "true");
-    $("#newuserButton").prop("disabled", "true");
+    $("#newNameInput").prop("disabled", "true");
+    $("#submitNewName").prop("disabled", "true");
 
     var d = {
+        voteName : currentVoteName,
         name : ename
     };
 
@@ -38,8 +36,6 @@ function doLoginThing(name) {
             if(returned.pastVote == "abstain") $("#abstainButton")[0].click()
 
             $("#statusp").text("Up to date");
-
-            setInterval(regetCurrentVote, 3000);
         },
         error   : function(returned) {
             console.error(returned);
@@ -87,87 +83,87 @@ window.onload = function() {
         resendSelection();
     });
 
-    $("#newuserButton").on("click", function(_e) {
-        doLoginThing($("#nameLabel").val());
+    $("#submitNewName").on("click", function(_e) {
+        doLoginThing($("#newNameInput").val());
     });
 
-    $("#loginButton").on("click", function(_e) {
-        doLoginThing($("#selectName").val());
+    $("#chooseUserButton").on("click", function(_e) {
+        doLoginThing($("#loginSelector").val());
     });
 
     $("#resendVoteButton").on("click", function(_e) {
-        regetCurrentVote();
         resendSelection();
-    });
-
-    $.ajax({
-        type    : "GET",
-        url     : "/getpeople",
-        success : function(returned) {
-            console.log(returned);
-
-            var p = returned.people.sort();
-            for(var i = 0; i < p.length; i++) {
-                $("#selectName").append(
-                    $("<option>").html(p[i])
-                )
-            }
-
-            $("#loginButton").prop("disabled", false);
-            $("#newuserButton").prop("disabled", false);
-            $("#selectName").prop("disabled", false);
-        },
-        error   : function(returned) {
-            console.error(returned);
-        }
     });
 }
 
 function resendSelection() {
-    $("#statusp").text("Sending vote...");
+    //$("#statusp").text("Sending vote...");
 
     var d = {
+        type : "sentVote",
+        voteName : currentVoteName,
         person   : currentName,
-        vote     : selected,
-        voteName : $("#currentVoteSpan").text()
+        vote     : selected
     }
 
-    $.ajax({
-        type    : "POST",
-        url     : "/submitvote",
-        contentType : "application/json",
-        success : function(returned) {
-            console.log(returned);
-            $("#statusp").text("Up to date");
-        },
-        error   : function(returned) {
-            console.error(returned);
-            $("#statusp").text("Error (check console)");
-        },
-        data : JSON.stringify(d)
-    });
+    ws.send(JSON.stringify(d));
 }
 
 function regetCurrentVote() {
     $("#statusp").text("Updating...");
+    let d = {
+        voteName : currentVoteName
+    }
+}
+
+$("#loginButton").on("click", function() {
+    let d = {
+        voteName : $("#nameLabel").val()
+    }
+    currentVoteName = $("#nameLabel").val();
     $.ajax({
-        type    : "GET",
-        url     : "/getcurrentmotion",
+        type    : "POST",
+        url     : "/getvote",
+        contentType : "application/json",
         success : function(returned) {
             console.log(returned);
-            if(returned != $("#currentVoteSpan").text()) {
-                $("#yeaButton").css("background-color", "");
-                $("#abstainButton").css("background-color", "");
-                $("#nayButton").css("background-color", "");
 
-                selected = null;
+            $("#loginSelector > *").remove();
+            var p = returned.voters.sort();
+            for(var i = 0; i < p.length; i++) {
+                $("#loginSelector").append(
+                    $("<option>").html(p[i])
+                )
             }
-            $("#currentVoteSpan").text(returned);
-            $("#statusp").text("Up to date");
+
+            $(".toEnable").attr("disabled", false);
+
+            ws = new WebSocket("/ws", "echo-protocol");
+            ws.onopen = function() {
+                ws.send(JSON.stringify({
+                    type : "setup",
+                    voteName : currentVoteName
+                }));
+            }
+            ws.onmessage = (message) => {
+                console.log(message);
+
+                let m = JSON.parse(message);
+
+                if(m.type == "motionUpdate") {
+                    $("#currentVoteSpan").text(m.newMotion);
+
+                    $("#yeaButton").css("background-color", "");
+                    $("#abstainButton").css("background-color", "");
+                    $("#nayButton").css("background-color", "");
+
+                    selected = "";
+                }
+            }
         },
         error   : function(returned) {
             console.error(returned);
-            $("#statusp").text("Error (check console)");
-        }
+        },
+        data : JSON.stringify(d)
     });
-}
+});
