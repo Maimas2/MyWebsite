@@ -11,7 +11,7 @@
 // - vHost       (backend)
 
 
-const basicListOfCountries = {"Afghanistan" : "af", "Albania" : "al", "Algeria" : "dz", "Andorra" : "ad", "Angola" : "ao", "Antigua and Barbuda" : "ag", "Argentina" : "ar", "Armenia" : "am", "Australia" : "au", "Austria" : "at", "Azerbaijan" : "az", "Bahamas" : "bs", "Bahrain" : "bh", "Bangladesh" : "bd", "Barbados" : "bb", "Belarus" : "by", "Belgium" : "be", "Belize" : "bz", "Benin" : "bj", "Bhutan" : "bt", "Bolivia" : "bo", "Bosnia and Herzegovina" : "ba", "Botswana" : "bw", "Brazil" : "br", "Brunei Darussalam" : "bn", "Bulgaria" : "bg", "Burkina Faso" : "bf", "Burundi" : "bi", "Cabo Verde" : "cv", "Cambodia" : "kh", "Cameroon" : "cm", "Canada" : "ca", "Central African Republic" : "cf", "Chad" : "td", "Chile" : "cl", "China" : "cn", "Colombia" : "co", "Comoros" : "km", "Congo" : "cg", "Costa Rica" : "cr", "Ivory Coast" : "ci", "Croatia" : "hr", "Cuba" : "cu", "Cyprus" : "cy", "Czechia" : "cz", "North Korea" : "kp", "Democratic Republic of the Congo" : "cd", "Denmark" : "dk", "Djibouti" : "dj", "Dominica" : "dm", "Dominican Republic" : "do", "Ecuador" : "ec", "Egypt" : "eg", "El Salvador" : "sv", "Equatorial Guinea" : "gq", "Eritrea" : 'er', "Estonia" : "ee", "Eswatini" : "sz", "Ethiopia" : "et", "Fiji" : "fj", "Finland" : "fi", "France" : "fr", "Gabon" : "ga", "Gambia" : "gm", "Georgia" : "ge", "Germany" : "de", "Ghana" : "gh", "Greece" : "gr", "Grenada" : "gd", "Guatemala" : "gt", "Guinea" : "gn", "Guinea-Bissau" : "gw", "Guyana" : "gy", "Haiti" : "ht", "Honduras" : "hn", "Hungary" : "hu", "Iceland" : "is", "India" : "in", "Indonesia" : "id", "Iran" : "ir", "Iraq" : "iq", "Ireland" : "ie", "Israel" : "il", "Italy" : "it", "Jamaica" : "jm", "Japan" : "jp", "Jordan" : "jo", "Kazakhstan" : "kz", "Kenya" : "ke", "Kiribati" : "ki", "Kuwait" : "kw", "Kyrgyzstan" : "kg", "Laos" : "la", "Latvia" : "lv", "Lebanon" : "lb", "Lesotho" : "ls", "Liberia" : "lr", "Libya" : "ly", "Liechtenstein" : "lt", "Lithuania" : "lt", "Luxembourg" : "lu", "Madagascar" : "mg", "Malawi" : "mw", "Malaysia" : "my", "Maldives" : "mv", "Mali" : "ml", "Malta" : "mt", "Marshall Islands" : "mh", "Mauritania" : "mr", "Mauritius" : "mu", "Mexico" : "mx", "Micronesia" : "fm", "Monaco" : "mc", "Mongolia" : "mn", "Montenegro" : "me", "Morocco" : "ma", "Mozambique" : "mz", "Myanmar" : "mm", "Namibia" : "na", "Nauru" : "nr", "Nepal" : "np", "Netherlands" : "nl", "New Zealand" : "nz", "Nicaragua" : "ni", "Niger" : "ne", "Nigeria" : "ng", "North Macedonia" : "mk", "Norway" : "no", "Oman" : "om", "Pakistan" : "pk", "Palau" : "pk", "Panama" : "pa", "Papua New Guinea" : "pg", "Paraguay" : "py", "Peru" : "pe", "Philippines" : "ph", "Poland" : "pl", "Portugal" : "pt", "Qatar" : "qa", "Republic of Korea" : "kr", "Republic of Moldova" : "md", "Romania" : "ro", "Russia" : "ru", "Rwanda" : "rw", "Saint Kitts and Nevis" : "kn", "Saint Lucia" : "lc", "Saint Vincent and the Grenadines" : "vc", "Samoa" : "ws", "San Marino" : "sm", "Sao Tome and Principe" : "st", "Saudi Arabia" : "sa", "Senegal" : "sn", "Serbia" : "rs", "Seychelles" : "sc", "Sierra Leone" : "sl", "Singapore" : "sg", "Slovakia" : "sk", "Slovenia" : "si", "Solomon Islands" : "sb", "Somalia" : "so", "South Africa" : "za", "South Sudan" : "ss", "Spain" : "es", "Sri Lanka" : "lk", "Sudan" : "sd", "Suriname" : "sr", "Sweden" : "se", "Switzerland" : "ch", "Syrian Arab Republic" : "sy", "Tajikistan" : "tj", "Thailand" : "th", "Timor-Leste" : "tl", "Togo" : "tg", "Tonga" : "to", "Trinidad and Tobago" : "tt", "Tunisia" : "tn", "Turkiye" : "tr", "Turkmenistan" : "tm", "Tuvalu" : "tv", "Uganda" : "ug", "Ukraine" : "ua", "United Arab Emirates" : "ae", "United Kingdom" : "gb", "United Republic of Tanzania" : "tz", "United States of America" : "us", "Uruguay" : "uy", "Uzbekistan" : "uz", "Vanuatu" : "vu", "Venezuela" : "ve", "Vietnam" : "vn", "Yemen" : "ye", "Zambia" : "zm", "Zimbabwe" : "zw", "Holy See" : "va", "Palestine" : "ps", "African Union" : "AfricanUnion", "European Union" : "EuropeonUnion"};
+const basicListOfCountries = {"Afghanistan" : "af", "Albania" : "al", "Algeria" : "dz", "Andorra" : "ad", "Angola" : "ao", "Antigua and Barbuda" : "ag", "Argentina" : "ar", "Armenia" : "am", "Australia" : "au", "Austria" : "at", "Azerbaijan" : "az", "Bahamas" : "bs", "Bahrain" : "bh", "Bangladesh" : "bd", "Barbados" : "bb", "Belarus" : "by", "Belgium" : "be", "Belize" : "bz", "Benin" : "bj", "Bhutan" : "bt", "Bolivia" : "bo", "Bosnia and Herzegovina" : "ba", "Botswana" : "bw", "Brazil" : "br", "Brunei Darussalam" : "bn", "Bulgaria" : "bg", "Burkina Faso" : "bf", "Burundi" : "bi", "Cabo Verde" : "cv", "Cambodia" : "kh", "Cameroon" : "cm", "Canada" : "ca", "Central African Republic" : "cf", "Chad" : "td", "Chile" : "cl", "China" : "cn", "Colombia" : "co", "Comoros" : "km", "Congo" : "cg", "Costa Rica" : "cr", "Ivory Coast" : "ci", "Croatia" : "hr", "Cuba" : "cu", "Cyprus" : "cy", "Czechia" : "cz", "North Korea" : "kp", "Democratic Republic of the Congo" : "cd", "Denmark" : "dk", "Djibouti" : "dj", "Dominica" : "dm", "Dominican Republic" : "do", "Ecuador" : "ec", "Egypt" : "eg", "El Salvador" : "sv", "Equatorial Guinea" : "gq", "Eritrea" : 'er', "Estonia" : "ee", "Eswatini" : "sz", "Ethiopia" : "et", "Fiji" : "fj", "Finland" : "fi", "France" : "fr", "Gabon" : "ga", "Gambia" : "gm", "Georgia" : "ge", "Germany" : "de", "Ghana" : "gh", "Greece" : "gr", "Grenada" : "gd", "Guatemala" : "gt", "Guinea" : "gn", "Guinea-Bissau" : "gw", "Guyana" : "gy", "Haiti" : "ht", "Honduras" : "hn", "Hungary" : "hu", "Iceland" : "is", "India" : "in", "Indonesia" : "id", "Iran" : "ir", "Iraq" : "iq", "Ireland" : "ie", "Israel" : "il", "Italy" : "it", "Jamaica" : "jm", "Japan" : "jp", "Jordan" : "jo", "Kazakhstan" : "kz", "Kenya" : "ke", "Kiribati" : "ki", "Kuwait" : "kw", "Kyrgyzstan" : "kg", "Laos" : "la", "Latvia" : "lv", "Lebanon" : "lb", "Lesotho" : "ls", "Liberia" : "lr", "Libya" : "ly", "Liechtenstein" : "lt", "Lithuania" : "lt", "Luxembourg" : "lu", "Madagascar" : "mg", "Malawi" : "mw", "Malaysia" : "my", "Maldives" : "mv", "Mali" : "ml", "Malta" : "mt", "Marshall Islands" : "mh", "Mauritania" : "mr", "Mauritius" : "mu", "Mexico" : "mx", "Micronesia" : "fm", "Monaco" : "mc", "Mongolia" : "mn", "Montenegro" : "me", "Morocco" : "ma", "Mozambique" : "mz", "Myanmar" : "mm", "Namibia" : "na", "Nauru" : "nr", "Nepal" : "np", "Netherlands" : "nl", "New Zealand" : "nz", "Nicaragua" : "ni", "Niger" : "ne", "Nigeria" : "ng", "North Macedonia" : "mk", "Norway" : "no", "Oman" : "om", "Pakistan" : "pk", "Palau" : "pw", "Panama" : "pa", "Papua New Guinea" : "pg", "Paraguay" : "py", "Peru" : "pe", "Philippines" : "ph", "Poland" : "pl", "Portugal" : "pt", "Qatar" : "qa", "Republic of Korea" : "kr", "Republic of Moldova" : "md", "Romania" : "ro", "Russia" : "ru", "Rwanda" : "rw", "Saint Kitts and Nevis" : "kn", "Saint Lucia" : "lc", "Saint Vincent and the Grenadines" : "vc", "Samoa" : "ws", "San Marino" : "sm", "Sao Tome and Principe" : "st", "Saudi Arabia" : "sa", "Senegal" : "sn", "Serbia" : "rs", "Seychelles" : "sc", "Sierra Leone" : "sl", "Singapore" : "sg", "Slovakia" : "sk", "Slovenia" : "si", "Solomon Islands" : "sb", "Somalia" : "so", "South Africa" : "za", "South Sudan" : "ss", "Spain" : "es", "Sri Lanka" : "lk", "Sudan" : "sd", "Suriname" : "sr", "Sweden" : "se", "Switzerland" : "ch", "Syrian Arab Republic" : "sy", "Tajikistan" : "tj", "Thailand" : "th", "Timor-Leste" : "tl", "Togo" : "tg", "Tonga" : "to", "Trinidad and Tobago" : "tt", "Tunisia" : "tn", "Turkiye" : "tr", "Turkmenistan" : "tm", "Tuvalu" : "tv", "Uganda" : "ug", "Ukraine" : "ua", "United Arab Emirates" : "ae", "United Kingdom" : "gb", "United Republic of Tanzania" : "tz", "United States of America" : "us", "Uruguay" : "uy", "Uzbekistan" : "uz", "Vanuatu" : "vu", "Venezuela" : "ve", "Vietnam" : "vn", "Yemen" : "ye", "Zambia" : "zm", "Zimbabwe" : "zw", "Holy See" : "va", "Palestine" : "ps", "African Union" : "AfricanUnion", "European Union" : "EuropeonUnion"};
 
 const nonVotingBasicMembers = new Array("Holy See", "Palestine");
 
@@ -1136,7 +1136,7 @@ function createDelegatePresenseNode(name, clicked=false) {
 
     //if(!basicListOfCountries[name]) {
     if(true) {
-        cb.append( $("<button>").text("Voting").css("display", "inline").addClass("presenceButton").on("click", function(_e) { // Holy spaghetti
+        let tb = $("<button>").text("Voting").css("display", "inline").addClass("presenceButton").on("click", function(_e) { // Holy spaghetti
             _e.stopPropagation();
             if($(this).text() == "Voting") {
                 $(this).text("Non-Voting");
@@ -1157,7 +1157,9 @@ function createDelegatePresenseNode(name, clicked=false) {
                     dictOfCustomDelegates[$(this).parent().clone().find("i").remove().end().find("p").text()].canVote = true;
                 }
             }
-        }) );
+        });
+        cb.append(tb);
+        if(nonVotingBasicMembers.includes(name)) tb.click();
     }
 
     outer.append(cb);
@@ -1361,6 +1363,7 @@ function modCountryChooserClickEventFunctionResponder() {
 function motionTypeToImportance(el) {
     var n = el.getAttribute("data-motiontype");
     let ell = $(el);
+    if(n == "custom") return 120;
     if(n == "presentPapers") return 100 - Number( ell.attr("data-motionid") );
     if(n == "setAgenda")     return 70 - Number( ell.attr("data-motionid") );
     if(n == "speakersList")  return 50 + Number( el.getElementsByTagName("input")[0].value ) / 1000 - Number( ell.attr("data-motionid") );
@@ -2019,7 +2022,7 @@ window.onload = function(_event) {
         var ttt = 0;
         votingCountries.forEach(function(el) {
             $("#rollCallPastChoices").append(
-                $("<div>").attr("data-num", ttt++).attr("data-bg-color", "#ffffff").append($(`<p class="expandAllTheWay">${el}</p>`)).append($(`<p class="expandAllTheWay entireLineHeight">No Vote</p>`)).on("click", function(_e) {
+                $("<div>").attr("data-num", ttt++).attr("data-bg-color", "#ffffff").append($(`<p class="expandAllTheWay">${el}</p>`)).append($(`<p class="expandAllTheWay entireLineHeight colorMePlease">No Vote</p>`)).on("click", function(_e) {
                     rollCallCurrentVoter = $(this).attr("data-num");
                     goToNextRollCallVote(false);
                 })
@@ -2244,7 +2247,8 @@ function goToNextRollCallVote(proceeds=true) { // It's best to not look at this 
         return;
     }
     $(`#rollCallPastChoices`).children().toArray().forEach((el) => {
-        $(el).css("background-color", $(el).attr("data-bg-color"));
+        $(el).css("background-color", "#fff");
+        $(el).find(".colorMePlease").css("background-color", $(el).attr("data-bg-color"));
     });
     if(proceeds) rollCallCurrentVoter++;
     if(rollCallCurrentVoter == numPossibleVoters) {
@@ -2332,7 +2336,7 @@ $("#rollCallAbstainButton").on("click", function(_e) {
         $($(`#rollCallPastChoices`).children().toArray()[rollCallCurrentVoter]).children().toArray()[1].textContent = "Abstain";
         rollCallCurrentVotes[rollCallCurrentVoter] = "Abstain";
 
-        $($("#rollCallPastChoices").children().get(rollCallCurrentVoter)).attr("data-bg-color", "#7a7a7a");
+        $($("#rollCallPastChoices").children().get(rollCallCurrentVoter)).attr("data-bg-color", "#999");
     }
     
     goToNextRollCallVote();
@@ -2439,6 +2443,9 @@ function getStateJSON() {
             t["delegateDuration"] = stringToDuration(inputs[1].value);
         } else if(t["type"] == "presentPapers") {
             // None
+        } else if(t["type"] == "custom") {
+            t["topic"] = inputs[0].value;
+            t["duration"] = stringToDuration(inputs[1].value);
         }
 
         toReturn["proposedMotions"].push(t);

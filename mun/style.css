@@ -435,6 +435,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #timerControlsContainer {
     display: flex;
+    justify-content: center;
 }
 #timerControlsContainer > * {
     width: 100%;
@@ -444,6 +445,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     border-radius: 30px;
     font-size: 18pt;
     padding: 10px;
+    max-width: 25%;
 }
 #timerControlsContainer > *:hover {
     border-radius: 5px;
@@ -561,6 +563,8 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #legalStuffEwww {
     padding: 30px;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 #floatBottomRight > * {
     font-size: 125%;
@@ -819,7 +823,16 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     padding: 8px;
     margin: 9px;
     font-size: 32px !important;
+    border-color: transparent !important;
+    transition: border-color 150ms;
+}
+.customMotionNameInput:hover, .customMotionNameInput:active {
+    border-color: #888888 !important;
 }
 .modIdButton {
     width: initial !important;
+}
+.colorMePlease {
+    padding: 8px;
+    border-radius: 12px;
 }
