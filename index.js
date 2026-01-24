@@ -29,21 +29,22 @@ var l = sdl.split("\n");
 
 for(var i = 0; i < l.length; i++) {
     let b = l[i].split("#")[0].trim();
+    let bs = b.split("  ");
     if(b.trim() == "") continue;
     try {
-        if(process.argv.length > 2 && b.split(" ")[1] != process.argv[2]) {
+        if(process.argv.length > 2 && bs[1] != process.argv[2]) {
             port += 1;
             continue;
         }
-        var tf = require(`./${b.split(" ")[1]}/index`);
+        var tf = require(`./${bs[1]}/index`);
         listOfSubdomainFiles.push(tf);
         tf.startUpFunction();
         var tapp = tf.app;
         port += 1;
         tapp.listen(port);
-        console.log(`${b} is listening on port ${port}`);
+        console.log(`${bs[0]} is listening on port ${port}`);
     } catch(e) {
-        console.warn(`Could not find subdomain ${b.split(" ")[0]}, skipping...`);
+        console.warn(`Could not find subdomain ${bs[0]}, skipping...`);
         console.warn(e);
         port += 1;
     }
@@ -143,8 +144,21 @@ app.get("/annoyme-refusal", (req, res) => {
     res.sendFile("./annoyme-refusal.html", {root: __dirname});
 });
 
+let ogText = fs.readFileSync("./index.html").toString();
+
+let currentQuote = fs.readFileSync("./currentquote.txt").toString().replaceAll("\n", "");
+let favSong      = fs.readFileSync("./favsong.txt").toString().replaceAll("\n", "");
+
+app.post("/setcurrentquote", (req, res) => {
+    console.log(req.body);
+});
+
 app.get("/", (req, res) => {
-    res.sendFile("./index.html", {root: __dirname});
+    let toSend = ogText;
+    toSend = toSend.replace("<!-- %QUOTE -->", currentQuote);
+    toSend = toSend.replace("<!-- %FAVSONG -->", favSong);
+    res.type("html");
+    res.send(toSend);
 });
 
 app.get("/feed.xml", (req, res) => {

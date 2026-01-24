@@ -1,15 +1,15 @@
-mun mun
-sbest scibowltopics
-vote vote
-uscode uscodereader
-writings writings
-usgovt usgovt
-stuff school
-mun-help mun-help
-chess chess
-colors colors
-rssmaker rssmaker
-scibowl scibowl
-500 500
-edu learning
-astro astro
+mun  mun  Run A Model UN Confrence
+sbest  scibowltopics  SBEST
+vote  vote  Online Parliamentary Voting
+uscode  uscodereader  US Code Reader (android app)
+writings  writings  Random Writings
+usgovt  usgovt  Outline of the US Government
+stuff  school  Random work and stuff
+mun-help  mun-help  Model UN Help
+chess  chess  A Completely Normal Chess Game
+colors  colors  Colors
+rssmaker  rssmaker  RSS Maker
+scibowl  scibowl  Run A Science Bowl Game
+500  500  Project 500
+edu  learning  Free Online Learning Resources
+astro  astro  Astrophysics Equations
