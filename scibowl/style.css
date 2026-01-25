@@ -82,7 +82,7 @@ button:disabled {
     padding: 10px;
     margin: 15px;
     border-radius: 25px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .scoreHolder {
     width: 20%;
@@ -128,7 +128,7 @@ button:disabled {
     top: 15%;
     width: 70%;
     height: 70%;
-    overflow-y: scroll;
+    overflow-y: auto;
     zoom: 1.1;
     padding: 15px;
 }
@@ -176,7 +176,7 @@ input[type="number"] {
     display: flex;
     flex-direction: row;
     width: 60%;
-    overflow-y: scroll;
+    overflow-y: auto;
     flex-grow: 1;
 }
 p {
