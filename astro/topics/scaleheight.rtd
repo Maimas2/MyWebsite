@@ -1,0 +1,20 @@
+PageType:Equation
+PageDisplayTitle:Scale Height of a Gas
+Categories:Gas,Atmosphere
+MainEquation:H=\frac{kT}{mg}
+
+The __b__scale height__ of a gas is the distance needed to travel straight up in order to decrease the concentration by a factor of \(e\). For example, the scale height of Earth's atmospheric pressure is 8.5 kilometers, so the air pressure at an elevation of 8.5 kilometers is \(1/e\approx0.368\) bar. A closely related formula gives the pressure at a given height:
+
+\[ P = P_0 \exp \left( -\frac{h}{H} \right) \]
+
+__h2__Variables__
+
+__list__
+\( H \): scale height of the gas (meters)__
+\( k \): ==link e==Boltzmann's Constant==https://en.wikipedia.org/wiki/Boltzmann_constant==, which is \( 1.38 \times 10^{-23} \; \text{J} / \text{K} \)__
+\( T \): temperature of the atmosphere (Kelvin)__
+\( m \): mass of each individual gas particle (meters)__
+\( g \): gravity of the planet (meters per second squared)__
+\( P_0 \): surface pressure of the planet (Pascals)__
+\( h \): given height (meters)
+__tsil__
