@@ -37,7 +37,7 @@ function createMessage(data, isFromSelf=false) {
 }
 
 window.onload = function() {
-    wsUrl = window.location.toString().includes("localhost") ? "ws://mun.localhost:3000/rss" : "wss://" + window.location.host + "/rss";
+    wsUrl = window.location.toString().includes("localhost") ? "ws://localhost:3011/rss" : "wss://" + window.location.host + "/rss";
     $("#join").on("click", function(_e) {
         var d = {
             name     : $("#jccName").val(),
@@ -82,7 +82,7 @@ function setupJccData(data) {
 
     ws = new WebSocket(wsUrl, "echo-protocol");
     
-    ws.addEventListener("open", function(_e) {
+    ws.onopen = function(_e) {
         ws.send(JSON.stringify({
             name       : data.name,
             type       : "setup",
@@ -90,7 +90,7 @@ function setupJccData(data) {
             clientType : "chatScreen"
         }));
         $("#jccInfo").css("display", "inline-block");
-    });
+    };
     ws.addEventListener("message", function(m) {
         console.log(m.data);
         var d = JSON.parse(m.data);
