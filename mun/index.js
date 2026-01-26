@@ -172,6 +172,10 @@ app.get("/admin", (req, res) => {
     res.sendFile("./admin.html", {root : __dirname});
 });
 
+app.get("/crisis-bell.mp3", (req, res) => {
+    res.sendFile("./crisis-bell.mp3", {root: __dirname});
+});
+
 app.post("/adminaccesspoint", jsonParse, (req, res) => {
     if(req.body.code == adminPasswords.viewSaves) {
         res.send(savedSaveData);
@@ -293,9 +297,8 @@ app.get("/rss", (req, res) => {
 });
 
 app.ws('/rss', function(ws, req) {   
-
     ws.on("message", (message) => { // No error codes or any of that shit here, just discard invalid inputs
-        //console.log(message);
+        console.log(message);
         var d;
         var failed = false;
         try {
@@ -323,15 +326,13 @@ app.ws('/rss', function(ws, req) {
                 listOfJCCs[d.name].mirrors.add(ws);
                 ws.send("Connected");
             }
-        }
-        if(d.type == "paperPassed") {
+        } else if(d.type == "paperPassed") {
             var newPaper = new PassedPaper();
             newPaper.name = d.messageBody;
             newPaper.committeeName = d.sender;
 
             listOfJCCs[d.name].passedPapers.push(newPaper);
-        }
-        if(d.type == "message" || d.type == "paperPassed") {
+        } else if(d.type == "message" || d.type == "paperPassed") {
             //console.log(d.messageBody);
             listOfJCCs[d.name].bigScreenConnections.forEach((el) => {
                 if(el.ws == undefined || el.ws.readyState == ws.CLOSED) listOfJCCs[d.name].bigScreenConnections.delete(el);
@@ -346,8 +347,7 @@ app.ws('/rss', function(ws, req) {
             listOfJCCs[d.name].chatConnections.forEach(function(ws2) {
                 if(ws != ws2) ws2.send(JSON.stringify(d));
             });
-        }
-        if(d.type == "sendMirror") {
+        } else if(d.type == "sendMirror") {
             listOfJCCs[d.name].mirrors.forEach((el) => {
                 if(el.readyState == ws.CLOSED) listOfJCCs[d.name].mirrors.delete(el);
             });
@@ -355,8 +355,7 @@ app.ws('/rss', function(ws, req) {
             listOfJCCs[d.name].mirrors.forEach(function(ws2) {
                 if(ws != ws2) ws2.send(JSON.stringify(d));
             });
-        }
-        if(d.type == "requestMirrors") {
+        } else if(d.type == "requestMirrors") {
             Array.from(listOfJCCs[d.name].bigScreenConnections).forEach((el) => {
                 if(el.ws == undefined || el.ws.readyState == ws.CLOSED) {
                     listOfJCCs[d.name].bigScreenConnections.delete(el);
@@ -369,8 +368,8 @@ app.ws('/rss', function(ws, req) {
                 ws2.ws.send(JSON.stringify(d));
             });
         }
-    })
-})
+    });
+});
 
 app.post("/savesavedata", jsonParse, (req, res) => {
     if(req.body.id in savedSaveData) {

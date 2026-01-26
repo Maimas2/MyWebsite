@@ -227,6 +227,8 @@ function showPopup(elToShow = "", displayAttr = "block") {
             }
         });
 
+        $("#exitButtons").css("opacity", "1");
+
         if(elToShow) {
             $(elToShow).css("display", displayAttr);
         }
@@ -538,6 +540,8 @@ function quitPopup(nextFunction = null) {
         $(":focus").blur();
 
         lastSent = -1000;
+    } else {
+        nextFunction();
     }
 }
 
@@ -2217,14 +2221,25 @@ function setupJccData(data) {
         $("#jccInfo").css("display", "inline-block");
     });
     ws.addEventListener("message", function(m) {
-        if(JSON.parse(m.data).type == "heartbeat") {
+        let d = JSON.parse(m.data);
+        if(d.type == "heartbeat") {
             ws.send(JSON.stringify({type : "heartbeat"}));
-        } else if(JSON.parse(m.data).type == "returnSalt" && JSON.parse(m.data).salt) {
-            mySalt = JSON.parse(m.data).salt;
+        } else if(d.type == "returnSalt" && d.salt) {
+            mySalt = d.salt;
             resendMirror();
-        } else if(JSON.parse(m.data).type == "requestMirrors") {
+        } else if(d.type == "requestMirrors") {
             resendMirror();
+        } else if(d.type == "message") {
+            if(d.messageBody.startsWith("!crisis")) {
+                $("#crisisUpdateText").text(d.messageBody.substr(8));
+                quitPopup(function() {
+                    $("#exitButtons").css("opacity", "0");
+                    showPopup("#crisisUpdatePopup");
+                    $("#crisisBellPlay")[0].play();
+                });
+            }
         }
+        console.log(d);
     });
     ws.addEventListener("close", function(_e) {
         createAlert("Disconnected from server, trying to reconnect...");
