@@ -347,7 +347,7 @@ app.ws('/rss', function(ws, req) {
             listOfJCCs[d.name].chatConnections.forEach(function(ws2) {
                 if(ws != ws2) ws2.send(JSON.stringify(d));
             });
-        } else if(d.type == "sendMirror") {
+        } else if(d.type == "sendMirror" || d.type == "crisis") {
             listOfJCCs[d.name].mirrors.forEach((el) => {
                 if(el.readyState == ws.CLOSED) listOfJCCs[d.name].mirrors.delete(el);
             });

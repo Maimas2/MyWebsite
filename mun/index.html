@@ -349,6 +349,12 @@
                 <br>
                 <input autocomplete="off" type="text" id="jccSendMessageInput">
                 <button id="jccSendMessageButton">Send</button>
+                <br>
+                <br>
+                <h1>Send crisis</h1>
+                <p>Sends a crisis notification to any mirror of this page.</p>
+                <input autocomplete="off" type="text" id="jccSendCrisisInput">
+                <button id="jccSendCrisisButton">Send</button>
             </div>
             <div id="mirrorSetupPopup" class="bottomMarginChildren outlineddiv largePopup">
                 <div id="mirrorFirstStep">
@@ -472,7 +478,7 @@
             </div>
             <div id="customMotionPrefab" class="outlineddiv innermotiondisplay startClear" data-motiontype="custom">
                 <div>
-                    <input class="customMotionNameInput" autocomplete="off" type="text" style="display:inline;width:90%;" val="Custom Motion"></input>
+                    <input class="customMotionNameInput" autocomplete="off" type="text" style="display:inline;width:90%;" value="Custom Motion"></input>
                     <div>
                         <button onclick="passMotion(this.parentNode.parentNode.parentNode)" style="margin-right: 20px;">Motion Passed</button>
                         <button onclick="killMotionDisplay(this);" style="margin-right: 20px;">Motion Failed</button>

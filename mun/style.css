@@ -825,8 +825,9 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     font-size: 32px !important;
     border-color: transparent !important;
     transition: border-color 150ms;
+    color: black !important;
 }
-.customMotionNameInput:hover, .customMotionNameInput:active {
+.customMotionNameInput:hover:not(:disabled), .customMotionNameInput:active:not(:disabled) {
     border-color: #888888 !important;
 }
 .modIdButton {

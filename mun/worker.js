@@ -270,11 +270,11 @@ function resortMotions() {
 var currentMotionId = 0;
 
 function appendMotion(m) {
-    if($("#firstMotionPrompt").length) $("#firstMotionPrompt").css("display", "none");
+    if($("#firstMotionPrompt").length) $("#firstMotionPrompt").remove();
 
     if(isMirroring) {
         m.find("input").toArray().forEach((el) => {
-            $(el).replaceWith($("<span>").append(document.createTextNode(el.value)));
+            if(!$(el).attr("disabled")) $(el).replaceWith($("<span>").append(document.createTextNode(el.value)));
         });
 
         m.find("button").remove();
@@ -1425,6 +1425,7 @@ window.onload = function(_event) {
         $("#timerControlsContainer").remove();
         $("#impromptuTimerControls").remove();
         $("#jccPassPaperContainer").remove();
+        $("#quickStartPopup").remove();
 
         $("#floatBottomRight").css("display", "none");
 
@@ -1755,6 +1756,18 @@ window.onload = function(_event) {
             };
             ws.send(JSON.stringify(d));
             $("#jccSendMessageInput").val("");
+        });
+        $("#jccSendCrisisButton").on("click", function(_e) {
+            if(ws == undefined) return;
+            var d = {
+                name : jccData.name,
+                salt : jccData.salt,
+                type : "crisis",
+                messageBody : $("#jccSendCrisisInput").val(),
+                sender     : $("#committeeName").val()
+            };
+            ws.send(JSON.stringify(d));
+            $("#jccSendCrisisInput").val("");
         });
         $("#passedPaperButton").on("click", function(_e) {
             if(ws == undefined) return;
@@ -2093,6 +2106,7 @@ window.onload = function(_event) {
     if(!isMirroring) {
         showQuickStart();
     } else {
+        isPopupShown = false;
         showPopup("#mirrorSetupPopup");
     }
 }
@@ -2139,7 +2153,9 @@ function setupMirroring(data) {
         }));
     });
     ws.addEventListener("message", function(m) {
-        //console.log(m.data);
+        console.log(m.data);
+        let dd;
+        if(m.data != "Connected") dd = JSON.parse(m.data);
         if(m.data == "Connected") {
             ws.send(JSON.stringify({
                 name       : jccData.name,
@@ -2149,10 +2165,18 @@ function setupMirroring(data) {
             console.log("Requesting mirrors...");
 
             $("#mirrorSecondStep").css("display", "block");
-        } else if(JSON.parse(m.data).type == "heartbeat") {
-            ws.send({type : "heartbeat"});
+        } else if(dd.type == "heartbeat") {
+            ws.send(JSON.stringify({type : "heartbeat"}));
+        } else if(dd.type == "crisis") {
+            console.log(dd);
+            $("#crisisUpdateText").text(dd.messageBody);
+            quitPopup(function() {
+                $("#exitButtons").css("opacity", "0");
+                showPopup("#crisisUpdatePopup");
+                $("#crisisBellPlay")[0].play();
+            });
         } else if(!hasChoosenMirrorable) {
-            var d = JSON.parse(m.data).state;
+            var d = dd.state;
             if(!seenStates[d.mySalt]) {
                 $("#listOfMirrorables").append(
                     $("<button>").css("padding", "10px").css("margin", "10px").css("display", "inline-block").text(d.committeeName).on("click", function(_e) {
@@ -2191,7 +2215,7 @@ function setupMirroring(data) {
             seenStates[d.mySalt] = d;
         } else {
             if(JSON.parse(m.data).state.mySalt == chosenMirrorableSalt) {
-                console.log(JSON.parse(m.data).state);
+                //console.log(JSON.parse(m.data).state);
                 implementStateJSON(JSON.parse(m.data).state);
             }
         }
@@ -2657,6 +2681,18 @@ function implementStateJSON(newState) {
                 appendMotion(toAdd);
             } else if(cm.type == "presentPapers") {
                 var toAdd = $("#presentPapersMotionPrefab").clone(true);
+                appendMotion(toAdd);
+            } else if(cm.type == "custom") {
+                var toAdd = $("#customMotionPrefab").clone(true);
+                var inputList = toAdd.find("input");
+
+                $(inputList[0]).attr("disabled", true);
+                inputList[0].value = cm.topic;
+                inputList[0].textContent = cm.topic;
+
+                inputList[1].value = durationToString(cm.duration);
+                inputList[1].textContent = durationToString(cm.duration);
+
                 appendMotion(toAdd);
             }
         }
