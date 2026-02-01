@@ -54,7 +54,7 @@ app.get("/deposit/*splat", (req, res) => {
 });
 
 app.get("/togglefilesportal", (req, res) => {
-    if(req.url.includes(pw)) {
+    if(req.url.includes(pw.replace("\n", ""))) {
         isFilesPortalOpen = !isFilesPortalOpen;
         res.send(`PortalOpen is: ${isFilesPortalOpen}`);
     } else {
