@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="https://mun.alex-seltzer.com/lib/jquery.js"></script>
+        <script src="http://mun.localhost:3010/lib/jquery.js"></script>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+        <h1>Upload File</h1>
+        <form action="/fileupload" method="post" enctype="multipart/form-data">
+            <input type="file" name="mainfile">
+            <button type="submit">Upload</button>
+        </form>
+        <br>
+        <br>
+        <br>
+        <h1>Upload Text</h1>
+        <input type="text" id="textLargeBox">
+        <label for="textLargeBox">Text Contents</label>
+        <input type="text" id="textFileName" minlength="1">
+        <label for="textFileName">File Name</label>
+    </body>
+    <script src="/files.js"></script>
+</html>
