@@ -67,6 +67,10 @@ app.get("/isportalopen", (req, res) => {
 });
 
 app.post("/fileupload", (req, res) => {
+    if(!isFilesPortalOpen) {
+        res.send("Files portal is currently closed.");
+        return;
+    }
     if(!req.files || !Object.keys(req.files).length) {
         res.send("No files attached.");
         return;
