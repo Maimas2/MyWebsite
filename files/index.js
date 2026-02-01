@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
     if(isFilesPortalOpen) {
         res.sendFile('index.html', {root: __dirname});
     } else {
-        req.send("Files portal is currently closed.");
+        res.send("Files portal is currently closed.");
     }
 });
 
@@ -25,7 +25,7 @@ app.get('/style.css', (req, res) => {
     if(isFilesPortalOpen) {
         res.sendFile('style.css', {root: __dirname});
     } else {
-        req.send("Files portal is currently closed.");
+        res.send("Files portal is currently closed.");
     }
 });
 
@@ -33,7 +33,7 @@ app.get('/files.js', (req, res) => {
 	if(isFilesPortalOpen) {
         res.sendFile('files.js', {root: __dirname});
     } else {
-        req.send("Files portal is currently closed.");
+        res.send("Files portal is currently closed.");
     }
 });
 
@@ -49,7 +49,7 @@ app.get("/deposit/*splat", (req, res) => {
             res.send("File not found.");
         }
     } else {
-        req.send("Files portal is currently closed.");
+        res.send("Files portal is currently closed.");
     }
 });
 
