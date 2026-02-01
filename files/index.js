@@ -11,7 +11,7 @@ app.use(fileUpload({
 
 const pw = fs.readFileSync("./files-pw.txt", "utf-8");
 
-var isFilesPortalOpen = false;
+var isFilesPortalOpen = true;
 
 app.get('/', (req, res) => {
     if(isFilesPortalOpen) {
@@ -84,6 +84,9 @@ app.post("/fileupload", (req, res) => {
 
     file.mv(path.join(__dirname, "/deposit", file.name));
     res.send("File uploaded.");
+
+    
+    fs.writeFileSync(path.join(__dirname, "../newmessages", `${Math.random().toString().substring(2)}.txt`), `New file uploaded: ${file.name}`);
 });
 
 app.get("/ComputerModernSerif.ttf", (req, res) => {

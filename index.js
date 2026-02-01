@@ -94,6 +94,14 @@ if(fs.existsSync("./saves/messages_sent.txt")) {
 
 app.get("/annoyinglist", (req, res) => {
     if(req.url.includes(listpw) && req.url.includes("&all") && listpw != null) {
+        fs.readdirSync("/newmessages").forEach((f) => {
+            let s = fs.readFileSync(path.join(__dirname, "/newmessages", f)).toString();
+            if(s.length) {
+                listsToSend.push(s);
+                fs.unlink(path.join(__dirname, "/newmessages", f));
+            }
+        });
+        
         res.send(`[${listsToSend.join(", ")}]`);
     } else if(req.url.includes(listpw) && listpw != null) {
         if(listsToSend.length) {
