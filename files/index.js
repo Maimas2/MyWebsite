@@ -11,7 +11,7 @@ app.use(fileUpload({
 
 const pw = fs.readFileSync("./files-pw.txt", "utf-8");
 
-var isFilesPortalOpen = true;
+var isFilesPortalOpen = false;
 
 app.get('/', (req, res) => {
     if(isFilesPortalOpen) {
