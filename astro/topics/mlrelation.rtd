@@ -1,0 +1,16 @@
+PageType:Equation
+PageDisplayTitle:Mass-Luminosity Relation
+Categories:Stars,Mass,Luminosity
+MainEquation:\frac{L}{L_\odot}=\left(\frac{M}{M_\odot}\right)^\alpha
+
+The mass and luminosity of a star are inhirently linked through the __b__Mass-Luminosity Relation__. The precise value of \( \alpha \) depends on the type of star; for main sequence stars (eg. our Sun), then \( \alpha = 3.5 \). For low-mass stars with less than half a solar mass, \( \alpha = 2.3 \).
+
+__h2__Variables__
+
+__list__
+\( L \): luminosity of the given star (Watts)__
+\( L_\odot \): luminosity of our Sun, equal to \( 3.828 \times 10^{26} \; \text{W}\)__
+\( M \): mass of the given star (Watts)__
+\( M_\odot \): solar mass, equal to \( 1.988 \times 10^{30} \; \text{kg}\)__
+\( \alpha \): dimensionless parameter dependent on general type of star
+__tsil__
