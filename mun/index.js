@@ -298,7 +298,7 @@ app.get("/rss", (req, res) => {
 
 app.ws('/rss', function(ws, req) {   
     ws.on("message", (message) => { // No error codes or any of that shit here, just discard invalid inputs
-        console.log(message);
+        //console.log(message);
         var d;
         var failed = false;
         try {
