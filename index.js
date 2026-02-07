@@ -25,7 +25,7 @@ process.on("SIGTERM", receivedKillSignal);
 process.on("SIGINT",  receivedKillSignal);
 
 var sdl = fs.readFileSync("./subdomains.txt", "utf8")
-
+const pw = fs.readFileSync("./files-pw.txt", "utf-8");
 var l = sdl.split("\n");
 
 for(var i = 0; i < l.length; i++) {
@@ -93,6 +93,10 @@ if(fs.existsSync("./saves/messages_sent.txt")) {
     messagesSent = d.split("\n");
 }
 
+app.get("/game", (req, res) => {
+    res.sendFile("/game.html", {root: __dirname});
+})
+
 app.get("/annoyinglist", (req, res) => {
     fs.readdirSync(path.join(__dirname, "/newmessages")).forEach((f) => {
             let s = fs.readFileSync(path.join(__dirname, "/newmessages", f)).toString();
@@ -125,7 +129,7 @@ app.get("/messagessent", (req, res) => {
 
 app.post("/appendtoannoyinglist", (req, res) => {
     var u = useragentToString(req.useragent, req);
-    if(blockedIps.includes(u)) {
+    if(blockedIps.includes(u) && (!req.url.includes(pw))) {
         res.send("This device is blocked.");
     } else {
         if(req.body.data.length > 512) {
@@ -133,7 +137,7 @@ app.post("/appendtoannoyinglist", (req, res) => {
             return;
         }
         listsToSend.unshift(req.body.data);
-        blockedIps.push(u);
+        if(!req.url.includes(pw)) blockedIps.push(u);
         messagesSent.push(req.body.data);
         res.send("Appended.");
     }

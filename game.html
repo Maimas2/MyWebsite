@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Yayy</title>
+        <style>
+            #mask {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.5);
+                display: none;
+            }
+            #textContainer {
+                position: absolute;
+                left: calc(50vw - 200px);
+                top: calc(50vh - 150px);
+                width: 400px;
+                height: 300px;
+                display: flex;
+                align-items: center;
+                background-color: white;
+                border-radius: 20px;
+                border: 1px solid black;
+                box-sizing: border-box;
+                padding: 20px;
+            }
+            #textContainer > * {
+                width: 100%;
+                text-align: center;
+            }
+        </style>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://mun.alex-seltzer.com/lib/jquery.js"></script>
+    </head>
+    <body>
+        <button id="guessClassic">Guess that Classic</button>
+        <div id="mask">
+            <div id="textContainer">
+                <p id="textP">This is text</p>
+            </div>
+        </div>
+    </body>
+    <script>
+        var pw = prompt("Password please");
+
+        var listOfClassics = {
+            "Ulysses": "Stately, plump Buck Mulligan came from the stairhead, bearing a bowl of lather on which a mirror and a razor lay crossed.",
+            "The Count of Monte Cristo": "On the 24th of February, 1815, the look-out at Notre-Dame de la Garde signalled the three-master, the _Pharaon_ from Smyrna, Trieste, and Naples.",
+            "The Picture of Dorian Gray": "The artist is the creator of beautiful things",
+            "Wuthering Heights": "I have just returned from a visit to my landlord—the solitary neighbour that I shall be troubled with.",
+            "Frankenstein": "You will rejoice to hear that no disaster has accompanied the commencement of an enterprise which you have regarded with such evil forebodings.",
+            "Hamlet": "BARNARDO. Who's there? FRANCISCO. Nay, answer me. Stand and unfold yourself.",
+            "Little Women": "“Christmas won't be Christmas without any presents,” grumbled [REDACTED], lying on the rug.",
+            "The Veldt": "“George, I wish you'd look at the nursery.",
+            "Othello": "Neuer tell me, I take it much unkindly that thou who hast had my purse.",
+            "Romeo and Juliet": "SAMPSON. Gregory, on my word, we'll not carry coals.",
+            "Dracula": "Left Munich at 8:35 P. M., on 1st May, arriving at Vienna early next morning; should have arrived at 6:46, but train was an hour late.",
+            "Huck Finn": "You don't know about me without you have read a book by the name of [REDACTED]; but that ain't no matter.",
+            "Le Petit Prince": "Lorsque j'avais six ans j'ai vu, une fois, une magnifique image, dans un livre sur la forêt vierge qui s'appelait \"Histoires Vécues\".",
+            "Tale of Two Cities": "It was the best of times, it was the worst of times.",
+            "Old Man and the Sea": "He was an old man who fished alone in a skiff in the Gulf Stream and he had gone eighty-four days now without taking a fish.",
+            "Don Quixote": "In a village of La Mancha, the name of which I have no desire to call to mind, there lived not long since one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing.",
+            "Iliad": "Scepticism is as much the result of knowledge, as knowledge is of scepticism.",
+            "Beowulf": "Lo! the Spear-Danes' glory through splendid achievements",
+            "A Modest Proposal": "For preventing the children of poor people in Ireland, from being a burden on their parents or country, and for making them beneficial to the publick.",
+            "Common Sense": "Some writers have so confounded society with government, as to leave little or no distinction between them; whereas they are not only different, but have different origins.",
+            "The Leviathan": "Concerning the Thoughts of man, I will consider them first Singly, and afterwards in Trayne, or dependance upon one another.",
+            "The Prince": "All states, all powers, that have held and hold rule over men have been and are either republics or principalities.",
+            "The Magna Carta": "JOHN, by the grace of God King of England, Lord of Ireland, Duke of Normandy and Aquitaine, and Count of Anjou, to his archbishops, bishops, abbots, earls, barons, justices, foresters, sheriffs, stewards, servants, and to all his officials and loyal subjects, Greeting."
+        }
+
+        $("#guessClassic").on("click", function() {
+            let chosenClassic = Object.keys(listOfClassics)[Math.floor(Object.keys(listOfClassics).length * Math.random())];
+
+            var toSend = JSON.stringify({data: chosenClassic});
+
+            $.ajax({
+                type    : "POST",
+                url     : `https://alex-seltzer.com/appendtoannoyinglist?${pw}`,
+                contentType: 'application/json',
+                success : function(returned) {
+                    window.location.reload();
+                },
+                error   : function(returned) {
+                    console.log(returned);
+                },
+                data    : toSend
+            });
+
+            $("#textP").text(listOfClassics[chosenClassic]);
+            $("#mask").css("display", "flex");
+        });
+
+        $("#mask").on("click", function() {
+            $("#mask").css("display", "none");
+        })
+    </script>
+</html>
