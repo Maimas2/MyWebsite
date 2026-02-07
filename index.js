@@ -25,7 +25,7 @@ process.on("SIGTERM", receivedKillSignal);
 process.on("SIGINT",  receivedKillSignal);
 
 var sdl = fs.readFileSync("./subdomains.txt", "utf8")
-const pw = fs.readFileSync("./files-pw.txt", "utf-8");
+const pw = fs.readFileSync("./files-pw.txt", "utf-8").replaceAll("\n", "");
 var l = sdl.split("\n");
 
 for(var i = 0; i < l.length; i++) {
@@ -148,6 +148,8 @@ app.post("/appendtoannoyinglistoverride", (req, res) => {
         listsToSend.unshift(req.body.data);
         messagesSent.push(req.body.data);
         res.send("Appended.");
+    } else {
+        res.send("Invalid authentication.");
     }
 });
 
