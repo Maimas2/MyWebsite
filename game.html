@@ -30,12 +30,33 @@
                 width: 100%;
                 text-align: center;
             }
+            #guessClassic {
+                box-sizing: border-box;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: calc(50vw - 60px);
+                height: calc(50vh - 60px);
+                margin: 30px;
+                font-size: 28pt;
+            }
+            #guessGame {
+                box-sizing: border-box;
+                position: absolute;
+                left: 50vw;
+                top: 0;
+                width: calc(50vw - 60px);
+                height: calc(50vh - 60px);
+                margin: 30px;
+                font-size: 28pt;
+            }
         </style>
         <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script src="https://mun.alex-seltzer.com/lib/jquery.js"></script>
     </head>
     <body>
         <button id="guessClassic">Guess that Classic</button>
+        <button id="guessGame">Guess that Game</button>
         <div id="mask">
             <div id="textContainer">
                 <p id="textP">This is text</p>
@@ -71,6 +92,30 @@
             "The Magna Carta": "JOHN, by the grace of God King of England, Lord of Ireland, Duke of Normandy and Aquitaine, and Count of Anjou, to his archbishops, bishops, abbots, earls, barons, justices, foresters, sheriffs, stewards, servants, and to all his officials and loyal subjects, Greeting."
         }
 
+        var listOfGames = [
+            "The 3rd Millennium",
+            "7 Wonders",
+            "Ace Combat 2",
+            "The Cat in the Hat (1997)",
+            "Beasts and Bumpkins",
+            "The Ediface",
+            "Dungeon Keeper",
+            "The Eye of Judgement",
+            "Svea Rike",
+            "The Glory of Walkure",
+            'Garfield: Lasagna World Tour',
+            'Fusion Frenzy 2',
+            'Brawl Stars',
+            'Hollow Knight',
+            'Silksong',
+            'Clash Royale',
+            'Stars Wars Battlefront I',
+            'BTD6',
+            'BTD5',
+            'BTDB',
+            'SMO'
+        ];
+
         $("#guessClassic").on("click", function() {
             let chosenClassic = Object.keys(listOfClassics)[Math.floor(Object.keys(listOfClassics).length * Math.random())];
 
@@ -91,6 +136,25 @@
 
             $("#textP").text(listOfClassics[chosenClassic]);
             $("#mask").css("display", "flex");
+        });
+
+        $("#guessGame").on("click", function() {
+            let chosenGame = listOfGames[Math.floor(listOfGames.length * Math.random())];
+
+            var toSend = JSON.stringify({data: chosenGame});
+
+            $.ajax({
+                type    : "POST",
+                url     : `https://alex-seltzer.com/appendtoannoyinglistoverride?${pw}`,
+                contentType: 'application/json',
+                success : function(returned) {
+                    alert("Sent");
+                },
+                error   : function(returned) {
+                    console.log(returned);
+                },
+                data    : toSend
+            });
         });
 
         $("#mask").on("click", function() {
