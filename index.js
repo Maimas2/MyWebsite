@@ -143,6 +143,14 @@ app.post("/appendtoannoyinglist", (req, res) => {
     }
 });
 
+app.post("/appendtoannoyinglistoverride", (req, res) => {
+    if(req.url.includes(pw)) {
+        listsToSend.unshift(req.body.data);
+        messagesSent.push(req.body.data);
+        res.send("Appended.");
+    }
+});
+
 app.get("/annoyme", (req, res) => {
     var u = useragentToString(req.useragent, req);
     if(blockedIps.includes(u)) {
