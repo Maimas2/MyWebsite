@@ -1,0 +1,15 @@
+PageType:Equation
+PageDisplayTitle:Luminosity of a Star
+Categories:Stars,Luminosity
+MainEquation:L=4\pi r^2\sigma T_{eff}
+
+The __b__luminosity__ of a star is given by the star's surface area times its emitted flux per area, given by the __nlink__Stefan-Boltzmann Law__Stefan-Boltzmann Law__.
+
+__h2__Variables__
+
+__list__
+\( L \): luminosity of the given star (Watts)__
+\( r \): radius of the given star (meters)__
+\( \sigma \): the ==link e==Stefan-Boltzmann Constant==https://en.wikipedia.org/wiki/Stefan%E2%80%93Boltzmann_law==, which is \( 5.670 \times 10^{-8} \; W \cdot \text{m}^{-2} \cdot \text{K}^{-4} \)__
+\( \alpha \): dimensionless parameter dependent on general type of star
+__tsil__
