@@ -25,6 +25,8 @@ const EuropeanUnionLoadString = '{"mySalt":"","committeeName":"[No name]","custo
 
 const ASEANLoadString = '{"mySalt":"","committeeName":"[No name]","customDelegates":[],"attendance":{"Brunei Darussalam":"Ab","Cambodia":"Ab","Indonesia":"Ab","Laos":"Ab","Malaysia":"Ab","Myanmar":"Ab","Philippines":"Ab","Singapore":"Ab","Thailand":"Ab","Vietnam":"Ab"},"proposedMotions":[],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}';
 
+const NothingSaveFile = '{"mySalt":"","committeeName":"[No name]","dictOfCustomDelegates":{},"attendance":{},"proposedMotions":[],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}';
+
 var dictOfBasicDelegates = {
 
 };
@@ -220,6 +222,7 @@ function recalcDelegates() {
 }
 
 function showPopup(elToShow = "", displayAttr = "block") {
+    $("#crisisShownNotification").css("display", "none"); // fuck-ass soln, I don't care
     if(!isPopupShown) {
         document.getElementById("popupPage").childNodes.forEach(function(element) {
             if(typeof element.style != "undefined") {
@@ -274,9 +277,8 @@ function appendMotion(m) {
 
     if(isMirroring) {
         m.find("input").toArray().forEach((el) => {
-            if(!$(el).attr("disabled")) $(el).replaceWith($("<span>").append(document.createTextNode(el.value)));
+            /* if(!$(el).attr("disabled")) */ if(!$(el).hasClass("customMotionNameInput")) $(el).replaceWith($("<span>").append(document.createTextNode(el.value)));
         });
-
         m.find("button").remove();
     } else {
         m.find("input").toArray().forEach(function(el) {
@@ -285,12 +287,13 @@ function appendMotion(m) {
     }
 
     m.attr("id", "");
-    m.attr("data-rngid", Math.floor(Math.random()*10000).toString()); // Random id to add to keep track of motions that otherwise are identical, esp. for saving/restoring state
     m.attr("data-motionid", currentMotionId++);
+
+    if(!isMirroring) m.attr("data-rngid", Math.floor(Math.random()*10000).toString()); // Random id to add to keep track of motions that otherwise are identical, esp. for saving/restoring state
 
     m.appendTo("#motiondisplays");
 
-    if(!isMirroring) {
+    if(!isMirroring || true) {
         var ph = m.css("height");
         var pp = m.css("padding");
         var pmt = m.css("margin-top");
@@ -541,7 +544,7 @@ function quitPopup(nextFunction = null) {
 
         lastSent = -1000;
     } else {
-        nextFunction();
+        if(nextFunction) nextFunction();
     }
 }
 
@@ -661,6 +664,12 @@ function passMotion(parentEl) {
 }
 
 function parsePassedMotionJSON(details) {
+    if(isMirroring && currentMotion == null) {
+        $("#rightbottomarea").animate({
+            "opacity" : "1"
+        }, 150);
+    }
+
     currentMotion = details;
 
     if(details["requiresDelegateList"]) {
@@ -731,18 +740,22 @@ function parsePassedMotionJSON(details) {
                 perDelegateCurrentPosition--;
             }
             stopTimer();
+            resendMirror();
             //refreshModCurrentCountryNumberBackground();
         }
     });
 
     if(details["requiresDelegateList"]) {
+        $("#actualPassedMotionCountryChooser").children().remove();
+        $("#chosenCountriesForTimer").children().remove();
+
         $("#chosenCountriesForTimer").css("display", "");
 
         var i = 0;
 
         $("#chosenCountriesForTimer > *").remove();
         getListOfPresentCountries().forEach(function(val) {
-            var toAdd = $(`<button class="outlineddiv marginizechildren countryListOne"></button>`);
+            var toAdd = $(`<button class="outlineddiv marginizechildren countryListOne${isMirroring ? " noHoverEffect" : ""}"></button>`);
 
             toAdd.css("padding", "15px");
             toAdd.css("display", "flex");
@@ -766,7 +779,11 @@ function parsePassedMotionJSON(details) {
 
             toAdd.on("click", modCountryChooserClickEventFunctionResponder);
 
-            toAdd.appendTo($("#actualPassedMotionCountryChooser"));
+            if(details.chosenCountries && details.chosenCountries.includes(val)){
+                toAdd.appendTo($("#chosenCountriesForTimer"));
+            } else {
+                toAdd.appendTo($("#actualPassedMotionCountryChooser"));
+            }
         });
     } else {
         $("#chosenCountriesForTimer").css("display", "none");
@@ -858,7 +875,7 @@ document.onkeydown = function(event) {
         clearInterval(keyboardTimeout);
         keyboardTimeout = setTimeout(() => {
             if(event.key == "Control") {
-                $(".keyboardShortcut").css("display", "initial");
+                $("*:enabled > .keyboardShortcut").css("display", "initial");
             }
         }, 300);
     }
@@ -917,7 +934,7 @@ document.onkeydown = function(event) {
                     }
                 });
                 
-                console.log(numfound);
+                //console.log(numfound);
 
                 if(shownElement != undefined && shownElement != null && numfound == 1) {
                     shownElement.click();
@@ -984,6 +1001,8 @@ function changeClickedEventResponder(_event) {
 }
 
 function createAlert(message, otherOptionFunction=null) {
+    if(isMirroring) return;
+
     $("#alertContainer").css("display", "flex");
     $("#alertContainer").css("opacity", 0);
     $("#alertContainer").animate({
@@ -1051,6 +1070,8 @@ function moveToNextDelegate() {
 
     perDelegateCurrentPosition = Math.min(perDelegateCurrentPosition, largeTimerNumDelegates-1);
 
+    refreshModCurrentCountryNumberBackground();
+
     refreshTimer(false);
     resendMirror();
 }
@@ -1088,17 +1109,17 @@ function endCurrentMotion() {
         opacity: 0
     }, 150);
 
+    $("#leftbottomarea").css("opacity", "0");
+    $("#leftbottomarea").css("display", "");
+    $("#leftbottomarea").animate({
+        opacity : 1
+    }, 150);
+
     setTimeout(function(_e) {
         $("#rightbottomarea").css("display", "none");
         $("#rightbottomarea").css("opacity", "1");
 
-        $("#leftbottomarea").css("opacity", "0");
-        $("#leftbottomarea").css("display", "");
-        $("#leftbottomarea").animate({
-            opacity: 1
-        }, 150, function(_e) {
-            resendMirror();
-        });
+        resendMirror();
     }, 250);
 
     $("#exitCurrentMotion").css("display", "none");
@@ -1178,6 +1199,8 @@ function createDelegatePresenseNode(name, clicked=false) {
 }
 
 function setCurrentCountryList(newList, isFirstTime = false) {
+    let countriesAlreadyDone = []; // Prevent doubling countries, esp. custom ones
+
     getDelegatePresenseNodes().forEach((el) => {
         $(el).remove();
     });
@@ -1187,6 +1210,12 @@ function setCurrentCountryList(newList, isFirstTime = false) {
     $("#customDelegateList").append( $("#dividerLinePrefab").clone(true).attr("id", "").css("display", "block").css("margin", "5px 0 5px 25%") );
 
     getListOfCountries().forEach(function(v) {
+        if(countriesAlreadyDone.includes(v)) {
+            return;
+        } else {
+            countriesAlreadyDone.push(v);
+        }
+        
         var tempNode = createDelegatePresenseNode(v, newList.includes(v));
 
         if(isBasicMember(v)) {
@@ -1255,6 +1284,7 @@ function modCountryChooserClickEventFunctionResponder() {
     }
     
     var toAdd = $(`<button class="outlineddiv marginizechildren countryListOne"></button>`).css("padding", "15px").css("width", "100%").on("click", function() {
+        if(isMirroring) return;
         if(canSortChosenCountries && false) {
             $("#modCaucusCountryChooser" + sanitizeForID($(this).children(".expandToFlexWidth").text())).css("display", "flex").animate({
                 "padding" : "15px",
@@ -1307,42 +1337,44 @@ function modCountryChooserClickEventFunctionResponder() {
 
     toAdd.append($("<p>").text(this.textContent).addClass("expandToFlexWidth"));
     
-    toAdd.append($("<button>").text("X").addClass("modIdButton").on("click", function(_e) {
-        $("#modCaucusCountryChooser" + sanitizeForID($(this).parent().children(".expandToFlexWidth").text())).css("display", "flex").animate({
-            "padding" : "15px",
-            "margin-bottom" : "10px"
-        }, 150).attr("data-can-be-shown", true);
-
-        $(this).parent().off("click");
-        $(this).off("click");
-
-        $(this).parent().animate({
-            "height" : 0,
-            "padding-top" : 0,
-            "padding-bottom" : 0
-        }, 150, () => {
-            $(this).parent().remove();
-            refreshModChosenCountriesIds();
-            refreshModCurrentCountryNumberBackground();
-        });
-
-        let tId = 0; // Index of element being deleted
-        for(let child in $("#chosenCountriesForTimer").children().toArray()) {
-            var tt = $($("#chosenCountriesForTimer").find("p:not(.modIdP):not(button)").toArray()[child]).text(); // Enough to make a grown man cry (eh it was worse before)
-            
-            if(tt == $(this).parent().find(":not(.modIdP):not(button)").text()) {
-                break;
+    if(!isMirroring) {
+        toAdd.append($("<button>").text("X").addClass("modIdButton").on("click", function(_e) {
+            $("#modCaucusCountryChooser" + sanitizeForID($(this).parent().children(".expandToFlexWidth").text())).css("display", "flex").animate({
+                "padding" : "15px",
+                "margin-bottom" : "10px"
+            }, 150).attr("data-can-be-shown", true);
+    
+            $(this).parent().off("click");
+            $(this).off("click");
+    
+            $(this).parent().animate({
+                "height" : 0,
+                "padding-top" : 0,
+                "padding-bottom" : 0
+            }, 150, () => {
+                $(this).parent().remove();
+                refreshModChosenCountriesIds();
+                refreshModCurrentCountryNumberBackground();
+            });
+    
+            let tId = 0; // Index of element being deleted
+            for(let child in $("#chosenCountriesForTimer").children().toArray()) {
+                var tt = $($("#chosenCountriesForTimer").find("p:not(.modIdP):not(button)").toArray()[child]).text(); // Enough to make a grown man cry (eh it was worse before)
+                
+                if(tt == $(this).parent().find(":not(.modIdP):not(button)").text()) {
+                    break;
+                }
+                tId++;
             }
-            tId++;
-        }
-
-        if(perDelegateCurrentPosition > tId) {
-            perDelegateCurrentPosition--;
-        }
-
-        refreshModCountryList();
-        resendMirror();
-    }));
+    
+            if(perDelegateCurrentPosition > tId) {
+                perDelegateCurrentPosition--;
+            }
+    
+            refreshModCountryList();
+            resendMirror();
+        }));
+    }
     
     toAdd.appendTo($("#chosenCountriesForTimer"));
 
@@ -1426,15 +1458,35 @@ window.onload = function(_event) {
         $("#impromptuTimerControls").remove();
         $("#jccPassPaperContainer").remove();
         $("#quickStartPopup").remove();
+        $(".deleteOnMirror").remove();
+
+        $("input:not(.enableInputMirror)").attr("disabled", true);
 
         $("#floatBottomRight").css("display", "none");
 
-        $("#impromptuTimerLabel").replaceWith($("<p>").prop("id", "impromptuTimerLabel").text("5:00"))
+        $("#impromptuTimerLabel").replaceWith($("<p>").prop("id", "impromptuTimerLabel").text("5:00"));
 
         $("#committeeName").remove();
         $("#committeeNameContainer").append(
             $("<h1>").prop("id", "committeeName").css("background-color", "rgb(0, 0, 0, 0)")
         );
+
+        $("#changeMirrorButton").css("display", "block");
+        $("#changeMirrorButton").on("click", function() {
+            chosenMirrorableSalt = null;
+            hasChoosenMirrorable = false;
+            seenStates = {};
+
+            implementStateJSON(JSON.parse(NothingSaveFile));
+            showPopup("#mirrorSetupPopup");
+            $("#listOfMirrorables").children().remove();
+
+            ws.send(JSON.stringify({
+                name       : jccData.name,
+                salt       : jccData.salt,
+                type       : "requestMirrors"
+            }));
+        })
 
         $("#startMirroringButton").on("click", function(_e) {
             var d = {
@@ -1768,6 +1820,7 @@ window.onload = function(_event) {
             };
             ws.send(JSON.stringify(d));
             $("#jccSendCrisisInput").val("");
+            $("#crisisShownNotification").css("display", "block");
         });
         $("#passedPaperButton").on("click", function(_e) {
             if(ws == undefined) return;
@@ -1888,7 +1941,7 @@ window.onload = function(_event) {
                 return;
             }
             if(!isPopupShown) {
-                showPopup("#attendanceList");
+                showPopup("#attendanceList", "flex");
                 $("#quitPopup").css("display", "none");
             }
         };
@@ -1996,7 +2049,10 @@ window.onload = function(_event) {
             }
         }, 1000);
 
-        $("#committeeName").on("change", resendMirror);
+        $("#committeeName").on("change", function(_e) {
+            $(document).prop("title", `${$("#committeeName").val()}${$("#committeeName").val().length ? " - " : ""}Model UN`)
+            resendMirror();
+        });
     }
 
     $("#impromptuTimerButton").on("click", function(_e) {
@@ -2153,7 +2209,7 @@ function setupMirroring(data) {
         }));
     });
     ws.addEventListener("message", function(m) {
-        console.log(m.data);
+        //console.log(m.data);
         let dd;
         if(m.data != "Connected") dd = JSON.parse(m.data);
         if(m.data == "Connected") {
@@ -2168,7 +2224,6 @@ function setupMirroring(data) {
         } else if(dd.type == "heartbeat") {
             ws.send(JSON.stringify({type : "heartbeat"}));
         } else if(dd.type == "crisis") {
-            console.log(dd);
             $("#crisisUpdateText").text(dd.messageBody);
             quitPopup(function() {
                 $("#exitButtons").css("opacity", "0");
@@ -2263,7 +2318,7 @@ function setupJccData(data) {
                 });
             }
         }
-        console.log(d);
+        //console.log(d);
     });
     ws.addEventListener("close", function(_e) {
         createAlert("Disconnected from server, trying to reconnect...");
@@ -2500,7 +2555,7 @@ function getStateJSON() {
             toReturn.currentMotion.canSortCountries = canSortChosenCountries;
 
             $("#chosenCountriesForTimer").children().each(function(e) {
-                toReturn.currentMotion.chosenCountries.push($(this).children()[0].textContent);
+                toReturn.currentMotion.chosenCountries.push($(this).children()[2].textContent);
             });
         } else if(toReturn.currentMotion.motionType == "unmod") {
             toReturn.currentMotion.currentTime      = largeTimerCurrentTime;
@@ -2543,57 +2598,100 @@ function getIdOfMotionJSON(m) {
     return toReturn;
 }
 
+function motionToElement(mot) {
+    var toReturn;
+    if(mot.type == "mod") {
+        toReturn = $("#modMotionPrefab").clone(true);
+        var inputList = toReturn.find("input");
+        inputList[0].value = mot.topic;
+        inputList[1].value = durationToString(mot.totalDuration);
+        inputList[1].textContent = durationToString(mot.totalDuration);
+
+        if(inputList.length > 2) {
+            inputList[2].value = durationToString(mot.delegateDuration);
+            inputList[2].textContent = durationToString(mot.delegateDuration);
+        }
+    } else if(mot.type == "unmod") {
+        toReturn = $("#unmodMotionPrefab").clone(true);
+        var inputList = toReturn.find("input");
+        inputList[0].value = mot.topic;
+        inputList[0].textContent = mot.topic;
+
+        if(inputList.length > 1) {
+            inputList[1].value = durationToString(mot.duration);
+            inputList[1].textContent = durationToString(mot.duration);
+        }
+    } else if(mot.type == "roundRobin") {
+        toReturn = $("#roundRobinMotionPrefab").clone(true);
+        var inputList = toReturn.find("input");
+        inputList[0].value = mot.topic;
+        inputList[0].textContent = mot.topic;
+
+        if(inputList.length > 1) {
+            inputList[1].value = durationToString(mot.delegateDuration);
+            inputList[1].textContent = durationToString(mot.delegateDuration);
+        }
+    } else if(mot.type == "speakersList") {
+        toReturn = $("#speakersListMotionPrefab").clone(true);
+        var inputList = toReturn.find("input");
+        inputList[0].value = mot.numberOfSpeakers;
+        inputList[0].textContent = mot.numberOfSpeakers;
+
+        if(inputList.length > 1) {
+            inputList[1].value = durationToString(mot.delegateDuration);
+            inputList[1].textContent = durationToString(mot.delegateDuration);
+        }
+    } else if(mot.type == "presentPapers") {
+        toReturn = $("#presentPapersMotionPrefab").clone(true);
+    } else if(mot.type == "custom") {
+        toReturn = $("#customMotionPrefab").clone();
+        var inputList = toReturn.find("input");
+
+        $(inputList[0]).attr("disabled", true);
+        inputList[0].value = mot.topic;
+        inputList[0].textContent = mot.topic;
+
+        if(inputList.length > 1) {
+            inputList[1].value = durationToString(mot.duration);
+            inputList[1].textContent = durationToString(mot.duration);
+        }
+    }
+
+    if(isMirroring) {
+        toReturn.find("input").toArray().forEach((el) => {
+            /* if(!$(el).attr("disabled")) */ if(!$(el).hasClass("customMotionNameInput")) $(el).replaceWith($("<span>").append(document.createTextNode(el.value)));
+        });
+        toReturn.find("button").remove();
+    }
+
+    toReturn.attr("id", "");
+
+    return toReturn;
+}
+
 function implementStateJSON(newState) {
     if("success" in newState && !newState.success) { // Network sent an error =(
         createAlert(`Request unsuccessful with error code ${newState.code}: ${newState.message}`);
         console.log(newState);
         return;
     }
+
+    //console.log(newState);
     
     var newMotions = [];
+    let listOfIds = []; // Ids of sent motions to quickly parse afterwards
 
-    if(isMirroring && false) { // Tried to make the transition work all nice. I failed.
-        var toRemove   = [];
-
-        // Check for motions in newState but not on the screen
-        for(m1i in newState.proposedMotions) { // Oops! O(n²)!
-            let m1 = newState.proposedMotions[m1i];
-            var m1id = getIdOfMotionJSON(m1);
-            var isNewMotion = true;
-            for(m2i in lastMotionList) {
-                let m2 = newState.proposedMotions[m2i];
-                if(m1id == getIdOfMotionJSON(m2)) {
-                    isNewMotion = false;
-                    break;
-                }
-            }
-            if(isNewMotion) newMotions.push(m1);
-        }
-
-        // Check for motions on the screen but not in newState
-        for(m1i in lastMotionList) { // Oops! O(n²)!
-            var m1id = getIdOfMotionJSON(lastMotionList[m1i]);
-            var isStillHere = false;
-            for(m2 in newState.proposedMotions) {
-                if(m1id == getIdOfMotionJSON(m2)) {
-                    isStillHere = true;
-                    break;
-                }
-            }
-            if(!isStillHere) {
-                toRemove.push(m1id);
+    if(isMirroring) { // Tried to make the transition work all nice. I failed.... then tried again and got it! (and it's so much shorter to boot)
+        for(mi in newState.proposedMotions) {
+            let mot = newState.proposedMotions[mi];
+            listOfIds.push(mot.rngid);
+            if($(`div[data-rngid=${mot.rngid}]`).length == 0) { // Check if motion is not already present on screen
+                newMotions.push(mot);
+            } else {
+                let c = motionToElement(mot);
+                $(`div[data-rngid=${mot.rngid}]`).replaceWith(c.attr("data-rngid", mot.rngid));
             }
         }
-
-        console.log(toRemove);
-
-        lastMotionList = newState.proposedMotions;
-
-        $("#motiondisplays").children().toArray().forEach((el) => {
-            if(toRemove.includes(getIdOfMotionJSON(constructJSON(el)))) {
-                el.remove();
-            }
-        });
     } else {
         $("#motiondisplays > *").remove();
         newMotions = newState.proposedMotions;
@@ -2603,7 +2701,7 @@ function implementStateJSON(newState) {
         hidePopup();
     } else {
         if(isPopupShown && !window.location.href.includes("clock")) {
-            if(newState.isImpromptuTimerOpen && $("#impromptuTimer").css("display") != "none") {
+            if(newState.isImpromptuTimerOpen && $("#impromptuTimer").css("display") != "none") { // Trust the process ig
                 
             } else if(newState.isThereARollCall && $("#rollCallVotePopup").css("display") != "none") {
                 
@@ -2625,79 +2723,52 @@ function implementStateJSON(newState) {
     $("#allAbsentButton").click();
     recalcDelegates();
 
+    $("#leftbottomarea").css("opacity", "1");
+    $("#leftbottomarea").css("display", "");
+
     if(isMirroring) {
         $("#committeeName").text(newState.committeeName);
     } else {
         if(newState.committeeName != "[No name]") {
             $("#committeeName").val(newState.committeeName);
         } else {
-            $("#committeeName").val();
+            $("#committeeName").val("");
         }
     }
 
     if(!newState.isThereACurrentMotion) {
+        $("#rightbottomarea").animate({
+            opacity : 0
+        }, 150, function() {
+            $("#rightbottomarea").css("display", "none");
+        });
         for(var i = 0; i < newMotions.length; i++) {
             var cm = newMotions[i];
-            if(cm.type == "mod") {
-                var toAdd = $("#modMotionPrefab").clone(true);
-                var inputList = toAdd.find("input");
-                inputList[0].value = cm.topic;
-                inputList[1].value = durationToString(cm.totalDuration);
-                inputList[1].textContent = durationToString(cm.totalDuration);
+            var toAdd = motionToElement(cm);
 
-                inputList[2].value = durationToString(cm.delegateDuration);
-                inputList[2].textContent = durationToString(cm.delegateDuration);
+            toAdd.attr("data-rngid", cm.rngid);
 
-                appendMotion(toAdd);
-            } else if(cm.type == "unmod") {
-                var toAdd = $("#unmodMotionPrefab").clone(true);
-                var inputList = toAdd.find("input");
-                inputList[0].value = cm.topic;
-                inputList[0].textContent = cm.topic;
-
-                inputList[1].value = durationToString(cm.duration);
-                inputList[1].textContent = durationToString(cm.duration);
-
-                appendMotion(toAdd);
-            } else if(cm.type == "roundRobin") {
-                var toAdd = $("#roundRobinMotionPrefab").clone(true);
-                var inputList = toAdd.find("input");
-                inputList[0].value = cm.topic;
-                inputList[0].textContent = cm.topic;
-
-                inputList[1].value = durationToString(cm.delegateDuration);
-                inputList[1].textContent = durationToString(cm.delegateDuration);
-
-                appendMotion(toAdd);
-            } else if(cm.type == "speakersList") {
-                var toAdd = $("#speakersListMotionPrefab").clone(true);
-                var inputList = toAdd.find("input");
-                inputList[0].value = cm.numberOfSpeakers;
-                inputList[0].textContent = cm.numberOfSpeakers;
-
-                inputList[1].value = durationToString(cm.delegateDuration);
-                inputList[1].textContent = durationToString(cm.delegateDuration);
-
-                appendMotion(toAdd);
-            } else if(cm.type == "presentPapers") {
-                var toAdd = $("#presentPapersMotionPrefab").clone(true);
-                appendMotion(toAdd);
-            } else if(cm.type == "custom") {
-                var toAdd = $("#customMotionPrefab").clone(true);
-                var inputList = toAdd.find("input");
-
-                $(inputList[0]).attr("disabled", true);
-                inputList[0].value = cm.topic;
-                inputList[0].textContent = cm.topic;
-
-                inputList[1].value = durationToString(cm.duration);
-                inputList[1].textContent = durationToString(cm.duration);
-
-                appendMotion(toAdd);
-            }
+            if(toAdd) appendMotion(toAdd);
         }
+
+        $("#motiondisplays > div").each(function(_el) {
+            if(listOfIds.indexOf($(this).attr("data-rngid")) == -1) killMotionDisplayParent($(this)); //$(this).remove();
+        });
+        var listedMotions = $("#motiondisplays > div").detach().toArray().sort(function(first, second) {
+            if(listOfIds.indexOf($(first).attr("data-rngid")) < listOfIds.indexOf($(second).attr("data-rngid"))) {
+                return -1;
+            }
+            return 1;
+        });
+        
+        $.each(listedMotions, function(_index, el) {
+            $("#motiondisplays").append(el);
+        });
+
+        $("#leftbottomarea").css("opacity", "1");
     } else {
         parsePassedMotionJSON(newState.currentMotion);
+
         if(newState.currentMotion.motionType == "mod" || newState.currentMotion.motionType == "speakersList") {
             newState.currentMotion.chosenCountries.forEach((el) => {
                 $("#modCaucusCountryChooser" + sanitizeForID(el)).click();

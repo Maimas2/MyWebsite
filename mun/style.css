@@ -42,7 +42,7 @@ button:not(.incrementButton), select {
     border: 1px #888888 solid;
     background-color: white;
 }
-button:hover:not(:disabled):not(:has(button:hover)), select:hover:not(:disabled) {
+button:hover:not(:disabled):not(:has(button:hover)):not(.noHoverEffect), select:hover:not(:disabled) {
     background-color: #dddddd;
     border-radius: 5px;
 }
@@ -71,9 +71,8 @@ input[type=number] {
     justify-content: center;
     padding-left: 5px;
     padding-right: 5px;
-}
-#topbar {
-    background-color: color-mix(in srgb, powderblue 20%, white 80%);
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(3px);
 }
 #topbar > div {
     min-height: 150px !important;
@@ -300,6 +299,7 @@ p {
 input {
     border-radius: 0;
     border: solid #888 1px;
+    color: black;
 }
 .incrementButton {
     line-height: inherit;
@@ -611,11 +611,11 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     transition: 150ms;
     background-color: transparent;
 }
-#impromptuTimerLabel:not(p):hover, #oneLargeTimer:not(p):hover {
+#impromptuTimerLabel:not(p):hover, #oneLargeTimer:not(p):hover:not(:disabled) {
     border: 1px solid black;
     background-color: white;
 }
-#impromptuTimerLabel:not(p):active, #oneLargeTimer:not(p):active {
+#impromptuTimerLabel:not(p):active, #oneLargeTimer:not(p):active:not(:disabled) {
     border: 1px solid black;
     border-radius: 15px;
     background-color: white;
@@ -719,6 +719,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     display: flex;
     flex-direction: row;
     overflow-y: hidden;
+    width: 100%;
 }
 #attendanceMiddleLine {
     border-left: 1px solid #000;
@@ -734,7 +735,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     align-items: start;
     max-height: 20%;
     height: 20%;
-    overflow-y: hidden;
+    overflow-y: auto;
 }
 #attendanceBigButtonContainer {
     display: flex;
@@ -831,8 +832,10 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     border-color: transparent !important;
     transition: border-color 150ms;
     color: black !important;
+    background-color: transparent;
 }
-.customMotionNameInput:hover:not(:disabled), .customMotionNameInput:active:not(:disabled) {
+.customMotionNameInput:hover:not(:disabled), .customMotionNameInput:focus-visible:not(:disabled), .customMotionNameInput:active:not(:disabled) {
+    background-color: white;
     border-color: #888888 !important;
 }
 .modIdButton {
@@ -841,4 +844,23 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 .colorMePlease {
     padding: 8px;
     border-radius: 12px;
+}
+#attendanceList {
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+#rightAttendance {
+    height: calc(100% - 25px) !important;
+    width: 100% !important;
+    max-height: none !important;
+}
+#crisisShownNotification {
+    display: none;
+}
+#changeMirrorButton {
+    display: none;
+}
+#mirrorSetupPopup {
+    padding: 20px;
 }
