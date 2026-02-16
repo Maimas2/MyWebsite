@@ -40,7 +40,7 @@ function isBasicMember(str) {
 }
 
 function hasBasicFlag(str) {
-    return String(basicListOfCountries[str]).length > 0;
+    return String(basicListOfCountries[str]) != "undefined" && String(basicListOfCountries[str]).length > 0;
 }
 
 function dictOfDelegates() {
@@ -799,12 +799,17 @@ function parsePassedMotionJSON(details) {
         $("#leftbottomarea").css("display", "none");
         $("#leftbottomarea").css("opacity", "1");
 
-        $("#rightbottomarea").css("display", "");
-        $("#rightbottomarea").css("opacity", "0");
+        if(!isMirroring) {
+            $("#rightbottomarea").css("display", "");
+            $("#rightbottomarea").css("opacity", "0");
 
-        $("#rightbottomarea").animate({
-            opacity : 1
-        }, 150);
+            $("#rightbottomarea").animate({
+                opacity : 1
+            }, 150);
+        } else {
+            $("#rightbottomarea").css("display", "");
+            $("#rightbottomarea").css("opacity", "1");
+        }
 
         resendMirror();
     });
@@ -1204,7 +1209,7 @@ function setCurrentCountryList(newList, isFirstTime = false) {
     getDelegatePresenseNodes().forEach((el) => {
         $(el).remove();
     });
-    $("#customDelegateList > *:not(h2)").remove();
+    $("#customDelegateList > *:not(h2):not(button):not(.dontDeleteMe)").remove();
 
     $("#normalDelegateList").append( $("#dividerLinePrefab").clone(true).attr("id", "").css("display", "block").css("margin", "5px 0 5px 25%") );
     $("#customDelegateList").append( $("#dividerLinePrefab").clone(true).attr("id", "").css("display", "block").css("margin", "5px 0 5px 25%") );
@@ -1647,13 +1652,6 @@ window.onload = function(_event) {
             quitPopup();
         });
     
-        $("#logoContainer").on("click", function(_e) {
-            if(isPopupShown) return;
-            showPopup("#legalStuffEwww");
-            $("#quitPopup").text("Close");
-            $("#exitPopup").css("display", "none");
-        });
-    
         $("#newDelegateSubmit").on("click", function(_e) {
             if($("#newDelegateInput").val() == "") return;
 
@@ -1665,13 +1663,34 @@ window.onload = function(_event) {
             //customDelegates.push($("#newDelegateInput").val());
             dictOfCustomDelegates[$("#newDelegateInput").val()] = {canVote : true};
             
-            $("#customDelegateList").append(createDelegatePresenseNode($("#newDelegateInput").val()));
+            $("#customDelegateList").append(createDelegatePresenseNode($("#newDelegateInput").val(), true));
     
             $("#newDelegateInput").val("");
     
             hasMadeNewDelegate = true;
     
             refreshSearch();
+        });
+
+        $("#massImportDelegates").on("click", function() {
+            hidePopup(function() {
+                showPopup("#massImportDelegatesPopup");
+                $("#massImportDelegatesArea").val("");
+            });
+        });
+
+        $("#massImportDelegatesSubmit").on("click", function() {
+            $("#massImportDelegatesArea").val().split("\n").forEach((el) => {
+                if(el.trim()) {
+                    $("#newDelegateInput").val(el);
+                    $("#newDelegateSubmit").click();
+                }
+            });
+            $("#massImportDelegatesArea").val("");
+            alert("Imported.");
+            hidePopup(function() {
+                showPopup("#editDelegateList");
+            });
         });
 
         $("#impromptuTimerStartStop").on("click", function(_e) {
@@ -1812,11 +1831,12 @@ window.onload = function(_event) {
         $("#jccSendCrisisButton").on("click", function(_e) {
             if(ws == undefined) return;
             var d = {
-                name : jccData.name,
-                salt : jccData.salt,
-                type : "crisis",
+                name  : jccData.name,
+                salt  : jccData.salt,
+                type  : "crisis",
                 messageBody : $("#jccSendCrisisInput").val(),
-                sender     : $("#committeeName").val()
+                sender     : $("#committeeName").val(),
+                sound : $("#crisisSoundChoice").val()
             };
             ws.send(JSON.stringify(d));
             $("#jccSendCrisisInput").val("");
@@ -2228,7 +2248,8 @@ function setupMirroring(data) {
             quitPopup(function() {
                 $("#exitButtons").css("opacity", "0");
                 showPopup("#crisisUpdatePopup");
-                $("#crisisBellPlay")[0].play();
+                $("#crisisSound").attr("src", `/sounds/${dd.sound}.mp3`);
+                $("#crisisSound")[0].play();
             });
         } else if(!hasChoosenMirrorable) {
             var d = dd.state;
@@ -2310,11 +2331,20 @@ function setupJccData(data) {
             resendMirror();
         } else if(d.type == "message") {
             if(d.messageBody.startsWith("!crisis")) {
-                $("#crisisUpdateText").text(d.messageBody.substr(8));
+                let crisisMessage = "";
+                d.messageBody.substring(8).split(" ").forEach((el) => {
+                    if(el.startsWith("-S")) {
+                        $("#crisisSound").attr("src", `/sounds/${el.substring(2)}.mp3`);
+                    } else {
+                        crisisMessage += el + " ";
+                    }
+                });
+
+                $("#crisisUpdateText").text(crisisMessage.trim());
                 quitPopup(function() {
                     $("#exitButtons").css("opacity", "0");
                     showPopup("#crisisUpdatePopup");
-                    $("#crisisBellPlay")[0].play();
+                    $("#crisisSound")[0].play();
                 });
             }
         }
@@ -2768,6 +2798,8 @@ function implementStateJSON(newState) {
         $("#leftbottomarea").css("opacity", "1");
     } else {
         parsePassedMotionJSON(newState.currentMotion);
+
+        currentMotion = newState.currentMotion;
 
         if(newState.currentMotion.motionType == "mod" || newState.currentMotion.motionType == "speakersList") {
             newState.currentMotion.chosenCountries.forEach((el) => {

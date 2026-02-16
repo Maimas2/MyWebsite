@@ -117,7 +117,10 @@
                 </div>
                 <div id="delegateListSearchBottomContainer">
                     <div id="customDelegateList">
-                        <h2 style="text-align: center;">Custom Delegates</h2>
+                        <h2 style="text-align: center;margin-bottom: 10px;">Custom Delegates</h2>
+                        <div class="dontDeleteMe" style="margin-bottom: 15px;text-align: center;">
+                            <button id="massImportDelegates">Mass Import Delegates</button>
+                        </div>
                     </div>
                     <div id="newDelegate" style="display: flex;width:60%;margin-left: 20%;">
                         <input autocomplete="off" type="text" id="newDelegateInput" maxlength="100" placeholder="New delegate name..." style="width:80%;margin:10px 0 10px 10px;">
@@ -127,6 +130,11 @@
                         <h2 style="text-align: center;">Normal UN Delegates</h2>
                     </div>
                 </div>
+            </div>
+            <div id="massImportDelegatesPopup" class="outlineddiv largePopup">
+                <h2>Mass Import</h2>
+                <textarea id="massImportDelegatesArea"></textarea>
+                <button id="massImportDelegatesSubmit">Submit</button>
             </div>
             <div id="attendanceList" class="outlineddiv largePopup">
                 <h1 style="margin-bottom: 0;">Attendance</h1>
@@ -356,6 +364,12 @@
                 <input autocomplete="off" type="text" id="jccSendCrisisInput">
                 <!-- <input autocomplete="off" type="file" id="jccCrisisImage"> for later -->
                 <button id="jccSendCrisisButton">Send</button>
+                <br>
+                <p style="display: inline-block;">Sound effect</p>
+                <select id="crisisSoundChoice" name="crisisSound">
+                    <option value="crisis-bell">Bell</option>
+                    <option value="dinosaur">Dinosaur Roar</option>
+                </select>
                 <p id="crisisShownNotification">Note: the crisis popup will disappear from the mirror when you exit this popup.</p>
             </div>
             <div id="mirrorSetupPopup" class="bottomMarginChildren outlineddiv largePopup">
@@ -510,7 +524,7 @@
             <button id="impromptuTimerButton">
                 Timer<span class="keyboardShortcut"> (t)</span>
             </button>
-            <audio id="crisisBellPlay" src="/crisis-bell.mp3" autoplay="off" controls="off" style="display: none;"></audio> <!-- dunno why this is here specifically 🤷 -->
+            <audio id="crisisSound" src="/sounds/crisis-bell.mp3" autoplay="off" controls="off" style="display: none;"></audio> <!-- dunno why this is here specifically 🤷 -->
         </div>
         <div id="hiddenChosenCountries" style="display: none !important;">
             

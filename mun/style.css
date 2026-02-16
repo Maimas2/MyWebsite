@@ -328,6 +328,7 @@ input {
     margin: 0;
     display: flex;
     flex-direction: row;
+    overflow: auto;
 }
 .countryListInner {
     width: 60%;
@@ -863,4 +864,22 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #mirrorSetupPopup {
     padding: 20px;
+}
+#jccSendCrisisInput {
+    width: 50%;
+}
+#massImportDelegates {
+    display: inline-block;
+}
+#massImportDelegatesSubmit {
+    display: block;
+    padding: 5px;
+    margin: auto;
+    margin-top: 15px;
+}
+#massImportDelegatesArea {
+    width: 50%;
+    height: 50%;
+    border-radius: 8px;
+    border: 1px solid #888;
 }

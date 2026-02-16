@@ -153,6 +153,7 @@ app.get("/getcountrylist", (req, res) => {
 }); */
 
 app.use("/flags", express.static(path.join(__dirname, "images/flags")));
+app.use("/sounds", express.static(path.join(__dirname, "/sounds")));
 
 app.get("/chat", (req, res) => {
     res.sendFile("./chat.html", {root : __dirname});
@@ -170,10 +171,6 @@ app.get("/chat.js", (req, res) => {
 
 app.get("/admin", (req, res) => {
     res.sendFile("./admin.html", {root : __dirname});
-});
-
-app.get("/crisis-bell.mp3", (req, res) => {
-    res.sendFile("./crisis-bell.mp3", {root: __dirname});
 });
 
 app.post("/adminaccesspoint", jsonParse, (req, res) => {
