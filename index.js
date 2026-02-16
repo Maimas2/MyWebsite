@@ -95,7 +95,19 @@ if(fs.existsSync("./saves/messages_sent.txt")) {
 
 app.get("/game", (req, res) => {
     res.sendFile("/game.html", {root: __dirname});
-})
+});
+
+app.get("/blocks", (req, res) => {
+    res.sendFile("/blocks.html", {root: __dirname});
+});
+
+app.get("/files/Blocks.8xp", (req, res) => {
+    res.sendFile("/blocks/Blocks.8xp", {root: __dirname});
+});
+
+app.get("/files/Blocks.c", (req, res) => {
+    res.sendFile("/blocks/Blocks.c", {root: __dirname});
+});
 
 app.get("/annoyinglist", (req, res) => {
     fs.readdirSync(path.join(__dirname, "/newmessages")).forEach((f) => {
