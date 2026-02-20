@@ -213,12 +213,21 @@ app.post("/createJCC", jsonParse, (req, res) => {
 
     //console.log(listOfJCCs[data.name]);
     if(listOfJCCs[data.name] != undefined) {
-        
-        res.status(400).send({
-            status : 400,
-            success: false,
-            message: "JCC with that name already exists."
-        });
+        if(listOfJCCs[data.name].password == data.password) {
+            res.status(200).send({
+                name    : data.name,
+                status  : 200,
+                success : true,
+                JCCname : listOfJCCs[data.name].name,
+                salt    : listOfJCCs[data.name].salt
+            });
+        } else {
+            res.status(400).send({
+                status : 400,
+                success: false,
+                message: "JCC with that name already exists."
+            });
+        }
         return;
     }
 
@@ -363,6 +372,40 @@ app.ws('/rss', function(ws, req) {
 
             listOfJCCs[d.name].bigScreenConnections.forEach(function(ws2) {
                 ws2.ws.send(JSON.stringify(d));
+            });
+        } else if(d.type == "requestPresence") { // Asking for all connected devices names / types
+            listOfJCCs[d.name].bigScreenConnections.forEach((el) => {
+                if(el.ws == undefined || el.ws.readyState == ws.CLOSED) listOfJCCs[d.name].bigScreenConnections.delete(el);
+            });
+            listOfJCCs[d.name].chatConnections.forEach((el) => {
+                if(el.readyState == ws.CLOSED) listOfJCCs[d.name].chatConnections.delete(el);
+            });
+            listOfJCCs[d.name].mirrors.forEach((el) => {
+                if(el.readyState == ws.CLOSED) listOfJCCs[d.name].mirrors.delete(el);
+            });
+
+            listOfJCCs[d.name].bigScreenConnections.forEach(function(ws2) {
+                if(ws != ws2) ws2.ws.send(JSON.stringify(d));
+            });
+            listOfJCCs[d.name].chatConnections.forEach(function(ws2) {
+                if(ws != ws2) ws2.send(JSON.stringify(d));
+            });
+            listOfJCCs[d.name].mirrors.forEach(function(ws2) {
+                if(ws != ws2) ws2.send(JSON.stringify(d));
+            });
+        } else if(d.type == "sendingName") {
+            listOfJCCs[d.name].bigScreenConnections.forEach((el) => {
+                if(el.ws == undefined || el.ws.readyState == ws.CLOSED) listOfJCCs[d.name].bigScreenConnections.delete(el);
+            });
+            listOfJCCs[d.name].chatConnections.forEach((el) => {
+                if(el.readyState == ws.CLOSED) listOfJCCs[d.name].chatConnections.delete(el);
+            });
+            
+            listOfJCCs[d.name].bigScreenConnections.forEach(function(ws2) {
+                if(ws != ws2) ws2.ws.send(JSON.stringify(d));
+            });
+            listOfJCCs[d.name].chatConnections.forEach(function(ws2) {
+                if(ws != ws2) ws2.send(JSON.stringify(d));
             });
         }
     });

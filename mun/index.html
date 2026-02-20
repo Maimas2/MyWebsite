@@ -367,8 +367,9 @@
                 <br>
                 <p style="display: inline-block;">Sound effect</p>
                 <select id="crisisSoundChoice" name="crisisSound">
-                    <option value="crisis-bell">Bell</option>
+                    <option value="bell">Bell</option>
                     <option value="dinosaur">Dinosaur Roar</option>
+                    <option value="explosion">Explosion</option>
                 </select>
                 <p id="crisisShownNotification">Note: the crisis popup will disappear from the mirror when you exit this popup.</p>
             </div>
@@ -524,7 +525,7 @@
             <button id="impromptuTimerButton">
                 Timer<span class="keyboardShortcut"> (t)</span>
             </button>
-            <audio id="crisisSound" src="/sounds/crisis-bell.mp3" autoplay="off" controls="off" style="display: none;"></audio> <!-- dunno why this is here specifically 🤷 -->
+            <audio id="crisisSound" src="/sounds/crisis-bell.mp3" autoplay="off" preload="none" controls="off" style="display: none;"></audio> <!-- dunno why this is here in the file specifically 🤷 -->
         </div>
         <div id="hiddenChosenCountries" style="display: none !important;">
             

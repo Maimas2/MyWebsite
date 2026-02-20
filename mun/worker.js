@@ -117,7 +117,7 @@ var isLargeTimerGoing = false;      // Whether the timer is currently going
 var largeTimerOriginalDuration = 0; // In mods, the original duration, not per delegate
 var largeTimerNumDelegates = 0;     // Number of delegates that will speak
 
-var perDelegateCurrentPosition = 1; // Number delegate of the speakers in the mod
+var perDelegateCurrentPosition = -1; // Number delegate of the speakers in the mod
 
 var canSortChosenCountries = true;
 
@@ -665,9 +665,7 @@ function passMotion(parentEl) {
 
 function parsePassedMotionJSON(details) {
     if(isMirroring && currentMotion == null) {
-        $("#rightbottomarea").animate({
-            "opacity" : "1"
-        }, 150);
+        $("#rightbottomarea").css("opacity", "1");
     }
 
     currentMotion = details;
@@ -692,7 +690,7 @@ function parsePassedMotionJSON(details) {
     $("#numberOfAddedCountriesSpan").text("0");
 
     if(details["timerType"] == "one") {
-        document.getElementById("oneLargeTimerContainer").style.display = "block";
+        $("#oneLargeTimerContainer").css("display", "block");
         largeTimerCurrentTime = details["duration"];
         largeTimerOriginalDuration = details["duration"];
 
@@ -702,12 +700,12 @@ function parsePassedMotionJSON(details) {
 
         $(".hiddenOnModStart").css("display", "none");
     } else if(details["timerType"] == "perDelegate") {
-        document.getElementById("oneLargeTimerContainer").style.display = "block";
+        $("#oneLargeTimerContainer").css("display", "block");
         largeTimerCurrentTime = details["delegateDuration"];
         largeTimerOriginalDuration = details["delegateDuration"];
         largeTimerNumDelegates = Math.floor(details["duration"] / details["delegateDuration"] + 0.03);
 
-        perDelegateCurrentPosition = 0;
+        perDelegateCurrentPosition = -1;
         
         $("#modPlacementP").css("display", "block");
         $("#modDelegateTotal").text(largeTimerNumDelegates.toString());
@@ -725,25 +723,27 @@ function parsePassedMotionJSON(details) {
 
     $("#passedMotionListSearch").val("");
 
-    $("#chosenCountriesForTimer").sortable({
-        animation : 150,
-        onStart : function(evt) {
-            stopTimer();
-        },
-        onEnd : function(evt) {
-            refreshModChosenCountriesIds();
-            if(evt.oldIndex == perDelegateCurrentPosition) {
-                perDelegateCurrentPosition = evt.newIndex;
-            } else if(evt.oldIndex > perDelegateCurrentPosition && evt.newIndex <= perDelegateCurrentPosition) {
-                perDelegateCurrentPosition++;
-            } else if(evt.oldIndex < perDelegateCurrentPosition && evt.newIndex >= perDelegateCurrentPosition) {
-                perDelegateCurrentPosition--;
+    if(!isMirroring) {
+        $("#chosenCountriesForTimer").sortable({
+            animation : 150,
+            onStart : function(evt) {
+                stopTimer();
+            },
+            onEnd : function(evt) {
+                refreshModChosenCountriesIds();
+                if(evt.oldIndex == perDelegateCurrentPosition) {
+                    perDelegateCurrentPosition = evt.newIndex;
+                } else if(evt.oldIndex > perDelegateCurrentPosition && evt.newIndex <= perDelegateCurrentPosition) {
+                    perDelegateCurrentPosition++;
+                } else if(evt.oldIndex < perDelegateCurrentPosition && evt.newIndex >= perDelegateCurrentPosition) {
+                    perDelegateCurrentPosition--;
+                }
+                stopTimer();
+                resendMirror();
+                //refreshModCurrentCountryNumberBackground();
             }
-            stopTimer();
-            resendMirror();
-            //refreshModCurrentCountryNumberBackground();
-        }
-    });
+        });
+    }
 
     if(details["requiresDelegateList"]) {
         $("#actualPassedMotionCountryChooser").children().remove();
@@ -788,31 +788,46 @@ function parsePassedMotionJSON(details) {
     } else {
         $("#chosenCountriesForTimer").css("display", "none");
     }
+    
+    var rCountries = $("#chosenCountriesForTimer").children().detach().toArray();
+    console.log(rCountries);
+
+    rCountries.sort(function(e1, e2) {
+        console.log(e1);
+        return details.chosenCountries.indexOf(e1.textContent) > details.chosenCountries.indexOf(e2.textContent);
+    });
+
+    rCountries.forEach((el) => {
+        $(el).appendTo($("#chosenCountriesForTimer"));
+    });
 
     $("#motiondisplays").children().toArray().forEach((el) => {
         killMotionDisplayParent(el);
     });
 
-    $("#leftbottomarea").animate({
-        opacity : 0
-    }, 150, function(_e) {
-        $("#leftbottomarea").css("display", "none");
-        $("#leftbottomarea").css("opacity", "1");
-
-        if(!isMirroring) {
+    if(!isMirroring) {
+        $("#leftbottomarea").animate({
+            opacity : 0
+        }, 150, function(_e) {
+            $("#leftbottomarea").css("display", "none");
+            $("#leftbottomarea").css("opacity", "1");
+    
             $("#rightbottomarea").css("display", "");
             $("#rightbottomarea").css("opacity", "0");
 
             $("#rightbottomarea").animate({
                 opacity : 1
             }, 150);
-        } else {
-            $("#rightbottomarea").css("display", "");
-            $("#rightbottomarea").css("opacity", "1");
-        }
+    
+            resendMirror();
+        });
+    } else {
+        $("#leftbottomarea").css("display", "none");
+        $("#leftbottomarea").css("opacity", "1");
 
-        resendMirror();
-    });
+        $("#rightbottomarea").css("display", "");
+        $("#rightbottomarea").css("opacity", "1");
+    }
 
     if(details["motionType"] == "presentPapers" && ws != undefined) {
         $("#jccPassPaperContainer").css("display", "block");
@@ -1131,6 +1146,7 @@ function endCurrentMotion() {
     $("#newmotions").css("display", "block");
 
     currentMotion = null;
+    perDelegateCurrentPosition = -1;
 
     document.getElementById("motiondisplays").childNodes.forEach((el) => {
         el.remove();
@@ -1242,29 +1258,9 @@ function refreshModCountryList() {
 
 function refreshModCurrentCountryNumberBackground() {
     if(currentMotion["timerType"] == "perDelegate") {
+        if(perDelegateCurrentPosition < 0) perDelegateCurrentPosition = 0;
         $("#chosenCountriesForTimer").children().css("background-color", "");
         $($("#chosenCountriesForTimer").children()[perDelegateCurrentPosition]).css("background-color", "powderblue");
-
-        //$("#chosenCountriesForTimer").sortable("destroy");
-        //canSortChosenCountries = false;
-
-        //$(".hiddenOnModStart").css("display", "none");
-
-        // $("#actualPassedMotionCountryChooser > *").off("click");
-        // $("#passedMotionCountryChooser").animate({
-        //     "width" : 0,
-        //     "margin-right" : 0,
-        //     "margin-left" : 0,
-        //     "padding-right" : 0,
-        //     "padding-left" : 0,
-        // }, 150, () => {
-        //     $("#passedMotionCountryChooser").css("display", "none");
-        //     $("#passedMotionCountryChooser").css("width", "");
-        //     $("#passedMotionCountryChooser").css("margin-right", "");
-        //     $("#passedMotionCountryChooser").css("margin-left", "");
-        //     $("#passedMotionCountryChooser").css("padding-left", "");
-        //     $("#passedMotionCountryChooser").css("padding-right", "");
-        // });
     }
 }
 
@@ -1325,6 +1321,7 @@ function modCountryChooserClickEventFunctionResponder() {
             stopTimer();
             refreshTimer();
             refreshModCurrentCountryNumberBackground();
+            resendMirror();
         }
     });
 
@@ -1360,6 +1357,8 @@ function modCountryChooserClickEventFunctionResponder() {
                 $(this).parent().remove();
                 refreshModChosenCountriesIds();
                 refreshModCurrentCountryNumberBackground();
+
+                resendMirror();
             });
     
             let tId = 0; // Index of element being deleted
@@ -1377,7 +1376,6 @@ function modCountryChooserClickEventFunctionResponder() {
             }
     
             refreshModCountryList();
-            resendMirror();
         }));
     }
     
@@ -1650,6 +1648,13 @@ window.onload = function(_event) {
                 data    : JSON.stringify(d)
             });
             quitPopup();
+        });
+
+        $("#logoContainer").on("click", function(_e) { // Turns out this is in fact required
+            if(isPopupShown) return;
+            showPopup("#legalStuffEwww");
+            $("#quitPopup").text("Close");
+            $("#exitPopup").css("display", "none");
         });
     
         $("#newDelegateSubmit").on("click", function(_e) {
@@ -2251,6 +2256,13 @@ function setupMirroring(data) {
                 $("#crisisSound").attr("src", `/sounds/${dd.sound}.mp3`);
                 $("#crisisSound")[0].play();
             });
+        } else if(dd.type == "requestPresence") {
+            ws.send(JSON.stringify({
+                name       : jccData.name,
+                salt       : jccData.salt,
+                type : "sendingName",
+                name : `Mirror of ${$("#committeeName").text() || "[No Name]"}`
+            }));
         } else if(!hasChoosenMirrorable) {
             var d = dd.state;
             if(!seenStates[d.mySalt]) {
@@ -2277,6 +2289,8 @@ function setupMirroring(data) {
                             $("#impromptuTimer").css("height", "100vh");
                             $("#impromptuTimer").css("border-radius", "0");
                             $("#impromptuTimer").css("z-index", "13");
+                            $("#impromptuTimer").css("background-color", "white");
+                            $("#impromptuTimer").css("backdrop-filter", "none");
 
                             $("#impromptuTimer").css("display", "block");
                             $("#impromptuTimerLabel").css("font-size", "50vh");
@@ -2347,6 +2361,11 @@ function setupJccData(data) {
                     $("#crisisSound")[0].play();
                 });
             }
+        } else if(d.type == "requestPresence") {
+            ws.send(JSON.stringify({
+                type : "sendingName",
+                name : `${$("#committeeName").val() || "[No Name]"} – Big Screen`
+            }));
         }
         //console.log(d);
     });
@@ -2767,11 +2786,9 @@ function implementStateJSON(newState) {
     }
 
     if(!newState.isThereACurrentMotion) {
-        $("#rightbottomarea").animate({
-            opacity : 0
-        }, 150, function() {
-            $("#rightbottomarea").css("display", "none");
-        });
+        $("#rightbottomarea").css("display", "none");
+        $("#rightbottomarea").css("opacity", "1");
+
         for(var i = 0; i < newMotions.length; i++) {
             var cm = newMotions[i];
             var toAdd = motionToElement(cm);
