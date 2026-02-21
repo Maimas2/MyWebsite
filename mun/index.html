@@ -11,7 +11,7 @@
     <body>
         <div id="committeeNameContainer">
             <input autocomplete="off" id="committeeName" type="text" placeholder="Committee topic/agenda..."></input>
-            <button id="changeMirrorButton">Change Mirror</button>
+            <button id="changeMirrorButton" class="keepEnabledWhenMirror">Change Mirror</button>
             <p id="topRealClock">19:24</p>
         </div>
         <div id="topbar" class="outlineddiv">
@@ -98,7 +98,7 @@
                         <button id="passedPaperButton">Pass</button>
                     </div>
                 </div>
-                <div id="passedMotionCountryChooser" class="outlineddiv deleteOnMirror">
+                <div id="passedMotionCountryChooser" class="outlineddiv hideOnMirror">
                     <div class="searchbarContainer">
                         <input autocomplete="off" type="text" id="passedMotionListSearch" class="searchBarInput deleteOnMirror" spellcheck="false" placeholder="Search for a country...">
                         <button id="clearPassedMotionSearch" onclick="$('#passedMotionListSearch').val('');$('#passedMotionListSearch')[0].oninput();$('#passedMotionListSearch').focus();" style="padding: 2px;aspect-ratio: 1;" class="deleteOnMirror">X</button>
@@ -381,7 +381,7 @@
                     <br>
                     Password: <input autocomplete="off" type="text" id="mirroringPassword" class="enableInputMirror">
                     <br>
-                    <button id="startMirroringButton">Join</button>
+                    <button id="startMirroringButton" class="keepEnabledWhenMirror">Join</button>
                 </div>
                 <div id="mirrorSecondStep">
                     <h1>Searching for screens to mirror...</h1>

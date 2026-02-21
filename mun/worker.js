@@ -755,7 +755,9 @@ function parsePassedMotionJSON(details) {
 
         $("#chosenCountriesForTimer > *").remove();
         getListOfPresentCountries().forEach(function(val) {
-            var toAdd = $(`<button class="outlineddiv marginizechildren countryListOne${isMirroring ? " noHoverEffect" : ""}"></button>`);
+            var toAdd = $(`<button class="outlineddiv marginizechildren countryListOne"></button>`);
+
+            if(isMirroring) toAdd.addClass("noHoverEffect")
 
             toAdd.css("padding", "15px");
             toAdd.css("display", "flex");
@@ -779,27 +781,17 @@ function parsePassedMotionJSON(details) {
 
             toAdd.on("click", modCountryChooserClickEventFunctionResponder);
 
-            if(details.chosenCountries && details.chosenCountries.includes(val)){
-                toAdd.appendTo($("#chosenCountriesForTimer"));
-            } else {
-                toAdd.appendTo($("#actualPassedMotionCountryChooser"));
-            }
+            toAdd.appendTo($("#actualPassedMotionCountryChooser"));
         });
     } else {
         $("#chosenCountriesForTimer").css("display", "none");
     }
-    
-    var rCountries = $("#chosenCountriesForTimer").children().detach().toArray();
-    console.log(rCountries);
 
-    rCountries.sort(function(e1, e2) {
-        console.log(e1);
-        return details.chosenCountries.indexOf(e1.textContent) > details.chosenCountries.indexOf(e2.textContent);
-    });
-
-    rCountries.forEach((el) => {
-        $(el).appendTo($("#chosenCountriesForTimer"));
-    });
+    if(details.chosenCountries) {
+        details.chosenCountries.forEach((val) => {
+            $("#modCaucusCountryChooser" + sanitizeForID(val)).click();
+        });
+    }
 
     $("#motiondisplays").children().toArray().forEach((el) => {
         killMotionDisplayParent(el);
@@ -1020,8 +1012,10 @@ function changeClickedEventResponder(_event) {
     }
 }
 
+var isSuppressingAlerts = false;
+
 function createAlert(message, otherOptionFunction=null) {
-    if(isMirroring) return;
+    if(isMirroring || isSuppressingAlerts) return;
 
     $("#alertContainer").css("display", "flex");
     $("#alertContainer").css("opacity", 0);
@@ -1286,44 +1280,26 @@ function modCountryChooserClickEventFunctionResponder() {
     
     var toAdd = $(`<button class="outlineddiv marginizechildren countryListOne"></button>`).css("padding", "15px").css("width", "100%").on("click", function() {
         if(isMirroring) return;
-        if(canSortChosenCountries && false) {
-            $("#modCaucusCountryChooser" + sanitizeForID($(this).children(".expandToFlexWidth").text())).css("display", "flex").animate({
-                "padding" : "15px",
-                "margin-bottom" : "10px"
-            }, 150).attr("data-can-be-shown", true);
+        
+        largeTimerCurrentTime = largeTimerOriginalDuration;
+        var i = 0;
 
-            $(this).off("click");
-
-            $(this).animate({
-                "height" : 0,
-                "padding-top" : 0,
-                "padding-bottom" : 0
-            }, 150, () => {
-                this.remove();
-                refreshModChosenCountriesIds();
-            });
-
-            refreshModCountryList();
-            resendMirror();
-        } else {
-            largeTimerCurrentTime = largeTimerOriginalDuration;
-            var i = 0;
-
-            for(let child in $("#chosenCountriesForTimer").children().toArray()) {
-                var tt = $($("#chosenCountriesForTimer").find("p:not(.modIdP):not(button)").toArray()[child]).text(); // Enough to make a grown man cry (eh it was worse before)
-                
-                if(tt == $(this).find(":not(.modIdP):not(button)").text()) {
-                    perDelegateCurrentPosition = i;
-                    break;
-                }
-                i++;
+        for(let child in $("#chosenCountriesForTimer").children().toArray()) {
+            var tt = $($("#chosenCountriesForTimer").find("p:not(.modIdP):not(button)").toArray()[child]).text(); // Enough to make a grown man cry (eh it was worse before)
+            
+            if(tt == $(this).find(":not(.modIdP):not(button)").text()) {
+                perDelegateCurrentPosition = i;
+                break;
             }
-            stopTimer();
-            refreshTimer();
-            refreshModCurrentCountryNumberBackground();
-            resendMirror();
+            i++;
         }
+        stopTimer();
+        refreshTimer();
+        refreshModCurrentCountryNumberBackground();
+        resendMirror();
     });
+
+    if(isMirroring) toAdd.addClass("noHoverEffect");
 
     toAdd.append($("<p>").addClass("modIdP").text("Id here"));
 
@@ -1383,15 +1359,20 @@ function modCountryChooserClickEventFunctionResponder() {
 
     refreshModChosenCountriesIds();
 
-    $(this).animate({
-        "height" : 0,
-        "padding-top" : 0,
-        "padding-bottom" : 0,
-        "margin-bottom" : 0
-    }, 150, () => {
+    if(!isMirroring) {
+        $(this).animate({
+            "height" : 0,
+            "padding-top" : 0,
+            "padding-bottom" : 0,
+            "margin-bottom" : 0
+        }, 150, () => {
+            $(this).css("display", "none");
+            $(this).css("height", "");
+        });
+    } else {
         $(this).css("display", "none");
         $(this).css("height", "");
-    });
+    }
 
     $(this).attr("data-can-be-shown", false);
 
@@ -1462,8 +1443,10 @@ window.onload = function(_event) {
         $("#jccPassPaperContainer").remove();
         $("#quickStartPopup").remove();
         $(".deleteOnMirror").remove();
+        $(".hideOnMirror").detach().appendTo("#prefabs");
 
         $("input:not(.enableInputMirror)").attr("disabled", true);
+        $("button:not(.keepEnabledWhenMirror)").addClass("noHoverEffect");
 
         $("#floatBottomRight").css("display", "none");
 
@@ -2606,7 +2589,7 @@ function getStateJSON() {
             $("#chosenCountriesForTimer").children().each(function(e) {
                 toReturn.currentMotion.chosenCountries.push($(this).children()[2].textContent);
             });
-        } else if(toReturn.currentMotion.motionType == "unmod") {
+        } else if(toReturn.currentMotion.motionType == "unmod" || toReturn.currentMotion.motionType == "customl") {
             toReturn.currentMotion.currentTime      = largeTimerCurrentTime;
         } else if(toReturn.currentMotion.motionType == "roundRobin") {
             toReturn.currentMotion.currentTime      = largeTimerCurrentTime;
@@ -2724,6 +2707,8 @@ function implementStateJSON(newState) {
         console.log(newState);
         return;
     }
+
+    isSuppressingAlerts = true;
 
     //console.log(newState);
     
@@ -2874,6 +2859,8 @@ function implementStateJSON(newState) {
 
         goToNextRollCallVote(false);
     }
+
+    isSuppressingAlerts = false;
 
     /* dictOfBasicDelegates = { };
     basicListOfCountries.forEach((el) => {

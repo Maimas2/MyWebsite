@@ -2,6 +2,9 @@
     font-family: ComputerModern;
     src: url(/ComputerModernSerif.ttf);
 }
+:root {
+    --real-white: rgb(251, 251, 255);
+}
 * {
     font-family: ComputerModern;
     box-sizing: border-box;
@@ -25,7 +28,7 @@ p, i, button:not(.smallTextButton) {
     border-radius: 20px;
     /*box-shadow: 2px 2px 7px #DDDDDD;**/
     border: 1px #888888 solid;
-    background-color: white;
+    background-color: var(--real-white);
     user-select: none;
 }
 select {
@@ -40,7 +43,7 @@ button:not(.incrementButton), select {
     border-radius: 15px;
     /*box-shadow: 2px 2px 7px #DDDDDD;**/
     border: 1px #888888 solid;
-    background-color: white;
+    background-color: var(--real-white);
 }
 button:hover:not(:disabled):not(:has(button:hover)):not(.noHoverEffect), select:hover:not(:disabled) {
     background-color: #dddddd;
@@ -50,7 +53,7 @@ button:disabled, select:disabled {
     background-color: #bbb;
     color: #666;
 }
-button:active:not(:disabled), select:active {
+button:active:not(:disabled):not(.noHoverEffect), select:active {
     background-color: #cccccc;
 }
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
@@ -133,6 +136,7 @@ input[type=number] {
 }
 #passedMotionDetails {
     display: flex;
+    align-items: center;
     flex-direction: row;
     gap: 20px;
     height: 100%;
@@ -306,7 +310,7 @@ input {
     border-radius: 0;
     width: 25px;
     border: solid #888 1px;
-    background-color: white;
+    background-color: var(--real-white);
     padding: 0;
 }
 .alignchildrenspan {
@@ -387,6 +391,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     padding: 20px;
     overflow-y: auto;
     overflow-x: hidden;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 #chosenCountriesForTimer > * {
     padding: 7px;
@@ -410,6 +415,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    height: 100%;
 }
 #numberOfAddedCountriesLabel {
     text-align: center;
@@ -428,7 +434,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     z-index: 1000;
     padding: 20px;
     box-shadow: 2px 2px 20px #888;
-    background-color: color-mix(in srgb, powderblue 20%, white 80%);
+    background-color: color-mix(in srgb, powderblue 20%, var(--real-white) 80%);
 }
 #alertContainer > * {
     padding: 5px;
@@ -589,7 +595,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     text-align: center;
     max-width: 100vw;
     padding: 5px;
-    background-color: white;
+    background-color: var(--real-white);
     display: flex;
 }
 #committeeName {
@@ -614,12 +620,12 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #impromptuTimerLabel:not(p):hover, #oneLargeTimer:not(p):hover:not(:disabled) {
     border: 1px solid black;
-    background-color: white;
+    background-color: var(--real-white);
 }
 #impromptuTimerLabel:not(p):active, #oneLargeTimer:not(p):active:not(:disabled) {
     border: 1px solid black;
     border-radius: 15px;
-    background-color: white;
+    background-color: var(--real-white);
 }
 #impromptuTimer {
     display: flex;
@@ -836,7 +842,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     background-color: transparent;
 }
 .customMotionNameInput:hover:not(:disabled), .customMotionNameInput:focus-visible:not(:disabled), .customMotionNameInput:active:not(:disabled) {
-    background-color: white;
+    background-color: var(--real-white);
     border-color: #888888 !important;
 }
 .modIdButton {
