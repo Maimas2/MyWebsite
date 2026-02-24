@@ -12,6 +12,9 @@
                 background-color: rgba(0, 0, 0, 0.5);
                 display: none;
             }
+            #textP {
+                font-size: 150%;
+            }
             #textContainer {
                 position: absolute;
                 left: calc(50vw - 200px);
@@ -40,7 +43,7 @@
                 margin: 30px;
                 font-size: 28pt;
             }
-            #guessGame {
+            #guessDlc {
                 box-sizing: border-box;
                 position: absolute;
                 left: 50vw;
@@ -50,13 +53,46 @@
                 margin: 30px;
                 font-size: 28pt;
             }
+            #painCard {
+                box-sizing: border-box;
+                position: absolute;
+                left: 0;
+                top: 50vh;
+                width: calc(50vw - 60px);
+                height: calc(50vh - 60px);
+                margin: 30px;
+                font-size: 28pt;
+            }
+            #guessClassified {
+                box-sizing: border-box;
+                position: absolute;
+                left: 50vw;
+                top: 50vh;
+                width: calc(50vw - 60px);
+                height: calc(50vh - 60px);
+                margin: 30px;
+                font-size: 28pt;
+            }
+            #die {
+                box-sizing: border-box;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: calc(100vw - 60px);
+                height: calc(100vh - 60px);
+                margin: 30px;
+                font-size: 28pt;
+            }
         </style>
         <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script src="https://mun.alex-seltzer.com/lib/jquery.js"></script>
     </head>
     <body>
+        <button id="die">Roll Die</button>
         <button id="guessClassic">Guess that Classic</button>
-        <button id="guessGame">Guess that Game</button>
+        <button id="guessDlc">Guess that DLC</button>
+        <button id="painCard">Pain Card</button>
+        <button id="guessClassified">Classified</button>
         <div id="mask">
             <div id="textContainer">
                 <p id="textP">This is text</p>
@@ -68,53 +104,99 @@
 
         var listOfClassics = {
             "Ulysses": "Stately, plump Buck Mulligan came from the stairhead, bearing a bowl of lather on which a mirror and a razor lay crossed.",
-            "The Count of Monte Cristo": "On the 24th of February, 1815, the look-out at Notre-Dame de la Garde signalled the three-master, the _Pharaon_ from Smyrna, Trieste, and Naples.",
-            "The Picture of Dorian Gray": "The artist is the creator of beautiful things",
-            "Wuthering Heights": "I have just returned from a visit to my landlord—the solitary neighbour that I shall be troubled with.",
             "Frankenstein": "You will rejoice to hear that no disaster has accompanied the commencement of an enterprise which you have regarded with such evil forebodings.",
-            "Hamlet": "BARNARDO. Who's there? FRANCISCO. Nay, answer me. Stand and unfold yourself.",
-            "Little Women": "“Christmas won't be Christmas without any presents,” grumbled [REDACTED], lying on the rug.",
             "The Veldt": "“George, I wish you'd look at the nursery.",
             "Othello": "Neuer tell me, I take it much unkindly that thou who hast had my purse.",
             "Romeo and Juliet": "SAMPSON. Gregory, on my word, we'll not carry coals.",
-            "Dracula": "Left Munich at 8:35 P. M., on 1st May, arriving at Vienna early next morning; should have arrived at 6:46, but train was an hour late.",
+            "Dracula": "Left Munich at 8:35 P.M., on 1st May, arriving at Vienna early next morning; should have arrived at 6:46, but train was an hour late.",
             "Huck Finn": "You don't know about me without you have read a book by the name of [REDACTED]; but that ain't no matter.",
-            "Le Petit Prince": "Lorsque j'avais six ans j'ai vu, une fois, une magnifique image, dans un livre sur la forêt vierge qui s'appelait \"Histoires Vécues\".",
             "Tale of Two Cities": "It was the best of times, it was the worst of times.",
             "Old Man and the Sea": "He was an old man who fished alone in a skiff in the Gulf Stream and he had gone eighty-four days now without taking a fish.",
-            "Don Quixote": "In a village of La Mancha, the name of which I have no desire to call to mind, there lived not long since one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing.",
-            "Iliad": "Scepticism is as much the result of knowledge, as knowledge is of scepticism.",
-            "Beowulf": "Lo! the Spear-Danes' glory through splendid achievements",
             "A Modest Proposal": "For preventing the children of poor people in Ireland, from being a burden on their parents or country, and for making them beneficial to the publick.",
             "Common Sense": "Some writers have so confounded society with government, as to leave little or no distinction between them; whereas they are not only different, but have different origins.",
-            "The Leviathan": "Concerning the Thoughts of man, I will consider them first Singly, and afterwards in Trayne, or dependance upon one another.",
             "The Prince": "All states, all powers, that have held and hold rule over men have been and are either republics or principalities.",
-            "The Magna Carta": "JOHN, by the grace of God King of England, Lord of Ireland, Duke of Normandy and Aquitaine, and Count of Anjou, to his archbishops, bishops, abbots, earls, barons, justices, foresters, sheriffs, stewards, servants, and to all his officials and loyal subjects, Greeting."
+            "The Magna Carta": "[REDACTED], by the grace of God King of England, Lord of Ireland, Duke of Normandy and Aquitaine, and Count of Anjou, to his archbishops, bishops, abbots, earls, barons, justices, foresters, sheriffs, stewards, servants, and to all his officials and loyal subjects, Greeting.",
+            "On the Sidewalk Bleeding": "The boy lay on the sidewalk bleeding in the rain.",
+
         }
 
-        var listOfGames = [
-            "The 3rd Millennium",
-            "7 Wonders",
-            "Ace Combat 2",
-            "The Cat in the Hat (1997)",
-            "Beasts and Bumpkins",
-            "The Ediface",
-            "Dungeon Keeper",
-            "The Eye of Judgement",
-            "Svea Rike",
-            "The Glory of Walkure",
-            'Garfield: Lasagna World Tour',
-            'Fusion Frenzy 2',
-            'Brawl Stars',
-            'Hollow Knight',
-            'Silksong',
-            'Clash Royale',
-            'Stars Wars Battlefront I',
-            'BTD6',
-            'BTD5',
-            'BTDB',
-            'SMO'
+        var listOfDlcs = {
+            "Helped save a previously doomed product. Brought ecomomic and social overhaul. Met with mixed reviews." : "The New Deal",
+            "Introduced the Spike Factory Paragon." : "BTD6 48.0",
+            "Overhauled UI and introduced a glassomorphic theme." : "iOS 26",
+            "Banned discussion of slavery in the United States House of Representatives from 1836-44" : "The Gag Rule",
+            "Reworked currency systems to substantially nerf non-cash forms of currency. Destabalized online economies." : "Specie Circular",
+            "Rebalanced royal power to ensure an equal playing field between the classes." : "Magna Carta",
+            "Added a new feature to enable better cooperation between the three classes of society." : "The Estates Generals",
+            "Introduced heavily-desired automation featues. Poor implementation led to pushback." : "The AI Boom",
+            "Introduced a new tier of tools and expanded late-game opportunities." : "The Iron Age",
+            "Overhauled the oceans by adding many new unique and interesting mobs." : "The Cambrian Explosion (do NOT accept The Aquatic Update)",
+            "Reworked monetary systems to better support Sims' health." : "Obamacare",
+            //"Greatly expanded possibilities for player-made creations. Initially met with mixed reviews, but later sparked an entire new genre." : "Ludwig van Beethoven",
+            "Greatly expanded world border and introduced many new peoples to interact with. Initally met with positive reviews, though today's are more negative." : "The New World",
+            "Overhauled terrain and natural world systems and clarified many parts of the lore." : "Theory of Tectonic Plates",
+            ""
+        };
+
+        var listOfPain = [
+            "Return to Start =)",
+            "Return a random player to start",
+            "Move back three spaces",
+            "Move back two spaces",
+            "Move to Memphis, TN",
+            "Move a random person to Memphis, TN",
+            "Play 2048. Your turn is skipped until you reach 1024.",
+            "SOTU Trap: you must watch the SOTU for five minutes. If the SOTU is not on, skip your next turn.",
+            "Vroom vroom. You are a car now.",
+            "Gain 1$.",
+            "Lost 1$.",
+            "Play Alex's Block Blast until you reach 50,000 points. Your turn is skipped until you do so.",
+            "Restart your phone.",
+            "You may now only speak in direct quotes from 'The Fugitive' (1993).",
+            "You may now only speak in direct quotes from 'A Muppet's Christmas Carol' (1992).",
+            "You may now only speak in direct quotes from 'Hollow Knight: Silksong' (2025).",
+            "You may now only speak in direct quotes from 'The United States Constitution' (1788).",
+            "Moo. You are an animal now.",
+            "You must now speak in a Southern accent.",
+            "You must now speak in a French accent.",
+            "Sing a song. Your turn is skipped until you do so.",
+            "You have five seconds to name a Classical composer.",
+            "You have ten seconds to name the 35th president.",
+            "You are now a robot. Beep borp.",
+            "Touch grass. Your turn is skipped until you do so.",
+            "Please pour and bring me a small glass of milk. Your turn is skipped until you do so.",
+            "You or a loved one contracts Mesotheliomia. Return to start.",
+            "Constitution saving throw.",
+            "Charisma saving throw.",
+            "You must now speak in a Trump accent.",
+            "Spin the 'Guess' wheel.",
+            "Move forward one space."
         ];
+
+        var listOfSecret = {
+            "How many shares of Saudi Tadawul Group did the PIF initially offer on 11 Oct. 2022?" : "12 million",
+            "Why is the Offering in line with PIF strategy?" : "It 'recycles its capital and invests in emerging and promising sectors in the local economy.'",
+            "Who is the media contact of the PIF?" : "Rupert Trefgarne",
+            "Between 2017 and 2021, how many jobs (directly or indirectly) did the PIF create?" : "500,000",
+            "As per federal poverty guidelines, how much must a five-person household make to not be in poverty?" : "$35,140",
+            "What other condition must SNAP-eligible families meet to qualify for free meals in the Ouachita River School District in 2023-24?" : "No other requirements must be met.",
+            "When do the rules established in line with the new National Defence Standard expire?" : "Upon recertification",
+            "At Alma High School, WI, how many students took at least one AP or IB course in SY. 2020-21?" : "Eight",
+            "In SY 2020-21, what is the Wisconsin proportion of high school students who took at least one dance course?" : "0.3%",
+            "What form will be used when the DBIDS system is non-operational or down for maintenance?" : "AF Form 75",
+            "Which Department of Defence regulation outlines access the need-to-know policies?" : "Regulation 5200.1-R",
+            "At what time in the morning must contractors cease work and observe the flag's raising while on a military compound?" : "0730 hours",
+            "What is the default speed limit while on March ARB roads?" : "25mph",
+            "To whom does the Cyber Center for Excellance provide training to?" : "The US Army",
+            "Upon which docket did the FCC consider data breach notification rules?" : "WC Docket No. 22-21",
+            "In which state is the RSU school district located?" : "Maine",
+            "Which article of the current California addresses pre-trial release of a person charged with a crime?" : "Article I",
+            "What was the bail amount for Robbery in the First Degree in 2017 Los Angeles?" : "$100,000",
+            "In 2010, how many referrals from prosecutors did the CDI receive?" : "45",
+            "In which year did the American Bar Association first develop pre-trial release standards?" : "1964",
+            "In which Congress was P.L. 104-193 passed?" : "104th",
+            "Which fleet does Christopher C. Miller recommend patrol Russian waters?" : "The Seventh Fleet"
+        };
 
         $("#guessClassic").on("click", function() {
             let chosenClassic = Object.keys(listOfClassics)[Math.floor(Object.keys(listOfClassics).length * Math.random())];
@@ -138,10 +220,13 @@
             $("#mask").css("display", "flex");
         });
 
-        $("#guessGame").on("click", function() {
-            let chosenGame = listOfGames[Math.floor(listOfGames.length * Math.random())];
+        $("#guessDlc").on("click", function() {
+            let chosenGame = Object.keys(listOfDlcs)[Math.floor(Object.keys(listOfDlcs).length * Math.random())];
 
-            var toSend = JSON.stringify({data: chosenGame});
+            var toSend = JSON.stringify({data: listOfDlcs[chosenGame]});
+
+            $("#textP").text(chosenGame);
+            $("#mask").css("display", "flex");
 
             $.ajax({
                 type    : "POST",
@@ -155,6 +240,40 @@
                 },
                 data    : toSend
             });
+        });
+
+        $("#guessClassified").on("click", function() {
+            let chosenGame = Object.keys(listOfSecret)[Math.floor(Object.keys(listOfSecret).length * Math.random())];
+
+            var toSend = JSON.stringify({data: listOfDlcs[chosenGame]});
+
+            $("#textP").text(chosenGame);
+            $("#mask").css("display", "flex");
+
+            $.ajax({
+                type    : "POST",
+                url     : `https://alex-seltzer.com/appendtoannoyinglistoverride?${pw}`,
+                contentType: 'application/json',
+                success : function(returned) {
+                    alert("Sent");
+                },
+                error   : function(returned) {
+                    console.log(returned);
+                },
+                data    : toSend
+            });
+        });
+
+        $("#painCard").on("click", function() {
+            let chosenGame = listOfPain[Math.floor(listOfPain.length * Math.random())];
+
+            $("#textP").text(chosenGame);
+            $("#mask").css("display", "flex");
+        });
+
+        $("#die").on("click", function() {
+            $("#textP").text(Math.floor(Math.random()*6) + 1);
+            $("#mask").css("display", "flex");
         });
 
         $("#mask").on("click", function() {
