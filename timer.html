@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                align-self: center;
+                height: 100vh;
+                max-height: 100vh;
+                padding: 0;
+                margin: 0;
+                justify-content: center;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+            body > * {
+                align-self: center;
+            }
+            #mainLabel {
+                text-align: center;
+                font-size: 5vh;
+            }
+            .otherLabel {
+                text-align: center;
+                font-size: 2vh;
+            }
+            #progressBar {
+                width: 96vw;
+                margin: 2vw;
+                background-color: #aaa;
+                border-radius: 0.75vh;
+                height: 2vh;
+                overflow: hidden;
+            }
+            #barinner {
+                height: 100%;
+                background-color: green;
+                width: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 id="mainLabel"></h1>
+        <h3 class="otherLabel">until 20 Jan 2029</h3>
+        <div id="progressBar">
+            <div id="barinner"></div>
+        </div>
+        <h3 class="otherLabel" id="percentLabel"></h3>
+    </body>
+    <script>
+        function updateTime() {
+            let secs  = Math.floor((Date.UTC(2029, 0, 20, 17, 0, 0) - Date.now()));
+            let mins  = Math.floor(secs / 60000);
+            let hours = Math.floor(mins / 60);
+            let days  = Math.floor(hours / 24);
+
+            document.getElementById("mainLabel").textContent = `${days} : ${hours % 24 < 10 ? "0" : ""}${hours % 24} : ${mins % 60 < 10 ? "0" : ""}${mins % 60} : ${secs % 60 < 10 ? "0" : ""}${Math.floor(secs/1000) % 60}`
+            document.getElementById("percentLabel").textContent = `${String((1-((secs/1000) / 126230400)) * 100).substring(0,9)}% of the way there`
+            document.getElementById("barinner").style.width = `${(1-((secs/1000) / 126230400)) * 100}%`
+        }
+        setInterval(function() {
+            updateTime();
+        }, 300);
+        window.onload = function() {
+            updateTime();
+        }
+    </script>
+</html>

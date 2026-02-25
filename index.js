@@ -97,6 +97,10 @@ app.get("/game", (req, res) => {
     res.sendFile("/game.html", {root: __dirname});
 });
 
+app.get("/timer", (req, res) => {
+    res.sendFile("/timer.html", {root: __dirname});
+});
+
 app.get("/blocks", (req, res) => {
     res.sendFile("/blocks.html", {root: __dirname});
 });
@@ -155,7 +159,7 @@ app.post("/appendtoannoyinglist", (req, res) => {
     }
 });
 
-app.post("/appendtoannoyinglistoverride", (req, res) => {
+app.post("/appendtoannoyinglistoverride", (req, res) => { // Appends even if device is blocked BUT requires password
     if(req.url.includes(pw)) {
         listsToSend.unshift(req.body.data);
         messagesSent.push(req.body.data);
