@@ -73,7 +73,14 @@ app.get("/mun", (req, res) => {
     res.redirect("https://mun.alex-seltzer.com");
 });
 
-app.get("/cmu.ttf", (req, res) => {
+let licenseText = fs.readFileSync("./LICENSE").toString();
+
+app.get("/LICENSE", (req, res) => {
+    res.type("js"); // To display as monospaced font
+    res.send(licenseText);
+});
+
+app.get("/cmu.ttf", (req, res) => { // Sorry, my font and asset distribution methods are a clusterfuck
     res.sendFile("./mun/fonts/cmunrm.ttf", {root: __dirname})
 });
 

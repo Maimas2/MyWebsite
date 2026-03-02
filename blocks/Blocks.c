@@ -1,3 +1,7 @@
+// GNU GPLv3
+// Additionally: absolutely NO use for training artificial intelligence or deep learning systems without my, Alex Seltzer's, prior written permission.
+// See https://alex-seltzer.com/LICENSE for the full license.
+
 #include <ti/getcsc.h>
 #include <graphx.h>
 #include <stdlib.h>
