@@ -45,11 +45,20 @@ for(var i = 0; i < l.length; i++) {
         tapp.listen(port);
         console.log(`${bs[0]} is listening on port ${port}`);
     } catch(e) {
-        console.warn(`Could not find subdomain ${bs[0]}, skipping...`);
+        console.warn(`Error in hosting subdomain ${bs[0]}, skipping...`);
         console.warn(e);
         port += 1;
     }
 }
+
+var countdownApp = express();
+
+countdownApp.get("/", (req, res) => {
+    res.sendFile("/timer.html", {root: __dirname});
+});
+
+countdownApp.listen(3101);
+console.log("Coundown is listening on port 3101");
 
 var listpw = null;
 
@@ -95,10 +104,6 @@ if(fs.existsSync("./saves/messages_sent.txt")) {
 
 app.get("/game", (req, res) => {
     res.sendFile("/game.html", {root: __dirname});
-});
-
-app.get("/timer", (req, res) => {
-    res.sendFile("/timer.html", {root: __dirname});
 });
 
 app.get("/blocks", (req, res) => {
