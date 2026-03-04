@@ -60,6 +60,15 @@ countdownApp.get("/", (req, res) => {
 countdownApp.listen(3101);
 console.log("Coundown is listening on port 3101");
 
+var rngApp = express();
+
+rngApp.get("/{:num}", (req, res) => {
+    res.sendFile("/rng.html", {root: __dirname});
+});
+
+rngApp.listen(3102);
+console.log("RNG is listening on port 3102");
+
 var listpw = null;
 
 if(fs.existsSync("./listpw.txt")) {

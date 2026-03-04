@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            @font-face {
+                font-family: cmu;
+                src: url(https://alex-seltzer.com/cmu.ttf);
+            }
+            * {
+                font-family: cmu;
+                box-sizing: border-box;
+            }
+            body {
+                background-color: powderblue;
+            }
+            div {
+                overflow: auto;
+            }
+            button {
+                transition: all 150ms linear;
+                background-color: white;
+            }
+            button:hover:not(:disabled):not(:has(button:hover)):not(.noHoverEffect), select:hover:not(:disabled) {
+                background-color: #dddddd;
+                border-radius: 5px;
+            }
+            button:disabled, select:disabled {
+                background-color: #bbb;
+                color: #666;
+            }
+            button:active:not(:disabled):not(.noHoverEffect), select:active {
+                background-color: #cccccc;
+            }
+            #bigContainer {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: calc(100vw - 50px);
+                height: calc(100vh - 50px);
+                margin: 25px;
+                background-color: rgba(255, 255, 255, 0.5);
+                border-radius: 15px;
+                border: 1px solid #666;
+                box-shadow: 0px 0px 10px #0003;
+                padding: 8px;
+                display: flex;
+            }
+            #bigContainer > * {
+                width: 100%;
+                height: calc(100% - 30px);
+                padding: 15px;
+                border: 1px solid #666;
+                margin: 7px;
+                border-radius: 10px;
+                background-color: white;
+                box-shadow: 0px 0px 10px #0001;
+            }
+            #inputContainer > * {
+                width: 100%;
+                height: calc(25% - 20px);
+                padding: 15px;
+                margin-bottom: 20px;
+                border: 1px solid #777;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            #inputContainer > * > * {
+                width: 50%;
+                margin-left: 25%;
+                margin-right: 25%;
+                align-self: center;
+                text-align: center;
+                margin-top: 0;
+            }
+            input[type=text] {
+                padding: 5px;
+                border-radius: 5px;
+                border: 1px solid #777;
+            }
+            #resultContainer {
+                display: flex;
+                align-items: center;
+            }
+            #result {
+                width: 100%;
+                margin: 0;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="bigContainer">
+            <div id="inputContainer">
+                <div id="otherControlContainer">
+                    <div>
+                        <p>Integer Only</p>
+                        <input type="checkbox" id="floatOrNo" name="floatOrNo" checked autocomplete="off">
+                    </div>
+                    <div>
+                        <p>Decimal Digits: <span id="decimalLabel">10</span></p>
+                        <input type="range" min="0" max="16" value="10" id="numDigitsInput" disabled="disabled" autocomplete="off">
+                    </div>
+                </div>
+                <div id="minInputContainer">
+                    <h2>Minimum Value</h2>
+                    <input id="minInput" type="text" value="1" autocomplete="off">
+                </div>
+                <div id="maxInputContainer">
+                    <h2>Maximum Value</h2>
+                    <input id="maxInput" type="text" value="20" autocomplete="off">
+                </div>
+                <button id="go">
+                    Generate
+                </button>
+            </div>
+            <div id="resultContainer">
+                <h1 id="result">0</h1>
+            </div>
+        </div>
+    </body>
+    <script>
+        let r = RegExp(/[^(\d|\.)]/, "g");
+        var result;
+
+        window.onload = function() {
+            document.getElementById("floatOrNo").addEventListener("click", function() {
+                document.getElementById("numDigitsInput").disabled = this.checked;
+            });
+
+            document.getElementById("numDigitsInput").addEventListener("input", function() {
+                document.getElementById("result").textContent = result.toFixed(Number(document.getElementById("numDigitsInput").value));
+            });
+
+            let numberfied = Number(window.location.pathname.substring(1).replaceAll(r, ""));
+            if(window.location.pathname.substring(1).replaceAll(r, "").length && !isNaN(numberfied)) {
+                console.log(numberfied);
+                document.getElementById("maxInput").value = numberfied;
+
+                if(window.location.pathname.includes(".")) {
+                    document.getElementById("floatOrNo").checked = false;
+                    document.getElementById("numDigitsInput").disabled = false;
+                }
+                if(numberfied % 1 > 0.0001) {
+                    document.getElementById("floatOrNo").checked = false;
+                    document.getElementById("numDigitsInput").disabled = false;
+                }
+            }
+
+            document.getElementById("go").addEventListener("click", function() {
+                if(isNaN(Number(document.getElementById("minInput").value.replaceAll(r, "")))) {
+                    document.getElementById("minInput").value = "1";
+                }
+                if(isNaN(Number(document.getElementById("maxInput").value.replaceAll(r, "")))) {
+                    document.getElementById("maxInput").value = "20";
+                }
+                let min = Number(document.getElementById("minInput").value.replaceAll(r, ""));
+                let max = Number(document.getElementById("maxInput").value.replaceAll(r, ""));
+                result = min + Math.random() * (max - min + (document.getElementById("floatOrNo").checked ? 1 : 0));
+                let tresult = result;
+                if(document.getElementById("floatOrNo").checked) {
+                    tresult = Math.round(result);
+                } else {
+                    tresult = result.toFixed(Number(document.getElementById("numDigitsInput").value));
+                }
+                document.getElementById("result").textContent = String(tresult);
+
+                document.getElementById("maxInput").value = document.getElementById("maxInput").value.replaceAll(r, "");
+                document.getElementById("minInput").value = document.getElementById("minInput").value.replaceAll(r, "");
+            });
+            document.getElementById("go").click();
+            RegExp(/\D/, "g")
+        }
+    </script>
+</html>

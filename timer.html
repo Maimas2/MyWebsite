@@ -57,12 +57,12 @@
             let days  = Math.floor(hours / 24);
 
             document.getElementById("mainLabel").textContent = `${days} : ${hours % 24 < 10 ? "0" : ""}${hours % 24} : ${mins % 60 < 10 ? "0" : ""}${mins % 60} : ${Math.floor(secs/1000) % 60 < 10 ? "0" : ""}${Math.floor(secs/1000) % 60}`
-            document.getElementById("percentLabel").textContent = `${String((1-((secs/1000) / 126230400)) * 100).substring(0,9)}% of the way there`
+            document.getElementById("percentLabel").textContent = `We're ${String((1-((secs/1000) / 126230400)) * 100).substring(0,9)}% of the way there!`
             document.getElementById("barinner").style.width = `${(1-((secs/1000) / 126230400)) * 100}%`
         }
         setInterval(function() {
             updateTime();
-        }, 300);
+        }, 100);
         window.onload = function() {
             updateTime();
         }
