@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<DOCTYPE html>
 <html>
     <head>
         <style>
             @font-face {
                 font-family: cmu;
-                src: url(https://alex-seltzer.com/cmu.ttf);
+                src: url(https://rng.alex-seltzer.com/cmu.ttf);
             }
             * {
                 font-family: cmu;
@@ -88,6 +88,20 @@
                 margin: 0;
                 text-align: center;
             }
+            #result > p {
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                border-radius: 15px;
+                padding: 4px;
+                margin: 4px;
+            }
+            #otherControlContainer {
+                display: flex;
+                flex-direction: row;
+            }
+            #otherControlContainer > * {
+                width: 100%;
+                margin: 0;
+            }
         </style>
     </head>
     <body>
@@ -95,12 +109,22 @@
             <div id="inputContainer">
                 <div id="otherControlContainer">
                     <div>
-                        <p>Integer Only</p>
-                        <input type="checkbox" id="floatOrNo" name="floatOrNo" checked autocomplete="off">
+                        <div>
+                            <p>Integer Only</p>
+                            <input type="checkbox" id="floatOrNo" name="floatOrNo" checked autocomplete="off">
+                        </div>
+                        <div>
+                            <p>Decimal Digits: <span id="decimalLabel">10</span></p>
+                            <input type="range" min="0" max="16" value="10" id="numDigitsInput" disabled="disabled" autocomplete="off">
+                        </div>
                     </div>
                     <div>
-                        <p>Decimal Digits: <span id="decimalLabel">10</span></p>
-                        <input type="range" min="0" max="16" value="10" id="numDigitsInput" disabled="disabled" autocomplete="off">
+                        <p>Number of Numbers: <span id="numNumbersSpan">1</span></p>
+                        <input type="range" min="1" max="20" value="5" id="numNumbers" autocomplete="off">
+                        <div>
+                            <p>Show Summary</p>
+                            <input type="checkbox" id="showSummaryCheck">
+                        </div>
                     </div>
                 </div>
                 <div id="minInputContainer">
@@ -122,15 +146,73 @@
     </body>
     <script>
         let r = RegExp(/[^(\d|\.)]/, "g");
-        var result;
+        var results = [];
+
+        function refreshResult() {
+            var toPush = "";
+
+            var newline = false;
+            var numAdded = 0;
+
+            var tresults = [];
+            var max = -Infinity;
+            var min = Infinity;
+
+            results.forEach((tresult) => {
+                if(numAdded >= Number(document.getElementById("numNumbers").value)) return;
+
+                if(document.getElementById("floatOrNo").checked) {
+                    tresult = (Math.round(tresult));
+                } else {
+                    tresult = Number(tresult.toFixed(Number(document.getElementById("numDigitsInput").value)));
+                }
+
+                tresults.push(tresult);
+                if(tresult > max) max = tresult;
+                if(tresult < min) min = tresult;
+
+                if(document.getElementById("floatOrNo").checked) {
+                    toPush += `<p style="display: inline-block;min-width: 20%;">${tresult}</p>`;
+                } else {
+                    toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">${tresult}</p>`;
+                }
+
+                numAdded++;
+            });
+
+            if(document.getElementById("showSummaryCheck").checked && Number(document.getElementById("numNumbers").value) > 1) {
+                toPush += "<hr>";
+                toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">Sum: ${tresults.reduce((ps, ta) => ps + ta, 0)}</p>`;
+                toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">Mean: ${(tresults.reduce((ps, ta) => ps + ta, 0)/tresults.length)}</p><br>`;
+                toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">Max: ${max}</p><br>`;
+                toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">Min: ${min}</p><br>`;
+            }
+            
+            document.getElementById("result").innerHTML = toPush;
+        }
 
         window.onload = function() {
             document.getElementById("floatOrNo").addEventListener("click", function() {
                 document.getElementById("numDigitsInput").disabled = this.checked;
+                refreshResult();
+            });
+
+            document.getElementById("showSummaryCheck").addEventListener("click", function() {
+                refreshResult();
             });
 
             document.getElementById("numDigitsInput").addEventListener("input", function() {
-                document.getElementById("result").textContent = result.toFixed(Number(document.getElementById("numDigitsInput").value));
+                refreshResult();
+            });
+
+            document.getElementById("numNumbers").addEventListener("input", function() {
+                if(Number(document.getElementById("numNumbers").value) == 1) {
+                    document.getElementById("showSummaryCheck").disabled = true;
+                } else {
+                    document.getElementById("showSummaryCheck").disabled = false;
+                }
+
+                refreshResult();
             });
 
             let numberfied = Number(window.location.pathname.substring(1).replaceAll(r, ""));
@@ -157,20 +239,22 @@
                 }
                 let min = Number(document.getElementById("minInput").value.replaceAll(r, ""));
                 let max = Number(document.getElementById("maxInput").value.replaceAll(r, ""));
-                result = min + Math.random() * (max - min + (document.getElementById("floatOrNo").checked ? 1 : 0));
-                let tresult = result;
-                if(document.getElementById("floatOrNo").checked) {
-                    tresult = Math.round(result);
-                } else {
-                    tresult = result.toFixed(Number(document.getElementById("numDigitsInput").value));
+
+                results = [];
+
+                for(var i = 0; i < 20; i++) {
+                    let tresult = min + Math.random() * (max - min);
+
+                    results.push(tresult);
                 }
-                document.getElementById("result").textContent = String(tresult);
+                
+                refreshResult();
 
                 document.getElementById("maxInput").value = document.getElementById("maxInput").value.replaceAll(r, "");
                 document.getElementById("minInput").value = document.getElementById("minInput").value.replaceAll(r, "");
             });
+
             document.getElementById("go").click();
-            RegExp(/\D/, "g")
         }
     </script>
 </html>

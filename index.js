@@ -66,6 +66,10 @@ rngApp.get("/{:num}", (req, res) => {
     res.sendFile("/rng.html", {root: __dirname});
 });
 
+rngApp.get("/cmu.ttf", (req, res) => {
+    res.sendFile("./mun/fonts/cmunrm.ttf", {root: __dirname})
+});
+
 rngApp.listen(3102);
 console.log("RNG is listening on port 3102");
 
