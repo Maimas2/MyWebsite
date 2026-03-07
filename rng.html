@@ -16,11 +16,15 @@
             div {
                 overflow: auto;
             }
-            button {
-                transition: all 150ms linear;
+            button, select {
+                transition: all 100ms linear;
                 background-color: white;
             }
-            button:hover:not(:disabled):not(:has(button:hover)):not(.noHoverEffect), select:hover:not(:disabled) {
+            select {
+                border: 1px solid #777;
+                border-radius: 5px;
+            }
+            button:hover:not(:disabled), select:hover:not(:disabled) {
                 background-color: #dddddd;
                 border-radius: 5px;
             }
@@ -78,6 +82,7 @@
                 padding: 5px;
                 border-radius: 5px;
                 border: 1px solid #777;
+                text-align: center;
             }
             #resultContainer {
                 display: flex;
@@ -102,38 +107,84 @@
                 width: 100%;
                 margin: 0;
             }
+            #minMaxContainer {
+                display: flex;
+                flex-direction: row;
+                border: 0;
+                padding: 0;
+            }
+            #minMaxContainer > *:not(#separator) {
+                width: 100%;
+                height: calc(100% - 0px);
+                margin: 0;
+                border: 1px solid #777;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 10px;
+                border-radius: 10px;
+            }
+            #separator {
+                max-width: 1;
+            }
+            #minInputContainer {
+                margin-right: 20px !important;
+            }
+            #otherControlContainer {
+                overflow: hidden !important;
+            }
         </style>
+        <script src="/jquery.js"></script>
     </head>
     <body>
         <div id="bigContainer">
             <div id="inputContainer">
+                <div id="distChoiceContainer">
+                    <p>Distribution Method</p>
+                    <select id="distChoice" autocomplete="off">
+                        <option value="uniform">Uniform</option>
+                        <option value="normal">Gaussian Normal</option>
+                    </select>
+                </div>
                 <div id="otherControlContainer">
-                    <div>
-                        <div>
+                    <div id="uniformControls">
+                        <div class="inputEl uniformEl">
                             <p>Integer Only</p>
                             <input type="checkbox" id="floatOrNo" name="floatOrNo" checked autocomplete="off">
                         </div>
                         <div>
-                            <p>Decimal Digits: <span id="decimalLabel">10</span></p>
-                            <input type="range" min="0" max="16" value="10" id="numDigitsInput" disabled="disabled" autocomplete="off">
+                            <p>Number of Numbers: <span id="numNumbersSpan">1</span></p>
+                            <input type="range" min="1" max="20" value="1" id="numNumbers" autocomplete="off">
                         </div>
                     </div>
                     <div>
-                        <p>Number of Numbers: <span id="numNumbersSpan">1</span></p>
-                        <input type="range" min="1" max="20" value="5" id="numNumbers" autocomplete="off">
+                        <div class="inputEl uniformEl normalEl">
+                            <p>Decimal Digits: <span id="decimalLabel">5</span></p>
+                            <input type="range" min="0" max="16" value="5" id="numDigitsInput" disabled="disabled" autocomplete="off">
+                        </div>
                         <div>
                             <p>Show Summary</p>
                             <input type="checkbox" id="showSummaryCheck">
                         </div>
                     </div>
                 </div>
-                <div id="minInputContainer">
-                    <h2>Minimum Value</h2>
-                    <input id="minInput" type="text" value="1" autocomplete="off">
-                </div>
-                <div id="maxInputContainer">
-                    <h2>Maximum Value</h2>
-                    <input id="maxInput" type="text" value="20" autocomplete="off">
+                <div id="minMaxContainer">
+                    <div id="minInputContainer" class="inputEl uniformEl">
+                        <h2>Minimum Value</h2>
+                        <input id="minInput" type="text" value="1" autocomplete="off">
+                    </div>
+                    <div id="maxInputContainer" class="inputEl uniformEl">
+                        <h2>Maximum Value</h2>
+                        <input id="maxInput" type="text" value="20" autocomplete="off">
+                    </div>
+                    <div class="inputEl normalEl" style="display: none;margin-right: 15px;">
+                        <h2>Mean</h2>
+                        <input type="text" value="0" id="normalMean">
+                    </div>
+                    <div class="inputEl normalEl" style="display: none;">
+                        <h2>Standard Deviation</h2>
+                        <input type="text" value="1" id="normalSigma">
+                    </div>
                 </div>
                 <button id="go">
                     Generate
@@ -148,6 +199,24 @@
         let r = RegExp(/[^(\d|\.)]/, "g");
         var results = [];
 
+        function gaussianRandom() { // Returns a random Gaussian-distributed number using the Box-Muller transform
+            return Number($("#normalMean").val().replaceAll(r, "")) + (Number($("#normalSigma").val().replaceAll(r, "")) * Math.sqrt(-2 * Math.log(Math.random())) * Math.cos(2 * Math.PI * Math.random()));
+        }
+        function uniformRandom() {
+            let min = Number(document.getElementById("minInput").value.replaceAll(r, ""));
+            let max = Number(document.getElementById("maxInput").value.replaceAll(r, ""));
+
+            return min + Math.random() * (max - min);
+        }
+
+        function cRandom() { // Returns random number using current generation method
+            if($("#distChoice").find(":selected").val() == "uniform") {
+                return uniformRandom();
+            } else if($("#distChoice").find(":selected").val() == "normal") {
+                return gaussianRandom();
+            }
+        }
+
         function refreshResult() {
             var toPush = "";
 
@@ -161,9 +230,13 @@
             results.forEach((tresult) => {
                 if(numAdded >= Number(document.getElementById("numNumbers").value)) return;
 
-                if(document.getElementById("floatOrNo").checked) {
-                    tresult = (Math.round(tresult));
-                } else {
+                if($("#distChoice").find(":selected").val() == "uniform") {
+                    if(document.getElementById("floatOrNo").checked) {
+                        tresult = (Math.round(tresult));
+                    } else {
+                        tresult = Number(tresult.toFixed(Number(document.getElementById("numDigitsInput").value)));
+                    }
+                } else if($("#distChoice").find(":selected").val() == "normal") {
                     tresult = Number(tresult.toFixed(Number(document.getElementById("numDigitsInput").value)));
                 }
 
@@ -182,7 +255,7 @@
 
             if(document.getElementById("showSummaryCheck").checked && Number(document.getElementById("numNumbers").value) > 1) {
                 toPush += "<hr>";
-                toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">Sum: ${tresults.reduce((ps, ta) => ps + ta, 0)}</p>`;
+                toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">Sum: ${tresults.reduce((ps, ta) => ps + ta, 0)}</p><br>`;
                 toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">Mean: ${(tresults.reduce((ps, ta) => ps + ta, 0)/tresults.length)}</p><br>`;
                 toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">Max: ${max}</p><br>`;
                 toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">Min: ${min}</p><br>`;
@@ -202,8 +275,25 @@
             });
 
             document.getElementById("numDigitsInput").addEventListener("input", function() {
+                $("#decimalLabel").text($("#numDigitsInput").val());
                 refreshResult();
             });
+
+            $("#distChoice").on("change", function() {
+                console.log($("#distChoice").find(":selected").val());
+
+                $(".inputEl").css("display", "none");
+                $(`.${$("#distChoice").find(":selected").val()}El`).css("display", "");
+
+                if($("#distChoice").find(":selected").val() == "normal") {
+                    document.getElementById("numDigitsInput").disabled = false;
+                } else if($("#distChoice").find(":selected").val() == "uniform") {
+                    document.getElementById("numDigitsInput").disabled = $("#floatOrNo").prop("checked");
+                }
+
+                $("#go").click();
+                refreshResult();
+            })
 
             document.getElementById("numNumbers").addEventListener("input", function() {
                 if(Number(document.getElementById("numNumbers").value) == 1) {
@@ -211,7 +301,7 @@
                 } else {
                     document.getElementById("showSummaryCheck").disabled = false;
                 }
-
+                $("#numNumbersSpan").text($("#numNumbers").val());
                 refreshResult();
             });
 
@@ -237,13 +327,11 @@
                 if(isNaN(Number(document.getElementById("maxInput").value.replaceAll(r, "")))) {
                     document.getElementById("maxInput").value = "20";
                 }
-                let min = Number(document.getElementById("minInput").value.replaceAll(r, ""));
-                let max = Number(document.getElementById("maxInput").value.replaceAll(r, ""));
 
                 results = [];
 
                 for(var i = 0; i < 20; i++) {
-                    let tresult = min + Math.random() * (max - min);
+                    let tresult = cRandom();
 
                     results.push(tresult);
                 }

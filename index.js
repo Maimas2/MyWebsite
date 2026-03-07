@@ -60,18 +60,23 @@ countdownApp.get("/", (req, res) => {
 countdownApp.listen(3101);
 console.log("Coundown is listening on port 3101");
 
-var rngApp = express();
+    var rngApp = express();
 
-rngApp.get("/{:num}", (req, res) => {
-    res.sendFile("/rng.html", {root: __dirname});
-});
+    rngApp.get("/cmu.ttf", (req, res) => {
+        res.sendFile("./mun/fonts/cmunrm.ttf", {root: __dirname})
+    });
 
-rngApp.get("/cmu.ttf", (req, res) => {
-    res.sendFile("./mun/fonts/cmunrm.ttf", {root: __dirname})
-});
+    rngApp.get("/jquery.js", (req, res) => {
+        res.type("js");
+        res.sendFile("./mun/lib/jquery-3.7.1.min.js", {root: __dirname});
+    });
 
-rngApp.listen(3102);
-console.log("RNG is listening on port 3102");
+    rngApp.get("/{:num}", (req, res) => {
+        res.sendFile("/rng.html", {root: __dirname});
+    });
+
+    rngApp.listen(3102);
+    console.log("RNG is listening on port 3102");
 
 var listpw = null;
 
