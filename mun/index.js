@@ -52,8 +52,10 @@ class JCCclass {
     password;
     bigScreenConnections;
     chatConnections;
+    operators;
     mirrors;
     passedPapers;
+    chats;
     
     constructor() {
         this.name = "";
@@ -61,7 +63,9 @@ class JCCclass {
         this.bigScreenConnections = new Set();
         this.chatConnections = new Set();
         this.mirrors = new Set();
+        this.operators = new Set();
         this.passedPapers = [];
+        this.chats = [];
     }
 }
 
@@ -156,17 +160,31 @@ app.use("/flags", express.static(path.join(__dirname, "images/flags")));
 app.use("/sounds", express.static(path.join(__dirname, "/sounds")));
 
 app.get("/chat", (req, res) => {
-    res.sendFile("./chat.html", {root : __dirname});
+    res.sendFile("./chat/chat.html", {root : __dirname});
 });
 
 app.get("/chat.css", (req, res) => {
     res.type("text/css");
-    res.sendFile("./chat.css", {root : __dirname});
+    res.sendFile("./chat/chat.css", {root : __dirname});
 });
 
 app.get("/chat.js", (req, res) => {
     res.type("text/javascript");
-    res.sendFile("./chat.js", {root : __dirname});
+    res.sendFile("./chat/chat.js", {root : __dirname});
+});
+
+app.get("/operator", (req, res) => {
+    res.sendFile("./operator/operator.html", {root : __dirname});
+});
+
+app.get("/operator.css", (req, res) => {
+    res.type("text/css");
+    res.sendFile("./operator/operator.css", {root : __dirname});
+});
+
+app.get("/operator.js", (req, res) => {
+    res.type("text/javascript");
+    res.sendFile("./operator/operator.js", {root : __dirname});
 });
 
 app.get("/admin", (req, res) => {
@@ -304,7 +322,7 @@ app.get("/rss", (req, res) => {
 
 app.ws('/rss', function(ws, req) {   
     ws.on("message", (message) => { // No error codes or any of that shit here, just discard invalid inputs
-        //console.log(message);
+        console.log(message);
         var d;
         var failed = false;
         try {
@@ -331,13 +349,16 @@ app.ws('/rss', function(ws, req) {
             } else if(d.clientType == "mirror") {
                 listOfJCCs[d.name].mirrors.add(ws);
                 ws.send("Connected");
+            } else if(d.clientType == "operator") {
+                listOfJCCs[d.name].operators.add(ws);
+                ws.send("Connected");
             }
-        } else if(d.type == "paperPassed") {
-            var newPaper = new PassedPaper();
-            newPaper.name = d.messageBody;
-            newPaper.committeeName = d.sender;
+        // } else if(d.type == "paperPassed") {
+        //     var newPaper = new PassedPaper();
+        //     newPaper.name = d.messageBody;
+        //     newPaper.committeeName = d.sender;
 
-            listOfJCCs[d.name].passedPapers.push(newPaper);
+        //     listOfJCCs[d.name].passedPapers.push(newPaper);
         } else if(d.type == "message" || d.type == "paperPassed") {
             //console.log(d.messageBody);
             listOfJCCs[d.name].bigScreenConnections.forEach((el) => {
@@ -347,18 +368,32 @@ app.ws('/rss', function(ws, req) {
                 if(el.readyState == ws.CLOSED) listOfJCCs[d.name].chatConnections.delete(el);
             });
 
+            listOfJCCs[d.name].chats.push(JSON.stringify(d));
+            if(listOfJCCs[d.name].chats.length > 50) {
+                listOfJCCs[d.name].chats = listOfJCCs[d.name].chats.slice(1);
+            }
+
             listOfJCCs[d.name].bigScreenConnections.forEach(function(ws2) {
                 if(ws != ws2) ws2.ws.send(JSON.stringify(d));
             });
             listOfJCCs[d.name].chatConnections.forEach(function(ws2) {
                 if(ws != ws2) ws2.send(JSON.stringify(d));
             });
+            listOfJCCs[d.name].operators.forEach(function(ws2) {
+                if(ws != ws2) ws2.send(JSON.stringify(d));
+            });
         } else if(d.type == "sendMirror" || d.type == "crisis") {
             listOfJCCs[d.name].mirrors.forEach((el) => {
                 if(el.readyState == ws.CLOSED) listOfJCCs[d.name].mirrors.delete(el);
             });
+            listOfJCCs[d.name].operators.forEach((el) => {
+                if(el.readyState == ws.CLOSED) listOfJCCs[d.name].operators.delete(el);
+            });
 
             listOfJCCs[d.name].mirrors.forEach(function(ws2) {
+                if(ws != ws2) ws2.send(JSON.stringify(d));
+            });
+            listOfJCCs[d.name].operators.forEach(function(ws2) {
                 if(ws != ws2) ws2.send(JSON.stringify(d));
             });
         } else if(d.type == "requestMirrors") {
@@ -391,6 +426,9 @@ app.ws('/rss', function(ws, req) {
                 if(ws != ws2) ws2.send(JSON.stringify(d));
             });
             listOfJCCs[d.name].mirrors.forEach(function(ws2) {
+                if(ws != ws2) ws2.send(JSON.stringify(d));
+            });
+            listOfJCCs[d.name].operators.forEach(function(ws2) {
                 if(ws != ws2) ws2.send(JSON.stringify(d));
             });
         } else if(d.type == "sendingName") {
@@ -462,6 +500,9 @@ function sendWsHeartbeat() {
             bs.ws.send(JSON.stringify({type : "heartbeat"}));
         });
         jcc.mirrors.forEach(function(conn) {
+            conn.send(JSON.stringify({type : "heartbeat"}));
+        });
+        jcc.operators.forEach(function(conn) {
             conn.send(JSON.stringify({type : "heartbeat"}));
         });
     })

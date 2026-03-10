@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="/lib/jquery.js"></script>
+        <link rel="stylesheet" href="/style.css">
+        <link rel="stylesheet" href="/operator.css">
+        <link rel="icon" type="image/png" href="/favicon.png"/>
+    </head>
+    <body>
+        <div id="joinJcc">
+            <div id="innerJoinJcc" class="outlineddiv">
+                <h2>Operator Login</h2>
+                <p>Name:</p>
+                <input id="jccName" type="text">
+                <br><br>
+                <p>Password:</p>
+                <input id="jccPassword" type="text">
+                <br><br>
+                <button id="join">Join</button>
+            </div>
+        </div>
+        <div id="joinedJcc">
+            <div id="joiner1">
+                <button class="refreshButton">Refresh</button>
+                <h2>Click to Watch that Room</h2>
+                <div id="joinerButtons1" class="joinerButtonContainer">
+
+                </div>
+            </div>
+            <div id="watcher1" class="watcher">
+                <button id="quit1">Quit</button>
+                <br>
+                <h1 id="watcherName1">[No name]</h1>
+                <br>
+                <h2 id="watcherCount1">0 Delegates</h3>
+                <br>
+                <h1>Currently:</h1>
+                <h2 id="watcherDetails1">Awaiting...</h2>
+                <h1 id="watcherTime1">--:--</h1>
+            </div>
+            <div id="joiner2">
+                <button class="refreshButton">Refresh</button>
+                <h2>Click to Watch that Room</h2>
+                <div id="joinerButtons2" class="joinerButtonContainer">
+
+                </div>
+            </div>
+            <div id="watcher2" class="watcher">
+                <button id="quit2">Quit</button>
+                <br>
+                <h1 id="watcherName2">[No name]</h1>
+                <br>
+                <h2 id="watcherCount2">0 Delegates</h3>
+                <br>
+                <h1>Currently:</h1>
+                <h2 id="watcherDetails2">Awaiting...</h2>
+                <h1 id="watcherTime2">--:--</h1>
+            </div>
+            <div id="chatContainer">
+                <h2 id="topLabel">Chat</h2>
+                <div id="setNameContainer">
+                    <h3 style="padding: 15px;flex-shrink: 0;margin:0;">Your Name:</h3>
+                    <input id="yourNameInput" type="text">
+                </div>
+                <div id="chatMessageContainer">
+
+                </div>
+                <div id="messageSendContainer">
+                    <input id="newMessageType" type="text">
+                    <button id="sendMessageButton">Send</button>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="/operator.js"></script>
+</html>
