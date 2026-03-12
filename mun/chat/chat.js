@@ -7,6 +7,10 @@ var jccData;
 var wsUrl;
 
 var peopleMessageAppendingTo = null;
+var typeOfPresenseRequest = 0;
+/* 0 : print names and types of screen
+ * 1 : print names and salts
+ */
 
 function createMessageRaw(type, sender, body, isFromSelf=false) {
     var toAdd = $("<div>").addClass("outlineddiv").css("padding", "15px");
@@ -41,6 +45,8 @@ function createMessageRaw(type, sender, body, isFromSelf=false) {
         scrollTop : $("#chatMessageContainer div:last").offset().top
     }, 300);
 
+    if(!isFromSelf && !type.startsWith("paperPassed")) $("#notificationSound")[0].play();
+
     return toAdd;
 }
 
@@ -48,30 +54,32 @@ function createMessage(data, isFromSelf=false) {
     createMessageRaw(data.type, data.sender, data.messageBody, isFromSelf);
 }
 
-window.onload = function() {
+window.addEventListener("load", function() {
     wsUrl = window.location.toString().includes("localhost") ? "ws://localhost:3011/rss" : "wss://" + window.location.host + "/rss";
-    $("#join").on("click", function(_e) {
-        var d = {
-            name     : $("#jccName").val(),
-            password : $("#jccPassword").val()
-        };
-        $("#joinJcc").css("display", "none");
-        $.ajax({
-            type    : "POST",
-            url     : "/jccLogin",
-            contentType: 'application/json',
-            success : function(returned) {
-                console.log(returned);
-
-                setupJccData(returned);
-            },
-            error   : function(returned) {
-                console.error(JSON.parse(returned.responseText));
-                $("#joinJcc").css("display", "");
-            },
-            data    : JSON.stringify(d)
+    if(window.location.toString().includes("/chat")) { // Don't trigger if on operator screen; log-in system already implemented
+        $("#join").on("click", function(_e) {
+            var d = {
+                name     : $("#jccName").val(),
+                password : $("#jccPassword").val()
+            };
+            $("#joinJcc").css("display", "none");
+            $.ajax({
+                type    : "POST",
+                url     : "/jccLogin",
+                contentType: 'application/json',
+                success : function(returned) {
+                    console.log(returned);
+    
+                    setupJccDataChat(returned);
+                },
+                error   : function(returned) {
+                    console.error(JSON.parse(returned.responseText));
+                    $("#joinJcc").css("display", "");
+                },
+                data    : JSON.stringify(d)
+            });
         });
-    });
+    }
     $("#sendMessageButton").on("click", function(_e) {
         if($("#newMessageType").val().replaceAll(" ", "") == "") return;
         if($("#newMessageType").val().trim() == "!people") {
@@ -82,6 +90,16 @@ window.onload = function() {
                 salt : jccData.salt,
             }));
             $("#newMessageType").val("");
+            typeOfPresenseRequest = 0;
+        } else if($("#newMessageType").val().trim() == "!salts") {
+            peopleMessageAppendingTo = createMessageRaw("paperPassedNot", "Connected Devices' IDs", "");
+            ws.send(JSON.stringify({
+                name : jccData.name,
+                type : "requestPresence",
+                salt : jccData.salt,
+            }));
+            $("#newMessageType").val("");
+            typeOfPresenseRequest = 1;
         } else {
             var d = {
                 name       : jccData.name,
@@ -95,9 +113,28 @@ window.onload = function() {
             $("#newMessageType").val("");
         }
     });
+});
+
+function parseNewMessage(d) {
+    if(d.type == "message" || d.type == "paperPassed") {
+        createMessage(d);
+    } else if(d.type == "requestPresence") {
+        ws.send(JSON.stringify({
+            type : "sendingName",
+            name : `${$("#yourNameInput").text() || "[No Name]"} – Chat Window`
+        }));
+    } else if(d.type == "sendingName") {
+        if(peopleMessageAppendingTo != null) {
+            if(typeOfPresenseRequest == 0) {
+                peopleMessageAppendingTo.append($("<p>").text(d.roomName));
+            } else if(typeOfPresenseRequest == 1) {
+                peopleMessageAppendingTo.append($("<p>").css("user-select", "text").text(`${d.roomName}: ${d.mySalt}`));
+            }
+        }
+    }
 }
 
-function setupJccData(data) {
+function setupJccDataChat(data) { // Renamed to prevent potential conflict w/ the operator script
     jccData = data;
 
     $("#joinedJcc").css("display", "flex");
@@ -116,23 +153,7 @@ function setupJccData(data) {
     ws.addEventListener("message", function(m) {
         console.log(m.data);
         var d = JSON.parse(m.data);
-        if(d.type == "message") {
-            createMessage(JSON.parse(m.data));
-        } else if(d.type == "paperPassed") {
-            m.data.messageBody += " please help me they trapped me in a";
-            createMessage(JSON.parse(m.data));
-        } else if(d.type == "requestPresence") {
-            ws.send(JSON.stringify({
-                type : "sendingName",
-                name : `${$("#yourNameInput").text() || "[No Name]"} – Chat Window`
-            }));
-        } else if(d.type == "sendingName") {
-            if(peopleMessageAppendingTo == null) {
-                
-            } else {
-                peopleMessageAppendingTo.append($("<p>").text(data.name));
-            }
-        }
+        parseNewMessage(d);
     });
 }
 

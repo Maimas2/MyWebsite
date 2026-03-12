@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="/style.css">
         <link rel="stylesheet" href="/operator.css">
         <link rel="icon" type="image/png" href="/favicon.png"/>
+        <title>Model UN Operator</title>
     </head>
     <body>
         <div id="joinJcc">
@@ -16,7 +17,7 @@
                 <p>Password:</p>
                 <input id="jccPassword" type="text">
                 <br><br>
-                <button id="join">Join</button>
+                <button id="joinop">Join</button>
             </div>
         </div>
         <div id="joinedJcc">
@@ -34,7 +35,6 @@
                 <br>
                 <h2 id="watcherCount1">0 Delegates</h3>
                 <br>
-                <h1>Currently:</h1>
                 <h2 id="watcherDetails1">Awaiting...</h2>
                 <h1 id="watcherTime1">--:--</h1>
             </div>
@@ -52,7 +52,6 @@
                 <br>
                 <h2 id="watcherCount2">0 Delegates</h3>
                 <br>
-                <h1>Currently:</h1>
                 <h2 id="watcherDetails2">Awaiting...</h2>
                 <h1 id="watcherTime2">--:--</h1>
             </div>
@@ -71,6 +70,8 @@
                 </div>
             </div>
         </div>
+        <audio src="/sounds/pop.mp3" id="notificationSound" autoplay="off" preload="none" controls="off" style="display: none;"></audio>
     </body>
+    <script src="/chat.js"></script>
     <script src="/operator.js"></script>
 </html>

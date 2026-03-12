@@ -2243,8 +2243,10 @@ function setupMirroring(data) {
             ws.send(JSON.stringify({
                 name       : jccData.name,
                 salt       : jccData.salt,
-                type : "sendingName",
-                name : `Mirror of ${$("#committeeName").text() || "[No Name]"}`
+                mySalt     : jccData.mySalt,
+                type       : "sendingName",
+                roomName   : `Mirror of ${$("#committeeName").text() || "[No Name]"}`,
+                rawName    : $("#committeeName").val() || "[No Name]"
             }));
         } else if(!hasChoosenMirrorable) {
             var d = dd.state;
@@ -2329,13 +2331,23 @@ function setupJccData(data) {
         } else if(d.type == "message") {
             if(d.messageBody.startsWith("!crisis")) {
                 let crisisMessage = "";
+                let shouldKillCrisis = false;
+
                 d.messageBody.substring(8).split(" ").forEach((el) => {
                     if(el.startsWith("-S")) {
                         $("#crisisSound").attr("src", `/sounds/${el.substring(2)}.mp3`);
+                    } else if(el.startsWith("-I")) {
+                        console.log(el == `-I${mySalt}`);
+                        if(el != `-I${mySalt}`) {
+                            shouldKillCrisis = true;
+                            return;
+                        }
                     } else {
                         crisisMessage += el + " ";
                     }
                 });
+
+                if(shouldKillCrisis) return;
 
                 $("#crisisUpdateText").text(crisisMessage.trim());
                 quitPopup(function() {
@@ -2347,7 +2359,11 @@ function setupJccData(data) {
         } else if(d.type == "requestPresence") {
             ws.send(JSON.stringify({
                 type : "sendingName",
-                name : `${$("#committeeName").val() || "[No Name]"} – Big Screen`
+                name : jccData.name,
+                salt : jccData.salt,
+                mySalt : mySalt,
+                roomName : `${$("#committeeName").val() || "[No Name]"} – Big Screen`,
+                rawName  : $("#committeeName").val() || "[No Name]"
             }));
         }
         //console.log(d);

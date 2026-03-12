@@ -320,9 +320,9 @@ app.get("/rss", (req, res) => {
 	res.send("No");
 });
 
-app.ws('/rss', function(ws, req) {   
+app.ws('/rss', function(ws, req) { // Don't ask me where the FUCK I got '/rss' as the access url
     ws.on("message", (message) => { // No error codes or any of that shit here, just discard invalid inputs
-        console.log(message);
+        //console.log(message);
         var d;
         var failed = false;
         try {
@@ -438,11 +438,17 @@ app.ws('/rss', function(ws, req) {
             listOfJCCs[d.name].chatConnections.forEach((el) => {
                 if(el.readyState == ws.CLOSED) listOfJCCs[d.name].chatConnections.delete(el);
             });
+            listOfJCCs[d.name].operators.forEach((el) => {
+                if(el.readyState == ws.CLOSED) listOfJCCs[d.name].chatConnections.delete(el);
+            });
             
             listOfJCCs[d.name].bigScreenConnections.forEach(function(ws2) {
                 if(ws != ws2) ws2.ws.send(JSON.stringify(d));
             });
             listOfJCCs[d.name].chatConnections.forEach(function(ws2) {
+                if(ws != ws2) ws2.send(JSON.stringify(d));
+            });
+            listOfJCCs[d.name].operators.forEach(function(ws2) {
                 if(ws != ws2) ws2.send(JSON.stringify(d));
             });
         }
