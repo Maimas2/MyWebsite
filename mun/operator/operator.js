@@ -231,7 +231,7 @@ function setupJccData(data) {
                             }));
 
                             $("button.joinButton").each(function() {
-                                console.log($(this).attr("data-buttonsalt"));
+                                //console.log($(this).attr("data-buttonsalt"));
                                 if($(this).attr("data-buttonsalt") == d.state.mySalt) $(this).remove();
                             });
                         }));
@@ -256,7 +256,7 @@ function setupJccData(data) {
                             }));
 
                             $("button.joinButton").each(function() {
-                                console.log($(this).attr("data-buttonsalt"));
+                                //console.log($(this).attr("data-buttonsalt"));
                                 if($(this).attr("data-buttonsalt") == d.state.mySalt) $(this).remove();
                             });
                         }));

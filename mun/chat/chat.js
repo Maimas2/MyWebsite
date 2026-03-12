@@ -12,6 +12,8 @@ var typeOfPresenseRequest = 0;
  * 1 : print names and salts
  */
 
+var areSoundsDisabled = false;
+
 function createMessageRaw(type, sender, body, isFromSelf=false) {
     var toAdd = $("<div>").addClass("outlineddiv").css("padding", "15px");
 
@@ -45,7 +47,10 @@ function createMessageRaw(type, sender, body, isFromSelf=false) {
         scrollTop : $("#chatMessageContainer div:last").offset().top
     }, 300);
 
-    if(!isFromSelf && !type.startsWith("paperPassed")) $("#notificationSound")[0].play();
+    if(!isFromSelf && !areSoundsDisabled) {
+        $("#notificationSound")[0].fastSeek(0);
+        $("#notificationSound")[0].play();
+    }
 
     return toAdd;
 }
@@ -131,6 +136,10 @@ function parseNewMessage(d) {
                 peopleMessageAppendingTo.append($("<p>").css("user-select", "text").text(`${d.roomName}: ${d.mySalt}`));
             }
         }
+    } else if(d.type == "pastMessages") {
+        d.pastMessages.forEach((m) => {
+            createMessage(m);
+        });
     }
 }
 
@@ -151,7 +160,6 @@ function setupJccDataChat(data) { // Renamed to prevent potential conflict w/ th
         $("#jccInfo").css("display", "inline-block");
     };
     ws.addEventListener("message", function(m) {
-        console.log(m.data);
         var d = JSON.parse(m.data);
         parseNewMessage(d);
     });

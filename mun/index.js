@@ -346,12 +346,20 @@ app.ws('/rss', function(ws, req) { // Don't ask me where the FUCK I got '/rss' a
                 ws.send(JSON.stringify({type : "returnSalt", salt : s}));
             } else if(d.clientType == "chatScreen") {
                 listOfJCCs[d.name].chatConnections.add(ws);
+                ws.send(JSON.stringify({
+                    type : "pastMessages",
+                    pastMessages : listOfJCCs[d.name].chats
+                }));
             } else if(d.clientType == "mirror") {
                 listOfJCCs[d.name].mirrors.add(ws);
                 ws.send("Connected");
             } else if(d.clientType == "operator") {
                 listOfJCCs[d.name].operators.add(ws);
                 ws.send("Connected");
+                ws.send(JSON.stringify({
+                    type : "pastMessages",
+                    pastMessages : listOfJCCs[d.name].chats
+                }));
             }
         // } else if(d.type == "paperPassed") {
         //     var newPaper = new PassedPaper();
@@ -368,7 +376,7 @@ app.ws('/rss', function(ws, req) { // Don't ask me where the FUCK I got '/rss' a
                 if(el.readyState == ws.CLOSED) listOfJCCs[d.name].chatConnections.delete(el);
             });
 
-            listOfJCCs[d.name].chats.push(JSON.stringify(d));
+            listOfJCCs[d.name].chats.push(d);
             if(listOfJCCs[d.name].chats.length > 50) {
                 listOfJCCs[d.name].chats = listOfJCCs[d.name].chats.slice(1);
             }

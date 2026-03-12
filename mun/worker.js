@@ -2336,6 +2336,7 @@ function setupJccData(data) {
                 d.messageBody.substring(8).split(" ").forEach((el) => {
                     if(el.startsWith("-S")) {
                         $("#crisisSound").attr("src", `/sounds/${el.substring(2)}.mp3`);
+                        $("#crisisSound")[0].pause();
                     } else if(el.startsWith("-I")) {
                         console.log(el == `-I${mySalt}`);
                         if(el != `-I${mySalt}`) {
@@ -2347,14 +2348,14 @@ function setupJccData(data) {
                     }
                 });
 
-                if(shouldKillCrisis) return;
-
-                $("#crisisUpdateText").text(crisisMessage.trim());
-                quitPopup(function() {
-                    $("#exitButtons").css("opacity", "0");
-                    showPopup("#crisisUpdatePopup");
-                    $("#crisisSound")[0].play();
-                });
+                if(!shouldKillCrisis) {
+                    $("#crisisUpdateText").text(crisisMessage.trim());
+                    quitPopup(function() {
+                        $("#exitButtons").css("opacity", "0");
+                        showPopup("#crisisUpdatePopup");
+                        $("#crisisSound")[0].play();
+                    });
+                }
             }
         } else if(d.type == "requestPresence") {
             ws.send(JSON.stringify({
