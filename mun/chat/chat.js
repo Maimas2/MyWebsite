@@ -41,11 +41,11 @@ function createMessageRaw(type, sender, body, isFromSelf=false) {
         toAdd.css("text-align", "center");
     }
 
-    $("#chatMessageContainer").append(toAdd);
+    $("#chatMessageContainer").prepend(toAdd);
 
-    $("#chatMessageContainer").animate({
-        scrollTop : $("#chatMessageContainer div:last").offset().top
-    }, 300);
+    // $("#chatMessageContainer").animate({
+    //     scrollTop : $("#chatMessageContainer div:last").offset().top
+    // }, 300);
 
     if(!isFromSelf && !areSoundsDisabled) {
         $("#notificationSound")[0].fastSeek(0);
@@ -126,6 +126,7 @@ function parseNewMessage(d) {
     } else if(d.type == "requestPresence") {
         ws.send(JSON.stringify({
             type : "sendingName",
+            mySalt : mySalt,
             name : `${$("#yourNameInput").text() || "[No Name]"} – Chat Window`
         }));
     } else if(d.type == "sendingName") {

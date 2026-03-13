@@ -144,15 +144,19 @@ function parseResponse(d, num) {
         } else {
             let toSet = motFancy(dd.currentMotion);
 
+            // {"mySalt":"","committeeName":"[No name]","dictOfCustomDelegates":{},"attendance":{"Afghanistan":"Pr","Albania":"Pr"},"proposedMotions":[{"type":"roundRobin","rngid":"98","topic":"g","delegateDuration":15}],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}
+
             if(dd.currentMotion.timerType == "perDelegate") {
-                if(dd.currentMotion.currentDelegate == -1) {
-                    if(dd.currentMotion.chosenCountries.length == 0) {
-                        toSet += "<br><br>Choosing speakers"
+                if(dd.currentMotion.type != "roundRobin") {
+                    if(dd.currentMotion.currentDelegate == -1) {
+                        if(dd.currentMotion.chosenCountries.length == 0) {
+                            toSet += "<br><br>Choosing speakers"
+                        } else {
+                            toSet += `<br><br>${dd.currentMotion.chosenCountries[0]} speaking first`;
+                        }
                     } else {
-                        toSet += `<br><br>${dd.currentMotion.chosenCountries[0]} speaking first`;
+                        toSet += `<br><br>${dd.currentMotion.chosenCountries[dd.currentMotion.currentDelegate]} is speaking (${dd.currentMotion.currentDelegate+1}/${Math.floor(dd.currentMotion.duration / dd.currentMotion.delegateDuration)})`;
                     }
-                } else {
-                    toSet += `<br><br>${dd.currentMotion.chosenCountries[dd.currentMotion.currentDelegate]} is speaking (${dd.currentMotion.currentDelegate+1}/${Math.floor(dd.currentMotion.duration / dd.currentMotion.delegateDuration)})`;
                 }
             }
 
