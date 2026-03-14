@@ -142,9 +142,7 @@ function parseResponse(d, num) {
         if(dd.motionType == "custom") {
             $(`#watcherDetails${num}`).text(dd.currentMotion.fancyMotionType);
         } else {
-            let toSet = motFancy(dd.currentMotion);
-
-            // {"mySalt":"","committeeName":"[No name]","dictOfCustomDelegates":{},"attendance":{"Afghanistan":"Pr","Albania":"Pr"},"proposedMotions":[{"type":"roundRobin","rngid":"98","topic":"g","delegateDuration":15}],"isThereACurrentMotion":false,"isThereARollCall":false,"isImpromptuTimerOpen":false,"impromptuTime":300,"currentMotion":{},"rollCallDetails":{"listOfVotes":[]}}
+            let toSet = motFancy(dd.currentMotion) + (` with topic ${dd.currentMotion.topic}` || "");
 
             if(dd.currentMotion.timerType == "perDelegate") {
                 if(dd.currentMotion.type != "roundRobin") {

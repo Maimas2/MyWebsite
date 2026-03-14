@@ -268,6 +268,8 @@ input[type=number] {
     font-size: 150%;
     backdrop-filter: blur(5px);
     background-color: rgba(255, 255, 255, 0.75);
+    flex-direction: column;
+    justify-content: center;
 }
 #popupPage > div.outlineddiv:not(#quickStartPopup) {
     display: none;
@@ -292,7 +294,7 @@ input[type=number] {
     display: block !important;
     text-align: center;
 }
-#exitButtons > * {
+#exitButtons > *, .embeddedSubmit {
     padding: 10px;
     margin-left: 10px;
     display: inline;
@@ -369,7 +371,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     border-radius: 5px;
 }
 #newModTopic {
-    text-align: left;
+    margin-bottom: 10px;
 }
 #attendanceListOfCountries > * {
     display: none;
@@ -409,6 +411,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     padding-right: 20px;
 }
 .bottomMarginChildren > * {
+    margin-top: 5px;
     margin-bottom: 5px;
 }
 #chosenCountriesContainer {
@@ -617,6 +620,7 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     border: 1px solid transparent;
     transition: 150ms;
     background-color: transparent;
+    width: 100%;
 }
 #impromptuTimerLabel:not(p):hover, #oneLargeTimer:not(p):hover:not(:disabled) {
     border: 1px solid black;
@@ -629,12 +633,9 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
 }
 #impromptuTimer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
     padding: 20px;
-}
-#impromptuTimer > * {
-    width:  100%;
-    min-height: 0;
 }
 #backgroundLogoContainer {
     position: absolute;
@@ -888,4 +889,50 @@ input[type="text"]:focus-visible, input[type="number"]:focus-visible {
     height: 50%;
     border-radius: 8px;
     border: 1px solid #888;
+}
+.motionSplitHalf {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    border: 1px solid #777a;
+    border-radius: 15px;
+}
+.motionSplitHalf > div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.motionSplitHalf > div > input {
+    width: 30%;
+    margin-left: 35%;
+}
+.presetButton {
+    padding: 10px;
+    display: inline;
+    margin: 10px;
+}
+input[type=text] {
+    text-align: center;
+}
+.zoomInALittle > button {
+    width: 40% !important;
+    margin-left: 30% !important;
+    padding: 10px;
+}
+.flexifyPopup {
+    flex-direction: column;
+    padding: 15px;
+}
+.otherMiddleLine {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 15px;
+    margin-right: 15px;
+    width: 3px !important;
+    background-color: #555b;
+}
+#impromptuStaticLabel {
+    padding: 20px;
 }

@@ -119,7 +119,7 @@
                     <div id="customDelegateList">
                         <h2 style="text-align: center;margin-bottom: 10px;">Custom Delegates</h2>
                         <div class="dontDeleteMe" style="margin-bottom: 15px;text-align: center;">
-                            <button id="massImportDelegates">Mass Import Delegates</button>
+                            <button id="massImportDelegates">Mass Import Custom Delegates</button>
                         </div>
                     </div>
                     <div id="newDelegate" style="display: flex;width:60%;margin-left: 20%;">
@@ -133,7 +133,8 @@
             </div>
             <div id="massImportDelegatesPopup" class="outlineddiv largePopup">
                 <h2>Mass Import</h2>
-                <textarea id="massImportDelegatesArea"></textarea>
+                <p>Paste the new delegates' names into the text area below, one per line.</p>
+                <textarea id="massImportDelegatesArea" style="resize:vertical"></textarea>
                 <button id="massImportDelegatesSubmit">Submit</button>
             </div>
             <div id="attendanceList" class="outlineddiv largePopup">
@@ -162,16 +163,41 @@
                     </div>
                 </div>
             </div>
-            <div id="newModPopup" class="bottomMarginChildren outlineddiv">
+            <div id="newModPopup" class="bottomMarginChildren outlineddiv flexifyPopup">
                 <h2>Moderated Caucus</h2>
                 <h3>Topic</h3>
-                <input autocomplete="off" type="text" id="newModTopic" style="width:50%;" value="" >
-                <br>
-                <h3>Total duration</h3>
-                <input autocomplete="off" type="text" id="newModPopupDuration" value="5:00" class="largeTextInput">
-                <br>
-                <h3>Delegate speaking time</h3>
-                <input autocomplete="off" type="text" id="newModPopupDelegateDuration" value="1:00" class="largeTextInput">
+                <input autocomplete="off" type="text" id="newModTopic" style="width:50%;" value="">
+                <div class="motionSplitHalf">
+                    <div>
+                        <h3>Choose a Preset</h3>
+                        <div>
+                            <button class="presetButton" onclick="appendModPreset(180, 30)">3 : 0:30</button>
+                            <button class="presetButton" onclick="appendModPreset(300, 60)">5 : 1</button>
+                        </div>
+                        <div>
+                            <button class="presetButton" onclick="appendModPreset(360, 45)">6 : 0:45</button>
+                            <button class="presetButton" onclick="appendModPreset(480, 45)">8 : 0:45</button>
+                        </div>
+                        <div>
+                            <button class="presetButton" onclick="appendModPreset(600, 60)">10 : 1</button>
+                        </div>
+                    </div>
+                    <div class="middleLine otherMiddleLine"></div>
+                    <div>
+                        <h3>Or:</h3>
+                        <br>
+                        <h3 style="margin-bottom: 0;">Total duration</h3>
+                        <input autocomplete="off" type="text" id="newModPopupDuration" value="5:00" class="largeTextInput">
+                        <br>
+                        <h3 style="margin-bottom: 0;">Delegate speaking time</h3>
+                        <input autocomplete="off" type="text" id="newModPopupDelegateDuration" value="1:00" class="largeTextInput">
+                        <br>
+                        <br>
+                        <div style="margin-top: 30px;">
+                            <button onclick="$('#exitPopup').click()" class="embeddedSubmit presetButton">Submit</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="speakersListPopup" class="bottomMarginChildren outlineddiv">
                 <h2>Open the Speakers List</h2>
@@ -182,28 +208,83 @@
                 <h3>Delegate speaking time</h3>
                 <input autocomplete="off" type="text" id="speakersListPopupDelegateDuration" value="1:00" class="largeTextInput">
             </div>
-            <div id="newUnmodPopup" class="bottomMarginChildren outlineddiv">
+            <div id="newUnmodPopup" class="bottomMarginChildren outlineddiv flexifyPopup">
                 <h2>Unmoderated Caucus</h2>
                 <h3>Topic</h3>
                 <input autocomplete="off" type="text" id="newUnmodTopic" style="width:50%;" value="" placeholder="Optional">
-                <br>
-                <h3>Duration</h3>
-                <input autocomplete="off" type="text" id="newUnmodPopupDuration" value="5:00" class="largeTextInput">
+                <div class="motionSplitHalf">
+                    <div>
+                        <h3>Choose a Preset</h3>
+                        <div>
+                            <button class="presetButton" onclick="appendUnmodPreset(60)">1:00</button>
+                            <button class="presetButton" onclick="appendUnmodPreset(180)">3:00</button>
+                        </div>
+                        <div>
+                            <button class="presetButton" onclick="appendUnmodPreset(300)">5:00</button>
+                            <button class="presetButton" onclick="appendUnmodPreset(420)">7:00</button>
+                        </div>
+                        <div>
+                            <button class="presetButton" onclick="appendUnmodPreset(600)">10:00</button>
+                            <button class="presetButton" onclick="appendUnmodPreset(900)">15:00</button>
+                        </div>
+                        <div>
+                            <button class="presetButton" onclick="appendUnmodPreset(1200)">20:00</button>
+                        </div>
+                    </div>
+                    <div class="middleLine otherMiddleLine"></div>
+                    <div>
+                        <h3>Or:</h3>
+                        <br>
+                        <h3 style="margin-bottom: 0;">Duration</h3>
+                        <input autocomplete="off" type="text" id="newUnmodPopupDuration" value="5:00" class="largeTextInput">
+                        <br>
+                        <br>
+                        <div style="margin-top: 30px;">
+                            <button onclick="$('#exitPopup').click()" class="embeddedSubmit presetButton">Submit</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id="roundRobinPopup" class="bottomMarginChildren outlineddiv">
+            <div id="roundRobinPopup" class="bottomMarginChildren outlineddiv flexifyPopup">
                 <h2>Round Robin</h2>
                 <br>
                 <h3>Topic</h3>
-                <input autocomplete="off" type="text" id="roundRobinTopic" value="" class="largeTextInput" style="width: 60%; text-align: left !important;">
-                <br>
-                <h3>Delegate speaking time</h3>
-                <input autocomplete="off" type="text" id="roundRobinDelegateDuration" value="0:20" class="largeTextInput">
+                <input autocomplete="off" type="text" id="roundRobinTopic" value="" class="largeTextInput" style="width: 60%;">
+                <div class="motionSplitHalf">
+                    <div>
+                        <h3>Presets</h3>
+                        <div>
+                            <button class="presetButton" onclick="appendRoundRobinPreset(5)">0:05</button>
+                            <button class="presetButton" onclick="appendRoundRobinPreset(10)">0:10</button>
+                        </div>
+                        <div>
+                            <button class="presetButton" onclick="appendRoundRobinPreset(20)">0:20</button>
+                            <button class="presetButton" onclick="appendRoundRobinPreset(25)">0:25</button>
+                        </div>
+                        <div>
+                            <button class="presetButton" onclick="appendRoundRobinPreset(30)">0:30</button>
+                            <button class="presetButton" onclick="appendRoundRobinPreset(60)">1:00</button>
+                        </div>
+                    </div>
+                    <div class="middleLine otherMiddleLine"></div>
+                    <div>
+                        <h3>Or:</h3>
+                        <br>
+                        <h3>Delegate speaking time</h3>
+                        <input autocomplete="off" type="text" id="roundRobinDelegateDuration" value="0:20" class="largeTextInput">
+                        <br>
+                        <br>
+                        <div style="margin-top: 30px;">
+                            <button onclick="$('#exitPopup').click()" class="embeddedSubmit presetButton">Submit</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="customMotionPopup" class="bottomMarginChildren outlineddiv">
                 <h2>Custom Motion</h2>
                 <br>
                 <h3>Motion Name</h3>
-                <input autocomplete="off" type="text" id="customMotionName" value="" class="largeTextInput" style="width: 60%; text-align: left !important;">
+                <input autocomplete="off" type="text" id="customMotionName" value="" class="largeTextInput" style="width: 60%;">
                 <br>
                 <h3>Duration</h3>
                 <input autocomplete="off" type="text" id="customMotionDuration" value="2:00" class="largeTextInput">
@@ -240,7 +321,7 @@
             <div id="saveToTheCloudPopup" class="bottomMarginChildren outlineddiv largePopup">
                 <h1>Save/Load State</h1>
                 <br>
-                ID: <input autocomplete="off" type="text" id="saveToCloudName" maxlength="64" style="width: 50% !important;text-align: left;">
+                ID: <input autocomplete="off" type="text" id="saveToCloudName" maxlength="64" style="width: 50% !important;">
                 <br>
                 <button id="saveToCloudSubmit">Save to Cloud</button>
                 <button id="loadFromCloudSubmit">Load from Cloud</button>
@@ -263,7 +344,7 @@
             <div id="loadFromTheCloudPopup" class="bottomMarginChildren outlineddiv">
                 <h1>Load State From Cloud</h1>
                 <br>
-                ID: <input autocomplete="off" type="text" id="loadFromCloudName" maxlength="64" style="width: 50% !important;text-align: left;">
+                ID: <input autocomplete="off" type="text" id="loadFromCloudName" maxlength="64" style="width: 50% !important;">
                 <br>
                 <!-- <button id="loadFromCloudSubmit">Load from Cloud</button> -->
             </div>
@@ -296,7 +377,7 @@
                 </div>
             </div>
             <div id="quickStartPopup" class="bottomMarginChildren outlineddiv largePopup">
-                <h1>Quick Start</h1>
+                <h1 style="margin-top: 35px;">Quick Start</h1>
                 <div style="display:inline-block;width:50%;background-color: black;height:1px !important;"></div>
                 <div id="quickStartSplit">
                     <div id="quickStartSplitLeft">
@@ -428,7 +509,7 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    <b>Topic:</b> <input autocomplete="off" style="text-align: left; width:70%;" type="text" value="">
+                    <b>Topic:</b> <input autocomplete="off" style="width:70%;" type="text" value="">
                     <br>
                     <b>Total duration:</b> <input autocomplete="off" type="text" value="5:00" class="largeTextInput enableInputMirror">
                     <br>
@@ -460,7 +541,7 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    <b>Topic:</b> <input autocomplete="off" style="text-align: left; width: 70%;" type="text" value="" class="enableInputMirror">
+                    <b>Topic:</b> <input autocomplete="off" style="width: 70%;" type="text" value="" class="enableInputMirror">
                     <br>
                     <b>Duration:</b> <input autocomplete="off" type="text" value="5:00" class="largeTextInput enableInputMirror">
                 </div>
@@ -475,7 +556,7 @@
                 </div>
                 <div class="middleLine"></div>
                 <div class="zoomInALittle">
-                    <b>Topic:</b> <input autocomplete="off" type="text" value="" class="largeTextInput" style="width: 70%; text-align: left !important;">
+                    <b>Topic:</b> <input autocomplete="off" type="text" value="" class="largeTextInput" style="width: 70%;">
                     <br>
                     <b>Delegate speaking time:</b> <input autocomplete="off" type="text" value="0:15" class="largeTextInput enableInputMirror">
                 </div>

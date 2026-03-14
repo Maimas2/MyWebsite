@@ -221,7 +221,7 @@ function recalcDelegates() {
     }
 }
 
-function showPopup(elToShow = "", displayAttr = "block") {
+function showPopup(elToShow = "", displayAttr = "flex") {
     $("#crisisShownNotification").css("display", "none"); // fuck-ass soln, I don't care
     if(!isPopupShown) {
         document.getElementById("popupPage").childNodes.forEach(function(element) {
@@ -783,6 +783,13 @@ function parsePassedMotionJSON(details) {
 
             toAdd.appendTo($("#actualPassedMotionCountryChooser"));
         });
+        if(getListOfPresentCountries().length <= 0) {
+            $("#actualPassedMotionCountryChooser").append($("<p>").text("Looking for your delegates? You likely forgot to take attendance."));
+            $("#actualPassedMotionCountryChooser").append($("<button>").text("Do that").on("click", function() {
+                endCurrentMotion();
+                $("#takeAttendanceButton").click();
+            }));
+        }
     } else {
         $("#chosenCountriesForTimer").css("display", "none");
     }
@@ -883,57 +890,57 @@ var keyboardTimeout;
 document.onkeydown = function(event) {
     if(isMirroring) return;
 
-    if(event.key == "Control" && !isPopupShown) {
-        clearInterval(keyboardTimeout);
-        keyboardTimeout = setTimeout(() => {
-            if(event.key == "Control") {
-                $("*:enabled > .keyboardShortcut").css("display", "initial");
-            }
-        }, 300);
-    }
+    // if(event.key == "Control" && !isPopupShown) {
+    //     clearInterval(keyboardTimeout);
+    //     keyboardTimeout = setTimeout(() => {
+    //         if(event.key == "Control") {
+    //             $("*:enabled > .keyboardShortcut").css("display", "initial");
+    //         }
+    //     }, 300);
+    // }
 
     if(!isPopupShown) {
 
-        if(event.ctrlKey && currentMotion == null && document.activeElement.nodeName != "INPUT") {
-            if(event.key == "m") {
-                document.getElementById("newMod").click();
-                return false;
-            }
-            if(event.key == "u") {
-                document.getElementById("newUnmod").click();
-                return false;
-            }
-            if(event.key == "s") {
-                document.getElementById("newSpeakersList").click();
-                return false;
-            }
-            if(event.key == "r") {
-                document.getElementById("newRoundRobin").click();
-                return false;
-            }
-            if(event.key == "i") {
-                document.getElementById("newRoundRobin").click();
-                return false;
-            }
+        // if(event.ctrlKey && currentMotion == null && document.activeElement.nodeName != "INPUT") {
+        //     if(event.key == "m") {
+        //         document.getElementById("newMod").click();
+        //         return false;
+        //     }
+        //     if(event.key == "u") {
+        //         document.getElementById("newUnmod").click();
+        //         return false;
+        //     }
+        //     if(event.key == "s") {
+        //         document.getElementById("newSpeakersList").click();
+        //         return false;
+        //     }
+        //     if(event.key == "r") {
+        //         document.getElementById("newRoundRobin").click();
+        //         return false;
+        //     }
+        //     if(event.key == "i") {
+        //         document.getElementById("newRoundRobin").click();
+        //         return false;
+        //     }
 
-            if(event.key == "d") {
-                document.getElementById("editdelegatelistbutton").click();
-                return false;
-            }
-            if(event.key == "a") {
-                document.getElementById("takeAttendanceButton").click();
-                return false;
-            }
+        //     if(event.key == "d") {
+        //         document.getElementById("editdelegatelistbutton").click();
+        //         return false;
+        //     }
+        //     if(event.key == "a") {
+        //         document.getElementById("takeAttendanceButton").click();
+        //         return false;
+        //     }
 
-            if(event.key == "t") {
-                document.getElementById("impromptuTimerButton").click();
-                return false;
-            }
-            if(event.key == "v") {
-                document.getElementById("commenceRollCall").click();
-                return false;
-            }
-        }
+        //     if(event.key == "t") {
+        //         document.getElementById("impromptuTimerButton").click();
+        //         return false;
+        //     }
+        //     if(event.key == "v") {
+        //         document.getElementById("commenceRollCall").click();
+        //         return false;
+        //     }
+        // }
 
         if(event.key == "Enter") {
             if(document.activeElement == $("#passedMotionListSearch")[0]) {
@@ -995,12 +1002,12 @@ document.onkeydown = function(event) {
     }
 };
 
-document.onkeyup = function(event) {
-    if(event.key == "Control") {
-        clearInterval(keyboardTimeout);
-        $(".keyboardShortcut").css("display", "none");
-    }
-}
+// document.onkeyup = function(event) {
+//     if(event.key == "Control") {
+//         clearInterval(keyboardTimeout);
+//         $(".keyboardShortcut").css("display", "none");
+//     }
+// }
 
 function changeClickedEventResponder(_event) {
     if(this.getAttribute("data-isclicked") == "false") {
@@ -1036,12 +1043,12 @@ function createAlert(message, otherOptionFunction=null) {
 function canStartTimer() {
     if(isTimerHalted) return false;
     if(!currentMotion) return false;
-    if(currentMotion["timerType"] == "perDelegate" && currentMotion["requiresDelegateList"]) {
-        if($("#chosenCountriesForTimer").children().length != largeTimerNumDelegates) {
-            createAlert("Add enough delegates to the queue to start!");
-            return false;
-        }
-    }
+    // if(currentMotion["timerType"] == "perDelegate" && currentMotion["requiresDelegateList"]) {
+    //     if($("#chosenCountriesForTimer").children().length != largeTimerNumDelegates) {
+    //         createAlert("Add enough delegates to the queue to start!");
+    //         return false;
+    //     }
+    // }
     return true;
 }
 
@@ -1072,17 +1079,17 @@ function moveToNextDelegate() {
     stopTimer();
 
     if(currentMotion["timerType"] == "perDelegate") {
-        if(++perDelegateCurrentPosition < largeTimerNumDelegates) {
+        if(++perDelegateCurrentPosition < $("#chosenCountriesForTimer").children().length) {
             refreshTimer();
             largeTimerCurrentTime = largeTimerOriginalDuration;
         } else {
             largeTimerCurrentTime = largeTimerOriginalDuration;
-            perDelegateCurrentPosition = largeTimerNumDelegates-1;
+            perDelegateCurrentPosition = $("#chosenCountriesForTimer").children().length-1;
             refreshTimer();
         }
     }
 
-    perDelegateCurrentPosition = Math.min(perDelegateCurrentPosition, largeTimerNumDelegates-1);
+    perDelegateCurrentPosition = Math.min(perDelegateCurrentPosition, $("#chosenCountriesForTimer").children().length-1);
 
     refreshModCurrentCountryNumberBackground();
 
@@ -1097,7 +1104,7 @@ function refreshTimer(e=true) {
             if(largeTimerCurrentTime <= 0) {
                 largeTimerCurrentTime = 0;
     
-                if(perDelegateCurrentPosition+1 != largeTimerNumDelegates) {
+                if(perDelegateCurrentPosition+1 != $("#chosenCountriesForTimer").children().length) {
                     moveToNextDelegate();
                 } else {
                     stopTimer();
@@ -1113,7 +1120,7 @@ function refreshTimer(e=true) {
     //if(!canSortChosenCountries) 
     //$($("#chosenCountriesForTimer").children()[perDelegateCurrentPosition]).css("background-color", "powderblue");
 
-    $("#modDelegateIndexSpan").text(perDelegateCurrentPosition+1);
+    $("#modDelegateIndexSpan").text(Math.max(1, perDelegateCurrentPosition+1));
 }
 
 function endCurrentMotion() {
@@ -1380,16 +1387,55 @@ function modCountryChooserClickEventFunctionResponder() {
     resendMirror();
 }
 
+function appendModPreset(totalTime, speakerTime) {
+    if(totalTime / speakerTime > getListOfPresentCountries().length) {
+        createAlert("You don't have enough delegates in committee to make such a mod");
+        return;
+    }
+
+    var toAdd = $("#modMotionPrefab").clone(true);
+    var inputList = toAdd.find("input");
+    inputList[0].value = $("#newModTopic").val();
+    inputList[1].value = durationToString(totalTime);
+    inputList[2].value = durationToString(speakerTime);
+
+    appendMotion(toAdd);
+
+    quitPopup();
+}
+
+function appendUnmodPreset(totalTime) {
+    var toAdd = $("#unmodMotionPrefab").clone(true);
+    var inputList = toAdd.find("input");
+    inputList[0].value = $("#newUnmodTopic").val();
+    inputList[1].value = durationToString(totalTime);
+
+    appendMotion(toAdd);
+
+    quitPopup();
+}
+
+function appendRoundRobinPreset(totalTime) {
+    var toAdd = $("#roundRobinMotionPrefab").clone(true);
+    var inputList = toAdd.find("input");
+    inputList[0].value = $("#roundRobinTopic").val();
+    inputList[1].value = durationToString(totalTime);
+
+    appendMotion(toAdd);
+
+    quitPopup();
+}
+
 function motionTypeToImportance(el) {
     var n = el.getAttribute("data-motiontype");
     let ell = $(el);
     if(n == "custom") return 120;
-    if(n == "presentPapers") return 100 - Number( ell.attr("data-motionid") );
-    if(n == "setAgenda")     return 70 - Number( ell.attr("data-motionid") );
-    if(n == "speakersList")  return 50 + Number( el.getElementsByTagName("input")[0].value ) / 1000 - Number( ell.attr("data-motionid") );
-    if(n == "unmod")         return 40 + stringToDuration( el.getElementsByTagName("input")[1].value ) / 1000 - Number( ell.attr("data-motionid") );
-    if(n == "roundRobin")    return 20 + stringToDuration( el.getElementsByTagName("input")[1].value ) / 1000 - Number( ell.attr("data-motionid") );
-    if(n == "mod")           return 0 + stringToDuration( el.getElementsByTagName("input")[1].value ) / 1000 - Number( ell.attr("data-motionid") );
+    if(n == "presentPapers") return 100; // - Number( ell.attr("data-motionid") );
+    if(n == "setAgenda")     return 70; // - Number( ell.attr("data-motionid") );
+    if(n == "speakersList")  return 50 + Number( el.getElementsByTagName("input")[0].value ) / 1000; // - Number( ell.attr("data-motionid") );
+    if(n == "unmod")         return 40 + stringToDuration( el.getElementsByTagName("input")[1].value ) / 1000; // - Number( ell.attr("data-motionid") );
+    if(n == "roundRobin")    return 20 + stringToDuration( el.getElementsByTagName("input")[1].value ) / 1000; // - Number( ell.attr("data-motionid") );
+    if(n == "mod")           return 0 + stringToDuration( el.getElementsByTagName("input")[1].value ) / 1000; //; - Number( ell.attr("data-motionid") );
     return -100000; // :)
 }
 
@@ -1556,7 +1602,7 @@ window.onload = function(_event) {
     
         $("#yieldTimeButton").on("click", function(_e) {
             //if(!isTimerHalted && !canSortChosenCountries && perDelegateCurrentPosition <= largeTimerNumDelegates-1) {
-            if(!isTimerHalted && canSortChosenCountries && perDelegateCurrentPosition <= largeTimerNumDelegates-1) {
+            if(!isTimerHalted && canSortChosenCountries && perDelegateCurrentPosition <= $("#chosenCountriesForTimer").children().length-1) {
                 moveToNextDelegate();
             }
         });
@@ -1661,7 +1707,7 @@ window.onload = function(_event) {
         });
 
         $("#massImportDelegates").on("click", function() {
-            hidePopup(function() {
+            quitPopup(function() {
                 showPopup("#massImportDelegatesPopup");
                 $("#massImportDelegatesArea").val("");
             });
@@ -1856,7 +1902,10 @@ window.onload = function(_event) {
                 });
                 return;
             }
-            showPopup("#newModPopup");
+            showPopup("#newModPopup", "flex");
+
+            $("#exitPopup").css("display", "none");
+
             $("#newModTopic").val("");
             $("#newModPopupDuration").val("5:00");
             $("#newModPopupDelegateDuration").val("1:00");
@@ -1885,9 +1934,10 @@ window.onload = function(_event) {
         }
         
         document.getElementById("newUnmod").onclick = function(_event) {
-            showPopup("#newUnmodPopup");
+            showPopup("#newUnmodPopup", "flex");
             $("#newUnmodTopic").val("");
             $("#newUnmodPopupDuration").val("5:00");
+            $("#exitPopup").css("display", "none");
         
             $("#newUnmodTopic").focus()
         }
@@ -1912,8 +1962,9 @@ window.onload = function(_event) {
                 });
                 return;
             }
-            showPopup("#roundRobinPopup");
-            $("roundRobinTopic").val("");
+            showPopup("#roundRobinPopup", "flex");
+            $("#exitPopup").css("display", "none");
+            $("#roundRobinTopic").val("");
             $("#roundRobinDelegateDuration").val("0:15");
         
             $("roundRobinTopic").focus();
@@ -2065,7 +2116,7 @@ window.onload = function(_event) {
 
     $("#impromptuTimerButton").on("click", function(_e) {
         if(isPopupShown) return;
-        showPopup("#impromptuTimer");
+        showPopup("#impromptuTimer", "flex");
         $("#exitPopup").css("display", "none");
         $("#quitPopup").text("Close");
 
