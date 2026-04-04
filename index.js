@@ -38,6 +38,7 @@ for(var i = 0; i < l.length; i++) {
             continue;
         }
         var tf = require(`./${bs[1]}/index`);
+        tf.name = bs[0];
         listOfSubdomainFiles.push(tf);
         tf.startUpFunction();
         var tapp = tf.app;
@@ -250,9 +251,10 @@ app.listen(3000, () => {
 function receivedKillSignal() {
     console.log("Shutting down...");
     
-    for(f in listOfSubdomainFiles) {
+    for(fi in listOfSubdomainFiles) {
+        let f = listOfSubdomainFiles[fi];
         if(f.shutDownFunction) {
-            console.log("Shutting down " + f + "...");
+            console.log(" -  Shutting down " + f.name + "...");
             f.shutDownFunction();
         }
     }
