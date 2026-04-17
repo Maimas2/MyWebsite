@@ -9,14 +9,14 @@ var questionSet = {
                 {
                     id : ".predemographics",
                     type : "message",
-                    prompt : "We'll start with some non-identifying demographics. Optional fields are marked as such."
+                    prompt : "We'll start with some non-identifying demographics."
                 },
-                {
-                    id : "name",
-                    type : "openended",
-                    prompt : "Your name (OPTIONAL)",
-                    optional : true
-                },
+                // {
+                //     id : "name",
+                //     type : "openended",
+                //     prompt : "Your name (OPTIONAL)",
+                //     optional : true
+                // },
                 {
                     id : "grade",
                     type : "mcq",
@@ -61,6 +61,17 @@ var questionSet = {
                     ]
                 },
                 {
+                    id : "party",
+                    type : "mcq",
+                    prompt : "Which of the following political parties do your beliefs best align with?",
+                    choices : [
+                        "Unsure / Don't know",
+                        "Democratic Party",
+                        "Republican Party",
+                        "Another party"
+                    ]
+                },
+                {
                     id : ".premessageinfo",
                     type : "message",
                     prompt : "PLEASE READ: For each of the following statements, respond with how strongly you agree with the sentiment. You will likely agree with some and disagree with others. If you feel differently about different parts of the same statement, combine your feelings into one aggregate answer."
@@ -92,7 +103,7 @@ var questionSet = {
                     type : "mcq",
                     prompt : "Our country desperately needs a mighty leader who will do what has to be done to destroy the radical new ways and sinfulness that are ruining us.",
                     choices : ["Very strongly disagree", "Strongly disagree", "Moderately disagree", "Slightly disagree", "Neutral / No Opinion / Unsure", "Slightly Agree", "Moderately Agree", "Strongly Agree", "Very strongly agree"],
-                    returnvalues : [9, 8, 7, 6, 5, 4, 3, 2, 1]
+                    returnvalues : [1, 2, 3, 4, 5, 6, 7, 8, 9]
                 },
                 {
                     id : "test4",
@@ -344,10 +355,10 @@ function goToNextQuestion() {
             url     : "/submitresults",
             contentType: 'application/json',
             success : function(_r) {
-                
+                $("#bigLabel").text(`Thank you for filling out this form! Your answers have been submitted, and you may close this page.\n${totalRwa}`);
             },
             error   : function(_r) {
-                
+                $("#bigLabel").text(`An error occured submitting your responses. Please copy the data below and alert Alex. ${JSON.stringify(toSubmit)}`);
             },
             data    : JSON.stringify(toSubmit)
         });
@@ -357,7 +368,8 @@ function goToNextQuestion() {
         }, 150, function() {
             $(".optionChoice").css("display", "none");
             $("#confirmButton").css("display", "none");
-            $("#bigLabel").text("Thank you for filling out this form! Your answers have been submitted, and you may close this page.");
+
+            $("#bigLabel").text("Submitting responses...");
 
             $("#bigContainer").animate({
                 "opacity" : "1"

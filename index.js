@@ -88,6 +88,10 @@ if(fs.existsSync("./listpw.txt")) {
     console.warn("Could not find listpw.txt!!!");
 }
 
+app.get("/ComputerModernSerif.ttf", (req, res) => {
+    res.sendFile("./mun/fonts/cmunrm.ttf", {root: __dirname});
+});
+
 app.get("/mun", (req, res) => {
     res.redirect("https://mun.alex-seltzer.com");
 });
