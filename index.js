@@ -132,6 +132,10 @@ if(fs.existsSync("./saves/messages_sent.txt")) {
     messagesSent = d.split("\n");
 }
 
+app.get("/static.png", (req, res) => {
+    res.sendFile("/static.png", {root: __dirname});
+})
+
 app.get("/game", (req, res) => {
     res.sendFile("/game.html", {root: __dirname});
 });

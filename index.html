@@ -17,7 +17,9 @@
                 box-sizing: border-box;
                 display: inline-flex;
                 justify-content: center;
-                width: 300px;
+                width: calc(30vw - 20px);
+                min-width: 400px;
+                max-width: 90vw;
                 height: 150px;
                 background-color: transparent;
                 border: 1px solid black;
@@ -25,67 +27,95 @@
                 padding: 20px;
                 margin: 10px;
                 background: linear-gradient( rgba(200, 255, 255, 0.7), rgba(255, 255, 255, 0.7) );
+                transition: background-image 150ms, background-size 150ms;
+                background-size: initial;
             }
-            .proj:not(#uscodea) {
-                background-size: 300px 150px;
+            /* .proj:hover:not(.nobg) {
+                background-image: url("/static.png");
+                background-size: 100px 100px;
+                background-repeat: repeat;
+            } */
+            .proj > * {
+                opacity: 1 !important;
             }
-            #uscodea {
-                background-size: 300px;
+            #mainH1 {
+                font-size: 300%;
+                margin: 0;
+            }
+            body > p {
+                width: 80vh;
+                max-width: 90vw;
+                margin: auto;
+            }
+            .fadein {
+                opacity: 0;
+                transform: translateY(-50px);
+                transition: transform 300ms;
             }
         </style>
+        <noscript>
+            <style>
+                .fadein {
+                    opacity: 1;
+                    transform: none;
+                }
+            </style>
+        </noscript>
+        <script src="/lib/jquery.js"></script>
         <title>Alex Seltzer's Website</title>
     </head>
     <body>
         <br><br>
-        <h1>Welcome!</h1>
+        <h1 id="mainH1" class="fadein">Welcome!</h1>
         <br>
-        <p>I'm Alex Seltzer, a high school senior from Waterford High School of Waterford, CT. I will be attending Carnegie Mellon University in the fall to study astrophysics.</p>
+        <p class="fadein">I'm Alex Seltzer, a high school senior from Waterford High School of Waterford, CT. I will be attending Carnegie Mellon University in the fall to study astrophysics.</p>
         <br>
-        <p>Quote of the day: <!-- %QUOTE --></p>
+        <p class="fadein">Quote of the day: <!-- %QUOTE --></p>
         <br>
-        <p>Current favorite song: <!-- %FAVSONG --></p>
+        <p class="fadein">Current favorite song: <!-- %FAVSONG --></p>
         <br>
-        <p>Contact me for any reason at aseltz156 at Gmail Dot Com.</p>
+        <p class="fadein">Contact me for any reason at aseltz156 at Gmail Dot Com.</p>
         <br>
         <br>
-        <p>List of my personal projects:</p>
-        <a class="proj" href="https://mun.alex-seltzer.com/" target="_self" style="background-image: linear-gradient( rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7) ), url('https://mun.alex-seltzer.com/UN-logo.png');">
+        <p class="fadein">List of my personal projects:</p>
+        <a class="proj fadein" href="https://mun.alex-seltzer.com/" target="_self">
+            <!-- <img src="https://mun.alex-seltzer.com/UN-logo.png"> -->
             <p style="margin:auto;">Run a Model UN Conference</p>
         </a>
-        <a class="proj" href="https://scibowl.alex-seltzer.com/" target="_self">
+        <a class="proj fadein" href="https://scibowl.alex-seltzer.com/" target="_self">
             <p style="margin:auto;">Run a Science Bowl Game</p>
         </a>
-        <a class="proj" href="https://colors.alex-seltzer.com/" target="_self" style="background-image: radial-gradient(circle at center, rgb(255, 150, 150) 0, rgb(255, 255, 150) 100%)">
+        <a class="proj nobg fadein" href="https://colors.alex-seltzer.com/" target="_self" style="background-image: radial-gradient(circle at center, rgb(255, 150, 150) 0, rgb(255, 255, 150) 100%)">
             <p style="margin:auto;">Colors</p>
         </a>
-        <a class="proj" href="https://countdown.alex-seltzer.com/" target="_self">
+        <a class="proj fadein" href="https://countdown.alex-seltzer.com/" target="_self">
             <p style="margin:auto;">Timer that Inspires Hope and Joy into All Who Gaze Upon It</p>
         </a>
-        <a class="proj" href="/annoyme">
+        <!-- <a class="proj" href="/annoyme">
             <p style="margin:auto">Annoy me</p>
-        </a>
-        <a class="proj" href="https://rssmaker.alex-seltzer.com/" target="_self" style="background-image: linear-gradient( rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7) ), url('https://rssmaker.alex-seltzer.com/images/window.png');">
+        </a> -->
+        <a class="proj fadein" href="https://rssmaker.alex-seltzer.com/" target="_self" style="background-image: linear-gradient( rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7) ), url('https://rssmaker.alex-seltzer.com/images/window.png');">
             <p style="margin:auto;">RSS Maker</p>
         </a>
-        <a id="uscodea" class="proj" href="https://uscode.alex-seltzer.com/" target="_self" style="background-image: linear-gradient( rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7) ), url('https://uscode.alex-seltzer.com/images/home.png');">
+        <a id="uscodea" class="proj fadein" href="https://uscode.alex-seltzer.com/" target="_self" style="background-image: linear-gradient( rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7) ), url('https://uscode.alex-seltzer.com/images/home.png');">
             <p style="margin:auto;">US Code Reader (Android app)</p>
         </a>
-        <a class="proj" href="https://rng.alex-seltzer.com/" target="_self">
+        <a class="proj fadein" href="https://rng.alex-seltzer.com/" target="_self">
             <p style="margin:auto;">Random Number Generator</p>
         </a>
-        <a class="proj" href="https://chess.alex-seltzer.com/" target="_self">
+        <a class="proj fadein" href="https://chess.alex-seltzer.com/" target="_self">
             <p style="margin:auto;">A Completely Normal Chess Game</p>
         </a>
-        <a class="proj" href="/blocks" target="_self">
+        <a class="proj fadein" href="/blocks" target="_self">
             <p style="margin:auto;">Block Game for the TI-84</p>
         </a>
-        <a class="proj" href="https://mun-help.alex-seltzer.com/" target="_self" style="background-image: linear-gradient( rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7) ), url('https://mun.alex-seltzer.com/UN-logo.png');">
+        <a class="proj fadein" href="https://mun-help.alex-seltzer.com/" target="_self" style="background-image: linear-gradient( rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7) ), url('https://mun.alex-seltzer.com/UN-logo.png');">
             <p style="margin:auto;">Model UN Help</p>
         </a>
-        <a class="proj" href="https://stuff.alex-seltzer.com/" target="_self">
+        <a class="proj fadein" href="https://stuff.alex-seltzer.com/" target="_self">
             <p style="margin:auto;">Random work and stuff</p>
         </a>
-        <a class="proj" href="https://writings.alex-seltzer.com/" target="_self">
+        <a class="proj fadein" href="https://writings.alex-seltzer.com/" target="_self">
             <p style="margin:auto;">Random writings</p>
         </a>
         <br>
@@ -104,4 +134,15 @@
         <p style="font-size:70%;">Privacy notice: this website and the subdomains collect nearly nothing about you. Personal information (eg. IP adresses, user-agents) are never saved without your express knowledge and permission, and never when is not absolute, positively necessary for critical website functionality.</p>
         <p style="font-size:70%;">Check out the source code! This website and all subdomains are open-source under a <a href="/LICENSE">GPLv3-like license</a>, and is hosted at <a href="https://github.com/Maimas2/MyWebsite/">https://github.com/Maimas2/MyWebsite/</a></p>
     </body>
+    <script>
+        let t = 0;
+        $(".fadein").each(function(el) {
+            setTimeout((_e) => {
+                $(this).animate({
+                    opacity : 1
+                }, 300);
+                $(this).css("transform", "none");
+            }, t += 30)
+        });
+    </script>
 </html>
