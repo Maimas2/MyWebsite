@@ -1,4 +1,10 @@
 // Start an id with . to not send it to the server eg. for just display slides
+
+window.onerror = function(msg, url, linenumber) {
+    alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+    return true;
+}
+
 var questionSet = {
     title : "Test Question Set",
     confirmBeforeStart : true,
@@ -18,6 +24,29 @@ var questionSet = {
                 //     optional : true
                 // },
                 {
+                    id : "sports",
+                    type : "mcq",
+                    prompt : "What is your top, #1 sport?",
+                    choices : [
+                        "Football",
+                        "Soccer",
+                        "Swimming",
+                        "Volleyball",
+                        "Field Hockey",
+                        "Basketball",
+                        "Indoor / Outdoor Track",
+                        "Fencing",
+                        "Wrestling",
+                        "Baseball",
+                        "Softball",
+                        "Lacrosse",
+                        "Tennis",
+                        "Golf"
+                    ]
+                }
+            ]
+        }
+/*                {
                     id : "grade",
                     type : "mcq",
                     prompt : "Which grade are you in?",
@@ -239,7 +268,7 @@ var questionSet = {
                     returnvalues : [1, 2, 3, 4, 5, 6, 7, 8, 9]
                 }
             ]
-        }
+        }*/
     ]
 };
 
