@@ -87,6 +87,9 @@ console.log("Coundown is listening on port 3101");
         res.redirect("https://forms.gle/koTBZjKeBYBEanbM8");
     });
 
+    redirectApp.listen(3103);
+    console.log("Custom redirect is listening on port 3102");
+
 var listpw = null;
 
 if(fs.existsSync("./listpw.txt")) {
