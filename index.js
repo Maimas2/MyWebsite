@@ -79,6 +79,14 @@ console.log("Coundown is listening on port 3101");
     rngApp.listen(3102);
     console.log("RNG is listening on port 3102");
 
+// -------------------------------------------------
+
+    var redirectApp = express();
+    
+    redirectApp.get("/", (req, res) => {
+        res.redirect("https://forms.gle/koTBZjKeBYBEanbM8");
+    });
+
 var listpw = null;
 
 if(fs.existsSync("./listpw.txt")) {

@@ -15,3 +15,4 @@ edu  learning  Free Online Learning Resources
 astro  astro  Astrophysics Equations
 files  files  Personal file upload service
 form  form  Custom form hoster
+link  link  Custom redirect manager
