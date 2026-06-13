@@ -1,0 +1,61 @@
+@font-face {
+    font-family: ComputerModern;
+    src: url(/ComputerModernSerif.ttf);
+}
+* {
+    font-family: ComputerModern;
+    text-align: center;
+}
+html > * {
+    margin: auto;
+}
+body {
+    background-color: powderblue;
+}
+.outlineddiv {
+    border-radius: 20px;
+    /*box-shadow: 2px 2px 7px #DDDDDD;**/
+    border: 1px #888888 solid;
+    background-color: white;
+    user-select: none;
+}
+#bignumber {
+    font-size: 24pt;
+    border: 1px black solid;
+    background-color: #fff9;
+    box-shadow: #ccc 0px 0px 5px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 150ms, width 500ms, border-radius 150ms;
+    white-space: nowrap;
+}
+#bignumber:hover:not(.nohover) {
+    background-color: #fffc;
+    border-radius: 3px;
+}
+#bignumber:active:not(.nohover) {
+    background-color: white;
+}
+#bignumber > span {
+    font-family: monospace;
+    opacity: 0;
+}
+.innerSpan {
+    display: inline-block;
+}
+.badgeContainer {
+    border: 1px black solid;
+    background-color: #fff9;
+    box-shadow: #ccc 0px 0px 5px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 150ms, width 500ms, border-radius 150ms;
+    display: inline-block;
+    margin: 10px;
+    width: 200px;
+    max-width: 80vw;
+}
+.badgeContainer > * {
+    margin: 2px;
+    padding: 0;
+}
