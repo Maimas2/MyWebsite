@@ -122,6 +122,10 @@ app.get("/jquery.js", (req, res) => {
     res.sendFile("./mun/lib/jquery-3.7.1.min.js", {root: __dirname});
 });
 
+app.get("/aws", (req, res) => {
+    res.sendFile("./aws.html", {root: __dirname});
+});
+
 var listsToSend = [];
 
 var blockedIps = [];
