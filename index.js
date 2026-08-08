@@ -2,6 +2,7 @@ const express    = require("express");
 const fs         = require("fs");
 const bodyParser = require("body-parser");
 const path       = require("path");
+const https      = require("https");
 
 const app = express();
 const ews = require("express-ws")(app);
@@ -29,6 +30,9 @@ const pw = fs.readFileSync("./files-pw.txt", "utf-8").replaceAll("\n", "");
 var l = sdl.split("\n");
 
 const mobileCssTxt = fs.readFileSync("./mobilecss.css", "utf-8");
+const ignoredArtists = fs.readFileSync("./excludedartists.txt", "utf-8").split("\n");
+
+var lastListenedSong = "Nothing yet!";
 
 for(var i = 0; i < l.length; i++) {
     let b = l[i].split("#")[0].trim();
@@ -258,6 +262,7 @@ app.get("/", (req, res) => {
     let toSend = ogText;
     toSend = toSend.replace("<!-- %QUOTE -->", currentQuote);
     toSend = toSend.replace("<!-- %FAVSONG -->", favSong);
+    toSend = toSend.replace("<!-- %LASTSONG -->", lastListenedSong);
 
     if(req.useragent.isMobile) {
         toSend = toSend.replace("/* %MOBILE CSS */", mobileCssTxt);
@@ -283,6 +288,41 @@ app.use(function(req, res, next) {
 app.listen(3000, () => {
     console.log(`Listening on port 3000`);
 });
+
+// Set up last-song watcher
+function checkLastSong() {
+    let options = {
+        host : "libre.fm",
+        path : "/2.0/?method=user.getrecenttracks&user=alexseltzer&format=json&limit=5"
+    }
+
+    let checkSong = https.get(options, function(res) {
+        let buildingBody = [];
+        res.on("data", function(chunk) {
+            buildingBody.push(chunk);
+        }).on("end", function() {
+            let finalBody = String(Buffer.concat(buildingBody));
+            let finalJson = JSON.parse(finalBody);
+            let recentTracks = finalJson["recenttracks"]["track"];
+
+            lastListenedSong = "Nothing yet!";
+
+            recentTracks.some((tr) => {
+                console.log(tr.artist);
+                if(!ignoredArtists.includes(tr.artist["#text"])) {
+                    lastListenedSong = `${tr.name}, by ${tr.artist["#text"]}`
+                    console.log(lastListenedSong);
+                    return true;
+                }
+                return false;
+            });
+        })
+    })
+}
+
+checkLastSong();
+
+setInterval(checkLastSong, 1000 * 60 * 3); // Update last listened song every three minutes
 
 function receivedKillSignal() {
     console.log("Shutting down...");
