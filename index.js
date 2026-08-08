@@ -28,6 +28,8 @@ var sdl = fs.readFileSync("./subdomains.txt", "utf8")
 const pw = fs.readFileSync("./files-pw.txt", "utf-8").replaceAll("\n", "");
 var l = sdl.split("\n");
 
+const mobileCssTxt = fs.readFileSync("./mobilecss.css", "utf-8");
+
 for(var i = 0; i < l.length; i++) {
     let b = l[i].split("#")[0].trim();
     let bs = b.split("  ");
@@ -147,9 +149,15 @@ if(fs.existsSync("./saves/messages_sent.txt")) {
     messagesSent = d.split("\n");
 }
 
-app.get("/static.png", (req, res) => {
-    res.sendFile("/static.png", {root: __dirname});
-})
+// app.get("/static.png", (req, res) => {
+//     res.sendFile("/static.png", {root: __dirname});
+// })
+
+fs.readdirSync(path.join(__dirname, "/images")).forEach((f) => {
+    app.get(`/images/${f}`, (req, res) => {
+        res.sendFile(`/images/${f}`, {root: __dirname});
+    });
+});
 
 app.get("/game", (req, res) => {
     res.sendFile("/game.html", {root: __dirname});
@@ -169,11 +177,11 @@ app.get("/files/Blocks.c", (req, res) => {
 
 app.get("/annoyinglist", (req, res) => {
     fs.readdirSync(path.join(__dirname, "/newmessages")).forEach((f) => {
-            let s = fs.readFileSync(path.join(__dirname, "/newmessages", f)).toString();
-            if(s.length) {
-                listsToSend.push(s);
-                fs.unlinkSync(path.join(__dirname, "/newmessages", f));
-            }
+        let s = fs.readFileSync(path.join(__dirname, "/newmessages", f)).toString();
+        if(s.length) {
+            listsToSend.push(s);
+            fs.unlinkSync(path.join(__dirname, "/newmessages", f));
+        }
 	});
 
     if(req.url.includes(listpw) && req.url.includes("&all") && listpw != null) {
@@ -250,6 +258,11 @@ app.get("/", (req, res) => {
     let toSend = ogText;
     toSend = toSend.replace("<!-- %QUOTE -->", currentQuote);
     toSend = toSend.replace("<!-- %FAVSONG -->", favSong);
+
+    if(req.useragent.isMobile) {
+        toSend = toSend.replace("/* %MOBILE CSS */", mobileCssTxt);
+    }
+
     res.type("html");
     res.send(toSend);
 });

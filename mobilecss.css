@@ -1,0 +1,10 @@
+* {
+    text-size-adjust: 200%;
+}
+.proj {
+    text-size-adjust: 150%;
+    width: calc(90vw - 20px);
+    height: 12vh;
+    border-radius: 5vw;
+    margin-bottom: 3vw;
+}
