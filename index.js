@@ -291,33 +291,40 @@ app.listen(3000, () => {
 
 // Set up last-song watcher
 function checkLastSong() {
-    let options = {
-        host : "libre.fm",
-        path : "/2.0/?method=user.getrecenttracks&user=alexseltzer&format=json&limit=5"
-    }
+    let lastCurrentSong = lastListenedSong;
+    try {
+        let options = {
+            host : "libre.fm",
+            path : "/2.0/?method=user.getrecenttracks&user=alexseltzer&format=json&limit=5"
+        }
 
-    let checkSong = https.get(options, function(res) {
-        let buildingBody = [];
-        res.on("data", function(chunk) {
-            buildingBody.push(chunk);
-        }).on("end", function() {
-            let finalBody = String(Buffer.concat(buildingBody));
-            let finalJson = JSON.parse(finalBody);
-            let recentTracks = finalJson["recenttracks"]["track"];
+        let checkSong = https.get(options, function(res) {
+            let buildingBody = [];
+            res.on("data", function(chunk) {
+                buildingBody.push(chunk);
+            }).on("end", function() {
+                let finalBody = String(Buffer.concat(buildingBody));
+                let finalJson = JSON.parse(finalBody);
+                let recentTracks = finalJson["recenttracks"]["track"];
 
-            lastListenedSong = "Nothing yet!";
+                lastListenedSong = "Nothing yet!";
 
-            recentTracks.some((tr) => {
-                console.log(tr.artist);
-                if(!ignoredArtists.includes(tr.artist["#text"])) {
-                    lastListenedSong = `${tr.name}, by ${tr.artist["#text"]}`
-                    console.log(lastListenedSong);
-                    return true;
-                }
-                return false;
-            });
+                recentTracks.some((tr) => {
+                    console.log(tr.artist);
+                    if(!ignoredArtists.includes(tr.artist["#text"])) {
+                        lastListenedSong = `${tr.name}, by ${tr.artist["#text"]}`
+                        console.log(lastListenedSong);
+                        return true;
+                    }
+                    return false;
+                });
+            })
         })
-    })
+    } catch(e) {
+        console.error("Uh oh error in song checking:");
+        console.error(e);
+        lastListenedSong = lastCurrentSong;
+    }
 }
 
 checkLastSong();

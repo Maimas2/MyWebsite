@@ -47,7 +47,7 @@
                 margin: 0;
             }
             body > p {
-                width: 80vh;
+                width: 65vh;
                 max-width: 90vw;
                 margin: auto;
             }
@@ -75,6 +75,30 @@
                 background-size: cover;
                 background-position-y: 30%;
             }
+            .countdownbg {
+                background-image: linear-gradient( rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7) ), url('https://alex-seltzer.com/images/countdown.png');
+                background-size: cover;
+                background-position-y: 30%;
+            }
+            #upperContainer {
+                display: flex;
+                flex-direction: row-reverse;
+                width: 100%;
+            }
+            #upperContainer > * {
+                height: 100%;
+                padding: 3vw;
+            }
+            #meimg {
+                width: 20vw;
+                border-radius: 1vw;
+            }
+            #upperrightcontainer {
+                margin-right: 5vw;
+            }
+            .mobileshow {
+                display: none;
+            }
         </style>
         <style>
             /* %MOBILE CSS */
@@ -93,18 +117,24 @@
     <body>
         <br><br>
         <h1 id="mainH1" class="fadein">Welcome!</h1>
-        <br>
-        <p class="fadein">I'm Alex Seltzer, a freshman attending Carnegie Mellon University to study astrophysics.</p>
-        <br>
-        <p class="fadein">Quote of the day: <!-- %QUOTE --></p>
-        <br>
-        <p class="fadein">Current favorite song: <!-- %FAVSONG --></p>
-        <br>
-        <p class="fadein">Song I listened to last (don't judge): <!-- %LASTSONG --></p>
-        <br>
-        <p class="fadein">Contact me for any reason at aseltz156 at Gmail Dot Com.</p>
-        <br>
-        <br>
+        <div id="upperContainer">
+            <div id="upperrightcontainer">
+                <img class="fadein" src="/images/me.jpg" id="meimg">
+                <p class="fadein">(This is me!)</p>
+                <hr class="mobileshow fadein">
+            </div>
+            <div style="width:100%;">
+                <p class="fadein">I'm Alex Seltzer, a freshman attending Carnegie Mellon University to study astrophysics.</p>
+                <br>
+                <p class="fadein">Quote of the day: <!-- %QUOTE --></p>
+                <br>
+                <p class="fadein">Current favorite song: <!-- %FAVSONG --></p>
+                <br>
+                <p class="fadein">Song I listened to last: <!-- %LASTSONG --></p>
+                <br>
+                <p class="fadein">Contact me for any reason at aseltz156 at Gmail Dot Com.</p>
+            </div>
+        </div>
         <p class="fadein">List of my personal projects:</p>
         <a class="proj fadein munbg" href="https://mun.alex-seltzer.com/" target="_self">
             <p style="margin:auto;">Run a Model UN Conference</p>
@@ -115,7 +145,7 @@
         <a class="proj nobg fadein" href="https://colors.alex-seltzer.com/" target="_self" style="background-image: radial-gradient(circle at center, rgb(255, 150, 150) 0, rgb(255, 255, 150) 100%)">
             <p style="margin:auto;">Colors</p>
         </a>
-        <a class="proj fadein" href="https://countdown.alex-seltzer.com/" target="_self">
+        <a class="proj fadein countdownbg" href="https://countdown.alex-seltzer.com/" target="_self">
             <p style="margin:auto;">Timer that Inspires Hope and Joy into All Who Gaze Upon It</p>
         </a>
         <a class="proj fadein" href="/annoyme">

@@ -8,3 +8,25 @@
     border-radius: 5vw;
     margin-bottom: 3vw;
 }
+#upperContainer {
+    flex-direction: column;
+}
+#meimg {
+    width: 70vw;
+    border-radius: 3vw;
+    margin-right: 0;
+}
+#upperContainer > * {
+    padding: 0;
+}
+hr.mobileshow {
+    display: block;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.5);
+    width: 80vw;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+#upperrightcontainer {
+    margin-right: 0;
+}
