@@ -321,8 +321,8 @@ function checkLastSong() {
             })
         })
     } catch(e) {
-        console.error("Uh oh error in song checking:");
-        console.error(e);
+        console.warn("Uh oh error in song checking:");
+        console.warn(e);
         lastListenedSong = lastCurrentSong;
     }
 }
