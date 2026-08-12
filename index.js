@@ -161,6 +161,7 @@ fs.readdirSync(path.join(__dirname, "/images")).forEach((f) => {
     app.get(`/images/${f}`, (req, res) => {
         res.sendFile(`/images/${f}`, {root: __dirname});
     });
+    console.log(`  Listening for ${f}...`);
 });
 
 app.get("/game", (req, res) => {
