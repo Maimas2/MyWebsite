@@ -305,8 +305,9 @@ function checkLastSong() {
                 buildingBody.push(chunk);
             }).on("end", function() {
                 let finalBody = String(Buffer.concat(buildingBody));
+                var finalJson = null;
                 try {
-                    let finalJson = JSON.parse(finalBody);
+                    finalJson = JSON.parse(finalBody);
                 } catch(e) {
                     console.warn("Error:");
                     console.warn(e);
