@@ -319,7 +319,7 @@ function checkLastSong() {
                     }
                     return false;
                 });
-            }).catch(e => {
+            }).on("error", function(e) {
                 console.warn("Uh oh error in song checking:");
                 console.warn(e);
                 lastListenedSong = lastCurrentSong;
