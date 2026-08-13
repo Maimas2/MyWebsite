@@ -305,7 +305,14 @@ function checkLastSong() {
                 buildingBody.push(chunk);
             }).on("end", function() {
                 let finalBody = String(Buffer.concat(buildingBody));
-                let finalJson = JSON.parse(finalBody);
+                try {
+                    let finalJson = JSON.parse(finalBody);
+                } catch(e) {
+                    console.warn("Error:");
+                    console.warn(e);
+                    lastListenedSong = lastCurrentSong;
+                    return;
+                }
                 let recentTracks = finalJson["recenttracks"]["track"];
 
                 lastListenedSong = "Nothing yet!";
