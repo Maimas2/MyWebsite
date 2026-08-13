@@ -319,6 +319,11 @@ function checkLastSong() {
                     }
                     return false;
                 });
+            }).catch(e => {
+                console.warn("Uh oh error in song checking:");
+                console.warn(e);
+                lastListenedSong = lastCurrentSong;
+                return;
             })
         })
     } catch(e) {
