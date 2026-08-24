@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Indefinite Wordle</title>
+        <style>
+            body {
+                background-color: powderblue;
+                text-align: center;
+            }
+            body > div {
+                display: inline-block;
+            }
+            body > * {
+                margin: auto;
+                align-self: center;
+            }
+            #listOfGuesses {
+                max-width: 90vw;
+            }
+            .oneGuess {
+                margin-bottom: 20px;
+            }
+            .emptyGuess, .promptEmptyGuess {
+                width: 50px;
+                height: 50px;
+                border: 1px solid #0005;
+                border-radius: 2px;
+                display: inline-block;
+                margin-right: 10px;
+                background-color: #fff3;
+                vertical-align: middle;
+                line-height: 50px;
+                font-family: sans-serif;
+                font-weight: bold;
+                font-size: 30px;
+                margin-bottom: 12px;
+            }
+            .promptEmptyGuess {
+                border: 1px dashed #0004;
+            }
+            #oneGuessPrefab {
+                display: none !important;
+            }
+            
+        </style>
+        <script src="/lib/jquery.js"></script>
+    </head>
+    <body>
+        <br><br>
+        <h1>Indefinite Wordle</h1>
+        <br><br>
+        <div id="listOfGuesses">
+            <div class="oneGuess">
+                <div class="emptyGuess"></div><div class="promptEmptyGuess"></div> <!-- Must be on the same line for some fucking reason, otherwise it inserts a ~5px horizontal spacer -->
+            </div>
+        </div>
+        <div class="oneGuess" id="oneGuessPrefab">
+            <div class="emptyGuess"></div><div class="promptEmptyGuess"></div>
+        </div>
+    </body>
+    <script>
+        const AllLetters = "abcdefghijklmnopqrstuvwxyz-,1234567890";
+        var wordToGuess = "3,4-diaminopyridine";
+        var isTakingInputs = true; // Currently only used to lock game after victory. May be used in the future for locking during animations.
+        $(document).on("keydown", function(e) {
+            if(!isTakingInputs) return;
+            console.log(e.key);
+            if(AllLetters.includes(e.key)) {
+                let lc = $("#listOfGuesses .oneGuess:last").children(".emptyGuess:last"); // lc = last child
+                lc.text(e.key);//.toUpperCase());
+                lc.addClass("filled");
+                $("<div>").addClass("emptyGuess").insertAfter(lc);
+            }
+            if(e.key == "Backspace") {
+                if($("#listOfGuesses .oneGuess:last").children(".filled").length) {
+                    $("#listOfGuesses .oneGuess:last").children(".filled:last").remove();
+                }
+            }
+            if(e.key == "Enter") {
+                $("#listOfGuesses .oneGuess:last").children(".emptyGuess:not(.filled)").remove();
+                $("#listOfGuesses .oneGuess:last").children(".promptEmptyGuess").remove();
+
+                let enteredString = ""; // Must build it by element
+                $("#listOfGuesses .oneGuess:last").children(".emptyGuess").each(function() {
+                    enteredString += $(this).text();
+                });
+                
+                if(enteredString == wordToGuess) {
+                    $("#listOfGuesses .oneGuess:last").children(".emptyGuess").css("background-color", "#5f55");
+                    $("#listOfGuesses").append($("<h2>").text("Yay, you won!"));
+                    isTakingInputs = false;
+                    return;
+                }
+
+                let numCharInstances = {  };
+                AllLetters.split('').forEach((l) => {
+                    numCharInstances[l] = 0;
+                });
+                wordToGuess.split('').forEach((l) => {
+                    numCharInstances[l]++;
+                });
+                console.log(numCharInstances);
+
+                let currentInd = 0;
+                $("#listOfGuesses .oneGuess:last").children(".emptyGuess").each(function() {
+                    if($(this).text() == wordToGuess[currentInd]) {
+                        $(this).css("background-color", "#5f55");
+                        numCharInstances[$(this).text()]--;
+                    } else if(numCharInstances[$(this).text()]) {
+                        $(this).css("background-color", "#ff55");
+                        numCharInstances[$(this).text()]--;
+                    } else {
+                        $(this).css("background-color", "#9995");
+                    }
+
+                    currentInd++;
+                })
+
+                $("#listOfGuesses").append($("#oneGuessPrefab").clone().attr("id", ""));
+            }
+        });
+    </script>
+</html>
