@@ -106,7 +106,7 @@
                     if($(this).text() == wordToGuess[currentInd]) {
                         $(this).css("background-color", "#5f55");
                         numCharInstances[$(this).text()]--;
-                    } else if(numCharInstances[$(this).text()]) {
+                    } else if(numCharInstances[$(this).text()] > 0) {
                         $(this).css("background-color", "#ff55");
                         numCharInstances[$(this).text()]--;
                     } else {
