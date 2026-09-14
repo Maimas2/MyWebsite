@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>View Item - Admin</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <script src="https://alex-seltzer.com/lib/jquery.js"></script>
+    <script src="http://localhost:3000/lib/jquery.js"></script>
+    <style>
+        th {
+            padding: 18px;
+            border: 1px solid #0004;
+        }
+
+        th:not(:last-child) {
+            border-right: 0;
+        }
+
+        table {
+            align-self: center;
+            display: inline-block;
+            border-collapse: separate;
+            border-spacing: 0px 8px;
+        }
+
+        tbody,
+        thead {
+            border: 1px solid black;
+            padding: 5px;
+            border-radius: 7px;
+            gap: 5px;
+            margin: 10px;
+        }
+
+        tbody tr:first-child th {
+            border-radius: 7px 7px 0 0;
+        }
+
+        tbody tr:last-child th:first-child {
+            border-radius: 0 0 7px 7px;
+        }
+
+        thead tr,
+        tbody {
+            border-radius: 7px;
+            box-shadow: 0px 0px 0px 1px rgb(0, 0, 0);
+            margin: 5px;
+        }
+
+        tbody {
+            margin-top: 20px;
+        }
+
+        tbody tr th {
+            font-weight: normal;
+            min-width: 40vw;
+            max-width: 90vw;
+        }
+
+        a {
+            color: black;
+        }
+
+        #bigQuoteDisplay {
+            max-width: 70vw;
+            margin: auto;
+            margin-top: 3vh;
+            margin-bottom: 1.5vh;
+        }
+
+        textarea {
+            width: 50vw;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>— Admin Portal —</h1>
+    <h3><a href="/search">There are <span id="totalNumItems">...</span> items currently available publicly.</a></h3>
+    <h3><a href="/admin/approve">There are <span id="totalProposedItems">...</span> items awaiting approval.</a></h3>
+    <hr>
+    <h3>Go to Item</h3>
+    <form action="/api/admin/goto" method="post">
+        <input type="number" name="id">
+        <input type="submit" value="Go">
+    </form>
+    <hr>
+</body>
+<script>
+    function processBasicData(data) {
+        $("#totalNumItems").text(data.numberPublicItems);
+        $("#totalProposedItems").text(data.numberProposedItems);
+    }
+
+    window.onload = function () {
+        $.ajax({
+            url: "/api/admin/getbasicadmininfo",
+            type: "POST",
+            success: function (data) {
+                processBasicData(data);
+            }
+        });
+    };
+</script>
+
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Person</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <script src="https://alex-seltzer.com/lib/jquery.js"></script>
+    <script src="http://localhost:3000/lib/jquery.js"></script>
+    <style>
+        th {
+            padding: 18px;
+            border: 1px solid #0004;
+        }
+
+        th:not(:last-child) {
+            border-right: 0;
+        }
+
+        table {
+            align-self: center;
+            display: block;
+            border-collapse: separate;
+            border-spacing: 0px 8px;
+            margin: auto;
+        }
+
+        tbody,
+        thead,
+        .searchBar {
+            border: 1px solid black;
+            padding: 5px;
+            border-radius: 7px;
+            gap: 5px;
+            margin: 10px;
+            margin-left: auto;
+        }
+
+        thead tr th:not(.ignoreMe):first-child {
+            border-radius: 7px 0 0 7px;
+        }
+
+        thead tr th:last-child {
+            border-radius: 0 7px 7px 0;
+        }
+
+        tbody tr:first-child th:first-child {
+            border-radius: 7px 0 0 0;
+        }
+
+        tbody tr:first-child th:last-child {
+            border-radius: 0 7px 0 0;
+        }
+
+        tbody tr:last-child th:first-child {
+            border-radius: 0 0 0 7px;
+        }
+
+        tbody tr:last-child th:last-child {
+            border-radius: 0 0 7px 0;
+        }
+
+        thead tr,
+        tbody {
+            border-radius: 7px;
+            box-shadow: 0px 0px 0px 1px rgb(0, 0, 0);
+            margin: 5px;
+        }
+
+        tbody {
+            margin-top: 20px;
+        }
+
+        tbody tr th {
+            font-weight: normal;
+        }
+
+        th {
+            max-width: 30vw;
+        }
+
+        a {
+            color: black;
+        }
+
+        .searchBar {
+            width: 85%;
+            margin: auto;
+            font-size: 1em;
+            /* display: none; */
+        }
+
+        #searchResults {
+            display: none;
+            table-layout: fixed;
+        }
+
+        #inputTable {
+            margin: auto;
+            display: inline-block;
+        }
+
+        #inputTable tr th {
+            width: 50vh;
+            max-width: 90vw;
+        }
+
+        #searchButton {
+            margin: 0;
+        }
+
+        #containedTagSearch {
+            padding-top: 10px;
+        }
+
+        .tagSearchPrompt {
+            display: block;
+            border: 1px solid #bbb;
+            user-select: none;
+            margin: auto;
+            width: 80%;
+            margin-top: 10px;
+            background-color: white;
+        }
+
+        .tagSearchPrompt:hover {
+            background-color: #eee;
+        }
+
+        input[type="text"] {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 id="mainH2"></h2>
+    <table id="inputTable">
+        <tr>
+            <th>
+                <input type="text" id="searchContents" class="searchBar enterToSearch" placeholder="Search contents..."
+                    autocomplete="off" maxlength="3000">
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <label for="searchPerson">Person</label>
+                <input type="text" id="searchPerson" class="searchBar enterToSearch" placeholder="Search..."
+                    autocomplete="off" maxlength="3000">
+                <div id="personSearchPrompts">
+
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <label for="searchTags">Tags</label>
+                <input type="text" id="searchTags" class="searchBar" placeholder="Add tag..." autocomplete="off"
+                    maxlength="3000">
+                <div id="tagSearchPrompts">
+
+                </div>
+                <div id="containedTagSearch">
+
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <button id="searchButton">Search</button>
+            </th>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <br>
+    <table id="searchResults">
+        <thead>
+            <tr>
+                <th>Quote Text / Action Short Description</th>
+                <th>Type</th>
+                <th id="personTh">Person</th>
+                <th>Location</th>
+                <th>Audience</th>
+                <th>Tags</th>
+                <th>Source</th>
+            </tr>
+        </thead>
+        <tbody id="rowElement">
+
+        </tbody>
+    </table>
+    <h2 id="uhOhH2"></h2>
+    <a id="returnToHome" href="/">Home</a>
+</body>
+<script src="/search.js"></script>
+
+</html>

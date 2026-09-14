@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>View Item - Admin</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <script src="https://alex-seltzer.com/lib/jquery.js"></script>
+    <script src="http://localhost:3000/lib/jquery.js"></script>
+    <style>
+        th {
+            padding: 18px;
+            border: 1px solid #0004;
+        }
+
+        th:not(:last-child) {
+            border-right: 0;
+        }
+
+        table {
+            align-self: center;
+            display: inline-block;
+            border-collapse: separate;
+            border-spacing: 0px 8px;
+        }
+
+        tbody,
+        thead {
+            border: 1px solid black;
+            padding: 5px;
+            border-radius: 7px;
+            gap: 5px;
+            margin: 10px;
+        }
+
+        tbody tr:first-child th {
+            border-radius: 7px 7px 0 0;
+        }
+
+        tbody tr:last-child th:first-child {
+            border-radius: 0 0 7px 7px;
+        }
+
+        thead tr,
+        tbody {
+            border-radius: 7px;
+            box-shadow: 0px 0px 0px 1px rgb(0, 0, 0);
+            margin: 5px;
+        }
+
+        tbody {
+            margin-top: 20px;
+        }
+
+        tbody tr th {
+            font-weight: normal;
+            min-width: 40vw;
+            max-width: 90vw;
+        }
+
+        a {
+            color: black;
+        }
+
+        #bigQuoteDisplay {
+            max-width: 70vw;
+            margin: auto;
+            margin-top: 3vh;
+            margin-bottom: 1.5vh;
+        }
+
+        textarea {
+            width: 50vw;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="approveItem">Approve</button>
+    <button id="rejectItem">Reject</button>
+    <h3 id="actionMessage"></h3>
+    <h3>ID: <span id="bigIdDisplay"></span></h3>
+    <hr>
+    <h1>— <a href="/admin">Admin</a> —</h1>
+    <h3><a id="nonAdminLink">View non-admin page</a></h3>
+    <h2>Simple Description</h2>
+    <textarea id="bigQuoteDisplay"></textarea>
+    <br>
+    <h2>Type</h2>
+    <select id="typeOption">
+        <option value="Quote">Quote</option>
+        <option value="Action">Action</option>
+    </select>
+    <br>
+    <h2>Speaker / Doer</h2>
+    <textarea id="bigQuoteSpeaker"></textarea>
+    <br>
+    <br>
+    <h2>Tags</h2>
+    <textarea id="tagContainer"></textarea>
+    <br>
+    <br>
+    <h3>Description</h3>
+    <textarea id="descriptionContainer"></textarea>
+    <br>
+    <br>
+    <h3>Datetime</h3>
+    <textarea id="datetimeContainer"></textarea>
+    <br>
+    <br>
+    <h3>Location</h3>
+    <textarea id="locationContainer"></textarea>
+    <br>
+    <br>
+    <h3>Audience</h3>
+    <textarea id="audienceContainer"></textarea>
+    <br>
+    <br>
+    <h3>Source</h3>
+    <textarea id="sourceContainer"></textarea>
+    <br>
+    <br>
+    <h3>Archive</h3>
+    <textarea id="archiveContainer"></textarea>
+    <br>
+    <br>
+    <br>
+    <br>
+</body>
+<script>
+    var currentQuote = /* %CURRENTQUOTE */;
+    // console.log(currentQuote);
+
+    if (!currentQuote) alert("currentQuote is undefined");
+
+    const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Doc"];
+
+    const keysEtc = {
+        person: "bigQuoteSpeaker",
+        type: "typeOption",
+        text: "bigQuoteDisplay",
+        tags: "tagContainer",
+        description: "descriptionContainer",
+        datetime: "datetimeContainer",
+        location: "locationContainer",
+        audience: "audienceContainer",
+        sourceurl: "sourceContainer",
+        archiveurl: "archiveContainer"
+    }
+
+    // b.text, b.person, b.datetime, b.location, b.tags, b.description, b.sourceurl, b.archiveurl, b.type, b.id
+
+    function parseDate(dIn) {
+        let toReturn = "";
+        let list = dIn.split("-");
+        toReturn += list[2] + " ";
+        toReturn += MONTHS[Number(list[1])] + " ";
+        toReturn += list[0];
+        return toReturn;
+    }
+
+    if (currentQuote) {
+        $("#nonAdminLink").attr("href", `/item/${currentQuote.id}`);
+
+        $("#bigIdDisplay").text(currentQuote.id);
+
+        $("#bigQuoteSpeaker").val(currentQuote.person);
+
+        $("#typeOption").val(currentQuote.type);
+
+        $("#bigQuoteDisplay").val(currentQuote.text);
+
+        $("#tagContainer").val(currentQuote.tags);
+
+        $("#descriptionContainer").val(currentQuote.description);
+
+        $("#datetimeContainer").val(currentQuote.time);
+
+        $("#locationContainer").val(currentQuote.location);
+
+        $("#audienceContainer").val(currentQuote.audience);
+
+        $("#sourceContainer").val(currentQuote.source);
+
+        $("#archiveContainer").val(currentQuote.archivedsource);
+
+        $("#approveItem").on("click", function () {
+            let building = { id: currentQuote.id };
+            Object.keys(keysEtc).forEach(key => {
+                building[key] = $(`#${keysEtc[key]}`).val();
+            });
+            // console.log(building);
+            $.ajax({
+                url: "/api/admin/approveproposeditem",
+                type: "POST",
+                data: building,
+                success: function () {
+                    window.location.replace("/admin/approve/");
+                },
+                error: function (e) {
+                    $("#actionMessage").text("Save failed: " + e);
+                }
+            });
+        });
+
+        $("#rejectItem").on("click", function () {
+            $.ajax({
+                url: "/api/admin/rejectproposeditem",
+                type: "POST",
+                data: {
+                    idToDelete: currentQuote.id
+                },
+                success: function () {
+                    window.location.replace("/admin/approve/");
+                },
+                error: function (e) {
+                    $("#actionMessage").text("Delete failed: " + e);
+                }
+            });
+        });
+    }
+</script>
+
+</html>

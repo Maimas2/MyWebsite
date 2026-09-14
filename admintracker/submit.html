@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Submit New Quote</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <script src="https://alex-seltzer.com/lib/jquery.js"></script>
+    <script src="http://localhost:3000/lib/jquery.js"></script>
+    <style>
+        th {
+            padding: 18px;
+            border: 1px solid #0004;
+        }
+
+        table {
+            border: 1px solid black;
+            /* border-collapse: collapse; */
+            padding: 5px;
+            border-radius: 7px;
+            gap: 5px;
+            margin: auto;
+            min-width: 40vw;
+            max-width: 90vw;
+        }
+
+        form {
+            display: none;
+        }
+
+        table tr:first-child th:first-child {
+            border-radius: 4px 0 0 0;
+        }
+
+        table tr:first-child th:last-child {
+            border-radius: 0 4px 0 0;
+        }
+
+        table tr:last-child th:first-child {
+            border-radius: 0 0 0 4px;
+        }
+
+        table tr:last-child th:last-child {
+            border-radius: 0 0 4px 0;
+        }
+
+        select {
+            font-size: 1.1em;
+            background-color: transparent;
+            border: 1px solid black;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        #actionDesc {
+            width: 100%;
+        }
+
+        #submitAction {
+            display: none;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        input:invalid,
+        textarea:invalid {
+            border-color: red;
+        }
+
+        textarea {
+            width: 85%;
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <noscript>
+        <h1>Javascript is required to use this page.</h1>
+    </noscript>
+    <form action="/submit" method="post" id="submitQuote">
+        <h2>Submit New <select name="type" class="chooseType" name="type" autocomplete="off">
+                <option value="Quote" selected>Quote</option>
+                <option value="Action">Action</option>
+            </select></h2>
+        <table>
+            <tbody>
+                <tr>
+                    <th colspan="2">
+                        <h4>Quote Text</h4>
+                        <textarea id="quoteText" name="shortDesc" required maxlength="1000"></textarea>
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <h4>Quote Description / Context</h4>
+                        <textarea id="quoteDesc" name="description" required maxlength="1000"></textarea>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <h4>Person</h4>
+                        <input type="text" id="personInput" name="person" required maxlength="100">
+                    </th>
+                    <th>
+                        <h4>Date</h4>
+                        <input type="date" id="datetimeInput" name="datetime" required>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <h4>Location</h4>
+                        <input type="text" id="locationInput" name="location" required maxlength="300">
+                    </th>
+                    <th>
+                        <h4>Tags</h4>
+                        <input type="text" id="tagInput" name="tags" required maxlength="1000">
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <h4>Source URL</h4>
+                        <input type="text" id="sourceInput" name="sourceurl" required maxlength="4000">
+                    </th>
+                    <th>
+                        <h4>Archive of the Source</h4>
+                        <input type="text" id="archiveInput" name="archiveurl" maxlength="4000">
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+    <form action="/submit" method="post" id="submitAction">
+        <h2>Submit New
+            <select name="type" class="chooseType" name="type">
+                <option value="Quote">Quote</option>
+                <option value="Action" selected>Action</option>
+            </select>
+        </h2>
+        <table>
+            <tbody>
+                <tr>
+                    <th colspan="2">
+                        <h4>Brief, Objective Description of the Action</h4>
+                        <textarea id="actionDesc" name="shortDesc" required></textarea>
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <h4>Longer, more Detailed Description of the Action</h4>
+                        <textarea id="actionLongDesc" name="description" required></textarea>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <h4>Person</h4>
+                        <input type="text" id="personInput" name="person" required>
+                    </th>
+                    <th>
+                        <h4>Tags</h4>
+                        <textarea id="actionTags" name="tags" required></textarea>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <h4>Date</h4>
+                        <input type="date" id="datetimeInput" name="datetime" required>
+                    </th>
+                    <th>
+                        <h4>Location</h4>
+                        <input type="text" id="locationInput" name="location" required>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <h4>Source URL</h4>
+                        <input type="text" id="sourceInput" name="sourceurl" required>
+                    </th>
+                    <th>
+                        <h4>Archive of the Source</h4>
+                        <input type="text" id="archiveInput" name="archiveurl">
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="submit">
+    </form>
+    <a id="returnToHome" href="/">Home</a>
+</body>
+<script>
+    $(".chooseType").on("change", function () {
+        $("form").css("display", "none");
+        $(`#submit${$(this).val()}`).css("display", "block");
+        $(`#submit${$(this).val()}`).find(".chooseType").val($(this).val());
+
+        history.pushState(null, "", `/submit/${$(this).val()}`);
+    });
+    window.onload = function (_e) {
+        $("form").css("display", "none");
+        $(`#submit${window.location.pathname.split("/").filter(x => x.length).pop()}`).css("display", "block");
+        if (!$(`#submit${window.location.pathname.split("/").filter(x => x.length).pop()}`).length) {
+            window.location.replace("/submit/Quote");
+        }
+    }
+</script>
+
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>View Item</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <script src="https://alex-seltzer.com/lib/jquery.js"></script>
+    <script src="http://localhost:3000/lib/jquery.js"></script>
+    <style>
+        th {
+            padding: 18px;
+            border: 1px solid #0004;
+        }
+
+        th:not(:last-child) {
+            border-right: 0;
+        }
+
+        table {
+            align-self: center;
+            display: inline-block;
+            border-collapse: separate;
+            border-spacing: 0px 8px;
+        }
+
+        tbody,
+        thead {
+            border: 1px solid black;
+            padding: 5px;
+            border-radius: 7px;
+            gap: 5px;
+            margin: 10px;
+        }
+
+        tbody tr:first-child th {
+            border-radius: 7px 7px 0 0;
+        }
+
+        tbody tr:last-child th:first-child {
+            border-radius: 0 0 7px 7px;
+        }
+
+        thead tr,
+        tbody {
+            border-radius: 7px;
+            box-shadow: 0px 0px 0px 1px rgb(0, 0, 0);
+            margin: 5px;
+        }
+
+        tbody {
+            margin-top: 20px;
+        }
+
+        tbody tr th {
+            font-weight: normal;
+            min-width: 40vw;
+            max-width: 90vw;
+        }
+
+        a {
+            color: black;
+        }
+
+        #bigQuoteDisplay {
+            max-width: 70vw;
+            margin: auto;
+            margin-top: 3vh;
+            margin-bottom: 1.5vh;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 id="bigQuoteDisplay" class="keepAroundInFailure"><noscript>Sorry, Javascript is required to view this
+            page.</noscript></h2>
+    <h3 id="bigQuoteSpeaker">- </h3>
+    <br>
+    <h4 style="margin-bottom: 0;">Tags</h4>
+    <div id="tagContainer"></div>
+    <br>
+    <table>
+        <thead>
+
+        </thead>
+        <tbody id="mtbody">
+
+        </tbody>
+    </table>
+    <a id="returnToHome" href="/" class="keepAroundInFailure">Home</a>
+</body>
+<script>
+    var currentQuote = /* %CURRENTQUOTE */;
+    console.log(currentQuote);
+
+    const MONTHS = ["null", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Doc"];
+    //              ^ Counteract the dreaded zero-indexing
+
+    function parseDate(dIn) {
+        let toReturn = "";
+        let list = dIn.split("-");
+        toReturn += list[2] + " ";
+        toReturn += MONTHS[Number(list[1])] + " ";
+        toReturn += list[0];
+        return toReturn;
+    }
+
+    if (currentQuote.success) {
+        $("#bigQuoteSpeaker").append(
+            $("<a>").text(currentQuote.person || "null").attr("href", `/people/${currentQuote.person || "0"}`)
+        )
+
+        $("#bigQuoteDisplay").text(currentQuote.text || "No such item found");
+
+        currentQuote.tags.split(",").forEach((t) => {
+            $("#tagContainer").append(
+                $("<a>").addClass("tagLink").text(t.split(" ").map(word => word[0].toUpperCase() + word.slice(1)).join(" ")).attr("href", `/tag/${t}`)
+            )
+        });
+
+        $("#mtbody").append($("<tr>").append(
+            $("<th>").text("Context: " + (currentQuote.description || "No context provided"))
+        ));
+        $("#mtbody").append($("<tr>").append(
+            $("<th>").text("Date: " + parseDate(currentQuote.time))
+        ));
+        $("#mtbody").append($("<tr>").append(
+            $("<th>").text("Location: " + (currentQuote.location || "No location provided"))
+        ));
+        $("#mtbody").append($("<tr>").append(
+            $("<th>").text("Audience: " + (currentQuote.audience || "No audience provided"))
+        ));
+        $("#mtbody").append($("<tr>").append(
+            $("<th>").text("Source url: ").append(
+                $("<a>").text((currentQuote.source || "null").split("/").slice(0, 3).join("/") + "/").attr("href", currentQuote.source || "")
+            )
+        ));
+        $("#mtbody").append($("<tr>").append(
+            $("<th>").text("Archive of source: ").append(
+                $("<a>").text((currentQuote.archivedsource || "null").split("/").slice(0, 3).join("/") + "/").attr("href", currentQuote.archivedsource)
+            )
+        ));
+    } else {
+        $("body").children(":not(.keepAroundInFailure)").remove();
+        $("#bigQuoteDisplay").text(`No such ${window.location.pathname.split("/")[1].toLowerCase()} found`);
+    }
+</script>
+
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Submit New Quote</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://alex-seltzer.com/lib/jquery.js"></script>
+    <script src="http://localhost:3000/lib/jquery.js"></script>
+    <style>
+        th {
+            padding: 18px;
+            border: 1px solid #0004;
+        }
+
+        th:not(:last-child) {
+            border-right: 0;
+        }
+
+        table {
+            align-self: center;
+            display: inline-block;
+            border-collapse: separate;
+            border-spacing: 0px 8px;
+        }
+
+        tbody,
+        thead {
+            border: 1px solid black;
+            padding: 5px;
+            border-radius: 7px;
+            gap: 5px;
+            margin: 10px;
+        }
+
+        thead tr th:first-child {
+            border-radius: 7px 0 0 7px;
+        }
+
+        thead tr th:last-child {
+            border-radius: 0 7px 7px 0;
+        }
+
+        tbody tr:first-child th:first-child {
+            border-radius: 7px 0 0 0;
+        }
+
+        tbody tr:first-child th:last-child {
+            border-radius: 0 7px 0 0;
+        }
+
+        tbody tr:last-child th:first-child {
+            border-radius: 0 0 0 7px;
+        }
+
+        tbody tr:last-child th:last-child {
+            border-radius: 0 0 7px 0;
+        }
+
+        thead tr,
+        tbody {
+            border-radius: 7px;
+            box-shadow: 0px 0px 0px 1px rgb(0, 0, 0);
+            margin: 5px;
+        }
+
+        tbody {
+            margin-top: 20px;
+        }
+
+        tbody tr th {
+            font-weight: normal;
+        }
+
+        a {
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>View Database</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Quote Text</th>
+                <th>Person who Spoketh</th>
+                <th>Location</th>
+                <th>Audience</th>
+                <th>Tags</th>
+                <th>Source</th>
+            </tr>
+        </thead>
+        <tbody id="rowElement">
+
+        </tbody>
+    </table>
+</body>
+<script src="/explore.js"></script>
+
+</html>
