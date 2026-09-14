@@ -380,9 +380,10 @@ app.post("/api/admin/updateitem", (req, res) => {
 
 const connection = mysql.createConnection({
     host: "localhost",
-    user: process.env.MYSQL_USRN,
+    user: "root",
     password: process.env.MYSQL_PSWD,
-    database: "sys"
+    database: "sys",
+    port: 3300
 });
 
 module.exports.app = app;
