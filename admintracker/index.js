@@ -19,6 +19,21 @@ const ogApproveAdminHtml = fs.readFileSync("./admintracker/admin/approveitem-adm
 var AllTags = new Set();
 var AllPeople = new Set();
 
+// var CurrentAuthTokens = { // Form: useragent[String] |--> valid auth token[String]
+
+// };
+var CurrentAuthTokens = [];
+
+const AvailableCharacters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890-";
+
+function GenerateNewAuthToken() { // Cryptography go brrrr
+    let toReturn = "";
+    for (let i = 0; i < 40; i++) {
+        toReturn += AvailableCharacters[Math.floor(Math.random() * AvailableCharacters.length)];
+    }
+    return toReturn;
+}
+
 app.get('/', (req, res) => {
     res.sendFile("./index.html", { root: __dirname });
 });
@@ -61,6 +76,14 @@ app.get("/search.js", (req, res) => {
 
 app.get(["/people", "/tag"], (req, res) => {
     res.redirect("/search");
+});
+
+app.get("/login", (req, res) => {
+    res.redirect("/admin/login");
+});
+
+app.get("/admin/login", (req, res) => {
+    res.sendFile("./login/login.html", { root: __dirname });
 });
 
 app.post("/api/searchitems", (req, res) => {
@@ -184,6 +207,13 @@ app.get("/action/action.js", (req, res) => {
     res.sendFile("./viewaction/action.js", { root: __dirname });
 });
 
+app.get("/logout", (req, res) => {
+    if (req.cookies.authentication && CurrentAuthTokens.includes(req.cookies.authentication)) {
+        CurrentAuthTokens.splice(CurrentAuthTokens.indexOf(req.cookies.authentication), 1);
+    }
+    res.redirect("/");
+});
+
 app.post("/submit", (req, res) => {
     let b = req.body;
     if (JSON.stringify(b).includes(");")) {
@@ -203,11 +233,31 @@ app.post("/submit", (req, res) => {
     res.sendFile("./submit.html", { root: __dirname });
 });
 
-// ---------------------------------------------------- ADMIN ONLY BELOW HERE ------------------------------------------
+app.post("/api/login", (req, res) => {
+    // console.log(req.body);
+    if (!req.body || !req.body.password) {
+        res.send({ success: false, code: 400, message: "No body or password provided" });
+    }
+    if (req.body.password == process.env.ADMIN_PSWD) {
+        let newAuth = GenerateNewAuthToken();
+        CurrentAuthTokens.push(newAuth);
+        res.send({
+            success: true,
+            code: 200,
+            authCookie: newAuth
+        });
+    } else {
+        res.status(401);
+        res.send({ success: false, code: 401, message: "Invalid login" });
+    }
+});
+
+// ----------------------------------------- ADMIN ONLY BELOW HERE ------------------------------------------
 
 app.use((req, res, next) => { // Handle authentication for admin stuff
-    if (!req.cookies.authentication) {
-        res.send("No or invalid authentication");
+    if (!req.cookies.authentication || !CurrentAuthTokens.includes(req.cookies.authentication)) {
+        res.status(401);
+        res.redirect("/login");
         return;
     }
     next();
