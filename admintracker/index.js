@@ -432,7 +432,7 @@ app.post("/api/admin/updateitem", (req, res) => {
     res.sendFile("./submit.html", { root: __dirname });
 });
 
-const connection = mysql.createPool({
+const connection = mysql.createConnection({
     host: "localhost",
     user: process.env.MYSQL_USRN,
     password: process.env.MYSQL_PSWD,
@@ -456,6 +456,12 @@ module.exports.startUpFunction = function() {
             AllPeople.add(row.person);
         });
     });
+
+    setInterval(function() {
+        connection.query("SELECT 1;", (err, rows, fields) => {
+
+        });
+    }, 1800000);
 };
 
 module.exports.shutDownFunction = function() {
