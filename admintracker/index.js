@@ -82,7 +82,7 @@ app.get("/login", (req, res) => {
     res.redirect("/admin/login");
 });
 
-app.get("/admin/login", (req, res) => {
+app.get("/admin/login", (req, res) => { // This /admin page does *not* need authentication
     res.sendFile("./login/login.html", { root: __dirname });
 });
 
@@ -209,7 +209,7 @@ app.get("/action/action.js", (req, res) => {
 
 app.get("/logout", (req, res) => {
     if (req.cookies.authentication && CurrentAuthTokens.includes(req.cookies.authentication)) {
-        CurrentAuthTokens.splice(CurrentAuthTokens.indexOf(req.cookies.authentication), 1);
+        CurrentAuthTokens.splice(CurrentAuthTokens.indexOf(req.cookies.authentication), 1); // Invalidate authentication token on navigation to /logout
     }
     res.redirect("/");
 });
@@ -237,6 +237,7 @@ app.post("/api/login", (req, res) => {
     // console.log(req.body);
     if (!req.body || !req.body.password) {
         res.send({ success: false, code: 400, message: "No body or password provided" });
+        return;
     }
     if (req.body.password == process.env.ADMIN_PSWD) {
         let newAuth = GenerateNewAuthToken();
@@ -318,6 +319,7 @@ app.get("/admin/approve/:id", (req, res) => {
 app.post("/api/admin/approveproposeditem", async (req, res) => {
     if (!req.body || !req.body.id) {
         res.send({ success: false, code: 400, message: "No body or id provided" });
+        return;
     }
     let b = req.body;
     await new Promise((resolve, reject) => {
@@ -375,6 +377,7 @@ app.post("/api/admin/goto", (req, res) => {
 app.post("/api/admin/deleteitem", async (req, res) => {
     if (!req.body || !req.body.idToDelete) {
         res.send({ success: false, code: 400, message: "No ID provided to delete" });
+        return;
     }
 
     await new Promise((resolve, reject) => {
@@ -406,6 +409,7 @@ app.post("/api/admin/deleteitem", async (req, res) => {
 app.post("/api/admin/updateitem", (req, res) => {
     if (!req.body) {
         res.send({ success: false, code: 400, message: "No body provided to update" });
+        return;
     }
 
     let b = req.body;
@@ -428,9 +432,9 @@ app.post("/api/admin/updateitem", (req, res) => {
     res.sendFile("./submit.html", { root: __dirname });
 });
 
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
     host: "localhost",
-    user: "root",
+    user: process.env.MYSQL_USRN,
     password: process.env.MYSQL_PSWD,
     database: "sys",
     port: 3300
