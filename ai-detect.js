@@ -12,6 +12,8 @@ function detectAIReferral(url) {
     const parsed = new URL(url);
     const source = parsed.searchParams.get("utm_source");
 
+    console.log(source);
+
     const aiSources = [
       "copilot.com",
       "chat.openai.com",
@@ -22,7 +24,7 @@ function detectAIReferral(url) {
     ];
 
     return {
-      isAI: aiSources.includes(source),
+      isAI: aiSources.some((subs) => source.indexOf(subs) >= 0), // <-- THIS LINE EDITED TO CHECK FOR ALL INCLUSIONS AS OPPOSED TO EXACT MATCHES
       source: source || null
     };
   } catch (err) {
