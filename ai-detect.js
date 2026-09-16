@@ -1,4 +1,5 @@
 // THIS BELOW CODE TAKEN FROM REPO `ai-referral` FOUND AT THE LINK BELOW. I DO NOT CLAIM AUTHORSHIP OR OWNERSHIP OF THE BELOW CONTENTS.
+// ALL EDITS ARE CLEARLY MARKED
 // https://github.com/SamyWeb91/ai-referral
 
 /**
@@ -16,7 +17,8 @@ function detectAIReferral(url) {
       "chat.openai.com",
       "perplexity.ai",
       "gemini.google.com",
-      "claude.ai"
+      "claude.ai",
+      "chatgpt.com" // <---- THIS LINE ADDED
     ];
 
     return {
