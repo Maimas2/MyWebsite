@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const path       = require("path");
 const https      = require("https");
 
+const aiDetect = require("./ai-detect");
+
 const app = express();
 const ews = require("express-ws")(app);
 var port = 3010;
@@ -22,8 +24,18 @@ app.use(jsonParse);
 
 app.use(useragent.express());
 
+app.use(checkForAiReferral);
+
 process.on("SIGTERM", receivedKillSignal);
 process.on("SIGINT",  receivedKillSignal);
+
+function checkForAiReferral(req, res, next) {
+    if (aiDetect.detectAIReferral(req.protocol + "://" + req.get("host") + req.originalUrl).isAI) {
+        res.redirect("https://alex-seltzer.com/ai-rejection");
+    } else {
+        next();
+    }
+}
 
 var sdl = fs.readFileSync("./subdomains.txt", "utf8")
 const pw = fs.readFileSync("./files-pw.txt", "utf-8").replaceAll("\n", "");
@@ -60,6 +72,8 @@ for(var i = 0; i < l.length; i++) {
 
 var countdownApp = express();
 
+countdownApp.use(checkForAiReferral);
+
 countdownApp.get("/", (req, res) => {
     res.sendFile("/timer.html", {root: __dirname});
 });
@@ -68,6 +82,8 @@ countdownApp.listen(3101);
 console.log("Coundown is listening on port 3101");
 
     var rngApp = express();
+
+    rngApp.use(checkForAiReferral);
 
     rngApp.get("/cmu.ttf", (req, res) => {
         res.sendFile("./mun/fonts/cmunrm.ttf", {root: __dirname})
@@ -88,6 +104,8 @@ console.log("Coundown is listening on port 3101");
 // -------------------------------------------------
 
     var redirectApp = express();
+
+    redirectApp.use(checkForAiReferral);
     
     redirectApp.get("/", (req, res) => {
         res.redirect("https://forms.gle/koTBZjKeBYBEanbM8");
@@ -130,6 +148,10 @@ app.get("/jquery.js", (req, res) => {
 
 app.get("/aws", (req, res) => {
     res.sendFile("./aws.html", {root: __dirname});
+});
+
+app.get("/ai-rejection", (req, res) => {
+    res.sendFile("./ai-rejection.html", { root: __dirname });
 });
 
 var listsToSend = [];
