@@ -318,7 +318,7 @@ app.listen(3000, () => {
 
 // Set up last-song watcher
 function checkLastSong() {
-    if(!app.settings.env.IS_PROD_ENV) return;
+    if(!process.env.IS_PROD_ENV) return;
     let lastCurrentSong = lastListenedSong;
     try {
         let options = {
