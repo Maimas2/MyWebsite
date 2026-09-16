@@ -2,42 +2,55 @@
     font-family: ComputerModern;
     src: url(/ComputerModernSerif.ttf);
 }
+
+:root {
+    --number-buttons: 26;
+}
+
 * {
     font-family: ComputerModern;
     text-align: center;
     box-sizing: border-box;
     transition: background-color 150ms;
 }
-html > * {
+
+html>* {
     margin: auto;
 }
+
 body {
     background-color: color-mix(in srgb, white, powderblue);
 }
+
 .outlineddiv {
-    border-radius: 20px;
+    /* border-radius: 20px; */
     /*box-shadow: 2px 2px 7px #DDDDDD;**/
     border: 1px #888888 solid;
     background-color: white;
     user-select: none;
 }
+
 button {
     background-color: white;
     border: 1px #888 solid;
-    border-radius: 10px;
+    /* border-radius: 10px; */
     transition: linear 0.15s;
 }
+
 button:hover:not(.hideHover):not(:disabled) {
-    border-radius: 3px;
+    /* border-radius: 3px; */
     background-color: #eee;
 }
+
 button:active:not(:disabled) {
     background-color: #ccc;
 }
+
 button:disabled {
     background-color: #aaa;
     color: black;
 }
+
 #allHolder {
     display: flex;
     position: absolute;
@@ -48,42 +61,55 @@ button:disabled {
     flex-direction: column;
     overflow: hidden;
 }
+
 #upperHolder {
     display: flex;
     width: 100%;
     height: 75px;
 }
-#upperHolder > *:not(button) {
+
+#upperHolder>*:not(button) {
     width: 100%;
 }
-#upperHolder > * {
+
+#upperHolder>* {
     margin: 15px;
     padding: 3px;
     margin-bottom: 0;
 }
-#upperHolder > *:not(button) {
+
+#upperHolder>*:not(button) {
     font-size: 24pt;
 }
-#upperHolder > button {
+
+#upperHolder>button {
     font-size: 16pt;
     padding-left: 10px;
     padding-right: 10px;
 }
+
 #bottomHolder {
     display: flex;
     height: 100%;
     align-items: stretch;
     flex-grow: 1;
 }
-#bottomHolder > * {
+
+#resetAll {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+#bottomHolder>* {
     height: 95%;
     max-height: calc(100vh - 105px);
     border: 1px solid #888;
     padding: 10px;
     margin: 15px;
-    border-radius: 25px;
+    /* border-radius: 25px; */
     overflow-y: auto;
 }
+
 .scoreHolder {
     width: 20%;
     font-size: 72pt;
@@ -91,36 +117,43 @@ button:disabled {
     display: flex;
     background-color: white;
 }
-.scoreHolder > p {
+
+.scoreHolder>p {
     width: 100%;
     text-align: center;
 }
+
 .buttonHolderContainer {
     width: 30%;
     background-color: white;
 }
+
 .buttonHolder {
     width: 100%;
     overflow-y: visible;
 }
-.buttonHolder > * {
+
+.buttonHolder>* {
     display: flex;
     width: 100%;
     padding: 0;
 }
-.buttonHolder > * > * {
+
+.buttonHolder>*>* {
     display: inline-block;
     width: 100%;
     height: 100%;
-    padding: 3px;
+    /* padding: 3px; */
     flex-grow: 0;
     margin: 0;
     vertical-align: middle;
     margin: auto;
 }
-.buttonHolder > * > p {
-    padding-top: 7px;
+
+.buttonHolder>*>p {
+    /* padding-top: 7px; */
 }
+
 #settingsPopup {
     display: block;
     position: absolute;
@@ -132,6 +165,7 @@ button:disabled {
     zoom: 1.1;
     padding: 15px;
 }
+
 #blackout {
     position: fixed;
     left: 0;
@@ -140,45 +174,70 @@ button:disabled {
     width: 100vw;
     background-color: #0007;
 }
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
 input[type="number"] {
     -moz-appearance: textfield;
     padding: 3px;
-    border-radius: 5px;
+    /* border-radius: 5px; */
 }
-.addButton, .subtractButton {
+
+.addButton,
+.subtractButton {
     width: 25px;
 }
+
 #hidden {
     display: none !important;
 }
+
 .verticalDivider {
     height: 1px !important;
     background-color: #bbb;
-    width: 96%;
-    margin-left: 2%;
+    width: 100%;
+    margin: 0;
 }
+
 #horizontalDivider {
     width: 2px !important;
     background-color: #bbb;
     margin-top: 10px;
-    
+
     position: absolute;
 }
+
 .smallScore {
-    border-radius: 4px;
-    margin: 4px;
+    /* border-radius: 4px; */
+    /* margin: 4px; */
 }
+
 #buttonsContainer {
     display: flex;
     flex-direction: row;
     width: 60%;
     overflow-y: auto;
     flex-grow: 1;
+    margin-left: 0;
+    margin-right: 0;
 }
+
 p {
     box-sizing: content-box;
+    line-height: max(20px, calc(calc(100% / var(--number-buttons)) - 1px));
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.leftScoreHolder {
+    border-right: 1px solid #aaa;
+}
+
+.rowHolder {
+    height: max(20px, calc(calc(100% / var(--number-buttons)) - 1px));
 }
