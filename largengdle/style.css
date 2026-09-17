@@ -43,6 +43,10 @@ body {
 .innerSpan {
     display: inline-block;
 }
+.smallSpanHighlight {
+    font-family: monospace;
+    border-radius: 3px;
+}
 .badgeContainer {
     border: 1px black solid;
     background-color: #fff9;
