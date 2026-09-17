@@ -109,7 +109,7 @@
             $("<a>").text(currentQuote.person || "null").attr("href", `/people/${currentQuote.person || "0"}`)
         )
 
-        if (window.location.split("/").includes("quote")) {
+        if (window.location.pathname.split("/").includes("quote")) {
             $("#bigQuoteDisplay").text(`"${currentQuote.text}"` || "No such item found");
         } else {
             $("#bigQuoteDisplay").text(currentQuote.text || "No such item found");
