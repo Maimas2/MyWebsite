@@ -19,9 +19,6 @@ const ogApproveAdminHtml = fs.readFileSync("./admintracker/admin/approveitem-adm
 var AllTags = new Set();
 var AllPeople = new Set();
 
-// var CurrentAuthTokens = { // Form: useragent[String] |--> valid auth token[String]
-
-// };
 var CurrentAuthTokens = [];
 
 const AvailableCharacters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890-";
@@ -58,13 +55,13 @@ app.get("/submit/:type", (req, res) => {
     res.sendFile("./submit.html", { root: __dirname });
 });
 
-app.get("/explore", (req, res) => {
-    res.sendFile("./explore/explore.html", { root: __dirname });
-});
+// app.get("/explore", (req, res) => {
+//     res.sendFile("./explore/explore.html", { root: __dirname });
+// });
 
-app.get("/explore.js", (req, res) => {
-    res.sendFile("./explore/explore.js", { root: __dirname });
-});
+// app.get("/explore.js", (req, res) => {
+//     res.sendFile("./explore/explore.js", { root: __dirname });
+// });
 
 app.get(["/search/", "/tag/:tag", "/people/:person"], (req, res) => {
     res.sendFile("./search/search.html", { root: __dirname });
@@ -457,7 +454,7 @@ module.exports.startUpFunction = function() {
         });
     });
 
-    setInterval(function() {
+    setInterval(function() { // Keep mysql connection alive
         connection.query("SELECT 1;", (err, rows, fields) => {
 
         });

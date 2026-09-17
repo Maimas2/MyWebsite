@@ -78,7 +78,6 @@
     <button id="approveItem">Approve</button>
     <button id="rejectItem">Reject</button>
     <h3 id="actionMessage"></h3>
-    <h3>ID: <span id="bigIdDisplay"></span></h3>
     <hr>
     <h1>— <a href="/admin">Admin</a> —</h1>
     <h3><a id="nonAdminLink">View non-admin page</a></h3>
@@ -161,7 +160,8 @@
     if (currentQuote) {
         $("#nonAdminLink").attr("href", `/item/${currentQuote.id}`);
 
-        $("#bigIdDisplay").text(currentQuote.id);
+        // $("#bigIdDisplay").text(currentQuote.id);
+        // This is meaningless bc it's the proposal item id, which is different from final, approved id
 
         $("#bigQuoteSpeaker").val(currentQuote.person);
 
@@ -203,19 +203,21 @@
         });
 
         $("#rejectItem").on("click", function () {
-            $.ajax({
-                url: "/api/admin/rejectproposeditem",
-                type: "POST",
-                data: {
-                    idToDelete: currentQuote.id
-                },
-                success: function () {
-                    window.location.replace("/admin/approve/");
-                },
-                error: function (e) {
-                    $("#actionMessage").text("Delete failed: " + e);
-                }
-            });
+            if (confirm("Are you really sure you want to delete?")) {
+                $.ajax({
+                    url: "/api/admin/rejectproposeditem",
+                    type: "POST",
+                    data: {
+                        idToDelete: currentQuote.id
+                    },
+                    success: function () {
+                        window.location.replace("/admin/approve/");
+                    },
+                    error: function (e) {
+                        $("#actionMessage").text("Delete failed: " + e);
+                    }
+                });
+            }
         });
     }
 </script>

@@ -109,7 +109,11 @@
             $("<a>").text(currentQuote.person || "null").attr("href", `/people/${currentQuote.person || "0"}`)
         )
 
-        $("#bigQuoteDisplay").text(currentQuote.text || "No such item found");
+        if (window.location.split("/").includes("quote")) {
+            $("#bigQuoteDisplay").text(`"${currentQuote.text}"` || "No such item found");
+        } else {
+            $("#bigQuoteDisplay").text(currentQuote.text || "No such item found");
+        }
 
         currentQuote.tags.split(",").forEach((t) => {
             $("#tagContainer").append(
