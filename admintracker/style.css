@@ -15,6 +15,15 @@ html>* {
     margin: auto;
 }
 
+table {
+    align-self: center;
+    display: block;
+    border-collapse: separate;
+    border-spacing: 0px 8px;
+    margin: auto;
+    max-width: 90vw;
+}
+
 .outlineddiv {
     border-radius: 20px;
     /*box-shadow: 2px 2px 7px #DDDDDD;**/

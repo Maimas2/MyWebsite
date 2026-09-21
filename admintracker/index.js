@@ -55,14 +55,6 @@ app.get("/submit/:type", (req, res) => {
     res.sendFile("./submit.html", { root: __dirname });
 });
 
-// app.get("/explore", (req, res) => {
-//     res.sendFile("./explore/explore.html", { root: __dirname });
-// });
-
-// app.get("/explore.js", (req, res) => {
-//     res.sendFile("./explore/explore.js", { root: __dirname });
-// });
-
 app.get(["/search/", "/tag/:tag", "/people/:person"], (req, res) => {
     res.sendFile("./search/search.html", { root: __dirname });
 });
@@ -313,17 +305,32 @@ app.get("/admin/approve/:id", (req, res) => {
     });
 });
 
+app.get("/admin/exploredb", (req, res) => {
+    res.redirect("/admin/exploredb/items");
+});
+
+app.get("/admin/exploredb/:db", (req, res) => {
+    res.sendFile("./explore/explore.html", { root: __dirname });
+});
+
+app.get("/admin/explore.js", (req, res) => {
+    res.sendFile("./explore/explore.js", { root: __dirname });
+});
+
 app.post("/api/admin/approveproposeditem", async (req, res) => {
     if (!req.body || !req.body.id) {
         res.send({ success: false, code: 400, message: "No body or id provided" });
         return;
     }
     let b = req.body;
+    let newId = 0;
     await new Promise((resolve, reject) => {
         connection.query("INSERT INTO `sys`.`items` (`text`, `person`, `time`, `location`, `tags`, `description`, `source`, `archivedsource`, `type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
             [b.text, b.person, b.datetime, b.location, b.tags, b.description, b.sourceurl, b.archiveurl, b.type],
             (err, rows, fields) => {
                 if (err) console.log(err);
+
+                newId = rows.insertId;
 
                 console.log(`Successfully approved item ${b.text}`);
                 resolve();
@@ -343,7 +350,7 @@ app.post("/api/admin/approveproposeditem", async (req, res) => {
             }
         );
     });
-    res.send({ success: true, code: 200, message: "Item approved" });
+    res.send({ success: true, code: 200, message: "Item approved", newUrl: `/item/${newId}` });
 });
 
 app.post("/api/admin/getbasicadmininfo", async (req, res) => { // Collect and send basic info for admin dashboard
@@ -427,6 +434,22 @@ app.post("/api/admin/updateitem", (req, res) => {
         });
 
     res.sendFile("./submit.html", { root: __dirname });
+});
+
+app.post("/api/admin/fetchexplore/:db", (req, res) => {
+    if (["items", "proposed_items", "deleted_items"].includes(req.params.db)) {
+        connection.query(`SELECT * FROM sys.${req.params.db}`, (err, rows, fields) => {
+            if (err) {
+                console.warn(err);
+                res.send(err);
+                return;
+            }
+            res.send(rows);
+        });
+    } else {
+        req.send("That db not found.");
+        return;
+    }
 });
 
 const connection = mysql.createConnection({

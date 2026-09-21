@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+<!-- This was initially going to be a non-admin page, but then the search page appeared and this languised, before I realized it'd be a great admin tool. -->
 
 <head>
     <title>Submit New Quote</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="/style.css">
     <script src="https://alex-seltzer.com/lib/jquery.js"></script>
     <script src="http://localhost:3000/lib/jquery.js"></script>
     <style>
@@ -78,16 +79,22 @@
 </head>
 
 <body>
-    <h2>View Database</h2>
+    <h2 id="headerH2">View Database</h2>
+    <h4 id="actionMessage"></h4>
+    <a href="/admin/exploredb/items">Explore Items</a>
+    <a href="/admin/exploredb/proposed_items">Explore Proposed Items</a>
+    <a href="/admin/exploredb/deleted_items">Explore Deleted Items</a>
+    <br>
     <table>
         <thead>
-            <tr>
-                <th>Quote Text</th>
-                <th>Person who Spoketh</th>
-                <th>Location</th>
-                <th>Audience</th>
+            <tr id="theadTr">
+                <th id="idTh">ID</th>
+                <th>Text</th>
+                <th>Person</th>
+                <th>Context</th>
                 <th>Tags</th>
                 <th>Source</th>
+                <th>Archived Source</th>
             </tr>
         </thead>
         <tbody id="rowElement">
@@ -95,6 +102,6 @@
         </tbody>
     </table>
 </body>
-<script src="/explore.js"></script>
+<script src="/admin/explore.js"></script>
 
 </html>

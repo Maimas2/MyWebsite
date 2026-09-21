@@ -131,9 +131,6 @@
             $("<th>").text("Location: " + (currentQuote.location || "No location provided"))
         ));
         $("#mtbody").append($("<tr>").append(
-            $("<th>").text("Audience: " + (currentQuote.audience || "No audience provided"))
-        ));
-        $("#mtbody").append($("<tr>").append(
             $("<th>").text("Source url: ").append(
                 $("<a>").text((currentQuote.source || "null").split("/").slice(0, 3).join("/") + "/").attr("href", currentQuote.source || "")
             )
