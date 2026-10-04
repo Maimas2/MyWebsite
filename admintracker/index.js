@@ -447,7 +447,7 @@ app.post("/api/admin/fetchexplore/:db", (req, res) => {
             res.send(rows);
         });
     } else {
-        req.send("That db not found.");
+        res.send("That db not found.");
         return;
     }
 });

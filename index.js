@@ -1,8 +1,8 @@
-const express    = require("express");
-const fs         = require("fs");
+const express = require("express");
+const fs = require("fs");
 const bodyParser = require("body-parser");
-const path       = require("path");
-const https      = require("https");
+const path = require("path");
+const https = require("https");
 
 const aiDetect = require("./ai-detect");
 
@@ -10,7 +10,7 @@ const app = express();
 const ews = require("express-ws")(app);
 var port = 3010;
 
-var listOfSubdomainFiles = []
+var listOfSubdomainFiles = [];
 
 var namesFile = require("./names");
 var useragent = require("express-useragent");
@@ -27,7 +27,7 @@ app.use(useragent.express());
 app.use(checkForAiReferral);
 
 process.on("SIGTERM", receivedKillSignal);
-process.on("SIGINT",  receivedKillSignal);
+process.on("SIGINT", receivedKillSignal);
 
 function checkForAiReferral(req, res, next) {
     if (aiDetect.detectAIReferral(req.protocol + "://" + req.get("host") + req.originalUrl).isAI) {
@@ -37,7 +37,7 @@ function checkForAiReferral(req, res, next) {
     }
 }
 
-var sdl = fs.readFileSync("./subdomains.txt", "utf8")
+var sdl = fs.readFileSync("./subdomains.txt", "utf8");
 const pw = fs.readFileSync("./files-pw.txt", "utf-8").replaceAll("\n", "");
 var l = sdl.split("\n");
 
@@ -46,12 +46,12 @@ const ignoredArtists = fs.readFileSync("./excludedartists.txt", "utf-8").split("
 
 var lastListenedSong = "Nothing yet!";
 
-for(var i = 0; i < l.length; i++) {
+for (var i = 0; i < l.length; i++) {
     let b = l[i].split("#")[0].trim();
     let bs = b.split("  ");
-    if(b.trim() == "") continue;
+    if (b.trim() == "") continue;
     try {
-        if(process.argv.length > 2 && bs[1] != process.argv[2]) {
+        if (process.argv.length > 2 && bs[1] != process.argv[2]) {
             port += 1;
             continue;
         }
@@ -63,7 +63,7 @@ for(var i = 0; i < l.length; i++) {
         port += 1;
         tapp.listen(port);
         console.log(`${bs[0]} is listening on port ${port}`);
-    } catch(e) {
+    } catch (e) {
         console.warn(`Error in hosting subdomain ${bs[0]}, skipping...`);
         console.warn(e);
         port += 1;
@@ -75,48 +75,48 @@ var countdownApp = express();
 countdownApp.use(checkForAiReferral);
 
 countdownApp.get("/", (req, res) => {
-    res.sendFile("/timer.html", {root: __dirname});
+    res.sendFile("/timer.html", { root: __dirname });
 });
 
 countdownApp.listen(3101);
 console.log("Coundown is listening on port 3101");
 
-    var rngApp = express();
+var rngApp = express();
 
-    rngApp.use(checkForAiReferral);
+rngApp.use(checkForAiReferral);
 
-    rngApp.get("/cmu.ttf", (req, res) => {
-        res.sendFile("./mun/fonts/cmunrm.ttf", {root: __dirname})
-    });
+rngApp.get("/cmu.ttf", (req, res) => {
+    res.sendFile("./mun/fonts/cmunrm.ttf", { root: __dirname });
+});
 
-    rngApp.get("/jquery.js", (req, res) => {
-        res.type("js");
-        res.sendFile("./mun/lib/jquery-3.7.1.min.js", {root: __dirname});
-    });
+rngApp.get("/jquery.js", (req, res) => {
+    res.type("js");
+    res.sendFile("./mun/lib/jquery-3.7.1.min.js", { root: __dirname });
+});
 
-    rngApp.get("/{:num}", (req, res) => {
-        res.sendFile("/rng.html", {root: __dirname});
-    });
+rngApp.get("/{:num}", (req, res) => {
+    res.sendFile("/rng.html", { root: __dirname });
+});
 
-    rngApp.listen(3102);
-    console.log("RNG is listening on port 3102");
+rngApp.listen(3102);
+console.log("RNG is listening on port 3102");
 
 // -------------------------------------------------
 
-    var redirectApp = express();
+var redirectApp = express();
 
-    redirectApp.use(checkForAiReferral);
-    
-    redirectApp.get("/", (req, res) => {
-        res.redirect("https://forms.gle/koTBZjKeBYBEanbM8");
-    });
+redirectApp.use(checkForAiReferral);
 
-    redirectApp.listen(3103);
-    console.log("Custom redirect is listening on port 3102");
+redirectApp.get("/", (req, res) => {
+    res.redirect("https://forms.gle/koTBZjKeBYBEanbM8");
+});
+
+redirectApp.listen(3103);
+console.log("Custom redirect is listening on port 3102");
 
 var listpw = null;
 
-if(fs.existsSync("./listpw.txt")) {
+if (fs.existsSync("./listpw.txt")) {
     var d = fs.readFileSync("./listpw.txt", "utf-8");
     listpw = d.replaceAll("\n", "");
 } else {
@@ -124,7 +124,7 @@ if(fs.existsSync("./listpw.txt")) {
 }
 
 app.get("/ComputerModernSerif.ttf", (req, res) => {
-    res.sendFile("./mun/fonts/cmunrm.ttf", {root: __dirname});
+    res.sendFile("./mun/fonts/cmunrm.ttf", { root: __dirname });
 });
 
 app.get("/mun", (req, res) => {
@@ -139,15 +139,15 @@ app.get("/LICENSE", (req, res) => {
 });
 
 app.get("/cmu.ttf", (req, res) => { // Sorry, my font and asset distribution methods are a clusterfuck
-    res.sendFile("./mun/fonts/cmunrm.ttf", {root: __dirname})
+    res.sendFile("./mun/fonts/cmunrm.ttf", { root: __dirname });
 });
 
 app.get("/jquery.js", (req, res) => {
-    res.sendFile("./mun/lib/jquery-3.7.1.min.js", {root: __dirname});
+    res.sendFile("./mun/lib/jquery-3.7.1.min.js", { root: __dirname });
 });
 
 app.get("/aws", (req, res) => {
-    res.sendFile("./aws.html", {root: __dirname});
+    res.sendFile("./aws.html", { root: __dirname });
 });
 
 app.get("/ai-rejection", (req, res) => {
@@ -160,16 +160,16 @@ var blockedIps = [];
 var messagesSent = []; // NOT kept in sync with the above array
 
 function useragentToString(ua, req) { // Custom function to id a device based on certain immutable characteristics
-    return `${ua.os} ${ua.browser} ${ua.isMobile ? "isMobile" : "isNotMobile"} ${req.headers["x-forwarded-for"]}`
+    return `${ua.os} ${ua.browser} ${ua.isMobile ? "isMobile" : "isNotMobile"} ${req.headers["x-forwarded-for"]}`;
 }
 
-if(fs.existsSync("./saves/blocked_ips.txt")) {
+if (fs.existsSync("./saves/blocked_ips.txt")) {
     var d = fs.readFileSync("./saves/blocked_ips.txt", "utf-8");
 
     blockedIps = d.split("\n");
 }
 
-if(fs.existsSync("./saves/messages_sent.txt")) {
+if (fs.existsSync("./saves/messages_sent.txt")) {
     var d = fs.readFileSync("./saves/messages_sent.txt", "utf-8");
 
     messagesSent = d.split("\n");
@@ -181,51 +181,51 @@ if(fs.existsSync("./saves/messages_sent.txt")) {
 
 fs.readdirSync(path.join(__dirname, "/images")).forEach((f) => {
     app.get(`/images/${f}`, (req, res) => {
-        res.sendFile(`/images/${f}`, {root: __dirname});
+        res.sendFile(`/images/${f}`, { root: __dirname });
     });
     console.log(`  Listening for ${f}...`);
 });
 
 app.get("/game", (req, res) => {
-    res.sendFile("/game.html", {root: __dirname});
+    res.sendFile("/game.html", { root: __dirname });
 });
 
 app.get("/blocks", (req, res) => {
-    res.sendFile("/blocks.html", {root: __dirname});
+    res.sendFile("/blocks.html", { root: __dirname });
 });
 
 app.get("/files/Blocks.8xp", (req, res) => {
-    res.sendFile("/blocks/Blocks.8xp", {root: __dirname});
+    res.sendFile("/blocks/Blocks.8xp", { root: __dirname });
 });
 
 app.get("/files/Blocks.c", (req, res) => {
-    res.sendFile("/blocks/Blocks.c", {root: __dirname});
+    res.sendFile("/blocks/Blocks.c", { root: __dirname });
 });
 
 app.get("/annoyinglist", (req, res) => {
     fs.readdirSync(path.join(__dirname, "/newmessages")).forEach((f) => {
         let s = fs.readFileSync(path.join(__dirname, "/newmessages", f)).toString();
-        if(s.length) {
+        if (s.length) {
             listsToSend.push(s);
             fs.unlinkSync(path.join(__dirname, "/newmessages", f));
         }
-	});
+    });
 
-    if(req.url.includes(listpw) && req.url.includes("&all") && listpw != null) {
+    if (req.url.includes(listpw) && req.url.includes("&all") && listpw != null) {
         res.send(`[${listsToSend.join(", ")}]`);
-    } else if(req.url.includes(listpw) && listpw != null) {
-        if(listsToSend.length) {
+    } else if (req.url.includes(listpw) && listpw != null) {
+        if (listsToSend.length) {
             res.send(listsToSend.pop());
         } else {
             res.send("");
         }
     } else {
-        res.send("Invalid identification")
+        res.send("Invalid identification");
     }
 });
 
 app.get("/messagessent", (req, res) => {
-    if(req.url.includes(listpw) && listpw != null) {
+    if (req.url.includes(listpw) && listpw != null) {
         res.send(`[${messagesSent.join("\n")}]`);
     } else {
         res.send("Invalid identification");
@@ -234,22 +234,22 @@ app.get("/messagessent", (req, res) => {
 
 app.post("/appendtoannoyinglist", (req, res) => {
     var u = useragentToString(req.useragent, req);
-    if(blockedIps.includes(u) && (!req.url.includes(pw))) {
+    if (blockedIps.includes(u) && (!req.url.includes(pw))) {
         res.send("This device is blocked.");
     } else {
-        if(req.body.data.length > 512) {
+        if (req.body.data.length > 512) {
             res.send("Message too long.");
             return;
         }
         listsToSend.unshift(req.body.data);
-        if(!req.url.includes(pw)) blockedIps.push(u);
+        if (!req.url.includes(pw)) blockedIps.push(u);
         messagesSent.push(req.body.data);
         res.send("Appended.");
     }
 });
 
 app.post("/appendtoannoyinglistoverride", (req, res) => { // Appends even if device is blocked BUT requires password
-    if(req.url.includes(pw)) {
+    if (req.url.includes(pw)) {
         listsToSend.unshift(req.body.data);
         messagesSent.push(req.body.data);
         res.send("Appended.");
@@ -260,22 +260,22 @@ app.post("/appendtoannoyinglistoverride", (req, res) => { // Appends even if dev
 
 app.get("/annoyme", (req, res) => {
     var u = useragentToString(req.useragent, req);
-    if(blockedIps.includes(u)) {
+    if (blockedIps.includes(u)) {
         //res.sendFile("./annoyme-refusal.html", {root: __dirname});
         res.redirect("/annoyme-refusal");
     } else {
-        res.sendFile("./annoyme.html", {root: __dirname});
+        res.sendFile("./annoyme.html", { root: __dirname });
     }
 });
 
 app.get("/annoyme-refusal", (req, res) => {
-    res.sendFile("./annoyme-refusal.html", {root: __dirname});
+    res.sendFile("./annoyme-refusal.html", { root: __dirname });
 });
 
 let ogText = fs.readFileSync("./index.html").toString();
 
 let currentQuote = fs.readFileSync("./currentquote.txt").toString().replaceAll("\n", "");
-let favSong      = fs.readFileSync("./favsong.txt").toString().replaceAll("\n", "");
+let favSong = fs.readFileSync("./favsong.txt").toString().replaceAll("\n", "");
 
 app.post("/setcurrentquote", (req, res) => {
     console.log(req.body);
@@ -287,7 +287,7 @@ app.get("/", (req, res) => {
     toSend = toSend.replace("<!-- %FAVSONG -->", favSong);
     toSend = toSend.replace("<!-- %LASTSONG -->", lastListenedSong);
 
-    if(req.useragent.isMobile) {
+    if (req.useragent.isMobile) {
         toSend = toSend.replace("/* %MOBILE CSS */", mobileCssTxt);
     }
 
@@ -296,16 +296,16 @@ app.get("/", (req, res) => {
 });
 
 app.get("/feed.xml", (req, res) => {
-    res.sendFile("./feed.xml", {root: __dirname});
+    res.sendFile("./feed.xml", { root: __dirname });
 });
 
-app.get("/infinitewordle", (req, res) => {
-    res.sendFile("./infinitewordle.html", {root: __dirname});
-});
+// app.get("/infinitewordle", (req, res) => {
+//     res.sendFile("./infinitewordle.html", { root: __dirname });
+// });
 
 app.get("/lib/jquery.js", (req, res) => {
     res.type(".js");
-    res.sendFile("./mun/lib/jquery-3.7.1.min.js", {root: __dirname});
+    res.sendFile("./mun/lib/jquery-3.7.1.min.js", { root: __dirname });
 });
 
 app.use(function(req, res, next) {
@@ -318,13 +318,13 @@ app.listen(3000, () => {
 
 // Set up last-song watcher
 function checkLastSong() {
-    if(!process.env.IS_PROD_ENV) return;
+    if (!process.env.IS_PROD_ENV) return;
     let lastCurrentSong = lastListenedSong;
     try {
         let options = {
-            host : "libre.fm",
-            path : "/2.0/?method=user.getrecenttracks&user=alexseltzer&format=json&limit=5"
-        }
+            host: "libre.fm",
+            path: "/2.0/?method=user.getrecenttracks&user=alexseltzer&format=json&limit=5"
+        };
 
         let checkSong = https.get(options, function(res) {
             let buildingBody = [];
@@ -335,7 +335,7 @@ function checkLastSong() {
                 var finalJson = null;
                 try {
                     finalJson = JSON.parse(finalBody);
-                } catch(e) {
+                } catch (e) {
                     console.warn("Error:");
                     console.warn(e);
                     lastListenedSong = lastCurrentSong;
@@ -347,8 +347,8 @@ function checkLastSong() {
 
                 recentTracks.some((tr) => {
                     console.log(tr.artist);
-                    if(!ignoredArtists.includes(tr.artist["#text"])) {
-                        lastListenedSong = `${tr.name}, by ${tr.artist["#text"]}`
+                    if (!ignoredArtists.includes(tr.artist["#text"])) {
+                        lastListenedSong = `${tr.name}, by ${tr.artist["#text"]}`;
                         console.log(lastListenedSong);
                         return true;
                     }
@@ -359,9 +359,12 @@ function checkLastSong() {
                 console.warn(e);
                 lastListenedSong = lastCurrentSong;
                 return;
-            })
-        })
-    } catch(e) {
+            });
+        }).on("error", function(e) {
+            console.warn("Uh oh error in https requesting libre.fm");
+            console.warn(e);
+        });
+    } catch (e) {
         console.warn("Uh oh error in song checking:");
         console.warn(e);
         lastListenedSong = lastCurrentSong;
@@ -374,10 +377,10 @@ setInterval(checkLastSong, 1000 * 60 * 3); // Update last listened song every th
 
 function receivedKillSignal() {
     console.log("Shutting down...");
-    
-    for(fi in listOfSubdomainFiles) {
+
+    for (fi in listOfSubdomainFiles) {
         let f = listOfSubdomainFiles[fi];
-        if(f.shutDownFunction) {
+        if (f.shutDownFunction) {
             console.log(" -  Shutting down " + f.name + "...");
             f.shutDownFunction();
         }
@@ -385,12 +388,12 @@ function receivedKillSignal() {
 
     let d = blockedIps.join("\n");
     fs.writeFileSync("./saves/blocked_ips.txt", d, "utf-8", (error) => {
-        if(error) console.log(error);
+        if (error) console.log(error);
     });
 
     let dd = messagesSent.join("\n");
     fs.writeFileSync("./saves/messages_sent.txt", dd, "utf-8", (error) => {
-        if(error) console.log(error);
+        if (error) console.log(error);
     });
 
     process.exit(0);
