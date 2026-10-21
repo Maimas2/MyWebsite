@@ -117,6 +117,10 @@
         .mobileshow {
             display: none;
         }
+
+        hr {
+            opacity: 0.4;
+        }
     </style>
     <style>
         /* %MOBILE CSS */
@@ -146,13 +150,18 @@
             <p class="fadein">I'm Alex Seltzer, a freshman attending Carnegie Mellon University to study astrophysics.
             </p>
             <br>
+            <p class="fadein">Contact me for any reason at aseltz156 at Gmail Dot Com.</p>
+            <br>
+            <hr class="mobileshow fadein" style="display:block;">
+            <br>
             <p class="fadein">Quote of the day: <!-- %QUOTE --></p>
             <br>
             <p class="fadein">Current favorite song: <!-- %FAVSONG --></p>
             <br>
             <p class="fadein">Song I listened to last: <!-- %LASTSONG --></p>
             <br>
-            <p class="fadein">Contact me for any reason at aseltz156 at Gmail Dot Com.</p>
+            <p class="fadein">Fun fact: I outperformed both Open AI and Anthtropic in FY26!</p>
+            <br>
         </div>
     </div>
     <p class="fadein">List of my personal projects:</p>
@@ -231,7 +240,7 @@
     $(".fadein").each(function (el) {
         setTimeout((_e) => {
             $(this).animate({
-                opacity: 1
+                opacity: $(this).prop('nodeName') == "HR" ? 0.4 : 1
             }, 300);
             $(this).css("transform", "none");
         }, t += 20)
