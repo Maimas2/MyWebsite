@@ -1,4 +1,4 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <style>
@@ -59,7 +59,7 @@
                 background-color: white;
                 box-shadow: 0px 0px 10px #0001;
             }
-            #inputContainer > * {
+            #inputContainer > *, button {
                 width: 100%;
                 height: calc(25% - 20px);
                 padding: 15px;
@@ -84,16 +84,16 @@
                 border: 1px solid #777;
                 text-align: center;
             }
-            #resultContainer {
+            .resultContainer {
                 display: flex;
                 align-items: center;
             }
-            #result {
+            .result {
                 width: 100%;
                 margin: 0;
                 text-align: center;
             }
-            #result > p {
+            .result > p {
                 border: 1px solid rgba(0, 0, 0, 0.2);
                 border-radius: 15px;
                 padding: 4px;
@@ -133,6 +133,20 @@
             #otherControlContainer {
                 overflow: hidden !important;
             }
+            #distChoiceContainer {
+                flex-direction: row;
+            }
+            #distChoiceContainer > * {
+                width: 100%;
+                margin: 0;
+            }
+            .resultContainer:not(#normalResultContainer) {
+                display: none;
+            }
+            .noborder {
+                border: 0 !important;
+                max-width: 100%;
+            }
         </style>
         <script src="/jquery.js"></script>
     </head>
@@ -140,11 +154,22 @@
         <div id="bigContainer">
             <div id="inputContainer">
                 <div id="distChoiceContainer">
-                    <p>Distribution Method</p>
-                    <select id="distChoice" autocomplete="off">
-                        <option value="uniform">Uniform</option>
-                        <option value="normal">Gaussian Normal</option>
-                    </select>
+                    <div>
+                        <p>Distribution Method</p>
+                        <select id="distChoice" autocomplete="off">
+                            <option value="uniform">Uniform</option>
+                            <option value="normal">Gaussian Normal</option>
+                        </select>
+                    </div>
+                    <div>
+                        <p>Output style</p>
+                        <select id="outputChoice" autocomplete="false">
+                            <option value="normal" selected>Normal</option>
+                            <option value="array">Array</option>
+                            <option value="json">JSON</option>
+                            <!-- <option value="plot">Plot</option> -->
+                        </select>
+                    </div>
                 </div>
                 <div id="otherControlContainer">
                     <div id="uniformControls">
@@ -190,13 +215,19 @@
                     Generate
                 </button>
             </div>
-            <div id="resultContainer">
-                <h1 id="result">0</h1>
+            <div id="normalResultContainer" class="resultContainer">
+                <h1 class="result">0</h1>
+            </div>
+            <div id="textResultContainer" class="resultContainer">
+                <p class="result">0</h1>
+            </div>
+            <div id="plotResultContainer" class="resultContainer">
+                
             </div>
         </div>
     </body>
     <script>
-        let r = RegExp(/[^(\d|\.)]/, "g");
+        let r = RegExp(/[^(\d|\.|\-)]/, "g");
         var results = [];
 
         function gaussianRandom() { // Returns a random Gaussian-distributed number using the Box-Muller transform
@@ -244,14 +275,35 @@
                 if(tresult > max) max = tresult;
                 if(tresult < min) min = tresult;
 
-                if(document.getElementById("floatOrNo").checked) {
-                    toPush += `<p style="display: inline-block;min-width: 20%;">${tresult}</p>`;
-                } else {
-                    toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">${tresult}</p>`;
-                }
-
                 numAdded++;
             });
+
+            if($("#outputChoice").val() == "normal") {
+                tresults.forEach((tresult) => {
+                    if(document.getElementById("floatOrNo").checked) {
+                        toPush += `<p style="display: inline-block;min-width: 20%;">${tresult}</p>`;
+                    } else {
+                        toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">${tresult}</p>`;
+                    }
+                });
+            } else if($("#outputChoice").val() == "array") {
+                // Yeah, I can do front-end development. I can write high-quality code.
+                toPush += `<h3 class="noborder" id="toCopy">[${tresults.join(", ")}]</h3>`;
+                toPush += `<hr><br><button onclick="navigator.clipboard.writeText($('#toCopy').text());this.textContent='Copied!'">Copy to clipboard</button>`;
+            } else if($("#outputChoice").val() == "json") {
+                toPush += `<h3 class="noborder" id="toCopy">${
+                    JSON.stringify({
+                        sum: tresults.reduce((ps, ta) => ps + ta, 0),
+                        mean: tresults.reduce((ps, ta) => ps + ta, 0)/tresults.length,
+                        min: min,
+                        max: max,
+                        values: tresults
+                    })
+                    }</h3>`;
+                toPush += `<hr><br><button onclick="navigator.clipboard.writeText($('#toCopy').text());this.textContent='Copied!'">Copy to clipboard</button>`;
+            } else if($("#outputChoice").val() == "plot") {
+
+            }
 
             if(document.getElementById("showSummaryCheck").checked && Number(document.getElementById("numNumbers").value) > 1) {
                 toPush += "<hr>";
@@ -261,7 +313,9 @@
                 toPush += `<p style="min-width: 20%;margin: auto;display: inline-block;margin: 10px;">Min: ${min}</p><br>`;
             }
             
-            document.getElementById("result").innerHTML = toPush;
+            [].slice.call(document.getElementsByClassName("result")).forEach((el) => {
+                el.innerHTML = toPush;
+            });
         }
 
         window.onload = function() {
@@ -280,7 +334,7 @@
             });
 
             $("#distChoice").on("change", function() {
-                console.log($("#distChoice").find(":selected").val());
+                // console.log($("#distChoice").find(":selected").val());
 
                 $(".inputEl").css("display", "none");
                 $(`.${$("#distChoice").find(":selected").val()}El`).css("display", "");
@@ -293,7 +347,22 @@
 
                 $("#go").click();
                 refreshResult();
-            })
+            });
+
+            const outputMappings = { // Maps output choice selection values to output element ids
+                "normal" : "normal",
+                "array"  : "text",
+                "json"   : "text",
+                "plot"   : "plot"
+            };
+
+            $("#outputChoice").on("change", function() {
+                $(".resultContainer").css("display", "none");
+                $(`#${outputMappings[$("#outputChoice").val()]}ResultContainer`).css("display", "flex");
+                refreshResult();
+            });
+
+            $("#outputChoice").val("normal");
 
             document.getElementById("numNumbers").addEventListener("input", function() {
                 if(Number(document.getElementById("numNumbers").value) == 1) {
