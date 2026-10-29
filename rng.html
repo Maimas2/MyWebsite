@@ -376,7 +376,7 @@
 
             let numberfied = Number(window.location.pathname.substring(1).replaceAll(r, ""));
             if(window.location.pathname.substring(1).replaceAll(r, "").length && !isNaN(numberfied)) {
-                console.log(numberfied);
+                // console.log(numberfied);
                 document.getElementById("maxInput").value = numberfied;
 
                 if(window.location.pathname.includes(".")) {
@@ -410,6 +410,10 @@
                 document.getElementById("maxInput").value = document.getElementById("maxInput").value.replaceAll(r, "");
                 document.getElementById("minInput").value = document.getElementById("minInput").value.replaceAll(r, "");
             });
+
+            if(!isNaN(window.location.pathname.replace("/", ""))) {
+                $("#maxInput").val(window.location.pathname.replace("/", ""));
+            }
 
             document.getElementById("go").click();
         }
