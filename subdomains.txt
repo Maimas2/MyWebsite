@@ -18,3 +18,4 @@ form  form  Custom form hoster
 link  link  Custom redirect manager
 largengdle  largengdle  LargeNGDLE Random Betting Game. Play with Friends Today!
 admin  admintracker  Admin Tracker! Yay
+stat  ct-genstat  CT General Statutes, but in a better format. Yay!

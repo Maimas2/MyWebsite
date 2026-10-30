@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="/style.css">
+        <script src="https://mun.alex-seltzer.com/lib/jquery.js"></script>
+        <script src="http://mun.localhost:3010/lib/jquery.js"></script>
+        <style>
+            p, h1 {
+                width: 80vw;
+                margin-left: 10vw;
+            }
+            h1 {
+                text-align: center;
+            }
+            p:has(.catchln) {
+                text-indent: -4em;
+            }
+            .catchln {
+                font-weight: bold;
+            }
+            .nav_tbl {
+                display: none;
+            }
+            .source-first, .history-first, .annotation-first, .annotation {
+                display: none;
+            }
+            .indentLeft {
+                padding-left: 4em;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Chapters of CT General Statutes</h1>
+        <hr>
+        <div id="actualLawStuff">
+            <!-- %% REPLACE %% -->
+        </div>
+    </body>
+</html>

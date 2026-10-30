@@ -1,0 +1,8 @@
+--2026-10-29 19:01:52--  https://www.cga.ct.gov/current/pub/chap_91.htm
+Resolving www.cga.ct.gov (www.cga.ct.gov)... 159.247.160.63
+Connecting to www.cga.ct.gov (www.cga.ct.gov)|159.247.160.63|:443... connected.
+WARNING: cannot verify www.cga.ct.gov's certificate, issued by ‘CN=Go Daddy Secure Certificate Authority - G2,OU=http://certs.godaddy.com/repository/,O=GoDaddy.com\\, Inc.,L=Scottsdale,ST=Arizona,C=US’:
+  Unable to locally verify the issuer's authority.
+HTTP request sent, awaiting response... 404 Not Found
+2026-10-29 19:01:52 ERROR 404: Not Found.
+

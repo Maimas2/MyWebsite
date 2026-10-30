@@ -1,0 +1,17 @@
+@font-face {
+    font-family: ComputerModern;
+    src: url(/ComputerModernSerif.ttf);
+}
+* {
+    font-family: sans-serif;
+}
+html > * {
+    margin: auto;
+}
+.outlineddiv {
+    border-radius: 20px;
+    /*box-shadow: 2px 2px 7px #DDDDDD;**/
+    border: 1px #888888 solid;
+    background-color: white;
+    user-select: none;
+}

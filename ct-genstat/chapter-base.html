@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="/style.css">
+        <script src="https://mun.alex-seltzer.com/lib/jquery.js"></script>
+        <script src="http://mun.localhost:3010/lib/jquery.js"></script>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            #actualLawStuff > p, h1, h2, h3, #optionsContainer {
+                width: 80vw;
+                margin-left: 10vw;
+            }
+            h1 {
+                text-align: center;
+            }
+            p:has(.catchln) {
+                text-indent: max(-4em, -10vw);
+            }
+            .catchln {
+                font-weight: bold;
+            }
+            .nav_tbl {
+                display: none;
+            }
+            .source-first, .history-first, .annotation-first, .annotation {
+                display: none;
+                font-style: italic;
+                width: 74vw !important;
+                margin-left: 13vw !important;
+            }
+            hr {
+                width: 80vw
+            }
+            #optionsContainer > * {
+                display: inline;
+                margin-left: 2em;
+                margin-right: 2em;
+            }
+            .showOnlyInChapter {
+                display: none !important;
+            }
+            /* %% CHAPTER ONLY */
+        </style>
+    </head>
+    <body>
+        <h1><!-- %% CHAPTER TITLE %% --></h1>
+        <hr>
+        <div id="optionsContainer">
+            <p><a href="/">Home</a></p>
+            <p class="showOnlyInChapter"><a href="/title/<!-- %% TITLE URL -->">Return to <!-- %% TITLE NUMBER --></a></p>
+            <p><a href="#" id="historyHideButton">History hidden</a></p>
+            <p><a href="#" id="sourceHideButton">Sources hidden</a></p>
+            <p><a href="#" id="annotationHideButton">Annotations hidden</a></p>
+        </div>
+        <hr>
+        <div id="actualLawStuff">
+            <!-- %% REPLACE WITH LAW %% -->
+        </div>
+    </body>
+    <script>
+        $("#historyHideButton").on("click", function() {
+            if($(this).text() == "History hidden") {
+                $(this).text("History shown");
+                $(".history-first").css("display", "block");
+            } else {
+                $(this).text("History hidden");
+                $(".history-first").css("display", "none");
+            }
+        });
+        $("#sourceHideButton").on("click", function() {
+            if($(this).text() == "Sources hidden") {
+                $(this).text("Sources Shown shown");
+                $(".source-first").css("display", "block");
+            } else {
+                $(this).text("Sources hidden");
+                $(".source-first").css("display", "none");
+            }
+        });
+        $("#annotationHideButton").on("click", function() {
+            if($(this).text() == "Annotations hidden") {
+                $(this).text("Annotations shown");
+                $(".annotation").css("display", "block");
+                $(".annotation-first").css("display", "block");
+            } else {
+                $(this).text("Annotations hidden");
+                $(".annotation-first").css("display", "none");
+                $(".annotation").css("display", "none");
+            }
+        });
+    </script>
+</html>
