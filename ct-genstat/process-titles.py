@@ -4,6 +4,8 @@ import os
 titleNames = []
 titleNumbers = []
 titleHrefs = []
+titleLimits = [] # Exports to allTitleLimits
+titleSmallerLimits = [] # Exports to allTitleSmallerLimits
 
 with open('./all-titles.html', 'r') as inf:
     text = inf.read()
@@ -24,6 +26,26 @@ with open('./all-titles.html', 'r') as inf:
         titleHrefs.append(l.split("\"")[0])
     titleHrefs.pop(0)
 
+    t4 = text.split("<span class=\"toc_rng_chaps\">")
+    for l in t4:
+        titleLimits.append(l.split("</a>")[0].split("<")[0])
+    titleLimits.pop(0)
+
+    t5 = text.split("<br />")
+    for l in t5:
+        if l[0] == "(":
+            titleSmallerLimits.append(l.split("<")[0])
+    titleLimits.pop(0)
+
+titleLimits.remove("Repealed")
+titleLimits.remove("Repealed")
+
+# titleSmallerLimits.remove("Repealed")
+# titleSmallerLimits.remove("Repealed")
+
+print(titleSmallerLimits)
+print(len(titleSmallerLimits))
+
 titleHrefs = list(set(titleHrefs))
 titleHrefs.sort()
 
@@ -34,13 +56,9 @@ titleNames.remove("Reserved for future use")
 titleNumbers.remove("Title 2a")
 titleNumbers.remove("Title 2b")
 
-print(len(titleHrefs))
-print(len(titleNames))
-# print((titleHrefs))
-# print((titleNames))
-print(len(titleNumbers))
 
-# exit()
+
+exit()
 
 allTitleInfo = {
     'numbers' : titleNumbers,
@@ -50,6 +68,8 @@ allTitleInfo = {
 titlesData = {  }
 
 allChaps = []
+
+isOk = True
 
 for fname in titleHrefs:
     # print(fname)
@@ -63,6 +83,7 @@ for fname in titleHrefs:
 
             chpNames = []
             chpNumbers = []
+            chpLimits = []
             t1 = text.split("<a class=\"toc_ch_link\" ")
             tl = []
             for l in t1:
@@ -74,14 +95,26 @@ for fname in titleHrefs:
                 else:
                     chpNames.append(tl[ii])
 
+            t2 = text.split("<span class=\"toc_rng_secs\">")
+            for l in t2:
+                ta = l.split("<")[0]
+                if len(ta) > 0:
+                    chpLimits.append(ta)
+
+            if len(list({len(chpNames), len(chpNumbers), len(chpLimits)})) > 1:
+                print("Discrepancy in lengths ", len(chpNames), len(chpNumbers), len(chpLimits))
+                isOk = False
+
             titlesData[fname.split("_")[1].split(".")[0].lstrip("0")] = {
                 "number"   : titleNo,
                 "name"     : titleName,
                 "fileName" : fname,
                 "chpNames" : chpNames,
-                "chpNumbers" : chpNumbers
+                "chpNumbers" : chpNumbers,
+                "chpLimits"  : chpLimits
             }
     except Exception as e:
         # pass
         print(e)
-print(titlesData)
+if isOk:
+    print(titlesData) # Exports to individualTitleData
