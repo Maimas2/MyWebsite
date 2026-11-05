@@ -70,16 +70,16 @@ for (var i = 0; i < l.length; i++) {
     }
 }
 
-var countdownApp = express();
+// var countdownApp = express();
 
-countdownApp.use(checkForAiReferral);
+// countdownApp.use(checkForAiReferral);
 
-countdownApp.get("/", (req, res) => {
-    res.sendFile("/timer.html", { root: __dirname });
-});
+// countdownApp.get("/", (req, res) => {
+//     res.sendFile("/timer.html", { root: __dirname });
+// });
 
-countdownApp.listen(3101);
-console.log("Coundown is listening on port 3101");
+// countdownApp.listen(3101);
+// console.log("Coundown is listening on port 3101");
 
 var rngApp = express();
 

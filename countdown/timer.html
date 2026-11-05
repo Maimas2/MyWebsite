@@ -43,22 +43,23 @@
     </head>
     <body>
         <h1 id="mainLabel"></h1>
-        <h3 class="otherLabel">until 20 Jan 2029</h3>
+        <h3 class="otherLabel">until <!-- %% TEXT DATE --></h3>
         <div id="progressBar">
             <div id="barinner"></div>
         </div>
         <h3 class="otherLabel" id="percentLabel"></h3>
     </body>
     <script>
+        const waitingTime = /* %% WAITING TIME */;
         function updateTime() {
-            let secs  = Math.floor((Date.UTC(2029, 0, 20, 17, 0, 0) - Date.now()));
+            let secs  = Math.max(0, Math.floor((new Date(/* %% DATE REPLACE */) - Date.now())));
             let mins  = Math.floor(secs / 60000);
             let hours = Math.floor(mins / 60);
             let days  = Math.floor(hours / 24);
 
             document.getElementById("mainLabel").textContent = `${days} : ${hours % 24 < 10 ? "0" : ""}${hours % 24} : ${mins % 60 < 10 ? "0" : ""}${mins % 60} : ${Math.floor(secs/1000) % 60 < 10 ? "0" : ""}${Math.floor(secs/1000) % 60}`
-            document.getElementById("percentLabel").textContent = `We're ${String((1-((secs/1000) / 126230400)) * 100).substring(0,9)}% of the way there!`
-            document.getElementById("barinner").style.width = `${(1-((secs/1000) / 126230400)) * 100}%`
+            document.getElementById("percentLabel").textContent = `We're ${String((1-((secs/1000) / waitingTime)) * 100).substring(0,9)}% of the way there!`
+            document.getElementById("barinner").style.width = `${(1-((secs/1000) / waitingTime)) * 100}%`
         }
         setInterval(function() {
             updateTime();
