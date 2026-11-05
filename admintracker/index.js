@@ -463,6 +463,8 @@ const connection = mysql.createConnection({
 module.exports.app = app;
 
 module.exports.startUpFunction = function() {
+    return; // Killing for now
+    
     connection.connect();
 
     console.log("  Reading all possible tags and people...");
